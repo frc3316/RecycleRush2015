@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -116,6 +117,8 @@ public class Robot extends IterativeRobot
     	autonChooser = new SendableChooser();
     	autonChooser.addDefault("None", autonNone);
     	autonChooser.addObject("Drive Forward", autonDriveForward);
+    	
+    	SmartDashboard.putData("Auton Chooser", autonChooser);
     }
 	
 	public void disabledPeriodic() {
