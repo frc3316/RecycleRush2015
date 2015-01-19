@@ -15,8 +15,6 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Robot extends IterativeRobot 
 {
-	public static HumanIO oi;
-
     Command autonomousCommand;
 
     /**
@@ -25,7 +23,6 @@ public class Robot extends IterativeRobot
      */
     public void robotInit() 
     {
-		oi = new HumanIO();
     }
 	
 	public void disabledPeriodic() {
