@@ -67,7 +67,9 @@ public class Config
 	
 	private void initConfig ()
 	{
-		
+		addToConstants("JoystickLeft", 0);
+		addToConstants("JoystickRight", 1);
+		addToConstants("JoystickOperator", 2);
 	}
 	
 	private Config ()
