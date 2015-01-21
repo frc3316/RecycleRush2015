@@ -2,6 +2,11 @@
 package org.usfirst.frc.team3316.robot;
 
 import org.usfirst.frc.team3316.robot.subsystems.Chassis;
+import org.usfirst.frc.team3316.robot.config.Config;
+import org.usfirst.frc.team3316.robot.humanIO.Joysticks;
+import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+import org.usfirst.frc.team3316.robot.robotIO.Actuators;
+import org.usfirst.frc.team3316.robot.robotIO.Sensors;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -15,21 +20,30 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends IterativeRobot 
+public class Robot extends IterativeRobot
 {
-	public static HumanIO oi;
 	public static Chassis chassis;
 
     Command autonomousCommand;
-
+    
+    public static Config config;
+    public static DBugLogger logger;
+    public static Joysticks joysticks;
+    public static Actuators actuators;
+    public static Sensors sensors;
+	
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() 
     {
-		oi = new HumanIO();
 		chassis = new Chassis();
+    	config = new Config();
+    	logger = new DBugLogger();
+    	joysticks = new Joysticks();
+    	actuators = new Actuators();
+    	sensors = new Sensors();
     }
 	
 	public void disabledPeriodic() {
