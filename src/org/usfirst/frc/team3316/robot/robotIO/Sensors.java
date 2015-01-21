@@ -3,6 +3,10 @@
  */
 package org.usfirst.frc.team3316.robot.robotIO;
 
-public class Sensors {
-
+public class Sensors 
+{
+	public Sensors ()
+	{
+		
+	}
 }

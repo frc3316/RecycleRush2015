@@ -4,22 +4,51 @@ import java.util.Hashtable;
 
 public class Config 
 {
+	public class ConfigException extends Exception
+	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public ConfigException (String key)
+		{
+			super(key);
+		}
+	}
+	
 	private static Hashtable<String, Object> variables;
 	private static Hashtable<String, Object> constants;
+	
+	public Config ()
+	{
+		if (variables == null || constants == null)
+		{
+			variables = new Hashtable<String, Object>();
+			constants = new Hashtable<String, Object>();
+			initConfig();
+		}
+	}
 	
 	public void add (String key, Object value)
 	{
 		addToVariables(key, value);
 	}
 	
-	public Object getV (String key)
+	public Object get (String key) throws ConfigException
 	{
-		return variables.get(key);
-	}
-	
-	public Object getC (String key)
-	{
-		return constants.get(key);
+		if (constants.containsKey(key))
+		{
+			return constants.get(key);
+		}
+		else if (variables.containsKey(key))
+		{
+			return variables.get(key);
+		}
+		else
+		{
+			throw new ConfigException(key);
+		}
 	}
 	
 	private void addToConstants (String key, Object value)
@@ -46,10 +75,12 @@ public class Config
 		}
 	}
 	
-	static 
+	private void initConfig ()
 	{
-		variables = new Hashtable<String, Object>();
-		constants = new Hashtable<String, Object>();
-
+		addToConstants("joystickLeft", 0);
+		addToConstants("joystickRight", 1);
+		addToConstants("joystickOperator", 2);
+		addToConstants("chassisLeft", 0);
+		addToConstants("chassisRight", 1);
 	}
 }
