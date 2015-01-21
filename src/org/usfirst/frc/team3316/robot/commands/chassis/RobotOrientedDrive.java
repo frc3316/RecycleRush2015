@@ -12,11 +12,11 @@ public class RobotOrientedDrive extends StrafeDrive
 	
 	protected void set ()
 	{
-		setCartisianVector(joystickRight.getX(), -joystickRight.getY());
+		setCartesianVector(joystickRight.getX(), -joystickRight.getY());
 		setRotation(joystickLeft.getX());
 	}
 	
-	protected void setCartisianVector (double x, double y)
+	protected void setCartesianVector (double x, double y)
 	{
 		this.left = y;
 		this.right = y;
@@ -25,23 +25,12 @@ public class RobotOrientedDrive extends StrafeDrive
 	
 	protected void setRotation (double requiredTurn)
 	{
-		if (requiredTurn == 0) //if the robot shouldn't turn does nothing
+		if (requiredTurn == 0) //if the robot shouldn't turn then does nothing
 		{
 			return;
 		}
 		
-		double innerVelocity, outerVelocity;
-		
-		if (requiredTurn > 0) //if the robot needs to turn clockwise, sets left to outer and right to inner
-		{
-			outerVelocity = this.left;
-			innerVelocity = this.right;
-		}
-		else //if the robot needs to turn counter clockwise, sets right to outer and left to inner
-		{
-			outerVelocity = this.right;
-			innerVelocity = this.left;
-		}
+		double innerVelocity = this.left, outerVelocity = this.left; //this.left equals this.right at this stage
 		
 		double maxSpeed = 1, minSpeed = -1; //sets defaults in case they're not configured in Config
 		try 
