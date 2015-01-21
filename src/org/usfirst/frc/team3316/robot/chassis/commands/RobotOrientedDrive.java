@@ -25,6 +25,7 @@ public class RobotOrientedDrive extends StrafeDrive
 	
 	protected void setRotation (double requiredTurn)
 	{
+		//CR: Is this the same function we've demostrated? use the proper naming of outer and inner wheels for readbility
 		this.left += requiredTurn;
 		this.right -= requiredTurn;
 		

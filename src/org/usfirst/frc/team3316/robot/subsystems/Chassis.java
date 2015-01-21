@@ -16,6 +16,7 @@ public class Chassis extends Subsystem
 	private VictorSP right;
 	private VictorSP center;
 	
+    //CR: What does this mean?
 	Drive defaultDrive = new StrafeDrive ();
 	
 	public Chassis ()
@@ -32,6 +33,7 @@ public class Chassis extends Subsystem
     
     public boolean set (double left, double right, double center)
     {
+        //CR: Use motor rotation constant for each motor.
     	this.left.set(-left);
     	this.right.set(right);
     	this.center.set(center);

@@ -17,6 +17,7 @@ public class TankDrive extends Drive
 	
 	protected void set() 
 	{
+		//CR: Move the inverted Y to the joysticks field and add a flip-y variable
 		this.left = -joystickLeft.getY();
 		this.right = -joystickRight.getY();
 	}
