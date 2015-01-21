@@ -29,6 +29,7 @@ public class Chassis extends Subsystem
     {
         setDefaultCommand(defaultDrive);
     }
+    // TODO: Fix this method duplication
     
     public boolean set (double left, double right, double center)
     {
@@ -48,6 +49,22 @@ public class Chassis extends Subsystem
     {
     	//should return gyro reading
     	return 0;
+    }
+    
+    public boolean set (double left, double right)
+    {
+    	this.left.set(left);
+    	this.right.set(right);
+    	this.center.set(0);
+    	return true;
+    }
+    
+    public boolean set (double left, double right, double center)
+    {
+    	this.left.set(left);
+    	this.right.set(right);
+    	this.center.set(center);
+    	return true;
     }
 }
 
