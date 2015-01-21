@@ -1,4 +1,4 @@
-package org.usfirst.frc.team3316.robot.commands.chassis;
+package org.usfirst.frc.team3316.robot.chassis.commands;
 
 public class StrafeDrive extends TankDrive 
 {

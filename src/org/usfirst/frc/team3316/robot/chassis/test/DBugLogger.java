@@ -1,4 +1,4 @@
-package org.usfirst.frc.team3316.robot.logger;
+package org.usfirst.frc.team3316.robot.chassis.test;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -15,10 +15,10 @@ public class DBugLogger {
 	public static Logger logger;
 	private static FileHandler fh;
 	
-	private class DBugFormatter extends Formatter 
-	{
-	    public String format(LogRecord record) 
-	    {
+	private class DBugFormatter extends Formatter {
+
+	    @Override
+	    public String format(LogRecord record) {
 	    	return record.getMillis() + ":" + record.getLevel() + ":" + record.getMessage() + "\n";
 	    }
 
@@ -36,7 +36,7 @@ public class DBugLogger {
 		
 		try {
 			String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
-		    fh = new FileHandler("/home/lvuser/logs/logFile " + timeStamp +".log"); 
+		    fh = new FileHandler("C:/Logs/" + timeStamp + "_logFile.log");  
 		    logger.addHandler(fh);
 		    DBugFormatter formatter = new DBugFormatter();
 	        fh.setFormatter(formatter);

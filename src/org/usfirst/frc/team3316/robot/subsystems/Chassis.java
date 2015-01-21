@@ -4,8 +4,8 @@
 package org.usfirst.frc.team3316.robot.subsystems;
 
 import org.usfirst.frc.team3316.robot.Robot;
-import org.usfirst.frc.team3316.robot.commands.chassis.Drive;
-import org.usfirst.frc.team3316.robot.commands.chassis.StrafeDrive;
+import org.usfirst.frc.team3316.robot.chassis.commands.Drive;
+import org.usfirst.frc.team3316.robot.chassis.commands.StrafeDrive;
 
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -29,7 +29,6 @@ public class Chassis extends Subsystem
     {
         setDefaultCommand(defaultDrive);
     }
-    // TODO: Fix this method duplication
     
     public boolean set (double left, double right, double center)
     {
