@@ -4,7 +4,7 @@ import java.util.Hashtable;
 
 public class Config 
 {
-	private class ConfigException extends Exception
+	public class ConfigException extends Exception
 	{
 		/**
 		 * 
@@ -17,15 +17,25 @@ public class Config
 		}
 	}
 	
-	private Hashtable<String, Object> variables;
-	private Hashtable<String, Object> constants;
+	private static Hashtable<String, Object> variables;
+	private static Hashtable<String, Object> constants;
+	
+	public Config ()
+	{
+		if (variables == null || constants == null)
+		{
+			variables = new Hashtable<String, Object>();
+			constants = new Hashtable<String, Object>();
+			initConfig();
+		}
+	}
 	
 	public void add (String key, Object value)
 	{
 		addToVariables(key, value);
 	}
 	
-	public Object get (String key) throws Exception
+	public Object get (String key) throws ConfigException
 	{
 		if (constants.containsKey(key))
 		{
@@ -67,15 +77,10 @@ public class Config
 	
 	private void initConfig ()
 	{
-		addToConstants("JoystickLeft", 0);
-		addToConstants("JoystickRight", 1);
-		addToConstants("JoystickOperator", 2);
-	}
-	
-	private Config ()
-	{
-		variables = new Hashtable<String, Object>();
-		constants = new Hashtable<String, Object>();
-		initConfig();
+		addToConstants("joystickLeft", 0);
+		addToConstants("joystickRight", 1);
+		addToConstants("joystickOperator", 2);
+		addToConstants("chassisLeft", 0);
+		addToConstants("chassisRight", 1);
 	}
 }
