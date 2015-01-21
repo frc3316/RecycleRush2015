@@ -1,6 +1,8 @@
 
 package org.usfirst.frc.team3316.robot;
 
+import org.usfirst.frc.team3316.robot.subsystems.Chassis;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -16,6 +18,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Robot extends IterativeRobot 
 {
 	public static HumanIO oi;
+	public static Chassis chassis;
 
     Command autonomousCommand;
 
@@ -26,6 +29,7 @@ public class Robot extends IterativeRobot
     public void robotInit() 
     {
 		oi = new HumanIO();
+		chassis = new Chassis();
     }
 	
 	public void disabledPeriodic() {
