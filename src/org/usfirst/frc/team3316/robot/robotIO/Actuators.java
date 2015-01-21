@@ -12,32 +12,15 @@ import edu.wpi.first.wpilibj.VictorSP;
 
 public class Actuators 
 {
-	/*
-	 * config and logger
-	 */
 	Config config = Robot.config;
 	DBugLogger logger = Robot.logger;
-	/*
-	 * General
-	 */
 	
 	/*
 	 * Chassis
 	 */
-	VictorSP chassisLeft;
-	VictorSP chassisRight;
-	VictorSP chassisCenter;
-	/*
-	 * RollerGripper
-	 */
-	
-	/*
-	 * Stacker
-	 */
-	
-	/*
-	 * Anschluss
-	 */
+	public VictorSP chassisLeft;
+	public VictorSP chassisRight;
+	public VictorSP chassisCenter;
 	
 	public Actuators ()
 	{

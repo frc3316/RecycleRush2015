@@ -1,10 +1,19 @@
 package org.usfirst.frc.team3316.robot.commands.chassis;
 
+import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.config.Config;
+import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
+import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+
 public class RobotOrientedDrive extends StrafeDrive 
 {
+	Config config = Robot.config;
+	DBugLogger logger = Robot.logger;
+	
 	protected void set ()
 	{
-		
+		setCartisianVector(joystickRight.getX(), -joystickRight.getY());
+		setRotation(joystickLeft.getX());
 	}
 	
 	protected void setCartisianVector (double x, double y)
@@ -33,18 +42,29 @@ public class RobotOrientedDrive extends StrafeDrive
 			outerVelocity = this.right;
 			innerVelocity = this.left;
 		}
-		/*
-		 * calculates inner and outer velocities so they're 
-		 */
-		if ((outerVelocity + requiredTurn) > 1) //1 should be replaced with MaxSpeed
+		
+		double maxSpeed = 1, minSpeed = -1; //sets defaults in case they're not configured in Config
+		try 
 		{
-			outerVelocity = 1;
-			innerVelocity = 1 - requiredTurn*2;
+			maxSpeed = (double)config.get("driveMaxSpeed");
+			minSpeed = (double)config.get("driveMinSpeed");
+		} 
+		catch (ConfigException e) 
+		{
+			logger.info(e.getMessage());
 		}
-		else if ((innerVelocity - requiredTurn) < -1) //-1 should be replaced with MinSpeed
+		/*
+		 * calculates inner and outer velocities so they're in the range of (minSpeed to maxSpeed)
+		 */
+		if ((outerVelocity + requiredTurn) > maxSpeed)
 		{
-			innerVelocity = -1;
-			outerVelocity = -1 + requiredTurn*2;
+			outerVelocity = maxSpeed;
+			innerVelocity = Math.max(maxSpeed - requiredTurn*2, minSpeed);
+		}
+		else if ((innerVelocity - requiredTurn) < minSpeed)
+		{
+			innerVelocity = minSpeed;
+			outerVelocity = Math.min(minSpeed + requiredTurn*2, maxSpeed);
 		}
 		else
 		{

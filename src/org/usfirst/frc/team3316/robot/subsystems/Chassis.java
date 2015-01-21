@@ -3,8 +3,10 @@
  */
 package org.usfirst.frc.team3316.robot.subsystems;
 
+import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.commands.chassis.Drive;
 import org.usfirst.frc.team3316.robot.commands.chassis.TankDrive;
+import org.usfirst.frc.team3316.robot.robotIO.Actuators;
 
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -19,9 +21,9 @@ public class Chassis extends Subsystem
 	
 	public Chassis ()
 	{
-		//left = Actuators.chassisLeft
-		//right = Actuators.chassisRight
-		//center = Actuators.chassisCenter
+		left = Robot.actuators.chassisLeft;
+		right = Robot.actuators.chassisRight;
+		center = Robot.actuators.chassisCenter;
 	}
 	
     public void initDefaultCommand() 

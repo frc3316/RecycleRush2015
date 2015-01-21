@@ -82,5 +82,8 @@ public class Config
 		addToConstants("joystickOperator", 2);
 		addToConstants("chassisLeft", 0);
 		addToConstants("chassisRight", 1);
+		
+		addToVariables("driveMaxSpeed", 1);
+		addToVariables("driveMinSpeed", -1);
 	}
 }
