@@ -21,6 +21,7 @@ public class DBugLogger {
 	
     public DBugLogger() {
     	logger = Logger.getLogger(DBugLogger.class.getName());
+        //CR: make the file log finest and keep the console output, just set it to info.
     	Handler[] handlers = logger.getHandlers();
 		for (int i=0; i<handlers.length; i++ ) {
 			handlers[i].setLevel( Level.FINEST );
@@ -29,9 +30,11 @@ public class DBugLogger {
 		logger.setUseParentHandlers(false); //disables console output
 		
 		try {
+            //CR: File name cannot have colons (":").
 			String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
 		    fh = new FileHandler("/home/lvuser/logs/logFile " + timeStamp +".log");  
 		    logger.addHandler(fh);
+            //CR: Create new formatter with a single line format which is easily parsable.
 		    SimpleFormatter formatter = new SimpleFormatter();  
 	        fh.setFormatter(formatter);
 	    } 
@@ -43,6 +46,8 @@ public class DBugLogger {
 	    }
     }
     
+
+    //CR: Do we need all these levels? decide which do we actually need and add handling with thrown objects
     public void severe(String msg) {
     	this.logger.severe(msg);
     }
