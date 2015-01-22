@@ -42,7 +42,7 @@ public class Joysticks
     	catch (ConfigException e) 
     	{
 			e.printStackTrace();
-			logger.info(e.getMessage());
+			logger.severe(e.getMessage());
 		}
 	}
 }

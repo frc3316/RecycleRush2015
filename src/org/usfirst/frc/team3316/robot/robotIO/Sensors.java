@@ -45,7 +45,7 @@ public class Sensors
 		}
 		catch (ConfigException e)
 		{
-			logger.info(e.getMessage());
+			logger.severe(e.getMessage());
 		}
 	}
 }
