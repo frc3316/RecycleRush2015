@@ -41,6 +41,7 @@ public class Joysticks
     	} 
     	catch (ConfigException e) 
     	{
+    		//CR: two things: first use the logger to log the stack trace, second a config exception is bad. it can't be level INFO.
 			e.printStackTrace();
 			logger.severe(e.getMessage());
 		}

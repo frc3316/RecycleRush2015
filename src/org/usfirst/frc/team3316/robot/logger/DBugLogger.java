@@ -27,6 +27,7 @@ public class DBugLogger {
 	
     public DBugLogger() {
     	logger = Logger.getLogger(DBugLogger.class.getName());
+        //CR: make the file log finest and keep the console output, just set it to info.
     	Handler[] handlers = logger.getHandlers();
 		for (int i=0; i<handlers.length; i++ ) {
 			handlers[i].setLevel( Level.FINEST );
@@ -48,26 +49,15 @@ public class DBugLogger {
 	        e.printStackTrace();  
 	    }
     }
-    
+
+    //CR: Do we need all these levels? decide which do we actually need and add handling with thrown objects
     public void severe(String msg) {
     	logger.severe(msg);
-    }
-    public void warning(String msg) {
-    	logger.warning(msg);
     }
     public void info(String msg) {
     	logger.info(msg);
     }
-    public void config(String msg) {
-    	logger.config(msg);
-    }
     public void fine(String msg) {
     	logger.fine(msg);
-    }
-    public void finer(String msg) {
-    	logger.finer(msg);
-    }
-    public void finest(String msg) {
-    	logger.finest(msg);
     }
 }
