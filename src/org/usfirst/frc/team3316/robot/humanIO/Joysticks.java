@@ -10,12 +10,10 @@ import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class Joysticks 
 {
-	/*
-	 * config and logger
-	 */
 	Config config = Robot.config;
 	DBugLogger logger = Robot.logger;
 	/*

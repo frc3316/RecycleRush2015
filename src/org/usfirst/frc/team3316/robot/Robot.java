@@ -1,6 +1,9 @@
-
+/**
+ * Le robot
+ */
 package org.usfirst.frc.team3316.robot;
 
+import org.usfirst.frc.team3316.robot.subsystems.Chassis;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.humanIO.Joysticks;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
@@ -21,6 +24,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Robot extends IterativeRobot
 {
+	public static Chassis chassis;
+
     Command autonomousCommand;
     
     public static Config config;
@@ -35,6 +40,7 @@ public class Robot extends IterativeRobot
      */
     public void robotInit() 
     {
+		chassis = new Chassis();
     	config = new Config();
     	logger = new DBugLogger();
     	joysticks = new Joysticks();
@@ -47,7 +53,6 @@ public class Robot extends IterativeRobot
 	}
 
     public void autonomousInit() {
-        // schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
     }
 
@@ -58,11 +63,8 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().run();
     }
 
-    public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to 
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
+    public void teleopInit() 
+    {
         if (autonomousCommand != null) autonomousCommand.cancel();
     }
 
