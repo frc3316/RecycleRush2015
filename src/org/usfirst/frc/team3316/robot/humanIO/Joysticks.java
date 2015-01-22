@@ -25,7 +25,7 @@ public class Joysticks
 	/*
 	 * Joystick Buttons
 	 */
-	public void initJoysticks ()
+	public Joysticks ()
 	{
 		try 
     	{

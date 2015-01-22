@@ -85,5 +85,9 @@ public class Config
 		
 		addToVariables("driveMaxSpeed", 1);
 		addToVariables("driveMinSpeed", -1);
+		
+		addToVariables("chassisLeftScale", -1);
+		addToVariables("chassisRightScale", 1);
+		addToVariables("chassisCenterScale", 1);
 	}
 }

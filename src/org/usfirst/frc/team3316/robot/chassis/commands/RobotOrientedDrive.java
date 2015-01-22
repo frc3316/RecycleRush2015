@@ -2,7 +2,6 @@ package org.usfirst.frc.team3316.robot.chassis.commands;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
-import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 public class RobotOrientedDrive extends StrafeDrive 
@@ -12,8 +11,8 @@ public class RobotOrientedDrive extends StrafeDrive
 	
 	protected void set ()
 	{
-		setCartesianVector(joystickRight.getX(), -joystickRight.getY());
-		setRotation(joystickLeft.getX());
+		setCartesianVector(getRightX(), getRightY());
+		setRotation(getLeftX());
 	}
 	
 	protected void setCartesianVector (double x, double y)
