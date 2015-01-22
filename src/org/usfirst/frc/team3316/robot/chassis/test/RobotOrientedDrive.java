@@ -1,15 +1,19 @@
 package org.usfirst.frc.team3316.robot.chassis.test;
 
+import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.config.Config;
+import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
+import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+
 public class RobotOrientedDrive extends StrafeDrive 
 {
-	/*
 	Config config = Robot.config;
 	DBugLogger logger = Robot.logger;
-	*/
+	
 	protected void set ()
 	{
-		setCartesianVector(joystickRight.getX(), -joystickRight.getY());
-		setRotation(joystickLeft.getX());
+		setCartesianVector(getRightX(), getRightY());
+		setRotation(getLeftX());
 	}
 	
 	protected void setCartesianVector (double x, double y)
@@ -21,6 +25,7 @@ public class RobotOrientedDrive extends StrafeDrive
 	
 	protected void setRotation (double requiredTurn)
 	{
+		//CR: Is this the same function we've demostrated? use the proper naming of outer and inner wheels for readbility
 		this.left += requiredTurn;
 		this.right -= requiredTurn;
 		

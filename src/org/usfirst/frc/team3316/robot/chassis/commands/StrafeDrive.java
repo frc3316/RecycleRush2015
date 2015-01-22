@@ -4,7 +4,7 @@ public class StrafeDrive extends TankDrive
 {
 	protected void set ()
 	{
-		this.center = joystickRight.getX();
+		this.center = getRightX();
 		super.set();
 	}
 }

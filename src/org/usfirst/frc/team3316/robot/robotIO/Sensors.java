@@ -3,6 +3,8 @@
  */
 package org.usfirst.frc.team3316.robot.robotIO;
 
+import com.kauailabs.nav6.frc.IMUAdvanced;
+
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
@@ -10,6 +12,7 @@ import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SerialPort;
 
 public class Sensors 
 {
@@ -20,6 +23,8 @@ public class Sensors
 	 * Chassis
 	 */
 	public Encoder chassisEncoderLeft, chassisEncoderRight, chassisEncoderCenter;
+	public IMUAdvanced navx;
+	SerialPort serial_port;
 	
 	public Sensors ()
 	{
@@ -42,6 +47,9 @@ public class Sensors
 					 						  (int)config.get("chassisEncoderCenterB"), 
 					 						  false, 
 					 						  CounterBase.EncodingType.k4X);
+			
+			serial_port = new SerialPort(57600,SerialPort.Port.kMXP);
+			navx = new IMUAdvanced(serial_port);
 		}
 		catch (ConfigException e)
 		{

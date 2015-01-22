@@ -8,6 +8,8 @@ public class TankDrive extends Drive
 {
 	protected Joystick joystickLeft, joystickRight;
 	
+	boolean invertY, invertX;
+	
 	public TankDrive ()
 	{
 		super();
@@ -17,7 +19,43 @@ public class TankDrive extends Drive
 	
 	protected void set() 
 	{
-		this.left = -joystickLeft.getY();
-		this.right = -joystickRight.getY();
+		left = getLeftY();
+		right = getRightY();
+	}
+	
+	protected double getLeftY ()
+	{
+		if (invertY)
+		{
+			return -joystickLeft.getY();
+		}
+		return joystickLeft.getY();
+	}
+	
+	protected double getLeftX ()
+	{
+		if (invertX)
+		{
+			return -joystickLeft.getX();
+		}
+		return joystickLeft.getX();
+	}
+	
+	protected double getRightY ()
+	{
+		if (invertY)
+		{
+			return -joystickRight.getY();
+		}
+		return joystickRight.getY(); 
+	}
+	
+	protected double getRightX() 
+	{
+		if (invertX)
+		{
+			return -joystickRight.getX();
+		}
+		return joystickRight.getX();
 	}
 }

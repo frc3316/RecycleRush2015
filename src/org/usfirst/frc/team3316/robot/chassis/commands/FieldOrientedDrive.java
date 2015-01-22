@@ -4,11 +4,13 @@ import org.usfirst.frc.team3316.robot.Robot;
 
 public class FieldOrientedDrive extends RobotOrientedDrive 
 {
+	double leftMaxSpeed, rightMaxSpeed, centerMaxSpeed;
+	
 	protected void set ()
 	{
-		setCartesianVector(joystickRight.getX(), -joystickRight.getY());
+		setCartesianVector(getRightX(), getRightY());
 		orientDriveToField();
-		setRotation(joystickLeft.getX());
+		setRotation(getLeftX());
 	}
 	
 	protected void orientDriveToField ()
@@ -31,5 +33,18 @@ public class FieldOrientedDrive extends RobotOrientedDrive
 		
 		this.right = this.left = Math.cos(angleDiff)*r;
 		this.center = Math.sin(angleDiff)*r;
+		normalizeActuatorValues();
+	}
+	
+	private void normalizeActuatorValues ()
+	{
+		//max is the largest abs value between left, right and center
+		double max = Math.max(Math.max(Math.abs(left), Math.abs(right)), Math.abs(center));
+		if (max > 1)
+		{
+			left /= max;
+			right /= max;
+			center /= max;
+		}
 	}
 }
