@@ -38,6 +38,7 @@ public class Joysticks
 	    	/*
 	    	 * Joystick Buttons
 	    	 */
+			 //CR: Add buttons for anschluss...
     	} 
     	catch (ConfigException e) 
     	{

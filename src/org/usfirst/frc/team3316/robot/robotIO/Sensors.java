@@ -49,6 +49,8 @@ public class Sensors
 					 						  false, 
 					 						  CounterBase.EncodingType.k4X);
 			
+			//CR: You didn't init the second sensor and use the configuration...
+			//    also, add a comment block to separate this one from the chassis
 			anschlussDigitalInputClosed = new DigitalInput(0); //check the channel and update it accordingly
 		}
 		catch (ConfigException e)

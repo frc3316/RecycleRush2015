@@ -41,6 +41,8 @@ public class Actuators
 			/*
 			 * Anschluss
 			 */
+			//CR: Use more explicit names. the config name should reflect EXACTLY what this indicates.
+			//    i.e: ANSCHLUSS_MOTOR_PWM_PORT
 			anschluss = new VictorSP ((int) config.get("anschluss"));
 		}
 		catch (ConfigException e) 

@@ -21,6 +21,7 @@ public class Anschluss extends Subsystem {
 	DigitalInput hallEffectClosed;
 	DigitalInput hallEffectOpened;
 	
+	//CR: These are constants - set them in config (probably already there...)
 	double motorMaxSpeed = 1;
 	double motorMinSpeed = -1;
 	
@@ -46,6 +47,8 @@ public class Anschluss extends Subsystem {
     	
     	motorSpeed = Math.min(Math.max(motorMinSpeed, motorSpeed), motorSpeed);
     	anschluss.set(motorSpeed);
+		
+		//CR: This code is broken completely. Fix it.
     	
     	
 		if(motorSpeed > 0) {

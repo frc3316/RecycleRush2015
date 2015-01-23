@@ -25,9 +25,12 @@ public class closeAnschluss extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	try {
+			//CR: We might want to open and close the subsystem using different speeds.
+			//    change it in the config to reflect both speeds
 			motorSpeed = (double) config.get("anschlussMotorSpeed");
 		}
     	catch (ConfigException e) {
+			//CR: fix the debug message
 			logger.severe("init in operanschluss commandd");
 			logger.severe(e.getMessage());
 			
