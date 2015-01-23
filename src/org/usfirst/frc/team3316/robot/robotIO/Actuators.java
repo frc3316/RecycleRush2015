@@ -22,6 +22,11 @@ public class Actuators
 	public VictorSP chassisRight;
 	public VictorSP chassisCenter;
 	
+	/*
+	 * Anschluss
+	 */
+	public VictorSP anschluss;
+	
 	public Actuators ()
 	{
 		try 
@@ -32,6 +37,11 @@ public class Actuators
 			chassisLeft = new VictorSP ((int) config.get("chassisLeft"));
 			chassisRight = new VictorSP ((int) config.get("chassisRight"));
 			chassisCenter = new VictorSP((int) config.get("chassisCenter"));
+			
+			/*
+			 * Anschluss
+			 */
+			anschluss = new VictorSP ((int) config.get("anschluss"));
 		}
 		catch (ConfigException e) 
     	{

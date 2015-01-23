@@ -9,6 +9,7 @@ import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 import edu.wpi.first.wpilibj.CounterBase;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 
 public class Sensors 
@@ -21,6 +22,11 @@ public class Sensors
 	 */
 	public Encoder chassisEncoderLeft, chassisEncoderRight, chassisEncoderCenter;
 	
+	/*
+	 * Anschluss
+	 */
+	public DigitalInput anschlussDigitalInputClosed;
+	public DigitalInput anschlussDigitalInputOpened;
 	public Sensors ()
 	{
 		try 
@@ -42,6 +48,8 @@ public class Sensors
 					 						  (int)config.get("chassisEncoderCenterB"), 
 					 						  false, 
 					 						  CounterBase.EncodingType.k4X);
+			
+			anschlussDigitalInputClosed = new DigitalInput(0); //check the channel and update it accordingly
 		}
 		catch (ConfigException e)
 		{
