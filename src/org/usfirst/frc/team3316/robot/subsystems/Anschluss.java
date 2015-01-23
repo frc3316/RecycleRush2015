@@ -8,7 +8,7 @@ import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
-
+//CR: Add some documentation...
 /**
  *
  */
@@ -36,6 +36,9 @@ public class Anschluss extends Subsystem {
     }
     
     public void set(double x) {
+		//CR: This function should protect the anschluss!
+		//    you should not be able to set the motor to close if the mechanism
+		//    is already closed, and vice-versa.
     	anschluss.set(x);
     }
     
