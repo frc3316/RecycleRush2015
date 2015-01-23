@@ -1,17 +1,16 @@
+/**
+ * Anschluss subsystem
+ */
 package org.usfirst.frc.team3316.robot.subsystems;
 
 import org.usfirst.frc.team3316.robot.Robot;
-import org.usfirst.frc.team3316.robot.chassis.commands.Drive;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
-//CR: Add some documentation...
-/**
- *
- */
+
 public class Anschluss extends Subsystem {
     
 	Config config = Robot.config;
@@ -35,11 +34,18 @@ public class Anschluss extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public void set(double x) {
-		//CR: This function should protect the anschluss!
-		//    you should not be able to set the motor to close if the mechanism
-		//    is already closed, and vice-versa.
-    	anschluss.set(x);
+    public void set(double motorSpeed) {
+		if(motorSpeed > 0) {
+			if(!Robot.anschluss.isOpened()) {
+				anschluss.set(motorSpeed);
+			}
+		}
+		else if(motorSpeed < 0) {
+			if(!Robot.anschluss.isClosed()) {
+				anschluss.set(motorSpeed);
+			}
+		}
+		anschluss.set(0);
     }
     
     public boolean isClosed() {
@@ -51,4 +57,3 @@ public class Anschluss extends Subsystem {
     }
     
 }
-

@@ -23,17 +23,15 @@ public class DBugLogger {
 	    }
 
 	}
-	//private int state = 0;
 	
     public DBugLogger() {
     	logger = Logger.getLogger(DBugLogger.class.getName());
-        //CR: make the file log finest and keep the console output, just set it to info.
     	Handler[] handlers = logger.getHandlers();
 		for (int i=0; i<handlers.length; i++ ) {
 			handlers[i].setLevel( Level.FINEST );
 		}
 		logger.setLevel(Level.FINEST);
-		logger.setUseParentHandlers(false); //disables console output
+		logger.setUseParentHandlers(true); //disables console output if 'false' is given as a parameter
 		
 		try {
 			String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
@@ -50,7 +48,7 @@ public class DBugLogger {
 	    }
     }
 
-    //CR: Do we need all these levels? decide which do we actually need and add handling with thrown objects
+    //CR: add handling with thrown objects
     public void severe(String msg) {
     	logger.severe(msg);
     }

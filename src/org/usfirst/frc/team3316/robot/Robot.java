@@ -3,6 +3,7 @@
  */
 package org.usfirst.frc.team3316.robot;
 
+import org.usfirst.frc.team3316.robot.subsystems.Anschluss;
 import org.usfirst.frc.team3316.robot.subsystems.Chassis;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.humanIO.Joysticks;
@@ -25,6 +26,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Robot extends IterativeRobot
 {
 	public static Chassis chassis;
+	public static Anschluss anschluss;
 
     Command autonomousCommand;
     
@@ -41,6 +43,7 @@ public class Robot extends IterativeRobot
     public void robotInit() 
     {
 		chassis = new Chassis();
+		anschluss = new Anschluss();
     	config = new Config();
     	logger = new DBugLogger();
     	joysticks = new Joysticks();

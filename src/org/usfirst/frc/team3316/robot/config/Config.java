@@ -84,6 +84,7 @@ public class Config
 		addToConstants("chassisRight", 1);
 		addToConstants("chassisCenter", 2);
 		addToConstants("anschluss", 3);
+		addToConstants("anschlussMotorSpeed", 0.5);
 		
 		addToVariables("driveMaxSpeed", 1);
 		addToVariables("driveMinSpeed", -1);
