@@ -21,6 +21,10 @@ public class Anschluss extends Subsystem {
 	DigitalInput hallEffectClosed;
 	DigitalInput hallEffectOpened;
 	
+	double motorMaxSpeed = 1;
+	double motorMinSpeed = -1;
+	
+	
 	public Anschluss ()	{
 		anschluss = Robot.actuators.anschluss;
 		hallEffectClosed = Robot.sensors.anschlussDigitalInputClosed;
@@ -35,6 +39,15 @@ public class Anschluss extends Subsystem {
     }
     
     public void set(double motorSpeed) {
+    	if(Robot.anschluss.isOpened())
+    		motorMaxSpeed = 0;
+    	if(Robot.anschluss.isClosed())
+    		motorMinSpeed = 0;
+    	
+    	motorSpeed = Math.min(Math.max(motorMinSpeed, motorSpeed), motorSpeed);
+    	anschluss.set(motorSpeed);
+    	
+    	
 		if(motorSpeed > 0) {
 			if(!Robot.anschluss.isOpened()) {
 				anschluss.set(motorSpeed);
