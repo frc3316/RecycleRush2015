@@ -14,7 +14,9 @@ public abstract class Drive
     protected void execute() 
     {
     	set();
-    	logger.finest("left = " + (double)left + ", right = " + (double)right + ", center = " + (double)center);
+    	logger.finest("left = " + String.format("%.3f",left) + 
+    				  ", right = " + String.format("%.3f",right) + 
+    				  ", center = " + String.format("%.3f",center));
     }
 
     protected abstract void set ();

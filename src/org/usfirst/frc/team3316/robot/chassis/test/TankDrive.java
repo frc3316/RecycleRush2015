@@ -1,9 +1,5 @@
 package org.usfirst.frc.team3316.robot.chassis.test;
 
-import org.usfirst.frc.team3316.robot.Robot;
-
-import edu.wpi.first.wpilibj.Joystick;
-
 public class TankDrive extends Drive 
 {
 	protected Joystick joystickLeft, joystickRight;
@@ -13,8 +9,8 @@ public class TankDrive extends Drive
 	public TankDrive ()
 	{
 		super();
-		joystickLeft = Robot.joysticks.joystickLeft;
-		joystickRight = Robot.joysticks.joystickRight;
+		joystickLeft = Test.joystickLeft;
+		joystickRight = Test.joystickRight;
 	}
 	
 	protected void set() 

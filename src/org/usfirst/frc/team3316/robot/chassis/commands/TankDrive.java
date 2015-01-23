@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3316.robot.chassis.commands;
 
 import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -21,6 +22,21 @@ public class TankDrive extends Drive
 	{
 		left = getLeftY();
 		right = getRightY();
+	}
+	
+	public void configUpdate ()
+	{
+		super.configUpdate();
+		
+		try {
+			invertX = (boolean)config.get("chassisInvertX");
+			invertY = (boolean)config.get("chassisInvertY");
+		} 
+		catch (ConfigException e) 
+		{
+			logger.severe("configUpdate in Tank Drive");
+			logger.severe(e.getMessage());
+		}
 	}
 	
 	protected double getLeftY ()

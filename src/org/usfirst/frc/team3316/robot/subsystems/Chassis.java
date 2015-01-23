@@ -30,10 +30,11 @@ public class Chassis extends Subsystem
 		left = Robot.actuators.chassisLeft;
 		right = Robot.actuators.chassisRight;
 		center = Robot.actuators.chassisCenter;
-		//need to init defaultDrive before setting it as the default drive
 		
+		//need to init defaultDrive before setting it as the default drive
 		//defaultDrive = new StrafeDrive ();
-		updateScales();
+		
+		configUpdate();
 	}
 	
     public void initDefaultCommand() 
@@ -61,13 +62,15 @@ public class Chassis extends Subsystem
     	return 0;
     }
     
-    public void updateScales ()
+    public void configUpdate ()
     {
     	try
     	{
     		leftScale = (double)config.get("chassisLeftScale");
     		rightScale = (double)config.get("chassisRightScale");
     		centerScale = (double)config.get("chassisCenterScale");
+    		
+    		defaultDrive.configUpdate();
     	}
     	catch (ConfigException e)
     	{

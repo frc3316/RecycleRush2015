@@ -1,14 +1,9 @@
 package org.usfirst.frc.team3316.robot.chassis.test;
 
-import org.usfirst.frc.team3316.robot.Robot;
-import org.usfirst.frc.team3316.robot.config.Config;
-import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
-import org.usfirst.frc.team3316.robot.logger.DBugLogger;
-
 public class RobotOrientedDrive extends StrafeDrive 
 {
-	Config config = Robot.config;
-	DBugLogger logger = Robot.logger;
+	//Config config = Test.config;
+	DBugLogger logger = Test.logger;
 	
 	protected void set ()
 	{
@@ -25,29 +20,55 @@ public class RobotOrientedDrive extends StrafeDrive
 	
 	protected void setRotation (double requiredTurn)
 	{
-		//CR: Is this the same function we've demostrated? use the proper naming of outer and inner wheels for readbility
-		this.left += requiredTurn;
-		this.right -= requiredTurn;
+		/*
+		 * the following code sets left and right so that:
+		 * for turning clockwise, left > right
+		 * for turning counter-clockwise, right > left
+		 * left - right = requiredTurn*2
+		 * -1 < left, right < 1 
+		 */
+		double yIn = this.left;
+		//outerWheel is the wheel that would exceed the range of -1 to 1
+		double outerWheel = Math.max(Math.abs(yIn + requiredTurn), Math.abs(yIn - requiredTurn))*Math.signum(yIn);
+		double innerWheel;
 		
-		if (this.left > 1)
+		if (outerWheel > 0)
 		{
-			this.right -= (this.left - 1);
-			this.left = 1;
+			outerWheel = Math.max(outerWheel, 1); //makes sure outerWheel <= 1
+			
+			if (requiredTurn > 0)
+			{
+				innerWheel = outerWheel - (requiredTurn*2);
+			}
+			else
+			{
+				innerWheel = outerWheel + (requiredTurn*2);
+			}
 		}
-		else if (this.right > 1)
+		else
 		{
-			this.left -= (this.right - 1);
-			this.right = 1;
+			outerWheel = Math.min(outerWheel, -1); //makes sure outerWheel >= -1
+			
+			if (requiredTurn < 0)
+			{
+				innerWheel = outerWheel - (requiredTurn*2);
+			}
+			else
+			{
+				innerWheel = outerWheel + (requiredTurn*2);
+			}
 		}
-		else if (this.left < -1)
+		
+		//if requiredTurn > 0 then the robot needs to turn clockwise
+		if (requiredTurn > 0)
 		{
-			this.right += (this.left + 1);
-			this.left = -1;
+			this.left = outerWheel;
+			this.right = innerWheel;
 		}
-		else if (this.right < -1)
+		else //the robot needs to turn counter-clockwise
 		{
-			this.left += (this.right + 1);
-			this.right = -1;
+			this.left = outerWheel;
+			this.right = innerWheel;
 		}
 	}
 }
