@@ -9,6 +9,8 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
+import com.kauailabs.nav6.frc.IMUAdvanced;
+
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -21,6 +23,8 @@ public class Chassis extends Subsystem
 	private VictorSP right;
 	private VictorSP center;
 	
+	private IMUAdvanced navx;
+	
 	private double leftScale, rightScale, centerScale;
 	
 	Drive defaultDrive;
@@ -31,6 +35,7 @@ public class Chassis extends Subsystem
 		right = Robot.actuators.chassisRight;
 		center = Robot.actuators.chassisCenter;
 		
+		navx = Robot.sensors.navx;
 		//need to init defaultDrive before setting it as the default drive
 		//defaultDrive = new StrafeDrive ();
 	}
@@ -64,8 +69,7 @@ public class Chassis extends Subsystem
     
     public double getHeading ()
     {
-    	//should return gyro reading
-    	return 0;
+    	return navx.getYaw();
     }
     
     public double getAngularVelocity ()

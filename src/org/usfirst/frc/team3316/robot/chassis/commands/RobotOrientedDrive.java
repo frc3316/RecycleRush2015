@@ -88,7 +88,7 @@ public class RobotOrientedDrive extends StrafeDrive
 		}
 		catch (ConfigException e)
 		{
-			
+			logger.severe(e.getMessage());
 		}
 	}
 }

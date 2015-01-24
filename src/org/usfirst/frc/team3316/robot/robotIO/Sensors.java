@@ -50,6 +50,7 @@ public class Sensors
 			
 			serial_port = new SerialPort(57600,SerialPort.Port.kMXP);
 			navx = new IMUAdvanced(serial_port);
+			
 		}
 		catch (ConfigException e)
 		{
