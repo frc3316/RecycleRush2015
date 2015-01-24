@@ -25,18 +25,7 @@ public class closeAnschluss extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	try {
-			motorSpeed = (double) config.get("closeAnschlussMotorSpeed");
-		}
-    	catch (ConfigException e) {
-			//CR: fix the debug message
-    		StringWriter sw = new StringWriter();
-    		e.printStackTrace(new PrintWriter(sw));
-    		String exceptionStackTrace = sw.toString();
-			logger.severe("exceptionStackTrace");
-			logger.severe(e.getMessage());
-			
-		}
+    	updateMotorSpeed();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -56,5 +45,14 @@ public class closeAnschluss extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    }
+    
+    private void updateMotorSpeed() {
+    	try {
+			motorSpeed = (double) config.get("closeAnschlussMotorSpeed");
+		}
+    	catch (ConfigException e) {
+    		logger.severe(e);			
+		}
     }
 }

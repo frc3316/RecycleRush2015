@@ -24,16 +24,7 @@ public class openAnschluss extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	try {
-			motorSpeed = (double) config.get("openAnschlussMotorSpeed");
-		}
-    	catch (ConfigException e) {
-			//CR: Fix debug message
-			logger.severe("init in operanschluss commandd");
-			
-			logger.severe(e.getMessage());
-			
-		}
+    	updateMotorSpeed();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -53,5 +44,14 @@ public class openAnschluss extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    }
+    
+    private void updateMotorSpeed() {
+    	try {
+			motorSpeed = (double) config.get("closeAnschlussMotorSpeed");
+		}
+    	catch (ConfigException e) {
+    		logger.severe(e);			
+		}
     }
 }
