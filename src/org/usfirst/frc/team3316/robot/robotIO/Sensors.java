@@ -10,6 +10,7 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -26,6 +27,12 @@ public class Sensors
 	public Encoder chassisEncoderLeft, chassisEncoderRight, chassisEncoderCenter;
 	public IMUAdvanced navx;
 	SerialPort serial_port;
+	
+	/*
+	 * Stacker
+	 */
+	
+	public AnalogInput stackerHeightIR;
 	
 	/*
 	 * Anschluss
@@ -56,6 +63,12 @@ public class Sensors
 
 			serial_port = new SerialPort(57600,SerialPort.Port.kMXP);
 			navx = new IMUAdvanced(serial_port);
+			
+			/*
+			 * Stacker
+			 */
+			
+			stackerHeightIR = new AnalogInput((int) config.get("STACKER_IR"));
 			
 			/*
 			 * Anschluss
