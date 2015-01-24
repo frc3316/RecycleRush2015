@@ -77,17 +77,42 @@ public class Config
 	
 	private void initConfig ()
 	{
-		addToConstants("joystickLeft", 0);
-		addToConstants("joystickRight", 1);
-		addToConstants("joystickOperator", 2);
-		addToConstants("chassisLeft", 0);
-		addToConstants("chassisRight", 1);
-		
-		addToVariables("driveMaxSpeed", 1);
-		addToVariables("driveMinSpeed", -1);
-		
-		addToVariables("chassisLeftScale", -1);
-		addToVariables("chassisRightScale", 1);
-		addToVariables("chassisCenterScale", 1);
+		/*
+		 * Chassis
+		 */
+			/*
+			 * Constants
+			 */
+			addToConstants("joystickLeft", 0);
+			addToConstants("joystickRight", 1);
+			addToConstants("joystickOperator", 2);
+			addToConstants("chassisLeft", 0);
+			addToConstants("chassisRight", 1);
+			addToConstants("chassisCenter", 2);
+			/*
+			 * Variables
+			 */
+			addToVariables("driveMaxSpeed", 1);
+			addToVariables("driveMinSpeed", -1);
+			addToVariables("chassisLeftScale", -1);
+			addToVariables("chassisRightScale", 1);
+			addToVariables("chassisCenterScale", 1);
+		/*
+		 * Anschluss
+		 */
+			/*
+			 * Constants
+			 */
+			addToConstants("anschlussMotorController", 3);
+			addToConstants("closeAnschlussMotorSpeed", -0.5);
+			addToConstants("openAnschlussMotorSpeed", 0.5);
+			addToConstants("closeAnschlussButton", 2);
+			addToConstants("openAnschlussButton", 1);
+			/*
+			 * Variables
+			 */
+			addToVariables("anschlussMotorMaxSpeed", 1);
+			addToVariables("anschlussMotorMinSpeed", -1);
 	}
+
 }

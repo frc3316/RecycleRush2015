@@ -1,6 +1,8 @@
 package org.usfirst.frc.team3316.robot.logger;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.logging.FileHandler;
@@ -10,6 +12,8 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.Formatter;
 import java.util.Calendar;
+
+import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 
 public class DBugLogger {
 	public static Logger logger;
@@ -23,17 +27,15 @@ public class DBugLogger {
 	    }
 
 	}
-	//private int state = 0;
 	
     public DBugLogger() {
     	logger = Logger.getLogger(DBugLogger.class.getName());
-        //CR: make the file log finest and keep the console output, just set it to info.
     	Handler[] handlers = logger.getHandlers();
 		for (int i=0; i<handlers.length; i++ ) {
 			handlers[i].setLevel( Level.FINEST );
 		}
 		logger.setLevel(Level.FINEST);
-		logger.setUseParentHandlers(false); //disables console output
+		logger.setUseParentHandlers(true); //disables console output if 'false' is given as a parameter
 		
 		try {
 			String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
@@ -50,9 +52,16 @@ public class DBugLogger {
 	    }
     }
 
-    //CR: Do we need all these levels? decide which do we actually need and add handling with thrown objects
+    //CR: add handling with thrown objects
     public void severe(String msg) {
     	logger.severe(msg);
+    }
+    public void severe(Exception e) {
+    	StringWriter sw = new StringWriter();
+		e.printStackTrace(new PrintWriter(sw));
+		String exceptionStackTrace = sw.toString();
+		logger.severe("exceptionStackTrace");
+		logger.severe(e.getMessage());
     }
     public void info(String msg) {
     	logger.info(msg);

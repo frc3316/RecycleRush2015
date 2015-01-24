@@ -9,7 +9,6 @@ import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class Joysticks 
@@ -22,9 +21,13 @@ public class Joysticks
 	public Joystick joystickLeft;
 	public Joystick joystickRight;
 	public Joystick joystickOperator;
+	
 	/*
 	 * Joystick Buttons
 	 */
+	public JoystickButton openAnschlussButton;
+	public JoystickButton closeAnschlussButton;
+	
 	public Joysticks ()
 	{
 		try 
@@ -38,10 +41,12 @@ public class Joysticks
 	    	/*
 	    	 * Joystick Buttons
 	    	 */
+	    	openAnschlussButton = new JoystickButton(joystickOperator, (int) config.get("openAnschlussButton"));
+	    	closeAnschlussButton = new JoystickButton(joystickOperator, (int) config.get("closeAnschlussButton"));
     	} 
     	catch (ConfigException e) 
     	{
-    		//CR: two things: first use the logger to log the stack trace, second a config exception is bad. it can't be level INFO.
+    		//CR: use the logger to log the stack trace
 			e.printStackTrace();
 			logger.severe(e.getMessage());
 		}

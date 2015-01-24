@@ -11,6 +11,7 @@ import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 import edu.wpi.first.wpilibj.CounterBase;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SerialPort;
 
@@ -26,6 +27,11 @@ public class Sensors
 	public IMUAdvanced navx;
 	SerialPort serial_port;
 	
+	/*
+	 * Anschluss
+	 */
+	public DigitalInput anschlussDigitalInputClosed;
+	public DigitalInput anschlussDigitalInputOpened;
 	public Sensors ()
 	{
 		try 
@@ -47,14 +53,21 @@ public class Sensors
 					 						  (int)config.get("chassisEncoderCenterB"), 
 					 						  false, 
 					 						  CounterBase.EncodingType.k4X);
-			
+
 			serial_port = new SerialPort(57600,SerialPort.Port.kMXP);
 			navx = new IMUAdvanced(serial_port);
 			
+			/*
+			 * Anschluss
+			 */
+			anschlussDigitalInputClosed = new DigitalInput((int) config.get("anschlussDigitalInputClosed")); //check the channel and update it accordingly
+			anschlussDigitalInputOpened = new DigitalInput((int) config.get("anschlussDigitalInputOpened")); //check the channel and update it accordingly
+
 		}
+		
 		catch (ConfigException e)
 		{
-			logger.severe(e.getMessage());
+			logger.severe(e);
 		}
 	}
 }
