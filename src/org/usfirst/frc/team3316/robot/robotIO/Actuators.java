@@ -21,6 +21,12 @@ public class Actuators
 	public VictorSP chassisLeft;
 	public VictorSP chassisRight;
 	public VictorSP chassisCenter;
+	/*
+	 * Roller-Gripper
+	 */
+	public VictorSP rollerGripperLeft;
+	public VictorSP rollerGripperRight;
+	
 	
 	public Actuators ()
 	{
@@ -32,6 +38,11 @@ public class Actuators
 			chassisLeft = new VictorSP ((int) config.get("chassisLeft"));
 			chassisRight = new VictorSP ((int) config.get("chassisRight"));
 			chassisCenter = new VictorSP((int) config.get("chassisCenter"));
+			/*
+			 * Roller-Gripper
+			 */
+			rollerGripperLeft = new VictorSP ((int) config.get("ROLLER_GRIPPER_MOTOR_CONTROLLER_LEFT"));
+			rollerGripperRight = new VictorSP ((int) config.get("ROLLER_GRIPPER_MOTOR_CONTROLLER_RIGHT"));
 		}
 		catch (ConfigException e) 
     	{

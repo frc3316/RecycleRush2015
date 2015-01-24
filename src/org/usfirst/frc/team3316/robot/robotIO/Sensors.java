@@ -10,6 +10,7 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SerialPort;
@@ -25,6 +26,12 @@ public class Sensors
 	public Encoder chassisEncoderLeft, chassisEncoderRight, chassisEncoderCenter;
 	public IMUAdvanced navx;
 	SerialPort serial_port;
+	
+	/*
+	 * Roller-Gripper
+	 */
+	public AnalogPotentiometer rollerGripperPotLeft;
+	public AnalogPotentiometer rollerGripperPotRight;
 	
 	public Sensors ()
 	{
@@ -50,6 +57,12 @@ public class Sensors
 			
 			serial_port = new SerialPort(57600,SerialPort.Port.kMXP);
 			navx = new IMUAdvanced(serial_port);
+			
+			/*
+			 * Roller-Gripper
+			 */
+			rollerGripperPotLeft = new AnalogPotentiometer((int) config.get("ROLLER_GRIPPER_POT_LEFT"));
+			rollerGripperPotRight = new AnalogPotentiometer((int) config.get("ROLLER_GRIPPER_POT_RIGHT"));
 			
 		}
 		catch (ConfigException e)

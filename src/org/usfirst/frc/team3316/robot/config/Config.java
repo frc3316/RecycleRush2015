@@ -89,5 +89,8 @@ public class Config
 		addToVariables("chassisLeftScale", -1);
 		addToVariables("chassisRightScale", 1);
 		addToVariables("chassisCenterScale", 1);
+		
+		addToConstants("ROLLER_GRIPPER_POT_LEFT", 0);
+		addToConstants("ROLLER_GRIPPER_POT_RIGHT", 1);
 	}
 }
