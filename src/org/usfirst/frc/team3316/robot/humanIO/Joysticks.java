@@ -22,9 +22,12 @@ public class Joysticks
 	public Joystick joystickLeft;
 	public Joystick joystickRight;
 	public Joystick joystickOperator;
+	
 	/*
 	 * Joystick Buttons
 	 */
+	public JoystickButton openAnschlussButton;
+	public JoystickButton closeAnschlussButton;
 	public void initJoysticks ()
 	{
 		try 
@@ -38,7 +41,8 @@ public class Joysticks
 	    	/*
 	    	 * Joystick Buttons
 	    	 */
-			 //CR: Add buttons for anschluss...
+	    	openAnschlussButton = new JoystickButton(joystickOperator, (int) config.get("openAnschlussButton"));
+	    	closeAnschlussButton = new JoystickButton(joystickOperator, (int) config.get("closeAnschlussButton"));
     	} 
     	catch (ConfigException e) 
     	{

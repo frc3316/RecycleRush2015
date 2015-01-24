@@ -1,5 +1,8 @@
 package org.usfirst.frc.team3316.robot.anschluss.commands;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
@@ -8,7 +11,7 @@ import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ *Command that closes the anschluss
  */
 public class closeAnschluss extends Command {
 
@@ -17,21 +20,20 @@ public class closeAnschluss extends Command {
 	double motorSpeed;
 	
     public closeAnschluss() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     	requires(Robot.anschluss);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	try {
-			//CR: We might want to open and close the subsystem using different speeds.
-			//    change it in the config to reflect both speeds
-			motorSpeed = (double) config.get("anschlussMotorSpeed");
+			motorSpeed = (double) config.get("closeAnschlussMotorSpeed");
 		}
     	catch (ConfigException e) {
 			//CR: fix the debug message
-			logger.severe("init in operanschluss commandd");
+    		StringWriter sw = new StringWriter();
+    		e.printStackTrace(new PrintWriter(sw));
+    		String exceptionStackTrace = sw.toString();
+			logger.severe("exceptionStackTrace");
 			logger.severe(e.getMessage());
 			
 		}
@@ -39,7 +41,7 @@ public class closeAnschluss extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    		Robot.anschluss.set(-motorSpeed);
+    		Robot.anschluss.set(motorSpeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()

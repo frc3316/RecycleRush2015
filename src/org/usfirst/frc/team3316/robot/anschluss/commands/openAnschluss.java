@@ -6,9 +6,9 @@ import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 import edu.wpi.first.wpilibj.command.Command;
-//CR: Add documentation
+
 /**
- *
+ *Command that opens the anschluss
  */
 public class openAnschluss extends Command {
 
@@ -25,13 +25,12 @@ public class openAnschluss extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	try {
-			//CR: We might want to use different speeds for opening
-			//    and closing the subsystem.
-			motorSpeed = (double) config.get("anschlussMotorSpeed");
+			motorSpeed = (double) config.get("openAnschlussMotorSpeed");
 		}
     	catch (ConfigException e) {
 			//CR: Fix debug message
 			logger.severe("init in operanschluss commandd");
+			
 			logger.severe(e.getMessage());
 			
 		}

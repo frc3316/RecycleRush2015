@@ -5,6 +5,7 @@ package org.usfirst.frc.team3316.robot.subsystems;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
+import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -21,15 +22,25 @@ public class Anschluss extends Subsystem {
 	DigitalInput hallEffectClosed;
 	DigitalInput hallEffectOpened;
 	
-	//CR: These are constants - set them in config (probably already there...)
-	double motorMaxSpeed = 1;
-	double motorMinSpeed = -1;
-	
+	private double anschlussMotorMinSpeed;
+	private double anschlussMotorMaxSpeed;
 	
 	public Anschluss ()	{
 		anschluss = Robot.actuators.anschluss;
 		hallEffectClosed = Robot.sensors.anschlussDigitalInputClosed;
 		hallEffectOpened = Robot.sensors.anschlussDigitalInputOpened;
+		configUpdate();
+	}
+	
+	public void configUpdate() {
+		 try {
+			anschlussMotorMinSpeed = (double) config.get("anschlussMotorMinSpeed");
+			anschlussMotorMaxSpeed = (double) config.get("anschlussMotorMaxSpeed");
+		} catch (ConfigException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			logger.severe(e.getMessage());
+		}
 	}
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -39,30 +50,17 @@ public class Anschluss extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public void set(double motorSpeed) {
+    public boolean set(double motorSpeed) {
     	if(Robot.anschluss.isOpened())
-    		motorMaxSpeed = 0;
+    		config.add("motorMaxSpeed", 0);
     	if(Robot.anschluss.isClosed())
-    		motorMinSpeed = 0;
+    		config.add("motorMinSpeed", 0);
     	
-    	motorSpeed = Math.min(Math.max(motorMinSpeed, motorSpeed), motorSpeed);
+    	motorSpeed = Math.min(Math.max(anschlussMotorMinSpeed, motorSpeed), anschlussMotorMaxSpeed);
     	anschluss.set(motorSpeed);
-		
-		//CR: This code is broken completely. Fix it.
     	
-    	
-		if(motorSpeed > 0) {
-			if(!Robot.anschluss.isOpened()) {
-				anschluss.set(motorSpeed);
-			}
-		}
-		else if(motorSpeed < 0) {
-			if(!Robot.anschluss.isClosed()) {
-				anschluss.set(motorSpeed);
-			}
-		}
-		anschluss.set(0);
-    }
+    	return true;
+	}
     
     public boolean isClosed() {
     	return hallEffectClosed.get();
