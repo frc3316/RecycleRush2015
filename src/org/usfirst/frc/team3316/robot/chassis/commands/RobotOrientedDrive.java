@@ -6,6 +6,20 @@ public class RobotOrientedDrive extends StrafeDrive
 {	
 	double maxTurn, minTurn;
 	
+	public void configUpdate ()
+	{
+		super.configUpdate();
+		try 
+		{
+			maxTurn = (double)config.get("chassisMaxTurn");
+			minTurn = (double)config.get("chassisMinTurn");
+		} 
+		catch (ConfigException e) 
+		{
+			logger.severe(e.getMessage());
+		}
+	}
+	
 	protected void set ()
 	{
 		setCartesianVector(getRightX(), getRightY());
@@ -21,6 +35,8 @@ public class RobotOrientedDrive extends StrafeDrive
 	
 	protected void setRotation (double requiredTurn)
 	{
+		//TODO: figure out PID rotation
+		
 		/*
 		 * the following code sets left and right so that:
 		 * for turning clockwise, left > right
@@ -28,68 +44,44 @@ public class RobotOrientedDrive extends StrafeDrive
 		 * left - right = requiredTurn*2
 		 * -1 < left, right < 1 
 		 */
-		double yIn = this.left;
-		
-		// The wheels speed differes by the requiredTurn * 2
-		double leftWheel = yIn + requiredTurn;
-		double rightWheel = yIn - requiredTurn;
-		
-		if (Math.signum(yIn) == Math.signum(requiredTurn)) 
-		{
-			if (leftWheel > 1 || leftWheel < -1) 
-			{
-				leftWheel = Math.signum(yIn);
-				rightWheel = leftWheel + Math.signum(yIn) * Math.abs(requiredTurn);
-			}
-		} 
-		else 
-		{
-			if (rightWheel > 1 || rightWheel < -1) 
-			{
-				rightWheel = Math.signum(yIn);
-				leftWheel = rightWheel - Math.signum(yIn) * Math.abs(requiredTurn);
-			}
-		}
-			
-		
-			
-		
 		// The outer wheel is the one which drives faster (absolutely)
+		// Therefore it is the one the would exceed the range of -1 to 1
 		// (when requiredTurn is 0 then it doesn't matter which is outer because were driving straight)
 		// (when yIn is 0 then the outer wheel will be 0, but we fix this later...)
-		double outerWheel = Math.max(Math.abs(wheel1), Math.abs(wheel2)) * Math.signum(yIn);
-		double innerWheel;
+		double yIn = this.left;
+		requiredTurn = Math.max(Math.min(requiredTurn, maxTurn), minTurn);
 		
+		double outerWheel = Math.max(Math.abs(yIn + requiredTurn), Math.abs(yIn - requiredTurn))*Math.signum(yIn);
+		double innerWheel;
 		
 		if (outerWheel > 0)
 		{
-			outerWheel = Math.max(outerWheel, 1); //makes sure outerWheel <= 1
+			outerWheel = Math.min(outerWheel, 1); //makes sure outerWheel <= 1
 			
-			if (requiredTurn > 0)
+			if (requiredTurn > 0) //
 			{
 				innerWheel = outerWheel - (requiredTurn*2);
 			}
-			else
+			else //
 			{
 				innerWheel = outerWheel + (requiredTurn*2);
 			}
 		}
 		else
 		{
-			outerWheel = Math.min(outerWheel, -1); //makes sure outerWheel >= -1
+			outerWheel = Math.max(outerWheel, -1); //makes sure outerWheel >= -1
 			
-			if (requiredTurn < 0)
+			if (requiredTurn < 0) //
 			{
 				innerWheel = outerWheel - (requiredTurn*2);
 			}
-			else
+			else //
 			{
 				innerWheel = outerWheel + (requiredTurn*2);
 			}
 		}
 		
-		//if requiredTurn > 0 then the robot needs to turn clockwise
-		if (requiredTurn > 0)
+		if (requiredTurn > 0) //the robot needs to turn clockwise
 		{
 			this.left = outerWheel;
 			this.right = innerWheel;
