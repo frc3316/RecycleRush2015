@@ -1,9 +1,13 @@
 package org.usfirst.frc.team3316.robot.subsystems;
 
+import java.util.Stack;
+
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+import org.usfirst.frc.team3316.robot.stacker.GamePiece;
+import org.usfirst.frc.team3316.robot.stacker.GamePieceType;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -29,6 +33,8 @@ public class Stacker extends Subsystem
     private DigitalInput switchTote, switchContainer; //the switches that signify if there's a tote or a container in the stacker
     
     private double heightScale, heightOffset; //variables to make the output of getHeight have a connection to the real world
+    
+    private Stack <GamePiece> stack; 
 
     public Stacker () 
     {
@@ -44,6 +50,8 @@ public class Stacker extends Subsystem
     	
     	switchTote = Robot.sensors.stackerSwitchTote;
     	switchContainer = Robot.sensors.stackerSwitchContainer;
+    	
+    	stack = new Stack <GamePiece>();
     }
     
     public void initDefaultCommand() {}
@@ -105,6 +113,21 @@ public class Stacker extends Subsystem
     	{
 			logger.severe(e);
 		}
+    }
+    
+    public void addToStackContainer ()
+    {
+    	stack.add(new GamePiece(GamePieceType.Container));
+    }
+    
+    public void addToStackGreyTote ()
+    {
+    	stack.add(new GamePiece(GamePieceType.GreyTote));
+    }
+    
+    public void addToStackYellowTote ()
+    {
+    	stack.add(new GamePiece(GamePieceType.YellowTote));
     }
     
     public boolean getSwitchTote ()
