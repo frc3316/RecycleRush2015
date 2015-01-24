@@ -16,13 +16,13 @@ public abstract class Drive extends Command
 	
 	protected double left = 0, right = 0, center = 0;
 	
+	
     public Drive() 
     {
        requires(Robot.chassis);
     }
 
-    protected void initialize() {
-    }
+    protected void initialize() {}
 
     protected void execute() 
     {
@@ -46,6 +46,4 @@ public abstract class Drive extends Command
     }
     
     protected abstract void set ();
-    
-    public void configUpdate () {}
 }

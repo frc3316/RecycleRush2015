@@ -24,23 +24,22 @@ public class TankDrive extends Drive
 		right = getRightY();
 	}
 	
-	public void configUpdate ()
+	private void updateInverts ()
 	{
-		super.configUpdate();
-		
-		try {
-			invertX = (boolean)config.get("chassisInvertX");
-			invertY = (boolean)config.get("chassisInvertY");
-		} 
-		catch (ConfigException e) 
+		try
 		{
-			logger.severe("configUpdate in Tank Drive");
+			invertX = (boolean)config.get("chassis_TankDrive_InvertX");
+			invertY = (boolean)config.get("chassis_TankDrive_InvertY");
+		}
+		catch (ConfigException e)
+		{
 			logger.severe(e.getMessage());
 		}
 	}
 	
 	protected double getLeftY ()
 	{
+		updateInverts();
 		if (invertY)
 		{
 			return -joystickLeft.getY();
@@ -50,6 +49,7 @@ public class TankDrive extends Drive
 	
 	protected double getLeftX ()
 	{
+		updateInverts();
 		if (invertX)
 		{
 			return -joystickLeft.getX();
@@ -59,6 +59,7 @@ public class TankDrive extends Drive
 	
 	protected double getRightY ()
 	{
+		updateInverts();
 		if (invertY)
 		{
 			return -joystickRight.getY();
@@ -68,6 +69,7 @@ public class TankDrive extends Drive
 	
 	protected double getRightX() 
 	{
+		updateInverts();
 		if (invertX)
 		{
 			return -joystickRight.getX();

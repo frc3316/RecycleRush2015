@@ -33,13 +33,25 @@ public class Chassis extends Subsystem
 		
 		//need to init defaultDrive before setting it as the default drive
 		//defaultDrive = new StrafeDrive ();
-		
-		configUpdate();
 	}
 	
     public void initDefaultCommand() 
     {
        //setDefaultCommand(defaultDrive);
+    }
+    
+    public void configUpdate ()
+    {
+    	try
+    	{
+    		leftScale = (double)config.get("chassis_LeftScale");
+    		rightScale = (double)config.get("chassis_RightScale");
+    		centerScale = (double)config.get("chassis_CenterScale");
+    	}
+    	catch (ConfigException e)
+    	{
+    		logger.severe(e.getMessage());
+    	}
     }
     
     public boolean set (double left, double right, double center)
@@ -60,22 +72,6 @@ public class Chassis extends Subsystem
     {
     	//should return gyro reading
     	return 0;
-    }
-    
-    public void configUpdate ()
-    {
-    	try
-    	{
-    		leftScale = (double)config.get("chassisLeftScale");
-    		rightScale = (double)config.get("chassisRightScale");
-    		centerScale = (double)config.get("chassisCenterScale");
-    		
-    		defaultDrive.configUpdate();
-    	}
-    	catch (ConfigException e)
-    	{
-    		logger.severe(e.getMessage());
-    	}
     }
 }
 

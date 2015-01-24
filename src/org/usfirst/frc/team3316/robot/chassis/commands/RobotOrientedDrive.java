@@ -4,21 +4,7 @@ import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 
 public class RobotOrientedDrive extends StrafeDrive 
 {	
-	double maxTurn, minTurn;
-	
-	public void configUpdate ()
-	{
-		super.configUpdate();
-		try 
-		{
-			maxTurn = (double)config.get("chassisMaxTurn");
-			minTurn = (double)config.get("chassisMinTurn");
-		} 
-		catch (ConfigException e) 
-		{
-			logger.severe(e.getMessage());
-		}
-	}
+	double turnScale;
 	
 	protected void set ()
 	{
@@ -44,25 +30,26 @@ public class RobotOrientedDrive extends StrafeDrive
 		 * left - right = requiredTurn*2
 		 * -1 < left, right < 1 
 		 */
+		double yIn = this.left;
+		updateTurnScale();
+		requiredTurn = requiredTurn * turnScale;
 		// The outer wheel is the one which drives faster (absolutely)
 		// Therefore it is the one the would exceed the range of -1 to 1
 		// (when requiredTurn is 0 then it doesn't matter which is outer because were driving straight)
 		// (when yIn is 0 then the outer wheel will be 0, but we fix this later...)
-		double yIn = this.left;
-		requiredTurn = Math.max(Math.min(requiredTurn, maxTurn), minTurn);
-		
 		double outerWheel = Math.max(Math.abs(yIn + requiredTurn), Math.abs(yIn - requiredTurn))*Math.signum(yIn);
 		double innerWheel;
 		
+		//sets innerWheel so it is slower than outerWheel
 		if (outerWheel > 0)
 		{
 			outerWheel = Math.min(outerWheel, 1); //makes sure outerWheel <= 1
 			
-			if (requiredTurn > 0) //
+			if (requiredTurn > 0)
 			{
 				innerWheel = outerWheel - (requiredTurn*2);
 			}
-			else //
+			else
 			{
 				innerWheel = outerWheel + (requiredTurn*2);
 			}
@@ -71,11 +58,11 @@ public class RobotOrientedDrive extends StrafeDrive
 		{
 			outerWheel = Math.max(outerWheel, -1); //makes sure outerWheel >= -1
 			
-			if (requiredTurn < 0) //
+			if (requiredTurn < 0)
 			{
 				innerWheel = outerWheel - (requiredTurn*2);
 			}
-			else //
+			else
 			{
 				innerWheel = outerWheel + (requiredTurn*2);
 			}
@@ -90,6 +77,18 @@ public class RobotOrientedDrive extends StrafeDrive
 		{
 			this.left = outerWheel;
 			this.right = innerWheel;
+		}
+	}
+	
+	private void updateTurnScale ()
+	{
+		try 
+		{
+			turnScale = (double)config.get("chassis_RobotOrientedDrive_TurnScale");
+		}
+		catch (ConfigException e)
+		{
+			
 		}
 	}
 }
