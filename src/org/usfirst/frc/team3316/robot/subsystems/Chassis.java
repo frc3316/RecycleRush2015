@@ -49,9 +49,9 @@ public class Chassis extends Subsystem
     {
     	try
     	{
-    		leftScale = (double)config.get("chassis_LeftScale");
-    		rightScale = (double)config.get("chassis_RightScale");
-    		centerScale = (double)config.get("chassis_CenterScale");
+    		leftScale = (double)config.get("chassisLeftScale");
+    		rightScale = (double)config.get("chassisRightScale");
+    		centerScale = (double)config.get("chassisCenterScale");
     	}
     	catch (ConfigException e)
     	{

@@ -46,9 +46,7 @@ public class Joysticks
     	} 
     	catch (ConfigException e) 
     	{
-    		//CR: use the logger to log the stack trace
-			e.printStackTrace();
-			logger.severe(e.getMessage());
+			logger.severe(e);
 		}
 	}
 }

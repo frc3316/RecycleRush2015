@@ -29,17 +29,16 @@ public class Anschluss extends Subsystem {
 		anschluss = Robot.actuators.anschluss;
 		hallEffectClosed = Robot.sensors.anschlussDigitalInputClosed;
 		hallEffectOpened = Robot.sensors.anschlussDigitalInputOpened;
-		configUpdate();
 	}
 	
-	public void configUpdate() {
-		 try {
+	private void configUpdate() {
+		try 
+		{
 			anschlussMotorMinSpeed = (double) config.get("anschlussMotorMinSpeed");
 			anschlussMotorMaxSpeed = (double) config.get("anschlussMotorMaxSpeed");
-		} catch (ConfigException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			logger.severe(e.getMessage());
+		} 
+		catch (ConfigException e) {
+			logger.severe(e);
 		}
 	}
     // Put methods for controlling this subsystem
@@ -51,10 +50,11 @@ public class Anschluss extends Subsystem {
     }
     
     public boolean set(double motorSpeed) {
+    	configUpdate();
     	if(Robot.anschluss.isOpened())
-    		config.add("motorMaxSpeed", 0);
+    		config.add("anschlussMotorMaxSpeed", 0);
     	if(Robot.anschluss.isClosed())
-    		config.add("motorMinSpeed", 0);
+    		config.add("anschlussMotorMinSpeed", 0);
     	
     	motorSpeed = Math.min(Math.max(anschlussMotorMinSpeed, motorSpeed), anschlussMotorMaxSpeed);
     	anschluss.set(motorSpeed);
@@ -69,5 +69,4 @@ public class Anschluss extends Subsystem {
     public boolean isOpened() {
     	return hallEffectOpened.get();
     }
-    
 }

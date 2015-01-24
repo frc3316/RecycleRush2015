@@ -11,9 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.Formatter;
-import java.util.Calendar;
-
-import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 
 public class DBugLogger {
 	public static Logger logger;
@@ -52,7 +49,6 @@ public class DBugLogger {
 	    }
     }
 
-    //CR: add handling with thrown objects
     public void severe(String msg) {
     	logger.severe(msg);
     }
@@ -60,7 +56,7 @@ public class DBugLogger {
     	StringWriter sw = new StringWriter();
 		e.printStackTrace(new PrintWriter(sw));
 		String exceptionStackTrace = sw.toString();
-		logger.severe("exceptionStackTrace");
+		logger.severe(exceptionStackTrace);
 		logger.severe(e.getMessage());
     }
     public void info(String msg) {

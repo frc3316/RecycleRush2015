@@ -34,21 +34,18 @@ public class Actuators
 			/*
 			 * Chassis
 			 */
-			chassisLeft = new VictorSP ((int) config.get("chassisLeft"));
-			chassisRight = new VictorSP ((int) config.get("chassisRight"));
-			chassisCenter = new VictorSP((int) config.get("chassisCenter"));
+			chassisLeft = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_LEFT"));
+			chassisRight = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT"));
+			chassisCenter = new VictorSP((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER"));
 			
 			/*
 			 * Anschluss
 			 */
-			//CR: Use more explicit names. the config name should reflect EXACTLY what this indicates.
-			//    i.e: ANSCHLUSS_MOTOR_PWM_PORT
-			anschluss = new VictorSP ((int) config.get("anschluss"));
+			anschluss = new VictorSP ((int) config.get("ANSCHLUSS_MOTOR_CONTROLLER"));
 		}
 		catch (ConfigException e) 
     	{
-			e.printStackTrace();
-			logger.severe(e.getMessage());
+			logger.severe(e);
 		}
 	}
 }

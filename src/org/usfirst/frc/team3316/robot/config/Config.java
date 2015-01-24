@@ -78,17 +78,23 @@ public class Config
 	private void initConfig ()
 	{
 		/*
+		 * Human IO
+		 */
+			/*
+			 * Constants
+			 */
+			addToConstants("JOYSTICK_LEFT", 0);
+			addToConstants("JOYSTICK_RIGHT", 1);
+			addToConstants("JOYSTICK_OPERATOR", 2);
+		/*
 		 * Chassis
 		 */
 			/*
 			 * Constants
 			 */
-			addToConstants("joystickLeft", 0);
-			addToConstants("joystickRight", 1);
-			addToConstants("joystickOperator", 2);
-			addToConstants("chassisLeft", 0);
-			addToConstants("chassisRight", 1);
-			addToConstants("chassisCenter", 2);
+			addToConstants("CHASSIS_MOTOR_CONTROLLER_LEFT", 0);
+			addToConstants("CHASSIS_MOTOR_CONTROLLER_RIGHT", 1);
+			addToConstants("CHASSIS_MOTOR_CONTROLLER_CENTER", 2);
 			/*
 			 * Variables
 			 */
@@ -103,11 +109,11 @@ public class Config
 			/*
 			 * Constants
 			 */
-			addToConstants("anschlussMotorController", 3);
-			addToConstants("closeAnschlussMotorSpeed", -0.5);
-			addToConstants("openAnschlussMotorSpeed", 0.5);
-			addToConstants("closeAnschlussButton", 2);
-			addToConstants("openAnschlussButton", 1);
+			addToConstants("ANSCHLUSS_MOTOR_CONTROLLER", 3);
+			addToConstants("ANSCHLUSS_MOTOR_SPEED_CLOSE", -0.5);
+			addToConstants("ANSCHLUSS_MOTOR_SPEED_OPEN", 0.5);
+			addToConstants("ANSCHLUSS_BUTTON_CLOSE", 2);
+			addToConstants("ANSCHLUSS_BUTTON_OPEN", 1);
 			/*
 			 * Variables
 			 */
