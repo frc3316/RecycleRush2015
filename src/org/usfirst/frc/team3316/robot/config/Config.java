@@ -92,5 +92,8 @@ public class Config
 		
 		addToConstants("ROLLER_GRIPPER_POT_LEFT", 0);
 		addToConstants("ROLLER_GRIPPER_POT_RIGHT", 1);
+		
+		addToConstants("ROLLER_GRIPPER_SPEED_ROLL_IN", 0.5);
+		addToConstants("ROLLER_GRIPPER_SPEED_ROLL_OUT", -0.5);
 	}
 }

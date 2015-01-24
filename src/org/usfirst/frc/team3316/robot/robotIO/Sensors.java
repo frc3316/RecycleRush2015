@@ -62,8 +62,7 @@ public class Sensors
 			 * Roller-Gripper
 			 */
 			rollerGripperPotLeft = new AnalogPotentiometer((int) config.get("ROLLER_GRIPPER_POT_LEFT"));
-			rollerGripperPotRight = new AnalogPotentiometer((int) config.get("ROLLER_GRIPPER_POT_RIGHT"));
-			
+			rollerGripperPotRight = new AnalogPotentiometer((int) config.get("ROLLER_GRIPPER_POT_RIGHT"));		
 		}
 		catch (ConfigException e)
 		{

@@ -23,9 +23,11 @@ public class RollerGripper extends Subsystem {
 								potRight;
 	
     public RollerGripper () {
-    	gripperLeft = Robot.actuators.gripperLeft;
-    	gripperRight = Robot.actuators.gripperRight;
+    	gripperLeft = Robot.actuators.rollerGripperLeft;
+    	gripperRight = Robot.actuators.rollerGripperRight;
     	
+    	potLeft = Robot.sensors.rollerGripperPotLeft;
+    	potRight = Robot.sensors.rollerGripperPotRight;   	
     }
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -33,6 +35,20 @@ public class RollerGripper extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
+    }
+    
+    public boolean set(double leftSpeed, double rightSpeed) {
+    	gripperLeft.set(leftSpeed);
+    	gripperRight.set(rightSpeed);
+    	return true;
+    }
+    
+    public double getPotLeftPosition () {
+    	return potLeft.get();
+    }
+    
+    public double getPotRighttPosition () {
+    	return potRight.get();
     }
 }
 
