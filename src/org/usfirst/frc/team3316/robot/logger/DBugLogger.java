@@ -56,7 +56,7 @@ public class DBugLogger {
     public void severe(String msg) {
     	logger.severe(msg);
     }
-    public void severe(ConfigException e) {
+    public void severe(Exception e) {
     	StringWriter sw = new StringWriter();
 		e.printStackTrace(new PrintWriter(sw));
 		String exceptionStackTrace = sw.toString();
