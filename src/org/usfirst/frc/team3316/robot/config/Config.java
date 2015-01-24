@@ -2,8 +2,12 @@ package org.usfirst.frc.team3316.robot.config;
 
 import java.util.Hashtable;
 
+import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+
 public class Config 
 {
+	DBugLogger logger = Robot.logger;
 	public class ConfigException extends Exception
 	{
 		/**
@@ -56,10 +60,12 @@ public class Config
 		if (constants.containsKey(key))
 		{
 			constants.replace(key, value);
+			logger.info("replaced " + key + " in constants hashtable");
 		}
 		else
 		{
 			constants.put(key, value);
+			logger.info("added " + key + " in constants hashtable");
 		}
 	}
 	
@@ -68,10 +74,12 @@ public class Config
 		if (variables.containsKey(key))
 		{
 			variables.replace(key, value);
+			logger.info("replaced " + key + " in variables hashtable");
 		}
 		else
 		{
 			variables.put(key, value);
+			logger.info("replaced " + key + " in variables hashtable");
 		}
 	}
 	
