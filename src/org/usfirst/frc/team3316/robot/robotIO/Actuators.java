@@ -27,11 +27,13 @@ public class Actuators
 	 * Stacker
 	 */
 	
-	public DoubleSolenoid stackerStepSolenoidLeft;
-	public DoubleSolenoid stackerStepSolenoidRight;
-	public DoubleSolenoid stackerToteSolenoidLeft;
-	public DoubleSolenoid stackerToteSolenoidRight;
-	public DoubleSolenoid stackerContainerSolenoid;
+	public DoubleSolenoid stackerSolenoidStepLeft;
+	public DoubleSolenoid stackerSolenoidStepRight;
+	
+	public DoubleSolenoid stackerSolenoidToteLeft;
+	public DoubleSolenoid stackerSolenoidToteRight;
+	
+	public DoubleSolenoid stackerSolenoidContainer;
 	
 	/*
 	 * Anschluss
@@ -53,17 +55,20 @@ public class Actuators
 			 * Stacker
 			 */
 			
-			stackerStepSolenoidLeft = new DoubleSolenoid((int) config.get("STACKER_STEP_SOLENOID_LEFT_FORWARD"), 
-														 (int) config.get("STACKER_STEP_SOLENOID_LEFT_REVERSE"));
+			stackerSolenoidStepLeft = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_STEP_LEFT_FORWARD"), 
+														 (int) config.get("STACKER_SOLENOID_STEP_LEFT_REVERSE"));
 			
-			stackerStepSolenoidRight = new DoubleSolenoid((int) config.get("STACKER_STEP_SOLENOID_RIGHT_FORWARD"), 
-					 									  (int) config.get("STACKER_STEP_SOLENOID_RIGHT_REVERSE"));
+			stackerSolenoidStepRight = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_STEP_RIGHT_FORWARD"), 
+					 									  (int) config.get("STACKER_SOLENOID_STEP_RIGHT_REVERSE"));
 			
-			stackerToteSolenoidLeft = new DoubleSolenoid((int) config.get("STACKER_TOTE_SOLENOID_LEFT_FORWARD"), 
-														 (int) config.get("STACKER_TOTE_SOLENOID_LEFT_REVERSE"));
+			stackerSolenoidToteLeft = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_TOTE_LEFT_FORWARD"), 
+														 (int) config.get("STACKER_SOLENOID_TOTE_LEFT_REVERSE"));
 			
-			stackerStepSolenoidRight = new DoubleSolenoid((int) config.get("STACKER_TOTE_SOLENOID_RIGHT_FORWARD"), 
-														  (int) config.get("STACKER_TOTE_SOLENOID_RIGHT_REVERSE"));
+			stackerSolenoidToteRight = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_TOTE_RIGHT_FORWARD"), 
+														  (int) config.get("STACKER_SOLENOID_TOTE_RIGHT_REVERSE"));
+			
+			stackerSolenoidContainer = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_CONTAINER_FORWARD"),
+														  (int) config.get("STACKER_SOLENOID_CONTAINER_REVERSE"));
 			
 			/*
 			 * Anschluss

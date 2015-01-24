@@ -5,6 +5,7 @@ package org.usfirst.frc.team3316.robot;
 
 import org.usfirst.frc.team3316.robot.subsystems.Anschluss;
 import org.usfirst.frc.team3316.robot.subsystems.Chassis;
+import org.usfirst.frc.team3316.robot.subsystems.Stacker;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.humanIO.Joysticks;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
@@ -25,16 +26,23 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Robot extends IterativeRobot
 {
-	public static Chassis chassis;
-	public static Anschluss anschluss;
-
-    Command autonomousCommand;
-    
-    public static Config config;
     public static DBugLogger logger;
+	public static Config config;
+    /*
+     * Human IO
+     */
     public static Joysticks joysticks;
+    /*
+     * Robot IO
+     */
     public static Actuators actuators;
     public static Sensors sensors;
+    /*
+     * Subsystems
+     */
+	public static Chassis chassis;
+	public static Anschluss anschluss;
+	public static Stacker stacker;
 	
     /**
      * This function is run when the robot is first started up and should be
@@ -42,13 +50,22 @@ public class Robot extends IterativeRobot
      */
     public void robotInit() 
     {
-		chassis = new Chassis();
-		anschluss = new Anschluss();
-    	config = new Config();
     	logger = new DBugLogger();
+    	config = new Config();
+    	/*
+    	 * Human IO
+    	 */
     	joysticks = new Joysticks();
+    	/*
+    	 * Robot IO
+    	 */
     	actuators = new Actuators();
     	sensors = new Sensors();
+    	/*
+    	 * Subsystems
+    	 */
+    	chassis = new Chassis();
+		anschluss = new Anschluss();
     }
 	
 	public void disabledPeriodic() {
@@ -56,7 +73,7 @@ public class Robot extends IterativeRobot
 	}
 
     public void autonomousInit() {
-        if (autonomousCommand != null) autonomousCommand.start();
+        
     }
 
     /**
@@ -66,10 +83,7 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().run();
     }
 
-    public void teleopInit() 
-    {
-        if (autonomousCommand != null) autonomousCommand.cancel();
-    }
+    public void teleopInit() {}
 
     /**
      * This function is called when the disabled button is hit.

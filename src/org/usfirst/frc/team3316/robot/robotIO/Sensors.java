@@ -33,6 +33,8 @@ public class Sensors
 	 */
 	
 	public AnalogInput stackerHeightIR;
+	public DigitalInput stackerSwitchTote;
+	public DigitalInput stackerSwitchContainer;
 	
 	/*
 	 * Anschluss
@@ -69,6 +71,9 @@ public class Sensors
 			 */
 			
 			stackerHeightIR = new AnalogInput((int) config.get("STACKER_IR"));
+			
+			stackerSwitchTote = new DigitalInput((int) config.get("STACKER_SWITCH_TOTE"));
+			stackerSwitchContainer = new DigitalInput((int) config.get("STACKER_SWITCH_CONTAINER"));
 			
 			/*
 			 * Anschluss
