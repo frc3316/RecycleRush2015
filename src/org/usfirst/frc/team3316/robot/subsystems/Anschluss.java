@@ -34,6 +34,8 @@ public class Anschluss extends Subsystem {
 	private void configUpdate() {
 		try 
 		{
+			//CR: These are useless... you get the speed from the command and you just need
+			//    to make sure you're not endangering the robot physically.
 			anschlussMotorMinSpeed = (double) config.get("anschlussMotorMinSpeed");
 			anschlussMotorMaxSpeed = (double) config.get("anschlussMotorMaxSpeed");
 		} 
@@ -51,6 +53,7 @@ public class Anschluss extends Subsystem {
     
     public boolean set(double motorSpeed) {
     	configUpdate();
+		//CR: fix this so that it doesn't use the configuration. only changes the current motorSpeed.
     	if(Robot.anschluss.isOpened())
     		config.add("anschlussMotorMaxSpeed", 0);
     	if(Robot.anschluss.isClosed())

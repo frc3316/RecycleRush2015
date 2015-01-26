@@ -24,6 +24,7 @@ public class openAnschluss extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+		//CR: move to set function
     	updateMotorSpeed();
     }
 

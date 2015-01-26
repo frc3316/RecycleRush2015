@@ -47,6 +47,9 @@ public class Chassis extends Subsystem
     
     public void configUpdate ()
     {
+		//CR: If you want drive to call the "configUpdate" method only
+		//    when prompted by the controller, while the rest of the code
+		//    calls it automatically - make sure you explain why...
     	try
     	{
     		leftScale = (double)config.get("chassisLeftScale");
@@ -55,6 +58,7 @@ public class Chassis extends Subsystem
     	}
     	catch (ConfigException e)
     	{
+			//CR: are you passing the message or the throwable?
     		logger.severe(e.getMessage());
     	}
     }
@@ -66,7 +70,7 @@ public class Chassis extends Subsystem
     	this.center.set(center*centerScale);
     	return true;
     }
-    
+    //CR: What about accelerometer readings?
     public double getHeading ()
     {
     	return navx.getYaw();

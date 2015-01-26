@@ -37,7 +37,8 @@ public class RobotOrientedDrive extends StrafeDrive
 		// Therefore it is the one the would exceed the range of -1 to 1
 		// (when requiredTurn is 0 then it doesn't matter which is outer because were driving straight)
 		// (when yIn is 0 then the outer wheel will be 0, but we fix this later...)
-		double outerWheel = Math.max(Math.abs(yIn + requiredTurn), Math.abs(yIn - requiredTurn))*Math.signum(yIn);
+		//CR: Fix yIn 0 issue...
+		double outerWheel = Math.max(Math.abs(yIn + requiredTurn), Math.abs(yIn - requiredTurn)) * Math.signum(yIn);
 		double innerWheel;
 		
 		//sets innerWheel so it is slower than outerWheel
