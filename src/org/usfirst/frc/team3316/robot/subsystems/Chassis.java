@@ -31,9 +31,9 @@ public class Chassis extends Subsystem
 	
 	public Chassis ()
 	{
-		left = Robot.actuators.chassisLeft;
-		right = Robot.actuators.chassisRight;
-		center = Robot.actuators.chassisCenter;
+		left = Robot.actuators.chassisMotorControllerLeft;
+		right = Robot.actuators.chassisMotorControllerRight;
+		center = Robot.actuators.chassisMotorControllerCenter;
 		
 		navx = Robot.sensors.navx;
 		//need to init defaultDrive before setting it as the default drive
@@ -45,41 +45,54 @@ public class Chassis extends Subsystem
        //setDefaultCommand(defaultDrive);
     }
     
-    public void configUpdate ()
-    {
-		//CR: If you want drive to call the "configUpdate" method only
-		//    when prompted by the controller, while the rest of the code
-		//    calls it automatically - make sure you explain why...
-    	try
-    	{
-    		leftScale = (double)config.get("chassisLeftScale");
-    		rightScale = (double)config.get("chassisRightScale");
-    		centerScale = (double)config.get("chassisCenterScale");
-    	}
-    	catch (ConfigException e)
-    	{
-			//CR: are you passing the message or the throwable?
-    		logger.severe(e.getMessage());
-    	}
-    }
-    
     public boolean set (double left, double right, double center)
     {
+    	updateScales();
     	this.left.set(left*leftScale);
     	this.right.set(right*rightScale);
     	this.center.set(center*centerScale);
     	return true;
     }
-    //CR: What about accelerometer readings?
+    
+    private void updateScales ()
+    {
+    	try
+    	{
+    		leftScale = (double)config.get("chassis_LeftScale");
+    		rightScale = (double)config.get("chassis_RightScale");
+    		centerScale = (double)config.get("chassis_CenterScale");
+    	}
+    	catch (ConfigException e)
+    	{
+    		logger.severe(e);
+    	}
+    }
+    
     public double getHeading ()
     {
+    	//TODO: need to check whether its pitch or roll, but it's not going to be yaw for sure
     	return navx.getYaw();
     }
     
     public double getAngularVelocity ()
     {
-    	//should return gyro reading
+    	//TODO: should return gyro reading
     	return 0;
     }
+    
+    public double getAccelX ()
+    {
+    	//TODO: need to check whether its Y or Z, but it's not going to be X fo sho
+    	return navx.getWorldLinearAccelX();
+    }
+    
+    public double getAccelY ()
+    {
+    	//TODO: need to check whether its X or Z, but it's not going to be Y fo sho
+    	return navx.getWorldLinearAccelY();
+    }
+    
+    //not sure if Z acceleration is necessary
+    //public double getAccelZ () {}
 }
 

@@ -22,7 +22,7 @@ public class RobotOrientedDrive extends StrafeDrive
 	protected void setRotation (double requiredTurn)
 	{
 		//TODO: figure out PID rotation
-		
+		//TODO: modify code so it works with max throttle lower than 1
 		/*
 		 * the following code sets left and right so that:
 		 * for turning clockwise, left > right
@@ -37,12 +37,18 @@ public class RobotOrientedDrive extends StrafeDrive
 		// Therefore it is the one the would exceed the range of -1 to 1
 		// (when requiredTurn is 0 then it doesn't matter which is outer because were driving straight)
 		// (when yIn is 0 then the outer wheel will be 0, but we fix this later...)
-		//CR: Fix yIn 0 issue...
 		double outerWheel = Math.max(Math.abs(yIn + requiredTurn), Math.abs(yIn - requiredTurn)) * Math.signum(yIn);
 		double innerWheel;
 		
-		//sets innerWheel so it is slower than outerWheel
-		if (outerWheel > 0)
+		//If outerWheel is 0, sets outerWheel and innerWheel to be equal in reverse directions
+		if (outerWheel == 0)
+		{
+			outerWheel = requiredTurn;
+			innerWheel = -requiredTurn;
+		}
+		
+		//If outerWheel is not 0, sets innerWheel so it is slower than outerWheel
+		else if (outerWheel > 0) 
 		{
 			outerWheel = Math.min(outerWheel, 1); //makes sure outerWheel <= 1
 			

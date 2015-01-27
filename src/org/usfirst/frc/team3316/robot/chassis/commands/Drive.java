@@ -16,7 +16,6 @@ public abstract class Drive extends Command
 	
 	protected double left = 0, right = 0, center = 0;
 	
-	
     public Drive() 
     {
        requires(Robot.chassis);

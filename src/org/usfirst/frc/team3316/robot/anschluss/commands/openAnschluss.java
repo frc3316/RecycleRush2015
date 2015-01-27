@@ -10,48 +10,41 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *Command that opens the anschluss
  */
-public class openAnschluss extends Command {
-
+public class openAnschluss extends Command 
+{
 	Config config = Robot.config;
 	DBugLogger logger = Robot.logger;
 	double motorSpeed;
 	
-    public openAnschluss() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+    public openAnschluss() 
+    {
     	requires(Robot.anschluss);
     }
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-		//CR: move to set function
+    protected void initialize() {}
+
+    protected void execute() 
+    {
     	updateMotorSpeed();
+    	Robot.anschluss.set(motorSpeed);
     }
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    		Robot.anschluss.set(motorSpeed);
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         return Robot.anschluss.isOpened();
     }
 
-    // Called once after isFinished returns true
-    protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
+    protected void end() {}
     
-    private void updateMotorSpeed() {
-    	try {
+    protected void interrupted() {}
+    
+    private void updateMotorSpeed() 
+    {
+    	try 
+    	{
 			motorSpeed = (double) config.get("closeAnschlussMotorSpeed");
 		}
-    	catch (ConfigException e) {
+    	catch (ConfigException e) 
+    	{
     		logger.severe(e);			
 		}
     }
