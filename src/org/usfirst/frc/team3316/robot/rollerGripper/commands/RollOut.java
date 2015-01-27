@@ -1,36 +1,57 @@
 package org.usfirst.frc.team3316.robot.rollerGripper.commands;
 
+import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.config.Config;
+import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
+import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class RollOut extends Command {
-
-    public RollOut() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+public class RollOut extends Command 
+{
+	DBugLogger logger = Robot.logger;
+	Config config = Robot.config;
+	
+	private double speed;
+    public RollOut() 
+    {
+        requires(Robot.rollerGripper);
     }
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
+    protected void initialize() {}
+
+    protected void execute() 
+    {
+    	Robot.rollerGripper.set(speed, speed);
     }
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
+    protected boolean isFinished() 
+    {
         return false;
     }
 
-    // Called once after isFinished returns true
-    protected void end() {
+    protected void end() 
+    {
+    	Robot.rollerGripper.set(0, 0);
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
+    protected void interrupted() 
+    {
+    	end();
+    }
+    
+    private void updateSpeed ()
+    {
+    	try 
+    	{
+			speed = (double)config.get("rollerGripper_RollOut_Speed");
+		} 
+    	catch (ConfigException e) 
+    	{
+			Robot.logger.severe(e);
+		} 
     }
 }

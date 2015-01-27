@@ -10,7 +10,7 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SerialPort;
@@ -30,8 +30,7 @@ public class Sensors
 	/*
 	 * Roller-Gripper
 	 */
-	public AnalogPotentiometer rollerGripperPotLeft;
-	public AnalogPotentiometer rollerGripperPotRight;
+	public AnalogInput rollerGripperIRLeft, rollerGripperIRRight;
 	
 	public Sensors ()
 	{
@@ -61,8 +60,9 @@ public class Sensors
 			/*
 			 * Roller-Gripper
 			 */
-			rollerGripperPotLeft = new AnalogPotentiometer((int) config.get("ROLLER_GRIPPER_POT_LEFT"));
-			rollerGripperPotRight = new AnalogPotentiometer((int) config.get("ROLLER_GRIPPER_POT_RIGHT"));		
+			rollerGripperIRLeft = new AnalogInput((int) config.get("ROLLER_GRIPPER_IR_LEFT"));
+			rollerGripperIRRight = new AnalogInput((int) config.get("ROLLER_GRIPPER_IR_RIGHT"));
+			
 		}
 		catch (ConfigException e)
 		{

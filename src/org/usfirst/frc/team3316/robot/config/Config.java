@@ -90,10 +90,10 @@ public class Config
 		addToVariables("chassisRightScale", 1);
 		addToVariables("chassisCenterScale", 1);
 		
-		addToConstants("ROLLER_GRIPPER_POT_LEFT", 0);
-		addToConstants("ROLLER_GRIPPER_POT_RIGHT", 1);
+		addToConstants("ROLLER_GRIPPER_IR_LEFT", 0);
+		addToConstants("ROLLER_GRIPPER_IR_RIGHT", 1);
 		
-		addToConstants("ROLLER_GRIPPER_SPEED_ROLL_IN", 0.5);
-		addToConstants("ROLLER_GRIPPER_SPEED_ROLL_OUT", -0.5);
+		addToVariables("rollerGripper_RollIn_Speed", 0.5);
+		addToVariables("rollerGripper_RollOut_Speed", -0.5);
 	}
 }
