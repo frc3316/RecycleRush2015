@@ -5,6 +5,7 @@ package org.usfirst.frc.team3316.robot;
 
 import org.usfirst.frc.team3316.robot.subsystems.Anschluss;
 import org.usfirst.frc.team3316.robot.subsystems.Chassis;
+import org.usfirst.frc.team3316.robot.subsystems.RollerGripper;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.humanIO.Joysticks;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
@@ -27,6 +28,7 @@ public class Robot extends IterativeRobot
 {
 	public static Chassis chassis;
 	public static Anschluss anschluss;
+	public static RollerGripper rollerGripper;
 
     Command autonomousCommand;
     
@@ -49,6 +51,7 @@ public class Robot extends IterativeRobot
     	joysticks = new Joysticks();
     	actuators = new Actuators();
     	sensors = new Sensors();
+    	rollerGripper = new RollerGripper();
     }
 	
 	public void disabledPeriodic() {

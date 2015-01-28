@@ -10,6 +10,7 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -32,6 +33,11 @@ public class Sensors
 	 */
 	public DigitalInput anschlussDigitalInputClosed;
 	public DigitalInput anschlussDigitalInputOpened;
+	/*
+	 * Roller-Gripper
+	 */
+	public AnalogInput rollerGripperIRLeft, rollerGripperIRRight;
+	
 	public Sensors ()
 	{
 		try 
@@ -63,6 +69,11 @@ public class Sensors
 			anschlussDigitalInputClosed = new DigitalInput((int) config.get("anschlussDigitalInputClosed")); //check the channel and update it accordingly
 			anschlussDigitalInputOpened = new DigitalInput((int) config.get("anschlussDigitalInputOpened")); //check the channel and update it accordingly
 
+			/*
+			 * Roller-Gripper
+			 */
+			rollerGripperIRLeft = new AnalogInput((int) config.get("ROLLER_GRIPPER_IR_LEFT"));
+			rollerGripperIRRight = new AnalogInput((int) config.get("ROLLER_GRIPPER_IR_RIGHT"));
 		}
 		
 		catch (ConfigException e)
