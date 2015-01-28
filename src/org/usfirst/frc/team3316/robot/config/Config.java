@@ -106,18 +106,14 @@ public class Config
 			/*
 			 * Variables
 			 */
-			addToVariables("driveMaxSpeed", 1);
-			addToVariables("driveMinSpeed", -1);
-			addToVariables("chassisLeftScale", -1);
-			addToVariables("chassisRightScale", 1);
-			addToVariables("chassisCenterScale", 1);
+			addToVariables("chassis_LeftScale", -1);
+			addToVariables("chassis_RightScale", 1);
+			addToVariables("chassis_CenterScale", 1);
 			
-			addToVariables("chassisLeftScale", -1);
-			addToVariables("chassisRightScale", 1);
-			addToVariables("chassisCenterScale", 1);
+			addToVariables("chassis_TankDrive_InvertX", false);
+			addToVariables("chassis_TankDrive_InvertY", true);
 			
-			addToVariables("driveMaxSpeed", 1);
-			addToVariables("driveMinSpeed", -1);
+			addToVariables("chassis_RobotOrientedDrive_TurnScale", 1);
 		/*
 		 * Anschluss
 		 */
@@ -127,13 +123,12 @@ public class Config
 			addToConstants("ANSCHLUSS_MOTOR_CONTROLLER", 3);
 			addToConstants("ANSCHLUSS_MOTOR_SPEED_CLOSE", -0.5);
 			addToConstants("ANSCHLUSS_MOTOR_SPEED_OPEN", 0.5);
+			
 			addToConstants("ANSCHLUSS_BUTTON_CLOSE", 2);
 			addToConstants("ANSCHLUSS_BUTTON_OPEN", 1);
 			/*
 			 * Variables
 			 */
-			addToVariables("anschlussMotorMaxSpeed", 1);
-			addToVariables("anschlussMotorMinSpeed", -1);
 		/*
 		 * RollerGripper
 		 */
@@ -159,27 +154,6 @@ public class Config
 			
 			addToVariables("rollerGripperLeftScale", -1);
 			addToVariables("rollerGripperRightScale", 1);
-			
-			
-			
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 	}
 
 }
