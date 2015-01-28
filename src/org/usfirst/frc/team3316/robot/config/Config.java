@@ -95,5 +95,8 @@ public class Config
 		
 		addToVariables("rollerGripper_RollIn_Speed", 0.5);
 		addToVariables("rollerGripper_RollOut_Speed", -0.5);
+		
+		addToVariables("rollerGripperLeftScale", -1);
+		addToVariables("rollerGripperRightScale", 1);
 	}
 }
