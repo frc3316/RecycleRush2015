@@ -33,10 +33,10 @@ public class RollerGripper extends Subsystem
 
     public void initDefaultCommand() {}
     
-    public boolean set(double leftSpeed, double rightSpeed) 
+    public boolean set(double speedLeft, double speedRight) 
     {
-     	gripperLeft.set(leftSpeed*leftScale);
-    	gripperRight.set(rightSpeed*rightScale);
+     	gripperLeft.set(speedLeft*leftScale);
+    	gripperRight.set(speedRight*rightScale);
     	return true;
     }
     
