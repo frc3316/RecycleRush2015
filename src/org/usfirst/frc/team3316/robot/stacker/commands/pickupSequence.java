@@ -14,6 +14,7 @@ public class pickupSequence extends CommandGroup
     {
         addSequential(new RollIn());
         addSequential(new MoveStackerToFloor());
+        addSequential(new MoveStackerToTote());
         
     }
 }
