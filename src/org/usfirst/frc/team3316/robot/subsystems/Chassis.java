@@ -3,8 +3,7 @@
  */
 package org.usfirst.frc.team3316.robot.subsystems;
 
-import java.util.LinkedList;
-import java.util.function.Consumer;
+import java.util.HashSet;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.chassis.commands.Drive;
@@ -19,19 +18,19 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Chassis extends Subsystem 
-{
-	
+{	
 	/*
 	 * An object that is passed to navigationThread for integration
 	 */
-	public class NavigationIntegrator
+	public static class NavigationIntegrator
 	{
-		private double x = 0, y = 0;
+		private double x = 0, y = 0, theta = 0;
 		
-		public void add (double dX, double dY)
+		public void add (double dX, double dY, double dTheta)
 		{
 			this.x += dX;
 			this.y += dY;
+			this.theta += dTheta;
 		}
 		
 		public double getX ()
@@ -43,16 +42,30 @@ public class Chassis extends Subsystem
 		{
 			return y;
 		}
+		
+		public double getTheta ()
+		{
+			return theta;
+		}
+		
+		public void reset ()
+		{
+			x = 0;
+			y = 0;
+			theta = 0;
+		}
 	}
 	
 	/*
-	 * Thread that calculates the robot's position delta in the fields' x and y axes
-	 * Adds this delta to each 
+	 * Thread that calculates the robot's position in the field
+	 * Calculates position delta and adds it to each integrator in the set
+	 * Also calculates turning rate
 	 */
 	private class NavigationThread extends Thread
 	{	
-		private LinkedList <NavigationIntegrator> counterList;
+		private HashSet <NavigationIntegrator> integratorSet;
 		private double previousTime = 0;
+		
 		public void run() 
 		{
 			double currentTime = System.currentTimeMillis();
@@ -60,12 +73,17 @@ public class Chassis extends Subsystem
 			double heading = Math.toRadians(getHeading());
 			
 			/*
+			 * Calculates change in heading
+			 */
+			//TODO: implement turning rate calculation
+			
+			/*
 			 * Calculates speeds in field axes
 			 */
 			double vS, vF; //speeds relative to the robot (forward and sideways)
 			vS = encoderCenter.getRate();
-			//TODO: fix vF calculation to take into account encoderRight
-			vF = encoderLeft.getRate();
+			//TODO: check this calculation
+			vF = (encoderLeft.getRate() + encoderRight.getRate())/2;
 			
 			double vX, vY; //speeds relative to field 
 			vX = vF*Math.sin(heading) + vS*Math.sin(heading+.5);
@@ -74,13 +92,13 @@ public class Chassis extends Subsystem
 			/*
 			 * Calculates position delta in field axes 
 			 */
-			double dX, dY;
+			double dX, dY, dTheta;
 			dX = vX*dT;
 			dY = vY*dT;
 			
-			for (NavigationIntegrator counter : counterList)
+			for (NavigationIntegrator integrator : integratorSet)
 			{
-				counter.add(dX, dY);
+				integrator.add(dX, dY, 0);
 			}
 			
 			try 
@@ -92,6 +110,16 @@ public class Chassis extends Subsystem
 			{
 				logger.severe(e);
 			}
+		}
+		
+		public boolean addIntegrator (NavigationIntegrator integrator)
+		{
+			return integratorSet.add(integrator);
+		}
+		
+		public boolean removeIntegrator (NavigationIntegrator integrator)
+		{
+			return integratorSet.remove(integrator);
 		}
 	}
 	
@@ -181,6 +209,16 @@ public class Chassis extends Subsystem
     {
     	//TODO: need to check whether its X or Z, but it's not going to be Y fo sho
     	return navx.getWorldLinearAccelY();
+    }
+    
+    public boolean addNavigationIntegrator (NavigationIntegrator integrator)
+    {
+    	return navigationThread.addIntegrator(integrator);
+    }
+    
+    public boolean removeNavigationIntegrator (NavigationIntegrator integrator)
+    {
+    	return navigationThread.removeIntegrator(integrator);
     }
     
     //not sure if Z acceleration is necessary
