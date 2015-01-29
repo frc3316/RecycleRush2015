@@ -2,6 +2,8 @@ package org.usfirst.frc.team3316.robot.subsystems;
 
 import java.util.Stack;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
@@ -52,6 +54,12 @@ public class Stacker extends Subsystem
     	switchContainer = Robot.sensors.stackerSwitchContainer;
     	
     	stack = new Stack <GamePiece>();
+    }
+    
+    public boolean isFull() 
+    {
+    	//TODO: make this method useful
+    	return false;
     }
     
     public void initDefaultCommand() {}

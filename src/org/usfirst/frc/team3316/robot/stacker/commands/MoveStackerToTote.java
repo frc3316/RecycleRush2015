@@ -24,8 +24,10 @@ public class MoveStackerToTote extends Command
 
     protected void initialize() 
     {
-    	Robot.stacker.closeSolenoidStep();
-    	Robot.stacker.closeSolenoidTote();
+    	if(!Robot.stacker.isFull()) {
+    		Robot.stacker.closeSolenoidStep();
+    		Robot.stacker.closeSolenoidTote();
+    	}
     }
 
     protected void execute() {
