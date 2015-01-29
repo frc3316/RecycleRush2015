@@ -62,6 +62,14 @@ public class Stacker extends Subsystem
     	return false;
     }
     
+    public Stack getStack() {
+    	return stack;
+    }
+    
+    public void pushToStack(GamePiece g) {
+    	stack.push(g);
+    }
+    
     public void initDefaultCommand() {}
     
     public boolean openSolenoidStep ()
