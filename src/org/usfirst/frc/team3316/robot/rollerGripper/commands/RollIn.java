@@ -7,7 +7,7 @@ public class RollIn extends Roll
 {
 	protected boolean isFinished ()
 	{
-		return Robot.sensors.stackerSwitchContainer.get(); //a GamePiece(tote/container) is inside the stacker
+		return Robot.sensors.stackerSwitchContainer.get(); //is finished when a GamePiece(tote/container) is inside the stacker
 	}
 	
 	protected void setSpeed() 

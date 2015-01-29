@@ -27,12 +27,6 @@ public class MoveStackerToTote extends Command
 
 	protected void initialize() 
     {
-    	if(Robot.sensors.stackerSwitchContainer.get()) {
-    		if(Robot.sensors.stackerSwitchTote.get())
-    			Robot.stacker.pushToStack(new GamePiece(GamePieceType.GreyTote));
-    		else
-    			Robot.stacker.pushToStack(new GamePiece(GamePieceType.Container));
-    	}
     	if(!Robot.stacker.isFull()) {
     		Robot.stacker.closeSolenoidStep();
     		Robot.stacker.closeSolenoidTote();

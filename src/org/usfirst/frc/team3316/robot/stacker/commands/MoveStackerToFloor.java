@@ -4,6 +4,8 @@ import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+import org.usfirst.frc.team3316.robot.stacker.GamePiece;
+import org.usfirst.frc.team3316.robot.stacker.GamePieceType;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -24,6 +26,12 @@ public class MoveStackerToFloor extends Command
 
     protected void initialize() 
     {
+    	if(Robot.sensors.stackerSwitchContainer.get()) {
+    		if(Robot.sensors.stackerSwitchTote.get())
+    			Robot.stacker.pushToStack(new GamePiece(GamePieceType.GreyTote));
+    		else
+    			Robot.stacker.pushToStack(new GamePiece(GamePieceType.Container));
+    	}
     	Robot.stacker.openSolenoidStep();
     	Robot.stacker.openSolenoidTote();
     }

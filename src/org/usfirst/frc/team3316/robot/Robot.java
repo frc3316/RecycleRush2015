@@ -30,18 +30,10 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Robot extends IterativeRobot
 {
-<<<<<<< HEAD
-=======
-	public static Chassis chassis;
-	public static Anschluss anschluss;
-	public static RollerGripper rollerGripper;
-
     Command autonomousCommand;
     
     public static Config config;
->>>>>>> master
     public static DBugLogger logger;
-	public static Config config;
     /*
      * Human IO
      */
@@ -57,6 +49,7 @@ public class Robot extends IterativeRobot
 	public static Chassis chassis;
 	public static Anschluss anschluss;
 	public static Stacker stacker;
+	public static RollerGripper rollerGripper;
 	
     /**
      * This function is run when the robot is first started up and should be
@@ -75,15 +68,13 @@ public class Robot extends IterativeRobot
     	 */
     	actuators = new Actuators();
     	sensors = new Sensors();
-<<<<<<< HEAD
     	/*
     	 * Subsystems
     	 */
     	chassis = new Chassis();
 		anschluss = new Anschluss();
-=======
     	rollerGripper = new RollerGripper();
->>>>>>> master
+    	stacker = new Stacker();
     }
 	
 	public void disabledPeriodic() {
