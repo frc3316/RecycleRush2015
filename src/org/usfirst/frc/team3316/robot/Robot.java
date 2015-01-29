@@ -5,11 +5,8 @@ package org.usfirst.frc.team3316.robot;
 
 import org.usfirst.frc.team3316.robot.subsystems.Anschluss;
 import org.usfirst.frc.team3316.robot.subsystems.Chassis;
-<<<<<<< HEAD
 import org.usfirst.frc.team3316.robot.subsystems.Stacker;
-=======
 import org.usfirst.frc.team3316.robot.subsystems.RollerGripper;
->>>>>>> master
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.humanIO.Joysticks;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
