@@ -10,9 +10,8 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public abstract class Roll extends Command {
-
-
+public abstract class Roll extends Command 
+{
     Config config = Robot.config;
 	DBugLogger logger = Robot.logger;
 	protected double speedLeft, speedRight;

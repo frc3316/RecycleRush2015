@@ -26,12 +26,6 @@ public class MoveStackerToFloor extends Command
 
     protected void initialize() 
     {
-    	if(Robot.sensors.stackerSwitchContainer.get()) {
-    		if(Robot.sensors.stackerSwitchTote.get())
-    			Robot.stacker.pushToStack(new GamePiece(GamePieceType.GreyTote));
-    		else
-    			Robot.stacker.pushToStack(new GamePiece(GamePieceType.Container));
-    	}
     	Robot.stacker.openSolenoidStep();
     	Robot.stacker.openSolenoidTote();
     }

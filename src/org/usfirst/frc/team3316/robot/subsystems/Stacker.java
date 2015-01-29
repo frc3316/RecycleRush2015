@@ -58,8 +58,15 @@ public class Stacker extends Subsystem
     
     public boolean isFull() 
     {
-    	//TODO: make this method useful
-    	return false;
+    	int totesCount = 0;
+    	for (GamePiece gp : stack)
+    	{
+    		if (gp.getType() == GamePieceType.GreyTote || gp.getType() == GamePieceType.YellowTote)
+    		{
+    			totesCount++;
+    		}
+    	}
+    	return totesCount >= 6;
     }
     
     public Stack getStack() {
