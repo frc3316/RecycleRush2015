@@ -3,6 +3,9 @@
  */
 package org.usfirst.frc.team3316.robot.subsystems;
 
+import java.util.LinkedList;
+import java.util.function.Consumer;
+
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.chassis.commands.Drive;
 import org.usfirst.frc.team3316.robot.config.Config;
@@ -11,19 +14,99 @@ import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 import com.kauailabs.nav6.frc.IMUAdvanced;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Chassis extends Subsystem 
 {
+	
+	/*
+	 * An object that is passed to navigationThread for integration
+	 */
+	public class NavigationIntegrator
+	{
+		private double x = 0, y = 0;
+		
+		public void add (double dX, double dY)
+		{
+			this.x += dX;
+			this.y += dY;
+		}
+		
+		public double getX ()
+		{
+			return x;
+		}
+		
+		public double getY ()
+		{
+			return y;
+		}
+	}
+	
+	/*
+	 * Thread that calculates the robot's position delta in the fields' x and y axes
+	 * Adds this delta to each 
+	 */
+	private class NavigationThread extends Thread
+	{	
+		private LinkedList <NavigationIntegrator> counterList;
+		private double previousTime = 0;
+		public void run() 
+		{
+			double currentTime = System.currentTimeMillis();
+			double dT = currentTime - previousTime;
+			double heading = Math.toRadians(getHeading());
+			
+			/*
+			 * Calculates speeds in field axes
+			 */
+			double vS, vF; //speeds relative to the robot (forward and sideways)
+			vS = encoderCenter.getRate();
+			//TODO: fix vF calculation to take into account encoderRight
+			vF = encoderLeft.getRate();
+			
+			double vX, vY; //speeds relative to field 
+			vX = vF*Math.sin(heading) + vS*Math.sin(heading+.5);
+			vY = vF*Math.cos(heading) + vS*Math.cos(heading+.5);
+			
+			/*
+			 * Calculates position delta in field axes 
+			 */
+			double dX, dY;
+			dX = vX*dT;
+			dY = vY*dT;
+			
+			for (NavigationIntegrator counter : counterList)
+			{
+				counter.add(dX, dY);
+			}
+			
+			try 
+			{
+				previousTime = currentTime;
+				sleep(5);
+			} 
+			catch (InterruptedException e) 
+			{
+				logger.severe(e);
+			}
+		}
+	}
+	
 	Config config = Robot.config;
 	DBugLogger logger = Robot.logger;
+	
+	private NavigationThread navigationThread;
 	
 	private VictorSP left;
 	private VictorSP right;
 	private VictorSP center;
 	
 	private IMUAdvanced navx;
+	
+	private Encoder encoderLeft, encoderRight, encoderCenter;
 	
 	private double leftScale, rightScale, centerScale;
 	
@@ -36,6 +119,14 @@ public class Chassis extends Subsystem
 		center = Robot.actuators.chassisMotorControllerCenter;
 		
 		navx = Robot.sensors.navx;
+		
+		encoderLeft = Robot.sensors.chassisEncoderLeft;
+		encoderRight = Robot.sensors.chassisEncoderRight;
+		encoderCenter = Robot.sensors.chassisEncoderCenter;
+		
+		navigationThread = new NavigationThread();
+		navigationThread.start();
+		
 		//need to init defaultDrive before setting it as the default drive
 		//defaultDrive = new StrafeDrive ();
 	}
