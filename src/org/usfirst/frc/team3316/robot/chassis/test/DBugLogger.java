@@ -1,6 +1,8 @@
 package org.usfirst.frc.team3316.robot.chassis.test;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.logging.FileHandler;
@@ -24,18 +26,18 @@ public class DBugLogger {
 	}
 	//private int state = 0;
 	
-    public DBugLogger() {
+	public DBugLogger() {
     	logger = Logger.getLogger(DBugLogger.class.getName());
     	Handler[] handlers = logger.getHandlers();
 		for (int i=0; i<handlers.length; i++ ) {
 			handlers[i].setLevel( Level.FINEST );
 		}
 		logger.setLevel(Level.FINEST);
-		logger.setUseParentHandlers(false); //disables console output
+		logger.setUseParentHandlers(true); //disables console output if 'false' is given as a parameter
 		
 		try {
 			String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
-		    fh = new FileHandler("C:/Logs/" + timeStamp + "_logFile.log");  
+		    fh = new FileHandler("C:/Logs/logfile-" + timeStamp + ".log"); 
 		    logger.addHandler(fh);
 		    DBugFormatter formatter = new DBugFormatter();
 	        fh.setFormatter(formatter);
@@ -47,26 +49,21 @@ public class DBugLogger {
 	        e.printStackTrace();  
 	    }
     }
-    
+
     public void severe(String msg) {
     	logger.severe(msg);
     }
-    public void warning(String msg) {
-    	logger.warning(msg);
+    public void severe(Exception e) {
+    	StringWriter sw = new StringWriter();
+		e.printStackTrace(new PrintWriter(sw));
+		String exceptionStackTrace = sw.toString();
+		logger.severe(exceptionStackTrace);
+		logger.severe(e.getMessage());
     }
     public void info(String msg) {
     	logger.info(msg);
     }
-    public void config(String msg) {
-    	logger.config(msg);
-    }
     public void fine(String msg) {
     	logger.fine(msg);
-    }
-    public void finer(String msg) {
-    	logger.finer(msg);
-    }
-    public void finest(String msg) {
-    	logger.finest(msg);
     }
 }

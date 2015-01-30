@@ -79,13 +79,18 @@ public class Chassis extends Subsystem
 		private double previousTime = 0;
 		private double previousHeading = 0;
 		
+		public NavigationThread ()
+		{
+			integratorSet = new HashSet <NavigationIntegrator>();
+		}
+		
 		public void run() 
 		{
 			/*
 			 * Variable init
 			 */
 			double currentTime = System.currentTimeMillis();
-			double dT = currentTime - previousTime;
+			double dT = (currentTime - previousTime)/1000; //conversion to seconds
 			double currentHeading = getHeading();
 			
 			/*
