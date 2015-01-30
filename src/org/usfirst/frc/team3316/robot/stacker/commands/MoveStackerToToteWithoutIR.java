@@ -10,22 +10,20 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class MoveStackerToFloor extends Command 
+public class MoveStackerToToteWithoutIR extends Command 
 {
 	DBugLogger logger = Robot.logger;
 	Config config = Robot.config;
 	
-	private double heightMax, heightMin;
-	
-    public MoveStackerToFloor() 
+    public MoveStackerToToteWithoutIR() 
     {
         requires(Robot.stacker);
     }
 
     protected void initialize() 
     {
-    	Robot.stacker.openSolenoidStep();
-    	Robot.stacker.openSolenoidTote();
+    	Robot.stacker.closeSolenoidStep();
+    	Robot.stacker.closeSolenoidTote();
     }
 
     protected void execute() {
@@ -33,9 +31,7 @@ public class MoveStackerToFloor extends Command
 
     protected boolean isFinished() 
     {
-    	double currentHeight = Robot.stacker.getHeight();
-    	updateHeightRange();
-        return (currentHeight > heightMin) && (currentHeight < heightMax);
+    	return true;
     }
     protected void end() {
     }
@@ -43,16 +39,5 @@ public class MoveStackerToFloor extends Command
     protected void interrupted() {
     }
     
-    private void updateHeightRange ()
-    {
-    	try 
-    	{
-			heightMax = (double) config.get("STACKER_MOVE_STACKER_TO_FLOOR_HEIGHT_MAX");
-			heightMin = (double) config.get("STACKER_MOVE_STACKER_TO_FLOOR_HEIGHT_MIN");
-		} 
-    	catch (ConfigException e) 
-    	{
-			logger.severe(e);
-		}
-    }
+    
 }
