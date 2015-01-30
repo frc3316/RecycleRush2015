@@ -24,86 +24,121 @@ public class Chassis extends Subsystem
 	 */
 	public static class NavigationIntegrator
 	{
-		private double x = 0, y = 0, theta = 0;
+		private double x = 0, y = 0, heading = 0;
 		
 		public void add (double dX, double dY, double dTheta)
 		{
 			this.x += dX;
 			this.y += dY;
-			this.theta += dTheta;
+			this.heading += dTheta;
+			/*
+			 * makes sure heading is in the range (-180) to (180)
+			 */
+			while (heading < -180)
+			{
+				heading += 360;
+			}
+			while (heading > 180)
+			{
+				heading -= 360;
+			}
 		}
 		
+		/**
+		 * Return change in X that has been integrated
+		 */
 		public double getX ()
 		{
 			return x;
 		}
-		
+		/**
+		 * Return change in Y that has been integrated
+		 */
 		public double getY ()
 		{
 			return y;
 		}
-		
-		public double getTheta ()
+		/**
+		 * Return change in heading that has been integrated
+		 * heading returned is in the range (-180) to (180)
+		 */
+		public double getHeading ()
 		{
-			return theta;
-		}
-		
-		public void reset ()
-		{
-			x = 0;
-			y = 0;
-			theta = 0;
+			return heading;
 		}
 	}
 	
 	/*
 	 * Thread that calculates the robot's position in the field
-	 * Calculates position delta and adds it to each integrator in the set
-	 * Also calculates turning rate
+	 * Calculates x, y, and theta delta and adds it to each integrator in the set
+	 * Also calculates turning rate in chassis
 	 */
 	private class NavigationThread extends Thread
 	{	
 		private HashSet <NavigationIntegrator> integratorSet;
 		private double previousTime = 0;
+		private double previousHeading = 0;
 		
 		public void run() 
 		{
+			/*
+			 * Variable init
+			 */
 			double currentTime = System.currentTimeMillis();
 			double dT = currentTime - previousTime;
-			double heading = Math.toRadians(getHeading());
-			
-			/*
-			 * Calculates change in heading
-			 */
-			//TODO: implement turning rate calculation
+			double currentHeading = getHeading();
 			
 			/*
 			 * Calculates speeds in field axes
 			 */
 			double vS, vF; //speeds relative to the robot (forward and sideways)
 			vS = encoderCenter.getRate();
-			//TODO: check this calculation
-			vF = (encoderLeft.getRate() + encoderRight.getRate())/2;
+			vF = (encoderLeft.getRate() + encoderRight.getRate())/2; //TODO: check this calculation
 			
 			double vX, vY; //speeds relative to field 
-			vX = vF*Math.sin(heading) + vS*Math.sin(heading+.5);
-			vY = vF*Math.cos(heading) + vS*Math.cos(heading+.5);
+			vX = vF*Math.sin(Math.toRadians(currentHeading)) + vS*Math.sin(Math.toRadians(currentHeading)+.5);
+			vY = vF*Math.cos(Math.toRadians(currentHeading)) + vS*Math.cos(Math.toRadians(currentHeading)+.5);
 			
 			/*
-			 * Calculates position delta in field axes 
+			 * Calculates position delta in field axes
 			 */
 			double dX, dY, dTheta;
 			dX = vX*dT;
 			dY = vY*dT;
 			
-			for (NavigationIntegrator integrator : integratorSet)
+			dTheta = currentHeading - previousHeading;
+			//Since heading is in the range (-180) to (180), when 
+			//completing a full turn dTheta will be an absurdly big value
+			//Checks if dTheta is an absurdly big value and fixes it
+			if (dTheta > 350) //350 is a big number
 			{
-				integrator.add(dX, dY, 0);
+				dTheta -= 360;
+			}
+			if (dTheta < -350) //-350 is a big a number
+			{
+				dTheta += 360;
 			}
 			
+			/*
+			 * Adds all of the deltas to each integrator
+			 */
+			for (NavigationIntegrator integrator : integratorSet)
+			{
+				integrator.add(dX, dY, dTheta);
+			}
+			
+			/*
+			 * Calculates angular velocity
+			 */
+			angularVelocity = (dTheta)/dT;
+			
+			/*
+			 * Setting variables for next run
+			 */
+			previousTime = currentTime;
+			previousHeading = currentHeading;
 			try 
 			{
-				previousTime = currentTime;
 				sleep(5);
 			} 
 			catch (InterruptedException e) 
@@ -137,6 +172,10 @@ public class Chassis extends Subsystem
 	private Encoder encoderLeft, encoderRight, encoderCenter;
 	
 	private double leftScale, rightScale, centerScale;
+	
+	private double headingOffset = 0;
+	
+	private double angularVelocity = 0; //this is constantly calculated by NavigationThread
 	
 	Drive defaultDrive;
 	
@@ -189,8 +228,13 @@ public class Chassis extends Subsystem
     
     public double getHeading ()
     {
-    	//TODO: need to check whether its pitch or roll, but it's not going to be yaw for sure
-    	return navx.getYaw();
+    	//TODO: need to check whether its Yaw, Pitch or Roll
+    	return navx.getYaw() + headingOffset;
+    }
+    
+    public void setHeadingOffset (double offset)
+    {
+    	this.headingOffset = offset;
     }
     
     public double getAngularVelocity ()
@@ -201,15 +245,17 @@ public class Chassis extends Subsystem
     
     public double getAccelX ()
     {
-    	//TODO: need to check whether its Y or Z, but it's not going to be X fo sho
+    	//TODO: need to check whether its X, Y or Z
     	return navx.getWorldLinearAccelX();
     }
     
     public double getAccelY ()
     {
-    	//TODO: need to check whether its X or Z, but it's not going to be Y fo sho
+    	//TODO: need to check whether its X, Y or Z
     	return navx.getWorldLinearAccelY();
     }
+    
+    //TODO: check whether Z acceleration is necessary
     
     public boolean addNavigationIntegrator (NavigationIntegrator integrator)
     {
@@ -220,8 +266,5 @@ public class Chassis extends Subsystem
     {
     	return navigationThread.removeIntegrator(integrator);
     }
-    
-    //not sure if Z acceleration is necessary
-    //public double getAccelZ () {}
 }
 
