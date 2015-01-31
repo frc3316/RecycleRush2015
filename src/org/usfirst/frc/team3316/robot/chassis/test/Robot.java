@@ -181,16 +181,29 @@ public class Robot
 		logger.fine("Robot Oriented Navigation Test");
 		logger.fine("Navigation Thread and Integrator test");
 		
-		NavigationIntegrator integrator;
-		integrator = new NavigationIntegrator();
+		NavigationIntegrator integrator1, integrator2;
+		integrator1 = new NavigationIntegrator();
+		integrator2 = new NavigationIntegrator();
 		
 		NavigationThread thread = new NavigationThread();
-		logger.fine(String.valueOf(thread.addIntegrator(integrator)));
+		logger.fine(String.valueOf(thread.addIntegrator(integrator1)));
 		thread.start();
 		
 		for (int g = 0; g <= 54; g++)
 		{
+			if (g == 20)
+			{
+				logger.fine(String.valueOf(thread.addIntegrator(integrator2)));
+			}
 			heading = (double)g*7.5;
+			while (heading > 180)
+			{
+				heading -= 360;
+			}
+			while (heading < -180)
+			{
+				heading += 360;
+			}
 			for (int h = -3; h <= 3; h++)
 			{
 				encoderCenter.setRate((double)0.75*h);

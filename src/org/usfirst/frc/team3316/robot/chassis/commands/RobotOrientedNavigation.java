@@ -65,9 +65,9 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	
 	private NavigationIntegrator integrator;
 	
-	private double setpointX, setpointY, setpointHeading;
-	
 	private PIDController pidControllerX, pidControllerY, pidControllerHeading;
+	
+	private double setpointX, setpointY, setpointHeading;
 	
 	private double outputX, outputY, outputHeading;
 	
@@ -83,28 +83,28 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 		/*
 		 * Init of pid controllers
 		 */
-		pidControllerX = new PIDController(0, 
-										   0, 
-										   0, 
-										   new PIDSourceX(), 
-										   new PIDOutputX(), 
-										   20);
+		pidControllerX = new PIDController(0, //Kp
+										   0, //Ki
+										   0, //Kd
+										   new PIDSourceX(), //PIDSource 
+										   new PIDOutputX(), //PIDOutput
+										   20); //Update rate in ms
 		pidControllerX.setOutputRange(-1, 1);
 		
-		pidControllerY = new PIDController(0, 
-										   0, 
-										   0, 
-										   new PIDSourceY(), 
-										   new PIDOutputY(), 
-										   20);
+		pidControllerY = new PIDController(0, //Kp
+										   0, //Ki
+										   0, //Kd
+										   new PIDSourceY(), //PIDSource 
+										   new PIDOutputY(), //PIDOutput
+										   20); //Update rate in ms
 		pidControllerY.setOutputRange(-1, 1);
 		
-		pidControllerHeading = new PIDController(0, 
-												 0, 
-												 0, 
-												 new PIDSourceHeading(), 
-												 new PIDOutputHeading(), 
-												 20);
+		pidControllerHeading = new PIDController(0, //Kp
+												 0, //Ki
+												 0, //Kd
+												 new PIDSourceHeading(), //PIDSource 
+												 new PIDOutputHeading(), //PIDOutput
+												 20); //Update rate in ms
 		pidControllerHeading.setOutputRange(-1, 1);
 		pidControllerHeading.setInputRange(-180, 180);
 		pidControllerHeading.setContinuous(true);
@@ -129,8 +129,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	protected void set ()
 	{
 		updatePIDVariables();
-		setCartesianVector(outputX, outputY);
-		orientDriveToField();
+		setFieldVector(outputX, outputY);
 		setRotation(outputHeading);
 	}
 	

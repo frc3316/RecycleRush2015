@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Chassis extends Subsystem 
 {	
 	/*
-	 * An object that is passed to navigationThread for integration
+	 * An object that is passed to NavigationThread for integration
 	 */
 	public static class NavigationIntegrator
 	{
@@ -217,20 +217,6 @@ public class Chassis extends Subsystem
     	return true;
     }
     
-    private void updateScales ()
-    {
-    	try
-    	{
-    		leftScale = (double)config.get("chassis_LeftScale");
-    		rightScale = (double)config.get("chassis_RightScale");
-    		centerScale = (double)config.get("chassis_CenterScale");
-    	}
-    	catch (ConfigException e)
-    	{
-    		logger.severe(e);
-    	}
-    }
-    
     public double getHeading ()
     {
     	//TODO: need to check whether its Yaw, Pitch or Roll
@@ -270,6 +256,20 @@ public class Chassis extends Subsystem
     public boolean removeNavigationIntegrator (NavigationIntegrator integrator)
     {
     	return navigationThread.removeIntegrator(integrator);
+    }
+    
+    private void updateScales ()
+    {
+    	try
+    	{
+    		leftScale = (double)config.get("chassis_LeftScale");
+    		rightScale = (double)config.get("chassis_RightScale");
+    		centerScale = (double)config.get("chassis_CenterScale");
+    	}
+    	catch (ConfigException e)
+    	{
+    		logger.severe(e);
+    	}
     }
 }
 

@@ -6,43 +6,31 @@ public class FieldOrientedDrive extends RobotOrientedDrive
 {	
 	protected void set ()
 	{
-		setCartesianVector(getRightX(), getRightY());
-		orientDriveToField();
+		setFieldVector(getRightX(), getRightY());
 		setRotation(getLeftX());
 	}
 	
-	protected void orientDriveToField ()
-	{
-		double x = this.center;
-		double y;
-		if (this.left == this.right)
-		{
-			y = this.left;
-		}
-		else //if left does not equal right then something went wrong
-		{
-			return;
-		}
+	protected void setFieldVector (double x, double y)
+	{	
+		double r = Math.sqrt(x*x + y*y); //The vector's magnitude
+		double vectorAngle =  Math.atan2(x, y); //Vector angle from y axis, clockwise is positive and counter-clockwise is negative
+		double robotAngle = Robot.chassis.getHeading(); //Robot angle
+		double angleDiff = vectorAngle - robotAngle; //The angle of the vector oriented to the robot
 		
-		double r = Math.sqrt(x*x + y*y);
-		double vectorAngle =  Math.atan2(x, y); //angle from y axis, clockwise is positive and counter-clockwise is negative
-		double robotAngle = Robot.chassis.getHeading();
-		double angleDiff = vectorAngle - robotAngle;
+		/*
+		 * Breaks down the field vector to the robot's axes
+		 */
+		double outputX = Math.sin(angleDiff)*r;
+		double outputY = Math.cos(angleDiff)*r;
 		
-		this.right = this.left = Math.cos(angleDiff)*r;
-		this.center = Math.sin(angleDiff)*r;
-		normalizeActuatorValues();
-	}
-	
-	private void normalizeActuatorValues ()
-	{
-		//max is the largest abs value between left, right and center
-		double max = Math.max(Math.max(Math.abs(left), Math.abs(right)), Math.abs(center));
+		//Normalize outputs
+		double max = Math.max(Math.abs(outputX), Math.abs(outputY));
 		if (max > 1)
 		{
-			left /= max;
-			right /= max;
-			center /= max;
+			outputX /= max;
+			outputY /= max;
 		}
+		
+		setRobotVector(outputX, outputY);
 	}
 }

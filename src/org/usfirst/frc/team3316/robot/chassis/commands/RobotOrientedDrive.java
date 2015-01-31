@@ -8,11 +8,11 @@ public class RobotOrientedDrive extends StrafeDrive
 	
 	protected void set ()
 	{
-		setCartesianVector(getRightX(), getRightY());
+		setRobotVector(getRightX(), getRightY());
 		setRotation(getLeftX());
 	}
 	
-	protected void setCartesianVector (double x, double y)
+	protected void setRobotVector (double x, double y)
 	{
 		this.left = y;
 		this.right = y;
@@ -23,6 +23,7 @@ public class RobotOrientedDrive extends StrafeDrive
 	{
 		//TODO: figure out PID rotation
 		//TODO: modify code so it works with max throttle lower than 1
+		
 		/*
 		 * the following code sets left and right so that:
 		 * for turning clockwise, left > right
