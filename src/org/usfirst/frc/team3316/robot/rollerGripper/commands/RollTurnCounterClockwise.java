@@ -9,8 +9,8 @@ public class RollTurnCounterClockwise extends Roll{
     {
     	try
     	{
-			speedLeft = (double) config.get("rollerGripper_RollTurnCounterClockwise_Speed_Left");
-			speedRight = (double) config.get("rollerGripper_RollTurnCounterClockwise_Speed_Right");
+			speedLeft = (double) config.get("rollerGripper_RollTurnCounterClockwise_SpeedLeft");
+			speedRight = (double) config.get("rollerGripper_RollTurnCounterClockwise_SpeedRight");
 		} 
     	catch (ConfigException e) 
     	{

@@ -89,23 +89,37 @@ public class Config
 		addToVariables("chassisLeftScale", -1);
 		addToVariables("chassisRightScale", 1);
 		addToVariables("chassisCenterScale", 1);
+		/*
+		 * Roller Gripper
+		 */
 		
-		addToConstants("ROLLER_GRIPPER_IR_LEFT", 0);
-		addToConstants("ROLLER_GRIPPER_IR_RIGHT", 1);
+		/*
+		 * Constants
+		 */
+			//Subsystem
+				addToConstants("ROLLER_GRIPPER_IR_LEFT", 0);
+				addToConstants("ROLLER_GRIPPER_IR_RIGHT", 1);
 		
-		addToVariables("rollerGripper_RollIn_SpeedLeft", 0.5);
-		addToVariables("rollerGripper_RollIn_SpeedRight", 0.5);
+		/*
+		 * Variables
+		 */
+			//Subsystem
+				addToVariables("rollerGripper_LeftScale", -1);
+				addToVariables("rollerGripper_RightScale", 1);
+			//RollIn
+				addToVariables("rollerGripper_RollIn_SpeedLeft", 0.5);
+				addToVariables("rollerGripper_RollIn_SpeedRight", 0.5);
 		
-		addToVariables("rollerGripper_RollOut_SpeedLeft", -0.5);
-		addToVariables("rollerGripper_RollOut_SpeedRight", -0.5);
+			//RollOut
+				addToVariables("rollerGripper_RollOut_SpeedLeft", -0.5);
+				addToVariables("rollerGripper_RollOut_SpeedRight", -0.5);
 		
-		addToVariables("rollerGripper_RollTurnClockwise_SpeedLeft", 0.5);
-		addToVariables("rollerGripper_RollTurnClockwise_SpeedRight", -0.5);
+			//RollTurnClockwise
+				addToVariables("rollerGripper_RollTurnClockwise_SpeedLeft", 0.5);
+				addToVariables("rollerGripper_RollTurnClockwise_SpeedRight", -0.5);
 		
-		addToVariables("rollerGripper_RollTurnCounterClockwise_SpeedLeft", 0.5);
-		addToVariables("rollerGripper_RollTurnCounterClockwise_SpeedRight", -0.5);
-		
-		addToVariables("rollerGripperLeftScale", -1);
-		addToVariables("rollerGripperRightScale", 1);
+			//RollTurnCounterClockwise
+				addToVariables("rollerGripper_RollTurnCounterClockwise_SpeedLeft", 0.5);
+				addToVariables("rollerGripper_RollTurnCounterClockwise_SpeedRight", -0.5);
 	}
 }
