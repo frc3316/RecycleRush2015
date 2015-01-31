@@ -30,7 +30,6 @@ public class Actuators
 	/*
 	 * Stacker
 	 */
-	
 	public DoubleSolenoid stackerSolenoidStepLeft;
 	public DoubleSolenoid stackerSolenoidStepRight;
 	
@@ -57,7 +56,9 @@ public class Actuators
 			/*
 			 * Stacker
 			 */
-			
+			//CR: Find better names for the solenoids, and exactly what they mean here.
+			//    Since you need to set both 'step solenoids' and 'tote solenoids', to get to tote height
+			//    it doesn't make sense to call one of them tote.
 			stackerSolenoidStepLeft = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_STEP_LEFT_FORWARD"), 
 														 (int) config.get("STACKER_SOLENOID_STEP_LEFT_REVERSE"));
 			

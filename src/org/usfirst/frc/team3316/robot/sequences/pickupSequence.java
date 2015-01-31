@@ -14,6 +14,7 @@ public class pickupSequence extends CommandGroup
 {    
     public pickupSequence() 
     {
+		//CR: we can't start a pickup sequences if were not in Tote height
         addSequential(new RollIn());
         addSequential(new MoveStackerToFloor());
         addSequential(new MoveStackerToTote());
