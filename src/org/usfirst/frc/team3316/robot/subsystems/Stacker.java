@@ -24,15 +24,15 @@ public class Stacker extends Subsystem
     Config config = Robot.config;
     DBugLogger logger = Robot.logger;
     
-    private DoubleSolenoid solenoidStepLeft, 
-    					   solenoidStepRight, 
-    					   solenoidToteLeft, 
-    					   solenoidToteRight; //lifting solenoids
+    private DoubleSolenoid solenoidUpperLeft, 
+    					   solenoidUpperRight, 
+    					   solenoidBottomLeft, 
+    					   solenoidBottomRight; //lifting solenoids
     
     private DoubleSolenoid solenoidContainer; //the solenoid that holds the containers
     
     private AnalogInput heightIR; //infrared
-    private DigitalInput switchTote, switchContainer; //the switches that signify if there's a tote or a container in the stacker
+    private DigitalInput switchTote, switchGamePiece; //the switches that signify if there's a tote or a container in the stacker
     
     private double heightScale, heightOffset; //variables to make the output of getHeight have a connection to the real world
     
@@ -40,80 +40,49 @@ public class Stacker extends Subsystem
 
     public Stacker () 
     {
-    	solenoidStepLeft = Robot.actuators.stackerSolenoidStepLeft;
-    	solenoidStepRight = Robot.actuators.stackerSolenoidStepRight;
+    	solenoidUpperLeft = Robot.actuators.stackerSolenoidUpperLeft;
+    	solenoidUpperRight = Robot.actuators.stackerSolenoidUpperRight;
     	
-    	solenoidToteLeft = Robot.actuators.stackerSolenoidToteLeft;
-    	solenoidToteRight = Robot.actuators.stackerSolenoidToteRight;
+    	solenoidBottomLeft = Robot.actuators.stackerSolenoidBottomLeft;
+    	solenoidBottomRight = Robot.actuators.stackerSolenoidBottomRight;
     	
     	solenoidContainer = Robot.actuators.stackerSolenoidContainer;
     	
     	heightIR = Robot.sensors.stackerHeightIR;
     	
     	switchTote = Robot.sensors.stackerSwitchTote;
-    	switchContainer = Robot.sensors.stackerSwitchContainer;
+    	switchGamePiece = Robot.sensors.stackerSwitchGamePiece;
     	
     	stack = new Stack <GamePiece>();
     }
     
-	//CR: Sort the functions according to interface with the Stack or interface with actuators
-    public boolean isFull() 
-    {
-		//CR: I want to see more logical ability behind 'full stack':
-		//     * If we have X number of totes and a container
-		//     * If we have Y number of totes but no container
-		//     * If we have Z number of yellow totes
-		//    and X, Y and Z should be configurable
-    	int totesCount = 0;
-    	for (GamePiece gp : stack)
-    	{
-    		if (gp.getType() == GamePieceType.GreyTote || gp.getType() == GamePieceType.YellowTote)
-    		{
-    			totesCount++;
-    		}
-    	}
-    	return totesCount >= 6;
-    }
-    
-    public Stack getStack() {
-    	return stack;
-    }
-    
-    public void pushToStack(GamePiece g) {
-    	stack.push(g);
-    }
-    
     public void initDefaultCommand() {}
     
-	//CR: Since the subsystem should protect the machine - sit with Yiftach and make sure you
-	//    understand 100% whats possible operations the machine can do.
-	//    i.e: stacker shouldn't be able to go down to floor with the container solenoids
-	//         pushing on the game-piece...
-    public boolean openSolenoidStep ()
+    public boolean openSolenoidUpper ()
     {
-    	solenoidStepLeft.set(DoubleSolenoid.Value.kForward);
-    	solenoidStepRight.set(DoubleSolenoid.Value.kForward);
+    	solenoidUpperLeft.set(DoubleSolenoid.Value.kForward);
+    	solenoidUpperRight.set(DoubleSolenoid.Value.kForward);
     	return true;
     }
     
-    public boolean closeSolenoidStep ()
+    public boolean closeSolenoidUpper ()
     {
-    	solenoidStepLeft.set(DoubleSolenoid.Value.kReverse);
-    	solenoidStepRight.set(DoubleSolenoid.Value.kReverse);
+    	solenoidUpperLeft.set(DoubleSolenoid.Value.kReverse);
+    	solenoidUpperRight.set(DoubleSolenoid.Value.kReverse);
     	return true;
     }
     
-    public boolean openSolenoidTote ()
+    public boolean openSolenoidBottom ()
     { 
-    	solenoidToteLeft.set(DoubleSolenoid.Value.kForward);
-    	solenoidToteRight.set(DoubleSolenoid.Value.kForward);
+    	solenoidBottomLeft.set(DoubleSolenoid.Value.kForward);
+    	solenoidBottomRight.set(DoubleSolenoid.Value.kForward);
     	return true;
     }
     
-    public boolean closeSolenoidTote ()
+    public boolean closeSolenoidBottom ()
     {
-    	solenoidToteLeft.set(DoubleSolenoid.Value.kReverse);
-    	solenoidToteRight.set(DoubleSolenoid.Value.kReverse);
+    	solenoidBottomLeft.set(DoubleSolenoid.Value.kReverse);
+    	solenoidBottomRight.set(DoubleSolenoid.Value.kReverse);
     	return true;
     }
     
@@ -148,31 +117,40 @@ public class Stacker extends Subsystem
 		}
     }
     
-    public void addToStackContainer ()
-    {
-    	stack.add(new GamePiece(GamePieceType.Container));
-    }
-    
-    public void addToStackGreyTote ()
-    {
-    	stack.add(new GamePiece(GamePieceType.GreyTote));
-    }
-    
-    public void addToStackYellowTote ()
-    {
-    	stack.add(new GamePiece(GamePieceType.YellowTote));
-    }
-    
-	//CR: The switches are configured such that when both are pressed it's a tote and when
-	//    and when only one is pressed - it's a container.
     public boolean getSwitchTote ()
     {
     	return switchTote.get();
     }
     
-    public boolean getSwitchContainer ()
+    public boolean getSwitchGamePiece ()
     {
-    	return switchContainer.get();
+    	return switchGamePiece.get();
+    }
+    
+    public GamePiece getStackBase ()
+    {
+    	return stack.get(0);
+    }
+    
+    public boolean isFull() 
+    {
+    	int totesCount = 0;
+    	for (GamePiece gp : stack)
+    	{
+    		if (gp.getType() == GamePieceType.GreyTote || gp.getType() == GamePieceType.YellowTote)
+    		{
+    			totesCount++;
+    		}
+    	}
+    	return totesCount >= 6;
+    }
+    
+    public Stack getStack() {
+    	return stack;
+    }
+    
+    public void pushToStack(GamePiece g) {
+    	stack.push(g);
     }
 }
 

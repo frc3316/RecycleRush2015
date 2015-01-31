@@ -15,17 +15,11 @@ public class MoveStackerToStep extends MoveStacker
 	public MoveStackerToStep()
     {
         super("STACKER_MOVE_STACKER_TO_STEP_HEIGHT_MAX", "STACKER_MOVE_STACKER_TO_STEP_HEIGHT_MIN");
-        requires(Robot.stacker);
-    }
-    
-    protected boolean isFinished() 
-    {
-		double currentHeight = Robot.stacker.getHeight();
-        return (currentHeight > heightMin) && (currentHeight < heightMax);
     }
 
-	protected void setSolenoids() {
-		Robot.stacker.closeSolenoidStep();
-    	Robot.stacker.openSolenoidTote();
+	protected void setSolenoids() 
+	{
+		Robot.stacker.closeSolenoidUpper();
+    	Robot.stacker.openSolenoidBottom();
 	}
 }

@@ -30,11 +30,11 @@ public class Actuators
 	/*
 	 * Stacker
 	 */
-	public DoubleSolenoid stackerSolenoidStepLeft;
-	public DoubleSolenoid stackerSolenoidStepRight;
+	public DoubleSolenoid stackerSolenoidUpperLeft;
+	public DoubleSolenoid stackerSolenoidUpperRight;
 	
-	public DoubleSolenoid stackerSolenoidToteLeft;
-	public DoubleSolenoid stackerSolenoidToteRight;
+	public DoubleSolenoid stackerSolenoidBottomLeft;
+	public DoubleSolenoid stackerSolenoidBottomRight;
 	
 	public DoubleSolenoid stackerSolenoidContainer;
 	
@@ -59,17 +59,17 @@ public class Actuators
 			//CR: Find better names for the solenoids, and exactly what they mean here.
 			//    Since you need to set both 'step solenoids' and 'tote solenoids', to get to tote height
 			//    it doesn't make sense to call one of them tote.
-			stackerSolenoidStepLeft = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_STEP_LEFT_FORWARD"), 
-														 (int) config.get("STACKER_SOLENOID_STEP_LEFT_REVERSE"));
+			stackerSolenoidUpperLeft = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_UPPER_LEFT_FORWARD"), 
+														 (int) config.get("STACKER_SOLENOID_UPPER_LEFT_REVERSE"));
 			
-			stackerSolenoidStepRight = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_STEP_RIGHT_FORWARD"), 
-					 									  (int) config.get("STACKER_SOLENOID_STEP_RIGHT_REVERSE"));
+			stackerSolenoidUpperRight = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_UPPER_RIGHT_FORWARD"), 
+					 									  (int) config.get("STACKER_SOLENOID_UPPER_RIGHT_REVERSE"));
 			
-			stackerSolenoidToteLeft = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_TOTE_LEFT_FORWARD"), 
-														 (int) config.get("STACKER_SOLENOID_TOTE_LEFT_REVERSE"));
+			stackerSolenoidBottomLeft = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_BOTTOM_LEFT_FORWARD"), 
+														 (int) config.get("STACKER_SOLENOID_BOTTOM_LEFT_REVERSE"));
 			
-			stackerSolenoidToteRight = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_TOTE_RIGHT_FORWARD"), 
-														  (int) config.get("STACKER_SOLENOID_TOTE_RIGHT_REVERSE"));
+			stackerSolenoidBottomRight = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_BOTTOM_RIGHT_FORWARD"), 
+														  (int) config.get("STACKER_SOLENOID_BOTTOM_RIGHT_REVERSE"));
 			
 			stackerSolenoidContainer = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_CONTAINER_FORWARD"),
 														  (int) config.get("STACKER_SOLENOID_CONTAINER_REVERSE"));

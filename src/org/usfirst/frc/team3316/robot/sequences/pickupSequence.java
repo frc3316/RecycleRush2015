@@ -18,35 +18,18 @@ public class pickupSequence extends CommandGroup
 	DBugLogger logger = Robot.logger;
 	Config config = Robot.config;
 	
-	private double heightMin, heightMax;
-	
-	protected void initialize() {
-		double currentHeight = Robot.stacker.getHeight();
-		updateHeightRange("STACKER_MOVE_STACKER_TO_TOTE_HEIGHT_MAX", "STACKER_MOVE_STACKER_TO_TOTE_HEIGHT_MIN");
-        if ((currentHeight > heightMin) && (currentHeight < heightMax))
+	protected void initialize() 
+	{
+		if (Robot.stacker.isFull())
 		{
-			addSequential(new RollIn());
-	        addSequential(new MoveStackerToFloor());
-	        addSequential(new MoveStackerToTote());
+			this.cancel();
 		}
-		
-		super.initialize();
 	}
     public pickupSequence() 
     {
-		//CR: we can't start a pickup sequences if were not in Tote height
-    }
-    
-    protected void updateHeightRange (String heightMaxName, String heightMinName)
-    {
-    	try 
-    	{
-			heightMax = (double) config.get(heightMaxName);
-			heightMin = (double) config.get(heightMinName);
-		} 
-    	catch (ConfigException e) 
-    	{
-			logger.severe(e);
-		}
+    	addSequential(new MoveStackerToTote()); //makes sure the new gamepiece can enter
+    	addSequential(new RollIn());
+        addSequential(new MoveStackerToFloor());
+        addSequential(new MoveStackerToTote());
     }
 }

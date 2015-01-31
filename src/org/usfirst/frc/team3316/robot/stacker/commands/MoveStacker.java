@@ -17,10 +17,12 @@ public abstract class MoveStacker extends Command
 	
 	protected double heightMin, heightMax;
 	
+	String heightMaxName = "", heightMinName = "";
+	
     public MoveStacker(String heightMaxName, String heightMinName)
     {
         requires(Robot.stacker);
-        updateHeightRange(heightMaxName, heightMinName);
+        this.heightMaxName = heightMaxName;
     }
 
     protected void initialize()
@@ -30,9 +32,11 @@ public abstract class MoveStacker extends Command
 
     protected void execute() {}
 
-    protected boolean isFinished() 
+    protected boolean isFinished()
     {
-    	return true;
+    	updateHeightRange(heightMaxName, heightMinName);
+    	double currentHeight = Robot.stacker.getHeight();
+    	return (currentHeight > heightMin) && (currentHeight < heightMax);
     }
     
     protected void end() {}

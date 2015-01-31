@@ -11,17 +11,22 @@ public class RollIn extends Roll
 {
 	protected boolean isFinished ()
 	{
-		return Robot.sensors.stackerSwitchContainer.get(); //is finished when a GamePiece(tote/container) is inside the stacker
+		//Finishes one second after gamepiece switch is pressed
+		if (Robot.sensors.stackerSwitchGamePiece.get())
+		{
+			setTimeout(1);
+		}
+		return isTimedOut();
 	}
 	
 	protected void end()
 	{
-		//CR: What if the container MS is pressed a code-cycle before the tote one?
-		//    create a loop that checks for number of iterations before pushing the GP to stack.
-		//    (this will be implemented in 'isFinished')
-		if (Robot.sensors.stackerSwitchContainer.get()) 
+		super.end();
+		/*
+		 * Adds Gamepiece collected to the stack
+		 */
+		if (Robot.sensors.stackerSwitchGamePiece.get()) 
     	{
-			new WaitCommand(1); // wait a second and then check if the tote switch is pressed
     		if(Robot.sensors.stackerSwitchTote.get())
     		{
     			Robot.stacker.pushToStack(new GamePiece(GamePieceType.GreyTote));

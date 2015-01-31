@@ -17,17 +17,12 @@ public class MoveStackerToFloor extends MoveStacker
     public MoveStackerToFloor() 
     {
         super("STACKER_MOVE_STACKER_TO_FLOOR_HEIGHT_MAX", "STACKER_MOVE_STACKER_TO_FLOOR_HEIGHT_MIN");
-        requires(Robot.stacker);
-    }
-    
-    protected boolean isFinished() 
-    {
-		double currentHeight = Robot.stacker.getHeight();
-        return (currentHeight > heightMin) && (currentHeight < heightMax);
     }
 
-	protected void setSolenoids() {
-		Robot.stacker.openSolenoidStep();
-    	Robot.stacker.openSolenoidTote();
+	protected void setSolenoids() 
+	{
+		Robot.stacker.closeSolenoidContainer();
+		Robot.stacker.openSolenoidUpper();
+		Robot.stacker.openSolenoidBottom();
 	}
 }
