@@ -106,14 +106,44 @@ public class Config
 			/*
 			 * Variables
 			 */
+
+			 //Subsystem
 			addToVariables("chassis_LeftScale", -1);
 			addToVariables("chassis_RightScale", 1);
 			addToVariables("chassis_CenterScale", 1);
 			
+			//TankDrive
 			addToVariables("chassis_TankDrive_InvertX", false);
 			addToVariables("chassis_TankDrive_InvertY", true);
 			
+			//RobotOrientedDrive
 			addToVariables("chassis_RobotOrientedDrive_TurnScale", 1);
+			
+			//RobotOrientedNavigation
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerX_KP_0", 0);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerX_KI_0", 0);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerX_KD_0", 0);
+			
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerY_KP_0", 0);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerY_KI_0", 0);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerY_KD_0", 0);
+			
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerHeading_KP_0", 0);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerHeading_KI_0", 0);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerHeading_KD_0", 0);
+			
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerX_AbsoluteTolerance", 0);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerY_AbsoluteTolerance", 0);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerHeading_AbsoluteTolerance", 0);
+			
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerX_MinimumOutput", -1);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerX_MaximumOutput", 1);
+			
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerY_MinimumOutput", -1);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerY_MaximumOutput", 1);
+			
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerHeading_MinimumOutput", -1);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerHeading_MaximumOutput", 1);
 		/*
 		 * Anschluss
 		 */

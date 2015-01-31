@@ -1,9 +1,9 @@
 package org.usfirst.frc.team3316.robot.chassis.test;
 
+import org.usfirst.frc.team3316.robot.Robot;
+
 public class FieldOrientedDrive extends RobotOrientedDrive 
 {	
-	private double robotAngle = 0;
-	
 	protected void set ()
 	{
 		setCartesianVector(getRightX(), getRightY());
@@ -26,22 +26,12 @@ public class FieldOrientedDrive extends RobotOrientedDrive
 		
 		double r = Math.sqrt(x*x + y*y);
 		double vectorAngle =  Math.atan2(x, y); //angle from y axis, clockwise is positive and counter-clockwise is negative
-		//double robotAngle = Robot.chassis.getHeading();
+		double robotAngle = Robot.chassis.getHeading();
 		double angleDiff = vectorAngle - robotAngle;
 		
 		this.right = this.left = Math.cos(angleDiff)*r;
 		this.center = Math.sin(angleDiff)*r;
 		normalizeActuatorValues();
-	}
-	
-	public double getRobotAngle ()
-	{
-		return robotAngle;
-	}
-	
-	public void setRobotAngle (double angle)
-	{
-		robotAngle = angle;
 	}
 	
 	private void normalizeActuatorValues ()
@@ -55,5 +45,4 @@ public class FieldOrientedDrive extends RobotOrientedDrive
 			center /= max;
 		}
 	}
-	
 }

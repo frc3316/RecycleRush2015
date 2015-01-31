@@ -1,9 +1,10 @@
 package org.usfirst.frc.team3316.robot.chassis.test;
 
+import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
+
 public class RobotOrientedDrive extends StrafeDrive 
-{
-	//Config config = Test.config;
-	DBugLogger logger = Test.logger;
+{	
+	double turnScale;
 	
 	protected void set ()
 	{
@@ -20,6 +21,8 @@ public class RobotOrientedDrive extends StrafeDrive
 	
 	protected void setRotation (double requiredTurn)
 	{
+		//TODO: figure out PID rotation
+		//TODO: modify code so it works with max throttle lower than 1
 		/*
 		 * the following code sets left and right so that:
 		 * for turning clockwise, left > right
@@ -28,13 +31,25 @@ public class RobotOrientedDrive extends StrafeDrive
 		 * -1 < left, right < 1 
 		 */
 		double yIn = this.left;
-		//outerWheel is the wheel that would exceed the range of -1 to 1
-		double outerWheel = Math.max(Math.abs(yIn + requiredTurn), Math.abs(yIn - requiredTurn))*Math.signum(yIn);
+		requiredTurn = requiredTurn * turnScale;
+		// The outer wheel is the one which drives faster (absolutely)
+		// Therefore it is the one the would exceed the range of -1 to 1
+		// (when requiredTurn is 0 then it doesn't matter which is outer because were driving straight)
+		// (when yIn is 0 then the outer wheel will be 0, but we fix this later...)
+		double outerWheel = Math.max(Math.abs(yIn + requiredTurn), Math.abs(yIn - requiredTurn)) * Math.signum(yIn);
 		double innerWheel;
 		
-		if (outerWheel > 0)
+		//If outerWheel is 0, sets outerWheel and innerWheel to be equal in reverse directions
+		if (outerWheel == 0)
 		{
-			outerWheel = Math.max(outerWheel, 1); //makes sure outerWheel <= 1
+			outerWheel = requiredTurn;
+			innerWheel = -requiredTurn;
+		}
+		
+		//If outerWheel is not 0, sets innerWheel so it is slower than outerWheel
+		else if (outerWheel > 0) 
+		{
+			outerWheel = Math.min(outerWheel, 1); //makes sure outerWheel <= 1
 			
 			if (requiredTurn > 0)
 			{
@@ -47,7 +62,7 @@ public class RobotOrientedDrive extends StrafeDrive
 		}
 		else
 		{
-			outerWheel = Math.min(outerWheel, -1); //makes sure outerWheel >= -1
+			outerWheel = Math.max(outerWheel, -1); //makes sure outerWheel >= -1
 			
 			if (requiredTurn < 0)
 			{
@@ -59,8 +74,7 @@ public class RobotOrientedDrive extends StrafeDrive
 			}
 		}
 		
-		//if requiredTurn > 0 then the robot needs to turn clockwise
-		if (requiredTurn > 0)
+		if (requiredTurn > 0) //the robot needs to turn clockwise
 		{
 			this.left = outerWheel;
 			this.right = innerWheel;
