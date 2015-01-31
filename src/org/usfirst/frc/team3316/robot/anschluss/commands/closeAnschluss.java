@@ -1,8 +1,5 @@
 package org.usfirst.frc.team3316.robot.anschluss.commands;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;

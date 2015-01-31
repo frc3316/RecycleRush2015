@@ -7,6 +7,7 @@ import java.util.HashSet;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.chassis.commands.Drive;
+import org.usfirst.frc.team3316.robot.chassis.commands.TankDrive;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
@@ -101,8 +102,9 @@ public class Chassis extends Subsystem
 			vF = (encoderLeft.getRate() + encoderRight.getRate()) / 2; //TODO: check this calculation
 			
 			double vX, vY; //speeds relative to field 
-			vX = vF * Math.sin(Math.toRadians(currentHeading)) + vS * Math.sin(Math.toRadians(currentHeading) + (0.5 * Math.Pi));
-			vY = vF * Math.cos(Math.toRadians(currentHeading)) + vS * Math.cos(Math.toRadians(currentHeading) + (0.5 * Math.Pi));
+			double headingRad = Math.toRadians(currentHeading);
+			vX = (vF * Math.sin(headingRad)) + (vS * Math.sin(headingRad + (0.5 * Math.PI)));
+			vY = (vF * Math.cos(headingRad)) + (vS * Math.cos(headingRad + (0.5 * Math.PI)));
 			
 			/*
 			 * Calculates position delta in field axes
@@ -119,7 +121,7 @@ public class Chassis extends Subsystem
 			{
 				dTheta -= 360;
 			}
-			if (dTheta < -350) //-350 is a big a number
+			if (dTheta < -350) //Math.abs(-350) is another big number
 			{
 				dTheta += 360;
 			}

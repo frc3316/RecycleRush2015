@@ -54,19 +54,18 @@ public class Sensors
 			/*
 			 * Chassis
 			 */
-			//CR: Change constants' names
-			chassisEncoderLeft = new Encoder((int)config.get("chassisEncoderLeftA"), 
-											 (int)config.get("chassisEncoderLeftB"), 
+			chassisEncoderLeft = new Encoder((int)config.get("CHASSIS_ENCODER_LEFT_A"), 
+											 (int)config.get("CHASSIS_ENCODER_LEFT_B"), 
 											 false, 
 											 CounterBase.EncodingType.k4X);
 			
-			chassisEncoderRight = new Encoder((int)config.get("chassisEncoderRightA"), 
-											 (int)config.get("chassisEncoderRightB"), 
+			chassisEncoderRight = new Encoder((int)config.get("CHASSIS_ENCODER_RIGHT_A"), 
+											 (int)config.get("CHASSIS_ENCODER_RIGHT_B"), 
 											 false, 
 											 CounterBase.EncodingType.k4X);
 			
-			chassisEncoderCenter = new Encoder((int)config.get("chassisEncoderCenterA"), 
-					 						  (int)config.get("chassisEncoderCenterB"), 
+			chassisEncoderCenter = new Encoder((int)config.get("CHASSIS_ENCODER_CENTER_A"), 
+					 						  (int)config.get("CHASSIS_ENCODER_CENTER_B"), 
 					 						  false, 
 					 						  CounterBase.EncodingType.k4X);
 
@@ -84,9 +83,8 @@ public class Sensors
 			/*
 			 * Anschluss
 			 */
-			//CR: Change constants' names
-			anschlussDigitalInputClosed = new DigitalInput((int) config.get("anschlussDigitalInputClosed")); //check the channel and update it accordingly
-			anschlussDigitalInputOpened = new DigitalInput((int) config.get("anschlussDigitalInputOpened")); //check the channel and update it accordingly
+			anschlussDigitalInputClosed = new DigitalInput((int) config.get("ANSCHLUSS_DIGITAL_INPUT_CLOSED"));
+			anschlussDigitalInputOpened = new DigitalInput((int) config.get("ANSCHLUSS_DIGITAL_INPUT_OPENED"));
 
 			/*
 			 * Roller-Gripper

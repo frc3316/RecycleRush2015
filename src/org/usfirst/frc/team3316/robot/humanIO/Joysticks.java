@@ -13,7 +13,6 @@ import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollTurnClockwise;
 import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollTurnCounterClockwise;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 

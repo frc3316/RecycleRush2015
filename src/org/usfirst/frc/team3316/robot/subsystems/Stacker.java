@@ -2,8 +2,6 @@ package org.usfirst.frc.team3316.robot.subsystems;
 
 import java.util.Stack;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
@@ -27,9 +25,10 @@ public class Stacker extends Subsystem
     private DoubleSolenoid solenoidUpperLeft, 
     					   solenoidUpperRight, 
     					   solenoidBottomLeft, 
-    					   solenoidBottomRight; //lifting solenoids
+    					   solenoidBottomRight; //Lifting solenoids
     
-    private DoubleSolenoid solenoidContainer; //the solenoid that holds the containers
+    private DoubleSolenoid solenoidContainer; //The solenoid that holds the containers
+    private DoubleSolenoid solenoidGripper; //The solenoid that opens and closes the roller gripper
     
     private AnalogInput heightIR; //infrared
     private DigitalInput switchTote, switchGamePiece; //the switches that signify if there's a tote or a container in the stacker
@@ -166,7 +165,7 @@ public class Stacker extends Subsystem
     	return totesCount >= 6;
     }
     
-    public Stack getStack() {
+    public Stack <GamePiece> getStack() {
     	return stack;
     }
     

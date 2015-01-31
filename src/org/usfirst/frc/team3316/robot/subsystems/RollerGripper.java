@@ -6,7 +6,6 @@ import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -18,12 +17,13 @@ public class RollerGripper extends Subsystem
 	Config config = Robot.config;
 	DBugLogger logger = Robot.logger;
 	
-	private VictorSP gripperLeft,
-			 		 gripperRight;
+	private VictorSP gripperLeft, gripperRight;
 	
 	private AnalogInput IRLeft, IRRight;
 	
 	private double leftScale, rightScale;
+	
+	private double angleScale, angleOffset;
 	
     public RollerGripper () 
     {
@@ -44,12 +44,14 @@ public class RollerGripper extends Subsystem
     //TODO: Figure out the calculation for converting from distance to angle
     public double getLeftAngle ()
     { 
-    	return 1/(IRLeft.getVoltage());
+    	updateAngleVariables();
+    	return (angleScale / (IRLeft.getVoltage())) + angleOffset;
     }
     
     public double getRightAngle ()
     {
-    	return 1/(IRRight.getVoltage());
+    	updateAngleVariables();
+    	return (angleScale / (IRRight.getVoltage())) + angleOffset;
     }
     
     private void updateScales ()
@@ -61,7 +63,20 @@ public class RollerGripper extends Subsystem
     	}
     	catch (ConfigException e)
     	{
-    		logger.severe(e.getMessage());
+    		logger.severe(e);
+    	}
+    }
+    
+    private void updateAngleVariables ()
+    {
+    	try
+    	{
+    		angleScale = (double)config.get("rollerGripper_AngleScale");
+    		angleOffset = (double)config.get("rollerGripper_AngleOffset");
+    	}
+    	catch (ConfigException e)
+    	{
+    		logger.severe(e);
     	}
     }
     

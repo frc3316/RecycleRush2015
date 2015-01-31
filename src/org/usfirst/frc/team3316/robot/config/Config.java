@@ -103,6 +103,15 @@ public class Config
 			addToConstants("CHASSIS_MOTOR_CONTROLLER_LEFT", 0);
 			addToConstants("CHASSIS_MOTOR_CONTROLLER_RIGHT", 1);
 			addToConstants("CHASSIS_MOTOR_CONTROLLER_CENTER", 2);
+			
+			addToConstants("CHASSIS_ENCODER_LEFT_A", 2);
+			addToConstants("CHASSIS_ENCODER_LEFT_B", 3);
+			
+			addToConstants("CHASSIS_ENCODER_RIGHT_A", 4);
+			addToConstants("CHASSIS_ENCODER_RIGHT_B", 5);
+			
+			addToConstants("CHASSIS_ENCODER_CENTER_A", 6);
+			addToConstants("CHASSIS_ENCODER_CENTER_B", 7);
 			/*
 			 * Variables
 			 */
@@ -154,14 +163,14 @@ public class Config
 			addToConstants("ANSCHLUSS_MOTOR_SPEED_CLOSE", -0.5);
 			addToConstants("ANSCHLUSS_MOTOR_SPEED_OPEN", 0.5);
 			
-			addToConstants("ANSCHLUSS_BUTTON_CLOSE", 2);
-			addToConstants("ANSCHLUSS_BUTTON_OPEN", 1);
+			addToConstants("ANSCHLUSS_BUTTON_CLOSE", 1);
+			addToConstants("ANSCHLUSS_BUTTON_OPEN", 0);
 			/*
 			 * Variables
 			 */
 		/*
-		* Roller Gripper
-		*/
+		 * Roller Gripper
+		 */
 			
 			/*
 			 * Constants
@@ -190,6 +199,16 @@ public class Config
 				//RollTurnCounterClockwise
 					addToVariables("rollerGripper_RollTurnCounterClockwise_SpeedLeft", 0.5);
 					addToVariables("rollerGripper_RollTurnCounterClockwise_SpeedRight", -0.5);
+					
+		/*
+		 * Stacker
+		 */
+			/*
+			 * Constants
+			 */
+				//Subsystem
+					addToConstants("STACKER_SWITCH_TOTE", 8);
+					addToConstants("STACKER_SWITCH_GAMEPIECE", 9);
 	}
 
 }

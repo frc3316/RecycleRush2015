@@ -33,7 +33,7 @@ public class TankDrive extends Drive
 		}
 		catch (ConfigException e)
 		{
-			logger.severe(e.getMessage());
+			logger.severe(e);
 		}
 	}
 	

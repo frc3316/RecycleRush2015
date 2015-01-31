@@ -1,6 +1,5 @@
 package org.usfirst.frc.team3316.robot.rollerGripper.commands;
 
-import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 
 public class RollTurnCounterClockwise extends Roll{
