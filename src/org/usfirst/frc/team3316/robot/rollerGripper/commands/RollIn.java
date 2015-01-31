@@ -5,6 +5,8 @@ import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.stacker.GamePiece;
 import org.usfirst.frc.team3316.robot.stacker.GamePieceType;
 
+import edu.wpi.first.wpilibj.command.WaitCommand;
+
 public class RollIn extends Roll
 {
 	protected boolean isFinished ()
@@ -19,6 +21,7 @@ public class RollIn extends Roll
 		//    (this will be implemented in 'isFinished')
 		if (Robot.sensors.stackerSwitchContainer.get()) 
     	{
+			new WaitCommand(1); // wait a second and then check if the tote switch is pressed
     		if(Robot.sensors.stackerSwitchTote.get())
     		{
     			Robot.stacker.pushToStack(new GamePiece(GamePieceType.GreyTote));
