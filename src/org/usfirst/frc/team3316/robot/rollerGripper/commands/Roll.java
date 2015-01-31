@@ -10,15 +10,15 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public abstract class Roll extends Command {
-
-
+public abstract class Roll extends Command 
+{
     Config config = Robot.config;
 	DBugLogger logger = Robot.logger;
 	protected double speedLeft, speedRight;
 	
 
-    public Roll() {
+    public Roll() 
+    {
     	requires(Robot.rollerGripper);
     }
     
@@ -35,11 +35,15 @@ public abstract class Roll extends Command {
         return false;
     }
 
-    protected void end() {
+    protected void end() 
+    {
     	Robot.rollerGripper.set(0, 0);
     }
 
-    protected void interrupted() {}
+    protected void interrupted() 
+    {
+    	end();
+    }
     
     protected abstract void setSpeed();
 }

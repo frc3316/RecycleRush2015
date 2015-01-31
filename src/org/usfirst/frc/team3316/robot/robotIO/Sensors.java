@@ -29,10 +29,19 @@ public class Sensors
 	SerialPort serial_port;
 	
 	/*
+	 * Stacker
+	 */	
+	public AnalogInput stackerHeightIR;
+	public DigitalInput stackerSwitchTote;
+	public DigitalInput stackerSwitchGamePiece;
+	// TODO: add level-6 switches
+	
+	/*
 	 * Anschluss
 	 */
 	public DigitalInput anschlussDigitalInputClosed;
 	public DigitalInput anschlussDigitalInputOpened;
+	
 	/*
 	 * Roller-Gripper
 	 */
@@ -45,6 +54,7 @@ public class Sensors
 			/*
 			 * Chassis
 			 */
+			//CR: Change constants' names
 			chassisEncoderLeft = new Encoder((int)config.get("chassisEncoderLeftA"), 
 											 (int)config.get("chassisEncoderLeftB"), 
 											 false, 
@@ -64,8 +74,17 @@ public class Sensors
 			navx = new IMUAdvanced(serial_port);
 			
 			/*
+			 * Stacker
+			 */
+			stackerHeightIR = new AnalogInput((int) config.get("STACKER_IR"));
+			
+			stackerSwitchTote = new DigitalInput((int) config.get("STACKER_SWITCH_TOTE"));
+			stackerSwitchGamePiece = new DigitalInput((int) config.get("STACKER_SWITCH_GAMEPIECE"));
+			
+			/*
 			 * Anschluss
 			 */
+			//CR: Change constants' names
 			anschlussDigitalInputClosed = new DigitalInput((int) config.get("anschlussDigitalInputClosed")); //check the channel and update it accordingly
 			anschlussDigitalInputOpened = new DigitalInput((int) config.get("anschlussDigitalInputOpened")); //check the channel and update it accordingly
 
