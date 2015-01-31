@@ -35,6 +35,7 @@ public class RollerGripper extends Subsystem
     
     public boolean set(double speedLeft, double speedRight) 
     {
+    	updateScales();
      	gripperLeft.set(speedLeft*leftScale);
     	gripperRight.set(speedRight*rightScale);
     	return true;
@@ -51,12 +52,12 @@ public class RollerGripper extends Subsystem
     	return 1/(IRRight.getVoltage());
     }
     
-    public void configUpdate ()
+    private void updateScales ()
     {
     	try
     	{
-    		leftScale = (double)config.get("rollerGripperLeftScale");
-    		rightScale = (double)config.get("rollerGripperRightScale");
+    		leftScale = (double)config.get("rollerGripper_LeftScale");
+    		rightScale = (double)config.get("rollerGripper_RightScale");
     	}
     	catch (ConfigException e)
     	{
