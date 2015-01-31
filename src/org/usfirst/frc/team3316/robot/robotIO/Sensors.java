@@ -41,6 +41,11 @@ public class Sensors
 	 */
 	public DigitalInput anschlussDigitalInputClosed;
 	public DigitalInput anschlussDigitalInputOpened;
+	/*
+	 * Roller-Gripper
+	 */
+	public AnalogInput rollerGripperIRLeft, rollerGripperIRRight;
+	
 	public Sensors ()
 	{
 		try 
@@ -81,6 +86,11 @@ public class Sensors
 			anschlussDigitalInputClosed = new DigitalInput((int) config.get("anschlussDigitalInputClosed")); //check the channel and update it accordingly
 			anschlussDigitalInputOpened = new DigitalInput((int) config.get("anschlussDigitalInputOpened")); //check the channel and update it accordingly
 
+			/*
+			 * Roller-Gripper
+			 */
+			rollerGripperIRLeft = new AnalogInput((int) config.get("ROLLER_GRIPPER_IR_LEFT"));
+			rollerGripperIRRight = new AnalogInput((int) config.get("ROLLER_GRIPPER_IR_RIGHT"));
 		}
 		
 		catch (ConfigException e)

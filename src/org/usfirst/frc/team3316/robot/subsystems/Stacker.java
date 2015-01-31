@@ -2,6 +2,8 @@ package org.usfirst.frc.team3316.robot.subsystems;
 
 import java.util.Stack;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
@@ -54,8 +56,39 @@ public class Stacker extends Subsystem
     	stack = new Stack <GamePiece>();
     }
     
+	//CR: Sort the functions according to interface with the Stack or interface with actuators
+    public boolean isFull() 
+    {
+		//CR: I want to see more logical ability behind 'full stack':
+		//     * If we have X number of totes and a container
+		//     * If we have Y number of totes but no container
+		//     * If we have Z number of yellow totes
+		//    and X, Y and Z should be configurable
+    	int totesCount = 0;
+    	for (GamePiece gp : stack)
+    	{
+    		if (gp.getType() == GamePieceType.GreyTote || gp.getType() == GamePieceType.YellowTote)
+    		{
+    			totesCount++;
+    		}
+    	}
+    	return totesCount >= 6;
+    }
+    
+    public Stack getStack() {
+    	return stack;
+    }
+    
+    public void pushToStack(GamePiece g) {
+    	stack.push(g);
+    }
+    
     public void initDefaultCommand() {}
     
+	//CR: Since the subsystem should protect the machine - sit with Yiftach and make sure you
+	//    understand 100% whats possible operations the machine can do.
+	//    i.e: stacker shouldn't be able to go down to floor with the container solenoids
+	//         pushing on the game-piece...
     public boolean openSolenoidStep ()
     {
     	solenoidStepLeft.set(DoubleSolenoid.Value.kForward);
@@ -71,7 +104,7 @@ public class Stacker extends Subsystem
     }
     
     public boolean openSolenoidTote ()
-    {
+    { 
     	solenoidToteLeft.set(DoubleSolenoid.Value.kForward);
     	solenoidToteRight.set(DoubleSolenoid.Value.kForward);
     	return true;
@@ -130,6 +163,8 @@ public class Stacker extends Subsystem
     	stack.add(new GamePiece(GamePieceType.YellowTote));
     }
     
+	//CR: The switches are configured such that when both are pressed it's a tote and when
+	//    and when only one is pressed - it's a container.
     public boolean getSwitchTote ()
     {
     	return switchTote.get();

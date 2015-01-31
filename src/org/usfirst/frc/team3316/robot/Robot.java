@@ -6,6 +6,7 @@ package org.usfirst.frc.team3316.robot;
 import org.usfirst.frc.team3316.robot.subsystems.Anschluss;
 import org.usfirst.frc.team3316.robot.subsystems.Chassis;
 import org.usfirst.frc.team3316.robot.subsystems.Stacker;
+import org.usfirst.frc.team3316.robot.subsystems.RollerGripper;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.humanIO.Joysticks;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
@@ -26,8 +27,10 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Robot extends IterativeRobot
 {
+    Command autonomousCommand;
+    
+    public static Config config;
     public static DBugLogger logger;
-	public static Config config;
     /*
      * Human IO
      */
@@ -43,6 +46,7 @@ public class Robot extends IterativeRobot
 	public static Chassis chassis;
 	public static Anschluss anschluss;
 	public static Stacker stacker;
+	public static RollerGripper rollerGripper;
 	
     /**
      * This function is run when the robot is first started up and should be
@@ -66,6 +70,8 @@ public class Robot extends IterativeRobot
     	 */
     	chassis = new Chassis();
 		anschluss = new Anschluss();
+    	rollerGripper = new RollerGripper();
+    	stacker = new Stacker();
     }
 	
 	public void disabledPeriodic() {

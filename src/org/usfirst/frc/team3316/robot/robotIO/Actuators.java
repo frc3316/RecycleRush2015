@@ -19,14 +19,17 @@ public class Actuators
 	/*
 	 * Chassis
 	 */
-	public VictorSP chassisLeft;
-	public VictorSP chassisRight;
-	public VictorSP chassisCenter;
-	
+	public VictorSP chassisMotorControllerLeft;
+	public VictorSP chassisMotorControllerRight;
+	public VictorSP chassisMotorControllerCenter;
+	/*
+	 * Roller-Gripper
+	 */
+	public VictorSP rollerGripperMotorControllerLeft;
+	public VictorSP rollerGripperMotorControllerRight;
 	/*
 	 * Stacker
 	 */
-	
 	public DoubleSolenoid stackerSolenoidStepLeft;
 	public DoubleSolenoid stackerSolenoidStepRight;
 	
@@ -38,7 +41,7 @@ public class Actuators
 	/*
 	 * Anschluss
 	 */
-	public VictorSP anschluss;
+	public VictorSP anschlussMotorController;
 	
 	public Actuators ()
 	{
@@ -47,14 +50,15 @@ public class Actuators
 			/*
 			 * Chassis
 			 */
-			chassisLeft = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_LEFT"));
-			chassisRight = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT"));
-			chassisCenter = new VictorSP((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER"));
-			
+			chassisMotorControllerLeft = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_LEFT"));
+			chassisMotorControllerRight = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT"));
+			chassisMotorControllerCenter = new VictorSP((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER"));
 			/*
 			 * Stacker
 			 */
-			
+			//CR: Find better names for the solenoids, and exactly what they mean here.
+			//    Since you need to set both 'step solenoids' and 'tote solenoids', to get to tote height
+			//    it doesn't make sense to call one of them tote.
 			stackerSolenoidStepLeft = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_STEP_LEFT_FORWARD"), 
 														 (int) config.get("STACKER_SOLENOID_STEP_LEFT_REVERSE"));
 			
@@ -73,7 +77,12 @@ public class Actuators
 			/*
 			 * Anschluss
 			 */
-			anschluss = new VictorSP ((int) config.get("ANSCHLUSS_MOTOR_CONTROLLER"));
+			anschlussMotorController = new VictorSP ((int) config.get("ANSCHLUSS_MOTOR_CONTROLLER"));
+			/*
+			 * Roller-Gripper
+			 */
+			rollerGripperMotorControllerLeft = new VictorSP ((int) config.get("ROLLER_GRIPPER_MOTOR_CONTROLLER_LEFT"));
+			rollerGripperMotorControllerRight = new VictorSP ((int) config.get("ROLLER_GRIPPER_MOTOR_CONTROLLER_RIGHT"));
 		}
 		catch (ConfigException e) 
     	{
