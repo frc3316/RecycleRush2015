@@ -14,6 +14,9 @@ public class RollIn extends Roll
 	
 	protected void end()
 	{
+		//CR: What if the container MS is pressed a code-cycle before the tote one?
+		//    create a loop that checks for number of iterations before pushing the GP to stack.
+		//    (this will be implemented in 'isFinished')
 		if (Robot.sensors.stackerSwitchContainer.get()) 
     	{
     		if(Robot.sensors.stackerSwitchTote.get())
