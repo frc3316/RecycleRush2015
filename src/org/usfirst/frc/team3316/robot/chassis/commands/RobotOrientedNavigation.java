@@ -83,6 +83,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 		/*
 		 * Init of pid controllers
 		 */
+		// PID variables are updated in updatePIDVariables
 		pidControllerX = new PIDController(0, //Kp
 										   0, //Ki
 										   0, //Kd

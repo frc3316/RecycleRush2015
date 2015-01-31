@@ -22,7 +22,7 @@ public class RobotOrientedDrive extends StrafeDrive
 	protected void setRotation (double requiredTurn)
 	{
 		//TODO: figure out PID rotation
-		//TODO: modify code so it works with max throttle lower than 1
+		//NOTE: Required turn cannot be larger than yIn.
 		
 		/*
 		 * the following code sets left and right so that:

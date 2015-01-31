@@ -90,7 +90,7 @@ public class Chassis extends Subsystem
 			 * Variable init
 			 */
 			double currentTime = System.currentTimeMillis();
-			double dT = (currentTime - previousTime)/1000; //conversion to seconds
+			double dT = (currentTime - previousTime) / 1000; //conversion to seconds
 			double currentHeading = getHeading();
 			
 			/*
@@ -98,18 +98,18 @@ public class Chassis extends Subsystem
 			 */
 			double vS, vF; //speeds relative to the robot (forward and sideways)
 			vS = encoderCenter.getRate();
-			vF = (encoderLeft.getRate() + encoderRight.getRate())/2; //TODO: check this calculation
+			vF = (encoderLeft.getRate() + encoderRight.getRate()) / 2; //TODO: check this calculation
 			
 			double vX, vY; //speeds relative to field 
-			vX = vF*Math.sin(Math.toRadians(currentHeading)) + vS*Math.sin(Math.toRadians(currentHeading)+.5);
-			vY = vF*Math.cos(Math.toRadians(currentHeading)) + vS*Math.cos(Math.toRadians(currentHeading)+.5);
+			vX = vF * Math.sin(Math.toRadians(currentHeading)) + vS * Math.sin(Math.toRadians(currentHeading) + (0.5 * Math.Pi));
+			vY = vF * Math.cos(Math.toRadians(currentHeading)) + vS * Math.cos(Math.toRadians(currentHeading) + (0.5 * Math.Pi));
 			
 			/*
 			 * Calculates position delta in field axes
 			 */
 			double dX, dY, dTheta;
-			dX = vX*dT;
-			dY = vY*dT;
+			dX = vX * dT;
+			dY = vY * dT;
 			
 			dTheta = currentHeading - previousHeading;
 			//Since heading is in the range (-180) to (180), when 
@@ -199,13 +199,13 @@ public class Chassis extends Subsystem
 		navigationThread = new NavigationThread();
 		navigationThread.start();
 		
-		//need to init defaultDrive before setting it as the default drive
-		//defaultDrive = new StrafeDrive ();
+		// this should be overwritten by the SDB
+		defaultDrive = new TankDrive ();
 	}
 	
     public void initDefaultCommand() 
     {
-       //setDefaultCommand(defaultDrive);
+       setDefaultCommand(defaultDrive);
     }
     
     public boolean set (double left, double right, double center)
@@ -225,13 +225,13 @@ public class Chassis extends Subsystem
     
     public void setHeadingOffset (double offset)
     {
+		//TODO: make SDB set this in game start.
     	this.headingOffset = offset;
     }
     
     public double getAngularVelocity ()
     {
-    	//TODO: should return gyro reading
-    	return 0;
+    	return angularVelocity;
     }
     
     public double getAccelX ()
