@@ -40,6 +40,11 @@ public class Stacker extends Subsystem
 
     public Stacker () 
     {
+		/* In order to get to each height we use:
+		 *  - Floor Height: both solenoids extended
+	     *  - Step Height: bottom solenoid is retracted and upper extended
+		 *  - Tote Height: both solenoids retracted
+		 */
     	solenoidUpperLeft = Robot.actuators.stackerSolenoidUpperLeft;
     	solenoidUpperRight = Robot.actuators.stackerSolenoidUpperRight;
     	
@@ -47,6 +52,7 @@ public class Stacker extends Subsystem
     	solenoidBottomRight = Robot.actuators.stackerSolenoidBottomRight;
     	
     	solenoidContainer = Robot.actuators.stackerSolenoidContainer;
+		solenoidGripper = Robot.actuators.stackerSolenoidGripper;
     	
     	heightIR = Robot.sensors.stackerHeightIR;
     	
@@ -98,6 +104,18 @@ public class Stacker extends Subsystem
     	return true;
     }
     
+	public boolean openSolenoidGripper ()
+    {
+    	solenoidGripper.set(DoubleSolenoid.Value.kForward);
+    	return true;
+    }
+    
+    public boolean closeSolenoidGripper ()
+    {
+    	solenoidGripper.set(DoubleSolenoid.Value.kReverse);
+    	return true;
+    }
+	
     public double getHeight ()
     {
     	updateDistanceVariables();
@@ -127,6 +145,9 @@ public class Stacker extends Subsystem
     	return switchGamePiece.get();
     }
     
+	/*
+	 * Stack methods
+	 */
     public GamePiece getStackBase ()
     {
     	return stack.get(0);

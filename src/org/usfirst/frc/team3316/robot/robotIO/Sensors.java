@@ -30,17 +30,18 @@ public class Sensors
 	
 	/*
 	 * Stacker
-	 */
-	
+	 */	
 	public AnalogInput stackerHeightIR;
 	public DigitalInput stackerSwitchTote;
 	public DigitalInput stackerSwitchGamePiece;
+	// TODO: add level-6 switches
 	
 	/*
 	 * Anschluss
 	 */
 	public DigitalInput anschlussDigitalInputClosed;
 	public DigitalInput anschlussDigitalInputOpened;
+	
 	/*
 	 * Roller-Gripper
 	 */
@@ -53,6 +54,7 @@ public class Sensors
 			/*
 			 * Chassis
 			 */
+			//CR: Change constants' names
 			chassisEncoderLeft = new Encoder((int)config.get("chassisEncoderLeftA"), 
 											 (int)config.get("chassisEncoderLeftB"), 
 											 false, 
@@ -82,6 +84,7 @@ public class Sensors
 			/*
 			 * Anschluss
 			 */
+			//CR: Change constants' names
 			anschlussDigitalInputClosed = new DigitalInput((int) config.get("anschlussDigitalInputClosed")); //check the channel and update it accordingly
 			anschlussDigitalInputOpened = new DigitalInput((int) config.get("anschlussDigitalInputOpened")); //check the channel and update it accordingly
 
