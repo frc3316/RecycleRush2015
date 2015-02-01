@@ -10,6 +10,9 @@ public class Robot
 	static Encoder encoderLeft, encoderRight, encoderCenter;
 	
 	static double angularVelocity;
+	static double angularVelocityEncoders;
+	
+	static final double CHASSIS_WIDTH = 0.5322;
 	
 	public static double getHeading ()
 	{
@@ -98,8 +101,9 @@ public class Robot
 			vF = (encoderLeft.getRate() + encoderRight.getRate())/2; //TODO: check this calculation
 			
 			double vX, vY; //speeds relative to field 
-			vX = vF*Math.sin(Math.toRadians(currentHeading)) + vS*Math.sin(Math.toRadians(currentHeading)+.5);
-			vY = vF*Math.cos(Math.toRadians(currentHeading)) + vS*Math.cos(Math.toRadians(currentHeading)+.5);
+			double headingRad = Math.toRadians(currentHeading);
+			vX = (vF * Math.sin(headingRad)) + (vS * Math.sin(headingRad + (0.5 * Math.PI)));
+			vY = (vF * Math.cos(headingRad)) + (vS * Math.cos(headingRad + (0.5 * Math.PI)));
 			
 			/*
 			 * Calculates position delta in field axes
@@ -130,9 +134,13 @@ public class Robot
 			}
 			
 			/*
-			 * Calculates angular velocity
+			 * Calculates angular velocity(ies)
 			 */
-			angularVelocity = (dTheta)/dT;
+			//Calculation from gyro
+			angularVelocity = (dTheta)/dT; 
+			//Calculation fron encoders
+			angularVelocityEncoders = (encoderLeft.getRate() - encoderRight.getRate()) / (CHASSIS_WIDTH);
+			angularVelocityEncoders = Math.toDegrees(angularVelocityEncoders); //conversion to (degrees/sec)
 			
 			/*
 			 * Logging
@@ -140,7 +148,8 @@ public class Robot
 			logger.fine("vX = " + String.format("%.3f", vX) + 
 						", vY = " + String.format("%.3f", vY) + 
 						", dTheta = " + String.format("%f", dTheta) +
-						", angularVelocity " + String.format("%.3f", angularVelocity));
+						", angularVelocity " + String.format("%.3f", angularVelocity) + 
+						", angularVelocityEncoders " + String.format("%.3f", angularVelocityEncoders));
 			
 			for (NavigationIntegrator integrator : integratorSet)
 			{

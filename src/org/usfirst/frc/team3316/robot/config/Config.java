@@ -112,6 +112,8 @@ public class Config
 			
 			addToConstants("CHASSIS_ENCODER_CENTER_A", 6);
 			addToConstants("CHASSIS_ENCODER_CENTER_B", 7);
+			
+			addToConstants("CHASSIS_WIDTH", 0.5322); //in meters
 			/*
 			 * Variables
 			 */

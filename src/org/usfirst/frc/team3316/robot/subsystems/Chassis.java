@@ -135,9 +135,13 @@ public class Chassis extends Subsystem
 			}
 			
 			/*
-			 * Calculates angular velocity
+			 * Calculates angular velocity(ies)
 			 */
-			angularVelocity = (dTheta)/dT;
+			//Calculation from gyro
+			angularVelocity = (dTheta)/dT; 
+			//Calculation fron encoders
+			angularVelocityEncoders = (encoderLeft.getRate() - encoderRight.getRate()) / (CHASSIS_WIDTH);
+			angularVelocityEncoders = Math.toDegrees(angularVelocityEncoders); //conversion to (degrees/sec)
 			
 			/*
 			 * Setting variables for next run
@@ -182,7 +186,9 @@ public class Chassis extends Subsystem
 	
 	private double headingOffset = 0;
 	
-	private double angularVelocity = 0; //this is constantly calculated by NavigationThread
+	private double angularVelocity = 0, angularVelocityEncoders = 0; //this is constantly calculated by NavigationThread
+	
+	private double CHASSIS_WIDTH; //initialized in constructor 
 	
 	Drive defaultDrive;
 	
@@ -197,6 +203,15 @@ public class Chassis extends Subsystem
 		encoderLeft = Robot.sensors.chassisEncoderLeft;
 		encoderRight = Robot.sensors.chassisEncoderRight;
 		encoderCenter = Robot.sensors.chassisEncoderCenter;
+		
+		try
+		{
+			CHASSIS_WIDTH = (double)config.get("CHASSIS_WIDTH");
+		}
+		catch (ConfigException e)
+		{
+			logger.severe(e);
+		}
 		
 		navigationThread = new NavigationThread();
 		navigationThread.start();
@@ -234,6 +249,11 @@ public class Chassis extends Subsystem
     public double getAngularVelocity ()
     {
     	return angularVelocity;
+    }
+    
+    public double getAngularVelocityEncoders ()
+    {
+    	return angularVelocityEncoders;
     }
     
     public double getAccelX ()

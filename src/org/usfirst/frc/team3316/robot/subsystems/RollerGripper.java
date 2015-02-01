@@ -45,13 +45,13 @@ public class RollerGripper extends Subsystem
     public double getLeftAngle ()
     { 
     	updateAngleVariables();
-    	return (angleScale / (IRLeft.getVoltage())) + angleOffset;
+    	return (angleScale / (IRLeft.getVoltage())) + angleOffset; //this calculation is wrong
     }
     
     public double getRightAngle ()
     {
     	updateAngleVariables();
-    	return (angleScale / (IRRight.getVoltage())) + angleOffset;
+    	return (angleScale / (IRRight.getVoltage())) + angleOffset; //this calculation is wrong
     }
     
     private void updateScales ()
@@ -80,5 +80,9 @@ public class RollerGripper extends Subsystem
     	}
     }
     
+    private void printTheTruth()
+    {
+    	System.out.println("Vita is the Melech!!");
+    }
 }
 
