@@ -82,9 +82,9 @@ public class Joysticks
 	    	buttonRollOut = new WidePOVButton(joystickOperator, (int[]) config.get("JOYSTICKS_BUTTON_ROLL_OUT"));
 	    	buttonRollOut.whileHeld(new RollOut());
 	    	buttonRollTurnClockwise = new WidePOVButton(joystickOperator, (int[]) config.get("JOYSTICKS_BUTTON_ROLL_TURN_CLOCKWISE"));
-	    	buttonRollIn.whileHeld(new RollTurnClockwise());
+	    	buttonRollTurnClockwise.whileHeld(new RollTurnClockwise());
 	    	buttonRollTurnCounterClockwise = new WidePOVButton(joystickOperator, (int[]) config.get("JOYSTICKS_BUTTON_ROLL_TURN_COUNTER_CLOCKWISE"));
-	    	buttonRollIn.whileHeld(new RollTurnCounterClockwise());
+	    	buttonRollTurnCounterClockwise.whileHeld(new RollTurnCounterClockwise());
     	} 
     	catch (ConfigException e) 
     	{
