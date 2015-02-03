@@ -20,7 +20,8 @@ public class DBugLogger {
 	{
 	    public String format(LogRecord record) 
 	    {
-	    	return record.getMillis() + ":" + record.getLevel() + ":" + record.getMessage() + "\n";
+	    	return record.getMillis() + ":" + record.getLevel() + ":" + record.getMessage() + 
+	    			record.getSourceClassName() + record.getSourceMethodName() + "\n";
 	    }
 
 	}
