@@ -12,32 +12,34 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.Formatter;
 
-public class DBugLogger {
-	public static Logger logger;
-	private static FileHandler fh;
+
+public class DBugLogger extends Logger {
 	
-	private class DBugFormatter extends Formatter 
-	{
+	private static String name = "";
+	
+	private class DBugFormatter extends Formatter {
 	    public String format(LogRecord record) 
 	    {
-	    	return record.getMillis() + ":" + record.getLevel() + ":" + record.getMessage() + "\n";
+	    	return record.getMillis() + ":" + record.getLevel() + ":" + record.getSourceClassName() +
+	    			":" + record.getSourceMethodName() + ":" + record.getMessage() + "\n";
 	    }
-
 	}
 	
-    public DBugLogger() {
-    	logger = Logger.getLogger(DBugLogger.class.getName());
-    	Handler[] handlers = logger.getHandlers();
+    public DBugLogger() 
+    {
+    	super(name, null);
+    	
+    	Handler[] handlers = this.getHandlers();
 		for (int i=0; i<handlers.length; i++ ) {
 			handlers[i].setLevel( Level.FINEST );
 		}
-		logger.setLevel(Level.FINEST);
-		logger.setUseParentHandlers(true); //disables console output if 'false' is given as a parameter
+		this.setLevel(Level.FINEST);
+		this.setUseParentHandlers(true); //disables console output if 'false' is given as a parameter
 		
 		try {
 			String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
-		    fh = new FileHandler("/home/lvuser/logs/logFile" + timeStamp + ".log"); 
-		    logger.addHandler(fh);
+		    FileHandler fh = new FileHandler("C:/Users/super/logs" + timeStamp + ".log"); 
+		    this.addHandler(fh);
 		    DBugFormatter formatter = new DBugFormatter();
 	        fh.setFormatter(formatter);
 	    } 
@@ -49,20 +51,10 @@ public class DBugLogger {
 	    }
     }
 
-    public void severe(String msg) {
-    	logger.severe(msg);
-    }
     public void severe(Exception e) {
     	StringWriter sw = new StringWriter();
 		e.printStackTrace(new PrintWriter(sw));
 		String exceptionStackTrace = sw.toString();
-		logger.severe(exceptionStackTrace);
-		logger.severe(e.getMessage());
-    }
-    public void info(String msg) {
-    	logger.info(msg);
-    }
-    public void fine(String msg) {
-    	logger.fine(msg);
+		this.severe(e.getMessage() + ":" + exceptionStackTrace);
     }
 }
