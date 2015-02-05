@@ -9,6 +9,7 @@ import org.usfirst.frc.team3316.robot.subsystems.Stacker;
 import org.usfirst.frc.team3316.robot.subsystems.RollerGripper;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.humanIO.Joysticks;
+import org.usfirst.frc.team3316.robot.humanIO.SDB;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.robotIO.Actuators;
 import org.usfirst.frc.team3316.robot.robotIO.Sensors;
@@ -35,6 +36,7 @@ public class Robot extends IterativeRobot
      * Human IO
      */
     public static Joysticks joysticks;
+    public static SDB sdb;
     /*
      * Robot IO
      */
@@ -60,6 +62,7 @@ public class Robot extends IterativeRobot
     	 * Human IO
     	 */
     	joysticks = new Joysticks();
+    	sdb = new SDB();
     	/*
     	 * Robot IO
     	 */

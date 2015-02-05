@@ -5,6 +5,8 @@ import java.util.Hashtable;
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class Config 
 {
 	DBugLogger logger = Robot.logger;
@@ -21,8 +23,8 @@ public class Config
 		}
 	}
 	
-	private static Hashtable<String, Object> variables;
-	private static Hashtable<String, Object> constants;
+	private static Hashtable <String, Object> variables;
+	private static Hashtable <String, Object> constants;
 	
 	public Config ()
 	{
@@ -52,6 +54,38 @@ public class Config
 		else
 		{
 			throw new ConfigException(key);
+		}
+	}
+	
+	public Class addToSDB (String key)
+	{
+		if (variables.containsKey(key))
+		{
+			Object value = variables.get(key);
+			
+			if (value.getClass() == Double.class)
+			{
+				SmartDashboard.putNumber(key, (double) value);
+				return Double.class;
+			}
+			else if (value.getClass() == Integer.class)
+			{
+				SmartDashboard.putInt(key, (int) value);
+				return Double.class;
+			}
+			else if (value.getClass() == Boolean.class)
+			{
+				SmartDashboard.putBoolean(key, (boolean) value);
+				return Double.class;
+			}
+			else
+			{
+				return null;
+			}
+		}
+		else
+		{
+			return null;
 		}
 	}
 	
