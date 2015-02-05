@@ -1,9 +1,6 @@
-package org.usfirst.frc.team3316.robot.config;
+package org.usfirst.frc.team3316.robot.config.test;
 
 import java.util.Hashtable;
-
-import org.usfirst.frc.team3316.robot.Robot;
-import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 public class Config 
 {
@@ -21,8 +18,8 @@ public class Config
 		}
 	}
 	
-	private static Hashtable<String, Object> variables;
-	private static Hashtable<String, Object> constants;
+	private static Hashtable <String, Object> variables;
+	private static Hashtable <String, Object> constants;
 	
 	public Config ()
 	{
