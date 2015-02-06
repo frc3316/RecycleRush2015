@@ -1,9 +1,7 @@
-package org.usfirst.frc.team3316.robot.config;
+package org.usfirst.frc.team3316.robot.config.test;
 
 import java.util.Hashtable;
-
-import org.usfirst.frc.team3316.robot.Robot;
-import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+import java.util.Map.Entry;
 
 public class Config 
 {
@@ -39,12 +37,6 @@ public class Config
 		addToVariables(key, value);
 	}
 	
-	/**
-	 * Returns the value attached to a requested key
-	 * @param key the key to look for
-	 * @return returns the corresponding value
-	 * @throws ConfigException if the key does not exist
-	 */
 	public Object get (String key) throws ConfigException
 	{
 		if (constants.containsKey(key))
@@ -168,15 +160,14 @@ public class Config
 			 * Constants
 			 */
 			addToConstants("ANSCHLUSS_MOTOR_CONTROLLER", 3);
+			addToConstants("ANSCHLUSS_MOTOR_SPEED_CLOSE", -0.5);
+			addToConstants("ANSCHLUSS_MOTOR_SPEED_OPEN", 0.5);
 			
 			addToConstants("ANSCHLUSS_BUTTON_CLOSE", 1);
 			addToConstants("ANSCHLUSS_BUTTON_OPEN", 0);
-			
 			/*
 			 * Variables
 			 */
-			addToVariables("anschluss_CloseAnschluss_MotorSpeed", -0.5);
-			addToVariables("anschluss_OpenAnschluss_MotorSpeed", 0.5);
 		/*
 		 * Roller Gripper
 		 */
@@ -218,5 +209,24 @@ public class Config
 				//Subsystem
 					addToConstants("STACKER_SWITCH_TOTE", 8);
 					addToConstants("STACKER_SWITCH_GAMEPIECE", 9);
+	}
+
+	
+	/*
+	 * For testing
+	 */
+	
+	public void logAll ()
+	{
+		logger.info("Started LogAll");
+		for (Entry <String, Object> entry : constants.entrySet())
+		{
+			logger.info("Constant key: " + entry.getKey() + " value: " + entry.getValue());
+		}
+		
+		for (Entry <String, Object> entry : variables.entrySet())
+		{
+			logger.info("Variable key: " + entry.getKey() + " value: " + entry.getValue());
+		}
 	}
 }

@@ -7,6 +7,9 @@ import java.util.HashSet;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.chassis.commands.Drive;
+import org.usfirst.frc.team3316.robot.chassis.commands.FieldOrientedDrive;
+import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrive;
+import org.usfirst.frc.team3316.robot.chassis.commands.StrafeDrive;
 import org.usfirst.frc.team3316.robot.chassis.commands.TankDrive;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
@@ -17,6 +20,8 @@ import com.kauailabs.nav6.frc.IMUAdvanced;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.tables.ITable;
 
 public class Chassis extends Subsystem 
 {	
@@ -199,6 +204,11 @@ public class Chassis extends Subsystem
 	
 	Drive defaultDrive;
 	
+	TankDrive tankDrive = new TankDrive();
+	StrafeDrive strafeDrive = new StrafeDrive();
+	RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive();
+	FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive();
+	
 	public Chassis ()
 	{
 		left = Robot.actuators.chassisMotorControllerLeft;
@@ -223,7 +233,6 @@ public class Chassis extends Subsystem
 		navigationThread = new NavigationThread();
 		navigationThread.start();
 		
-		// this should be overwritten by the SDB
 		defaultDrive = new TankDrive ();
 	}
 	
@@ -274,8 +283,6 @@ public class Chassis extends Subsystem
     	//TODO: need to check whether its X, Y or Z
     	return navx.getWorldLinearAccelY();
     }
-    
-    //TODO: check whether Z acceleration is necessary
     
     public boolean addNavigationIntegrator (NavigationIntegrator integrator)
     {
