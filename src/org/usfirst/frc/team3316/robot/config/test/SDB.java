@@ -1,17 +1,13 @@
 /**
  * Class for managing the SmartDashboard data
  */
-package org.usfirst.frc.team3316.robot.humanIO;
+package org.usfirst.frc.team3316.robot.config.test;
 
 import java.util.Hashtable;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.usfirst.frc.team3316.robot.Robot;
-import org.usfirst.frc.team3316.robot.config.Config;
-import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
-import org.usfirst.frc.team3316.robot.config.test.LogAll;
-import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+import org.usfirst.frc.team3316.robot.config.test.Config.ConfigException;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -25,9 +21,8 @@ public class SDB
 	public SDB ()
 	{
 		variablesInSDB = new Hashtable <String, Class <?> > ();
-		
 		SmartDashboard.putData(new UpdateVariables());
-		
+		SmartDashboard.putData(new LogAll());
 		initSDB();
 	}
 	
@@ -62,12 +57,12 @@ public class SDB
 			{
 				variablesInSDB.put(key, type);
 				logger.info("Added to SDB " + key + " of type " + type + 
-						"and allows for its modification");
+						" and allows for its modification");
 			}
 			else
 			{
 				logger.info("Added to SDB " + key + " of type " + type + 
-						"BUT DOES NOT ALLOW for its modification");
+						" BUT DOES NOT ALLOW for its modification");
 			}
 			
 			
@@ -94,7 +89,7 @@ public class SDB
 		addToSDB ("chassis_TankDrive_InvertX");
 		addToSDB ("chassis_TankDrive_InvertY");
 		
-		addToSDB ("chassis_TankDrive_InvertY");
-		addToSDB ("chassis_TankDrive_InvertY");
+		addToSDB ("ROLLER_GRIPPER_IR_LEFT");
+		addToSDB ("ROLLER_GRIPPER_IR_RIGHT");
 	}
 }

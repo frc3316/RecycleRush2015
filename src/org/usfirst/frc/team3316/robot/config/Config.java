@@ -1,13 +1,9 @@
 package org.usfirst.frc.team3316.robot.config;
 
 import java.util.Hashtable;
-import java.util.Set;
-import java.util.Map.Entry;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Config 
 {
@@ -223,5 +219,4 @@ public class Config
 					addToConstants("STACKER_SWITCH_TOTE", 8);
 					addToConstants("STACKER_SWITCH_GAMEPIECE", 9);
 	}
-
 }
