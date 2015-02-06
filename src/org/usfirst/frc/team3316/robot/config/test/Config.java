@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3316.robot.config.test;
 
 import java.util.Hashtable;
+import java.util.Map.Entry;
 
 public class Config 
 {
@@ -210,4 +211,22 @@ public class Config
 					addToConstants("STACKER_SWITCH_GAMEPIECE", 9);
 	}
 
+	
+	/*
+	 * For testing
+	 */
+	
+	public void logAll ()
+	{
+		logger.info("Started LogAll");
+		for (Entry <String, Object> entry : constants.entrySet())
+		{
+			logger.info("Constant key: " + entry.getKey() + " value: " + entry.getValue());
+		}
+		
+		for (Entry <String, Object> entry : variables.entrySet())
+		{
+			logger.info("Variable key: " + entry.getKey() + " value: " + entry.getValue());
+		}
+	}
 }

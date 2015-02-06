@@ -1,11 +1,8 @@
-package org.usfirst.frc.team3316.robot.humanIO;
+package org.usfirst.frc.team3316.robot.config.test;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
-
-import org.usfirst.frc.team3316.robot.Robot;
-import org.usfirst.frc.team3316.robot.config.Config;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,17 +13,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class UpdateVariables extends Command 
 {
 	Config config = Robot.config;
+	DBugLogger logger = Robot.logger;
 	
     public UpdateVariables() {}
 
     protected void initialize()
     {
+    	logger.info("Started UpdateVariables");
     	/*
     	 * Iterates over all of the entries in the map and replaces their value in the config from the SDB
     	 */
     	Set <Entry <String, Class <?> > > variables = Robot.sdb.getVariablesInSDB();
     	
-    	for (Map.Entry<String, Class <?> > entry : variables)
+    	for (Map.Entry <String, Class <?> > entry : variables)
     	{
     		if (entry.getValue() == Double.class)
     		{

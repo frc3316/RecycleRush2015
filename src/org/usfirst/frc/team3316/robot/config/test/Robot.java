@@ -1,14 +1,23 @@
 package org.usfirst.frc.team3316.robot.config.test;
 
+
 import org.usfirst.frc.team3316.robot.config.test.Config.ConfigException;
 
-public class Robot 
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
+
+public class Robot extends IterativeRobot
 {
-	static DBugLogger logger = new DBugLogger();
-	static Config config = new Config ();
+	static DBugLogger logger;
+	static Config config;
+	static SDB sdb;
 	
-	public static void main (String [] args)
+	public void robotInit()
 	{
+		logger = new DBugLogger();
+		config = new Config();
+		sdb = new SDB();
+		
 		try 
 		{
 			logger.fine("JOYSTICK_LEFT toString: " + 
@@ -39,4 +48,36 @@ public class Robot
 			logger.severe(e);
 		}
 	}
+	
+	public void disabledPeriodic() {
+		Scheduler.getInstance().run();
+	}
+
+    public void autonomousInit() {
+        
+    }
+
+    /**
+     * This function is called periodically during autonomous
+     */
+    public void autonomousPeriodic() {
+        Scheduler.getInstance().run();
+    }
+
+    public void teleopInit() {}
+
+    /**
+     * This function is called when the disabled button is hit.
+     * You can use it to reset subsystems before shutting down.
+     */
+    public void disabledInit(){
+
+    }
+
+    /**
+     * This function is called periodically during operator control
+     */
+    public void teleopPeriodic() {
+        Scheduler.getInstance().run();
+    }
 }
