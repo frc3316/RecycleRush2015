@@ -23,12 +23,13 @@ public class SDB
 	public SDB ()
 	{
 		variables = new Hashtable <String, Class> ();
-		
 		SmartDashboard.putData(new UpdateVariables());
 	}
 	
 	public void addVariable (String key)
 	{
+		//CR: Who calls this? Shouldn't there be a 'populate' method which iterates over all
+		//    the keys in config.variables and adds them?
 		Class type = Robot.config.addToSDB(key);
 		if (type != null)
 		{

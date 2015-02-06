@@ -59,6 +59,7 @@ public class Config
 	
 	public Class addToSDB (String key)
 	{
+		//CR: Move this function to SDB...
 		if (variables.containsKey(key))
 		{
 			Object value = variables.get(key);
@@ -71,11 +72,13 @@ public class Config
 			else if (value.getClass() == Integer.class)
 			{
 				SmartDashboard.putInt(key, (int) value);
+				//CR: should this return double?
 				return Double.class;
 			}
 			else if (value.getClass() == Boolean.class)
 			{
 				SmartDashboard.putBoolean(key, (boolean) value);
+				//CR: should this return double?
 				return Double.class;
 			}
 			else
