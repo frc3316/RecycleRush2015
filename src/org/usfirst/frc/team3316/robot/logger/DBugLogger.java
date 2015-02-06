@@ -38,7 +38,7 @@ public class DBugLogger extends Logger {
 		
 		try {
 			String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
-		    FileHandler fh = new FileHandler("C:/Users/super/logs" + timeStamp + ".log"); 
+		    FileHandler fh = new FileHandler("/home/lvuser/logs/logFile" + timeStamp + ".log"); 
 		    this.addHandler(fh);
 		    DBugFormatter formatter = new DBugFormatter();
 	        fh.setFormatter(formatter);
