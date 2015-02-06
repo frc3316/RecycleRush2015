@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
+ * Updates all the variables that are in the SmartDashboard
  */
 public class UpdateVariables extends Command 
 {
@@ -21,7 +21,10 @@ public class UpdateVariables extends Command
 
     protected void initialize()
     {
-    	Set <Entry <String, Class> > variables = Robot.sdb.getVariables();
+    	/*
+    	 * Iterates over all of the entries in the map and replaces their value in the config from the SDB
+    	 */
+    	Set <Entry <String, Class> > variables = Robot.sdb.getVariablesInSDB();
     	
     	for (Map.Entry<String, Class> entry : variables)
     	{

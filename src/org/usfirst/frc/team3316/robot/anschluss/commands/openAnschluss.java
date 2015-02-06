@@ -41,7 +41,7 @@ public class openAnschluss extends Command
     {
     	try 
     	{
-			motorSpeed = (double) config.get("closeAnschlussMotorSpeed");
+			motorSpeed = (double) config.get("anschluss_OpenAnschluss_MotorSpeed");
 		}
     	catch (ConfigException e) 
     	{

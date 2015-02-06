@@ -41,7 +41,7 @@ public class closeAnschluss extends Command
     {
     	try 
     	{
-			motorSpeed = (double) config.get("closeAnschlussMotorSpeed");
+			motorSpeed = (double) config.get("anschluss_CloseAnschluss_MotorSpeed");
 		}
     	catch (ConfigException e) {
     		logger.severe(e);			

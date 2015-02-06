@@ -1,6 +1,8 @@
 package org.usfirst.frc.team3316.robot.config;
 
 import java.util.Hashtable;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
@@ -41,6 +43,12 @@ public class Config
 		addToVariables(key, value);
 	}
 	
+	/**
+	 * Returns the value attached to a requested key
+	 * @param key the key to look for
+	 * @return returns the corresponding value
+	 * @throws ConfigException if the key does not exist
+	 */
 	public Object get (String key) throws ConfigException
 	{
 		if (constants.containsKey(key))
@@ -54,41 +62,6 @@ public class Config
 		else
 		{
 			throw new ConfigException(key);
-		}
-	}
-	
-	public Class addToSDB (String key)
-	{
-		//CR: Move this function to SDB...
-		if (variables.containsKey(key))
-		{
-			Object value = variables.get(key);
-			
-			if (value.getClass() == Double.class)
-			{
-				SmartDashboard.putNumber(key, (double) value);
-				return Double.class;
-			}
-			else if (value.getClass() == Integer.class)
-			{
-				SmartDashboard.putInt(key, (int) value);
-				//CR: should this return double?
-				return Double.class;
-			}
-			else if (value.getClass() == Boolean.class)
-			{
-				SmartDashboard.putBoolean(key, (boolean) value);
-				//CR: should this return double?
-				return Double.class;
-			}
-			else
-			{
-				return null;
-			}
-		}
-		else
-		{
-			return null;
 		}
 	}
 	
@@ -199,14 +172,15 @@ public class Config
 			 * Constants
 			 */
 			addToConstants("ANSCHLUSS_MOTOR_CONTROLLER", 3);
-			addToConstants("ANSCHLUSS_MOTOR_SPEED_CLOSE", -0.5);
-			addToConstants("ANSCHLUSS_MOTOR_SPEED_OPEN", 0.5);
 			
 			addToConstants("ANSCHLUSS_BUTTON_CLOSE", 1);
 			addToConstants("ANSCHLUSS_BUTTON_OPEN", 0);
+			
 			/*
 			 * Variables
 			 */
+			addToVariables("anschluss_CloseAnschluss_MotorSpeed", -0.5);
+			addToVariables("anschluss_OpenAnschluss_MotorSpeed", 0.5);
 		/*
 		 * Roller Gripper
 		 */
