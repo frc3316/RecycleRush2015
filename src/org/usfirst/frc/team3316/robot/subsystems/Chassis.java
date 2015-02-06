@@ -85,76 +85,83 @@ public class Chassis extends Subsystem
 			integratorSet = new HashSet <NavigationIntegrator>();
 		}
 		
-		public void run() 
+		public synchronized void run() 
 		{
-			/*
-			 * Variable init
-			 */
-			double currentTime = System.currentTimeMillis();
-			double dT = (currentTime - previousTime) / 1000; //conversion to seconds
-			double currentHeading = getHeading();
-			
-			/*
-			 * Calculates speeds in field axes
-			 */
-			double vS, vF; //speeds relative to the robot (forward and sideways)
-			vS = encoderCenter.getRate();
-			vF = (encoderLeft.getRate() + encoderRight.getRate()) / 2; //TODO: check this calculation
-			
-			double vX, vY; //speeds relative to field 
-			double headingRad = Math.toRadians(currentHeading);
-			vX = (vF * Math.sin(headingRad)) + (vS * Math.sin(headingRad + (0.5 * Math.PI)));
-			vY = (vF * Math.cos(headingRad)) + (vS * Math.cos(headingRad + (0.5 * Math.PI)));
-			
-			/*
-			 * Calculates position delta in field axes
-			 */
-			double dX, dY, dTheta;
-			dX = vX * dT;
-			dY = vY * dT;
-			
-			dTheta = currentHeading - previousHeading;
-			//Since heading is in the range (-180) to (180), when 
-			//completing a full turn dTheta will be an absurdly big value
-			//Checks if dTheta is an absurdly big value and fixes it
-			if (dTheta > 350) //350 is a big number
+			while (true)
 			{
-				dTheta -= 360;
-			}
-			if (dTheta < -350) //Math.abs(-350) is another big number
-			{
-				dTheta += 360;
-			}
-			
-			/*
-			 * Adds all of the deltas to each integrator
-			 */
-			for (NavigationIntegrator integrator : integratorSet)
-			{
-				integrator.add(dX, dY, dTheta);
-			}
-			
-			/*
-			 * Calculates angular velocity(ies)
-			 */
-			//Calculation from gyro
-			angularVelocity = (dTheta)/dT; 
-			//Calculation fron encoders
-			angularVelocityEncoders = (encoderLeft.getRate() - encoderRight.getRate()) / (CHASSIS_WIDTH);
-			angularVelocityEncoders = Math.toDegrees(angularVelocityEncoders); //conversion to (degrees/sec)
-			
-			/*
-			 * Setting variables for next run
-			 */
-			previousTime = currentTime;
-			previousHeading = currentHeading;
-			try 
-			{
-				sleep(5);
-			} 
-			catch (InterruptedException e) 
-			{
-				logger.severe(e);
+				/*
+				 * Variable init
+				 */
+				if (previousTime == 0)
+				{
+					previousTime = System.currentTimeMillis();
+				}
+				double currentTime = System.currentTimeMillis();
+				double dT = (currentTime - previousTime) / 1000; //conversion to seconds
+				double currentHeading = getHeading();
+				
+				/*
+				 * Calculates speeds in field axes
+				 */
+				double vS, vF; //speeds relative to the robot (forward and sideways)
+				vS = encoderCenter.getRate();
+				vF = (encoderLeft.getRate() + encoderRight.getRate()) / 2; //TODO: check this calculation
+				
+				double vX, vY; //speeds relative to field 
+				double headingRad = Math.toRadians(currentHeading);
+				vX = (vF * Math.sin(headingRad)) + (vS * Math.sin(headingRad + (0.5 * Math.PI)));
+				vY = (vF * Math.cos(headingRad)) + (vS * Math.cos(headingRad + (0.5 * Math.PI)));
+				
+				/*
+				 * Calculates position delta in field axes
+				 */
+				double dX, dY, dTheta;
+				dX = vX * dT;
+				dY = vY * dT;
+				
+				dTheta = currentHeading - previousHeading;
+				//Since heading is in the range (-180) to (180), when 
+				//completing a full turn dTheta will be an absurdly big value
+				//Checks if dTheta is an absurdly big value and fixes it
+				if (dTheta > 350) //350 is a big number
+				{
+					dTheta -= 360;
+				}
+				if (dTheta < -350) //Math.abs(-350) is another big number
+				{
+					dTheta += 360;
+				}
+				
+				/*
+				 * Adds all of the deltas to each integrator
+				 */
+				for (NavigationIntegrator integrator : integratorSet)
+				{
+					integrator.add(dX, dY, dTheta);
+				}
+				
+				/*
+				 * Calculates angular velocity(ies)
+				 */
+				//Calculation from gyro
+				angularVelocity = (dTheta)/dT; 
+				//Calculation fron encoders
+				angularVelocityEncoders = (encoderLeft.getRate() - encoderRight.getRate()) / (CHASSIS_WIDTH);
+				angularVelocityEncoders = Math.toDegrees(angularVelocityEncoders); //conversion to (degrees/sec)
+				
+				/*
+				 * Setting variables for next run
+				 */
+				previousTime = currentTime;
+				previousHeading = currentHeading;
+				try 
+				{
+					sleep(5);
+				} 
+				catch (InterruptedException e) 
+				{
+					logger.severe(e);
+				}
 			}
 		}
 		

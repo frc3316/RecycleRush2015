@@ -12,19 +12,22 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.Formatter;
 
-public class DBugLogger extends Logger{
+public class DBugLogger extends Logger {
 	
-	private class DBugFormatter extends Formatter 
-	{
+	private static String name = "";
+	
+	private class DBugFormatter extends Formatter {
 	    public String format(LogRecord record) 
 	    {
-	    	return record.getMillis() + ":" + record.getLevel() + ":" + record.getSourceClassName() + 
-	    			":" + record.getSourceMethodName() + ":" + record.getMessage() + "    ";
+	    	return record.getMillis() + ":" + record.getLevel() + ":" + record.getSourceClassName() +
+	    			":" + record.getSourceMethodName() + ":" + record.getMessage() + "\n";
 	    }
 	}
 	
-    public DBugLogger(String name) {
+    public DBugLogger() 
+    {
     	super(name, null);
+
     	Handler[] handlers = this.getHandlers();
 		for (int i=0; i<handlers.length; i++ ) {
 			handlers[i].setLevel( Level.FINEST );
@@ -34,7 +37,7 @@ public class DBugLogger extends Logger{
 		
 		try {
 			String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
-		    FileHandler fh = new FileHandler("C:/Users/super/logs" + timeStamp + ".log"); 
+		    FileHandler fh = new FileHandler("/home/lvuser/logs/logFile" + timeStamp + ".log"); 
 		    this.addHandler(fh);
 		    DBugFormatter formatter = new DBugFormatter();
 	        fh.setFormatter(formatter);
