@@ -83,8 +83,8 @@ public class RobotOrientedDrive extends StrafeDrive
 		}
 		else //the robot needs to turn counter-clockwise
 		{
-			this.left = outerWheel;
-			this.right = innerWheel;
+			this.left = innerWheel;
+			this.right = outerWheel;
 		}
 	}
 	

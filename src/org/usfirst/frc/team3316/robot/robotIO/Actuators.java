@@ -19,9 +19,9 @@ public class Actuators
 	/*
 	 * Chassis
 	 */
-	public VictorSP chassisMotorControllerLeft;
-	public VictorSP chassisMotorControllerRight;
-	public VictorSP chassisMotorControllerCenter;
+	public VictorSP chassisMotorControllerLeft1, chassisMotorControllerLeft2;
+	public VictorSP chassisMotorControllerRight1, chassisMotorControllerRight2;
+	public VictorSP chassisMotorControllerCenter1, chassisMotorControllerCenter2;
 	
 	/*
 	 * Stacker
@@ -53,9 +53,14 @@ public class Actuators
 			/*
 			 * Chassis
 			 */
-			chassisMotorControllerLeft = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_LEFT"));
-			chassisMotorControllerRight = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT"));
-			chassisMotorControllerCenter = new VictorSP((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER"));
+			chassisMotorControllerLeft1 = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_LEFT_1"));
+			chassisMotorControllerLeft2 = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_LEFT_2"));
+			
+			chassisMotorControllerRight1 = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT_1"));
+			chassisMotorControllerRight2 = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT_2"));
+			
+			chassisMotorControllerCenter1 = new VictorSP((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER_1"));
+			chassisMotorControllerCenter2 = new VictorSP((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER_2"));
 			
 			/*
 			 * Stacker

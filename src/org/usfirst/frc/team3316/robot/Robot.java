@@ -59,10 +59,9 @@ public class Robot extends IterativeRobot
     	logger = new DBugLogger();
     	config = new Config();
     	/*
-    	 * Human IO
+    	 * Human IO (that does not require subsystems)
     	 */
     	joysticks = new Joysticks();
-    	sdb = new SDB();
     	/*
     	 * Robot IO
     	 */
@@ -75,6 +74,11 @@ public class Robot extends IterativeRobot
 		anschluss = new Anschluss();
     	rollerGripper = new RollerGripper();
     	stacker = new Stacker();
+    	/*
+    	 * Human IO (that requires subsystems)
+    	 */
+    	joysticks.initButtons();
+    	sdb = new SDB();
     }
 	
 	public void disabledPeriodic() {

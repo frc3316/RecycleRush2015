@@ -68,26 +68,46 @@ public class Joysticks
 			/*
 			 * Joysticks
 			 */
-			joystickLeft = new Joystick((int) config.get("joystickLeft"));
-			joystickRight = new Joystick((int) config.get("joystickRight"));
-	    	joystickOperator = new Joystick((int) config.get("joystickOperator"));
-	    	/*
-	    	 * Joystick Buttons
-	    	 */
-	    	openAnschlussButton = new JoystickButton(joystickOperator, (int) config.get("openAnschlussButton"));
-	    	closeAnschlussButton = new JoystickButton(joystickOperator, (int) config.get("closeAnschlussButton"));
-	    	
-	    	buttonRollIn = new WidePOVButton(joystickOperator, (int[]) config.get("JOYSTICKS_BUTTON_ROLL_IN"));
-	    	buttonRollIn.whileHeld(new RollIn());
-	    	buttonRollOut = new WidePOVButton(joystickOperator, (int[]) config.get("JOYSTICKS_BUTTON_ROLL_OUT"));
-	    	buttonRollOut.whileHeld(new RollOut());
-	    	buttonRollTurnClockwise = new WidePOVButton(joystickOperator, (int[]) config.get("JOYSTICKS_BUTTON_ROLL_TURN_CLOCKWISE"));
-	    	buttonRollTurnClockwise.whileHeld(new RollTurnClockwise());
-	    	buttonRollTurnCounterClockwise = new WidePOVButton(joystickOperator, (int[]) config.get("JOYSTICKS_BUTTON_ROLL_TURN_COUNTER_CLOCKWISE"));
-	    	buttonRollTurnCounterClockwise.whileHeld(new RollTurnCounterClockwise());
+			joystickLeft = new Joystick((int) config.get("JOYSTICK_LEFT"));
+			joystickRight = new Joystick((int) config.get("JOYSTICK_RIGHT"));
+	    	joystickOperator = new Joystick((int) config.get("JOYSTICK_OPERATOR"));
     	} 
     	catch (ConfigException e) 
     	{
+			logger.severe(e);
+		}
+	}
+	
+	public void initButtons ()
+	{
+		/*
+    	 * Joystick Buttons
+    	 */
+		try
+		{
+	    	openAnschlussButton = new JoystickButton(joystickOperator, 
+	    			(int) config.get("openAnschlussButton"));
+	    	closeAnschlussButton = new JoystickButton(joystickOperator, 
+	    			(int) config.get("closeAnschlussButton"));
+	    	
+	    	buttonRollIn = new WidePOVButton(joystickOperator, 
+	    			(int[]) config.get("JOYSTICKS_BUTTON_ROLL_IN"));
+	    	buttonRollIn.whileHeld(new RollIn());
+	    	
+	    	buttonRollOut = new WidePOVButton(joystickOperator, 
+	    			(int[]) config.get("JOYSTICKS_BUTTON_ROLL_OUT"));
+	    	buttonRollOut.whileHeld(new RollOut());
+	    	
+	    	buttonRollTurnClockwise = new WidePOVButton(joystickOperator, 
+	    			(int[]) config.get("JOYSTICKS_BUTTON_ROLL_TURN_CLOCKWISE"));
+	    	buttonRollTurnClockwise.whileHeld(new RollTurnClockwise());
+	    	
+	    	buttonRollTurnCounterClockwise = new WidePOVButton(joystickOperator, 
+	    			(int[]) config.get("JOYSTICKS_BUTTON_ROLL_TURN_COUNTER_CLOCKWISE"));
+	    	buttonRollTurnCounterClockwise.whileHeld(new RollTurnCounterClockwise());
+		}
+		catch (ConfigException e)
+		{
 			logger.severe(e);
 		}
 	}

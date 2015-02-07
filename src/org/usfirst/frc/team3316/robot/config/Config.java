@@ -106,9 +106,14 @@ public class Config
 			/*
 			 * Constants
 			 */
-			addToConstants("CHASSIS_MOTOR_CONTROLLER_LEFT", 0);
-			addToConstants("CHASSIS_MOTOR_CONTROLLER_RIGHT", 1);
-			addToConstants("CHASSIS_MOTOR_CONTROLLER_CENTER", 2);
+			addToConstants("CHASSIS_MOTOR_CONTROLLER_LEFT_1", 4);
+			addToConstants("CHASSIS_MOTOR_CONTROLLER_LEFT_2", 5);
+			
+			addToConstants("CHASSIS_MOTOR_CONTROLLER_RIGHT_1", 0);
+			addToConstants("CHASSIS_MOTOR_CONTROLLER_RIGHT_2", 1);
+			
+			addToConstants("CHASSIS_MOTOR_CONTROLLER_CENTER_1", 2);
+			addToConstants("CHASSIS_MOTOR_CONTROLLER_CENTER_2", 6);
 			
 			addToConstants("CHASSIS_ENCODER_LEFT_A", 2);
 			addToConstants("CHASSIS_ENCODER_LEFT_B", 3);
@@ -129,6 +134,7 @@ public class Config
 			addToVariables("chassis_RightScale", 1.0);
 			addToVariables("chassis_CenterScale", 1.0);
 			
+			addToVariables("chassis_HeadingOffset", 0.0);
 			//TankDrive
 			addToVariables("chassis_TankDrive_InvertX", false);
 			addToVariables("chassis_TankDrive_InvertY", true);

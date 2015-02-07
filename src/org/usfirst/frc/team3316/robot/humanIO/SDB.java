@@ -36,7 +36,7 @@ public class SDB
 	 * @param key the key required
 	 * @return whether the value was put in the SmartDashboard
 	 */
-	public boolean addToSDB (String key)
+	public boolean putVariableInSDB (String key)
 	{
 		try
 		{
@@ -86,15 +86,7 @@ public class SDB
 	}
 	
 	private void initSDB ()
-	{
-		addToSDB ("chassis_LeftScale");
-		addToSDB ("chassis_RightScale");
-		addToSDB ("chassis_CenterScale");
-		
-		addToSDB ("chassis_TankDrive_InvertX");
-		addToSDB ("chassis_TankDrive_InvertY");
-		
-		addToSDB ("chassis_TankDrive_InvertY");
-		addToSDB ("chassis_TankDrive_InvertY");
+	{	
+		putVariableInSDB("chassis_HeadingOffset");
 	}
 }

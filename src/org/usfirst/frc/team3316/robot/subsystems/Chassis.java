@@ -175,9 +175,9 @@ public class Chassis extends Subsystem
 	
 	private NavigationThread navigationThread;
 	
-	private VictorSP left;
-	private VictorSP right;
-	private VictorSP center;
+	private VictorSP left1, left2;
+	private VictorSP right1, right2;
+	private VictorSP center1, center2;
 	
 	private IMUAdvanced navx;
 	
@@ -193,16 +193,16 @@ public class Chassis extends Subsystem
 	
 	Drive defaultDrive;
 	
-	TankDrive tankDrive = new TankDrive();
-	StrafeDrive strafeDrive = new StrafeDrive();
-	RobotOrientedDrive robotOrientedDrive = new RobotOrientedDrive();
-	FieldOrientedDrive fieldOrientedDrive = new FieldOrientedDrive();
-	
 	public Chassis ()
 	{
-		left = Robot.actuators.chassisMotorControllerLeft;
-		right = Robot.actuators.chassisMotorControllerRight;
-		center = Robot.actuators.chassisMotorControllerCenter;
+		left1 = Robot.actuators.chassisMotorControllerLeft1;
+		left2 = Robot.actuators.chassisMotorControllerLeft2;
+		
+		right1 = Robot.actuators.chassisMotorControllerRight1;
+		right2 = Robot.actuators.chassisMotorControllerRight2;
+		
+		center1 = Robot.actuators.chassisMotorControllerCenter1;
+		center2 = Robot.actuators.chassisMotorControllerCenter2;
 		
 		navx = Robot.sensors.navx;
 		
@@ -223,21 +223,27 @@ public class Chassis extends Subsystem
 		
 		navigationThread = new NavigationThread();
 		navigationThread.start();
-		
-		defaultDrive = new TankDrive ();
 	}
 	
     public void initDefaultCommand() 
     {
-       setDefaultCommand(defaultDrive);
+    	defaultDrive = new TankDrive();
+    	setDefaultCommand(defaultDrive);
     }
     
     public boolean set (double left, double right, double center)
     {
     	updateScales();
-    	this.left.set(left*leftScale);
-    	this.right.set(right*rightScale);
-    	this.center.set(center*centerScale);
+    	
+    	this.left1.set(left*leftScale);
+    	this.left2.set(left*leftScale);
+    	
+    	this.right1.set(right*rightScale);
+    	this.right2.set(right*rightScale);
+    	
+    	this.center1.set(center*centerScale);
+    	this.center2.set(center*centerScale);
+    	
     	return true;
     }
     
