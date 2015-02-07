@@ -43,7 +43,7 @@ public class DBugLogger extends Logger {
 	        fh.setFormatter(formatter);
 	    } 
 	    catch (SecurityException e) {
-	        e.printStackTrace();  
+	        e.printStackTrace();
 	    } 
 	    catch (IOException e) {  
 	        e.printStackTrace();  
