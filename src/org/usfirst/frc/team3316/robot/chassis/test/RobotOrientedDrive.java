@@ -1,6 +1,5 @@
 package org.usfirst.frc.team3316.robot.chassis.test;
 
-import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 
 public class RobotOrientedDrive extends StrafeDrive 
 {	

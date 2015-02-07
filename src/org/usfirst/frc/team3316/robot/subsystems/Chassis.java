@@ -40,14 +40,7 @@ public class Chassis extends Subsystem
 			/*
 			 * makes sure heading is in the range (-180) to (180)
 			 */
-			while (heading < -180)
-			{
-				heading += 360;
-			}
-			while (heading > 180)
-			{
-				heading -= 360;
-			}
+			this.heading = fixHeading(heading);
 		}
 		
 		/**
@@ -65,8 +58,8 @@ public class Chassis extends Subsystem
 			return y;
 		}
 		/**
-		 * Return change in heading that has been integrated
-		 * heading returned is in the range (-180) to (180)
+		 * Return change in heading that has been integrated.
+		 * Heading returned is in the range (-180) to (180)
 		 */
 		public double getHeading ()
 		{
@@ -97,10 +90,6 @@ public class Chassis extends Subsystem
 				/*
 				 * Variable init
 				 */
-				if (previousTime == 0)
-				{
-					previousTime = System.currentTimeMillis();
-				}
 				double currentTime = System.currentTimeMillis();
 				double dT = (currentTime - previousTime) / 1000; //conversion to seconds
 				double currentHeading = getHeading();
@@ -110,43 +99,26 @@ public class Chassis extends Subsystem
 				 */
 				double vS, vF; //speeds relative to the robot (forward and sideways)
 				vS = encoderCenter.getRate();
-				vF = (encoderLeft.getRate() + encoderRight.getRate()) / 2; //TODO: check this calculation
-				
-				double vX, vY; //speeds relative to field 
-				double headingRad = Math.toRadians(currentHeading);
-				vX = (vF * Math.sin(headingRad)) + (vS * Math.sin(headingRad + (0.5 * Math.PI)));
-				vY = (vF * Math.cos(headingRad)) + (vS * Math.cos(headingRad + (0.5 * Math.PI)));
+				vF = (encoderLeft.getRate() + encoderRight.getRate()) / 2;
 				
 				/*
-				 * Calculates position delta in field axes
+				 * Calculates dTheta
 				 */
-				double dX, dY, dTheta;
-				dX = vX * dT;
-				dY = vY * dT;
-				
-				dTheta = currentHeading - previousHeading;
+				double dTheta = currentHeading - previousHeading;
 				//Since heading is in the range (-180) to (180), when 
 				//completing a full turn dTheta will be an absurdly big value
 				//Checks if dTheta is an absurdly big value and fixes it
-				if (dTheta > 350) //350 is a big number
+				if (dTheta > 340) //340 is a big number
 				{
 					dTheta -= 360;
 				}
-				if (dTheta < -350) //Math.abs(-350) is another big number
+				if (dTheta < -340) //Math.abs(-340) is another big number
 				{
 					dTheta += 360;
 				}
 				
 				/*
-				 * Adds all of the deltas to each integrator
-				 */
-				for (NavigationIntegrator integrator : integratorSet)
-				{
-					integrator.add(dX, dY, dTheta);
-				}
-				
-				/*
-				 * Calculates angular velocity(ies)
+				 * Calculates angular velocity
 				 */
 				//Calculation from gyro
 				angularVelocity = (dTheta)/dT; 
@@ -155,13 +127,30 @@ public class Chassis extends Subsystem
 				angularVelocityEncoders = Math.toDegrees(angularVelocityEncoders); //conversion to (degrees/sec)
 				
 				/*
+				 * Adds all of the deltas to each integrator
+				 */
+				for (NavigationIntegrator integrator : integratorSet)
+				{
+					double vX, vY; //speeds relative to the orientation that the integrator started at
+					double headingRad = Math.toRadians(integrator.getHeading());
+					vX = (vF * Math.sin(headingRad)) + (vS * Math.sin(headingRad + (0.5 * Math.PI)));
+					vY = (vF * Math.cos(headingRad)) + (vS * Math.cos(headingRad + (0.5 * Math.PI)));
+					
+					double dX, dY;
+					dX = vX * dT;
+					dY = vY * dT;
+					
+					integrator.add(dX, dY, dTheta);
+				}
+				
+				/*
 				 * Setting variables for next run
 				 */
 				previousTime = currentTime;
 				previousHeading = currentHeading;
 				try 
 				{
-					sleep(5);
+					sleep(10);
 				} 
 				catch (InterruptedException e) 
 				{
@@ -221,9 +210,11 @@ public class Chassis extends Subsystem
 		encoderRight = Robot.sensors.chassisEncoderRight;
 		encoderCenter = Robot.sensors.chassisEncoderCenter;
 		
+		updateHeadingOffset();
+		
 		try
 		{
-			CHASSIS_WIDTH = (double)config.get("CHASSIS_WIDTH");
+			CHASSIS_WIDTH = (double) config.get("CHASSIS_WIDTH");
 		}
 		catch (ConfigException e)
 		{
@@ -252,14 +243,10 @@ public class Chassis extends Subsystem
     
     public double getHeading ()
     {
-    	//TODO: need to check whether its Yaw, Pitch or Roll
-    	return navx.getYaw() + headingOffset;
-    }
-    
-    public void setHeadingOffset (double offset)
-    {
-		//TODO: make SDB set this in game start.
-    	this.headingOffset = offset;
+    	double headingToReturn = navx.getYaw() + headingOffset;
+    	headingToReturn = fixHeading(headingToReturn);
+    	
+    	return headingToReturn;
     }
     
     public double getAngularVelocity ()
@@ -274,13 +261,11 @@ public class Chassis extends Subsystem
     
     public double getAccelX ()
     {
-    	//TODO: need to check whether its X, Y or Z
     	return navx.getWorldLinearAccelX();
     }
     
     public double getAccelY ()
     {
-    	//TODO: need to check whether its X, Y or Z
     	return navx.getWorldLinearAccelY();
     }
     
@@ -294,6 +279,18 @@ public class Chassis extends Subsystem
     	return navigationThread.removeIntegrator(integrator);
     }
     
+    private void updateHeadingOffset () 
+    {
+    	try
+    	{
+    		headingOffset = (double) config.get("chassis_HeadingOffset");
+    	}
+    	catch (ConfigException e)
+    	{
+    		logger.severe(e);
+    	}
+	}
+    
     private void updateScales ()
     {
     	try
@@ -306,6 +303,22 @@ public class Chassis extends Subsystem
     	{
     		logger.severe(e);
     	}
+    }
+    
+    //Returns the same heading in the range (-180) to (180)
+    private static double fixHeading (double heading)
+    {
+    	double toReturn = heading % 360;
+    	
+    	if (toReturn < -180)
+    	{
+    		toReturn += 360;
+    	}
+    	else if (toReturn > 180)
+    	{
+    		toReturn -= 360;
+    	}
+    	return toReturn;
     }
 }
 

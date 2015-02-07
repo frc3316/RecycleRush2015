@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3316.robot.chassis.test;
 
+
 public class Encoder 
 {
 	private double rate = 0;
