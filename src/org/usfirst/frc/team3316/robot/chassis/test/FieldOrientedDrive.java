@@ -1,6 +1,5 @@
 package org.usfirst.frc.team3316.robot.chassis.test;
 
-import org.usfirst.frc.team3316.robot.Robot;
 
 public class FieldOrientedDrive extends RobotOrientedDrive 
 {	
@@ -26,7 +25,7 @@ public class FieldOrientedDrive extends RobotOrientedDrive
 		
 		double r = Math.sqrt(x*x + y*y);
 		double vectorAngle =  Math.atan2(x, y); //angle from y axis, clockwise is positive and counter-clockwise is negative
-		double robotAngle = Robot.chassis.getHeading();
+		double robotAngle = 0; //Robot.chassis.getHeading();
 		double angleDiff = vectorAngle - robotAngle;
 		
 		this.right = this.left = Math.cos(angleDiff)*r;
