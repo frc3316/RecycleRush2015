@@ -106,14 +106,14 @@ public class Config
 			/*
 			 * Constants
 			 */
-			addToConstants("CHASSIS_MOTOR_CONTROLLER_LEFT_1", 4);
-			addToConstants("CHASSIS_MOTOR_CONTROLLER_LEFT_2", 5);
+			addToConstants("CHASSIS_MOTOR_CONTROLLER_LEFT_1", 6);
+			addToConstants("CHASSIS_MOTOR_CONTROLLER_LEFT_2", 7);
 			
-			addToConstants("CHASSIS_MOTOR_CONTROLLER_RIGHT_1", 0);
-			addToConstants("CHASSIS_MOTOR_CONTROLLER_RIGHT_2", 1);
+			addToConstants("CHASSIS_MOTOR_CONTROLLER_RIGHT_1", 1);
+			addToConstants("CHASSIS_MOTOR_CONTROLLER_RIGHT_2", 2);
 			
-			addToConstants("CHASSIS_MOTOR_CONTROLLER_CENTER_1", 2);
-			addToConstants("CHASSIS_MOTOR_CONTROLLER_CENTER_2", 6);
+			addToConstants("CHASSIS_MOTOR_CONTROLLER_CENTER_1", 0);
+			addToConstants("CHASSIS_MOTOR_CONTROLLER_CENTER_2", 5);
 			
 			addToConstants("CHASSIS_ENCODER_LEFT_A", 2);
 			addToConstants("CHASSIS_ENCODER_LEFT_B", 3);
@@ -130,17 +130,19 @@ public class Config
 			 */
 
 			 //Subsystem
-			addToVariables("chassis_LeftScale", -1.0);
-			addToVariables("chassis_RightScale", 1.0);
-			addToVariables("chassis_CenterScale", 1.0);
+			addToVariables("chassis_LeftScale", 0.3);
+			addToVariables("chassis_RightScale", -0.3);
+			addToVariables("chassis_CenterScale", 0.9);
 			
-			addToVariables("chassis_HeadingOffset", 0.0);
+			addToVariables("chassis_HeadingToSet", 0.0); // This is the heading that the SetHeadingSDB command sets to
+														 // It is configurable in the SDB (it should appear in initSDB())
 			//TankDrive
 			addToVariables("chassis_TankDrive_InvertX", false);
 			addToVariables("chassis_TankDrive_InvertY", true);
 			
+			addToVariables("chassis_TankDrive_LowPass", 0.0);
 			//RobotOrientedDrive
-			addToVariables("chassis_RobotOrientedDrive_TurnScale", 1.0);
+			addToVariables("chassis_RobotOrientedDrive_TurnScale", 0.5);
 			
 			//RobotOrientedNavigation
 			addToVariables("chassis_RobotOrientedNavigation_PIDControllerX_KP_0", 0.0);

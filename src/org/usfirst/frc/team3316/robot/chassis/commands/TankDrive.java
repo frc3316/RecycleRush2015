@@ -11,6 +11,8 @@ public class TankDrive extends Drive
 	
 	boolean invertY, invertX;
 	
+	double lowPass = 0.0;
+	
 	public TankDrive ()
 	{
 		super();
@@ -22,6 +24,50 @@ public class TankDrive extends Drive
 	{
 		left = getLeftY();
 		right = getRightY();
+	}
+	
+	protected double getLeftY ()
+	{
+		updateInverts();
+		double y = lowPass(joystickLeft.getY());
+		if (invertY)
+		{
+			return -y;
+		}
+		return y;
+	}
+	
+	protected double getLeftX ()
+	{
+		double x = lowPass(joystickLeft.getX());
+		updateInverts();
+		if (invertX)
+		{
+			return -x;
+		}
+		return x;
+	}
+	
+	protected double getRightY ()
+	{
+		updateInverts();
+		double y = lowPass(joystickRight.getY());
+		if (invertY)
+		{
+			return -y;
+		}
+		return y; 
+	}
+	
+	protected double getRightX() 
+	{
+		updateInverts();
+		double x = lowPass(joystickRight.getX());
+		if (invertX)
+		{
+			return -x;
+		}
+		return x;
 	}
 	
 	private void updateInverts ()
@@ -37,43 +83,12 @@ public class TankDrive extends Drive
 		}
 	}
 	
-	protected double getLeftY ()
+	private double lowPass (double x)
 	{
-		updateInverts();
-		if (invertY)
+		if (Math.abs(x) < lowPass)
 		{
-			return -joystickLeft.getY();
+			return 0;
 		}
-		return joystickLeft.getY();
-	}
-	
-	protected double getLeftX ()
-	{
-		updateInverts();
-		if (invertX)
-		{
-			return -joystickLeft.getX();
-		}
-		return joystickLeft.getX();
-	}
-	
-	protected double getRightY ()
-	{
-		updateInverts();
-		if (invertY)
-		{
-			return -joystickRight.getY();
-		}
-		return joystickRight.getY(); 
-	}
-	
-	protected double getRightX() 
-	{
-		updateInverts();
-		if (invertX)
-		{
-			return -joystickRight.getX();
-		}
-		return joystickRight.getX();
+		return x;
 	}
 }

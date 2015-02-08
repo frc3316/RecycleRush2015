@@ -31,61 +31,27 @@ public class RobotOrientedDrive extends StrafeDrive
 		 * left - right = requiredTurn*2
 		 * -1 < left, right < 1 
 		 */
-		double yIn = this.left;
 		updateTurnScale();
-		requiredTurn = requiredTurn * turnScale;
-		// The outer wheel is the one which drives faster (absolutely)
-		// Therefore it is the one the would exceed the range of -1 to 1
-		// (when requiredTurn is 0 then it doesn't matter which is outer because were driving straight)
-		// (when yIn is 0 then the outer wheel will be 0, but we fix this later...)
-		double outerWheel = Math.max(Math.abs(yIn + requiredTurn), Math.abs(yIn - requiredTurn)) * Math.signum(yIn);
-		double innerWheel;
+		requiredTurn *= turnScale;
 		
-		//If outerWheel is 0, sets outerWheel and innerWheel to be equal in reverse directions
-		if (outerWheel == 0)
-		{
-			outerWheel = requiredTurn;
-			innerWheel = -requiredTurn;
-		}
+		this.left += requiredTurn;
+		this.right -= requiredTurn;
 		
-		//If outerWheel is not 0, sets innerWheel so it is slower than outerWheel
-		else if (outerWheel > 0) 
+		double max = Math.max(this.left, this.right);
+		double min = Math.min(this.left, this.right);
+		
+		double excess = 0;
+		if (max > 1)
 		{
-			outerWheel = Math.min(outerWheel, 1); //makes sure outerWheel <= 1
-			
-			if (requiredTurn > 0)
-			{
-				innerWheel = outerWheel - (requiredTurn*2);
-			}
-			else
-			{
-				innerWheel = outerWheel + (requiredTurn*2);
-			}
+			excess = (max - 1);
 		}
-		else
+		else if (min < -1)
 		{
-			outerWheel = Math.max(outerWheel, -1); //makes sure outerWheel >= -1
-			
-			if (requiredTurn < 0)
-			{
-				innerWheel = outerWheel - (requiredTurn*2);
-			}
-			else
-			{
-				innerWheel = outerWheel + (requiredTurn*2);
-			}
+			excess = (min + 1);
 		}
 		
-		if (requiredTurn > 0) //the robot needs to turn clockwise
-		{
-			this.left = outerWheel;
-			this.right = innerWheel;
-		}
-		else //the robot needs to turn counter-clockwise
-		{
-			this.left = innerWheel;
-			this.right = outerWheel;
-		}
+		this.left -= excess;
+		this.right -= excess;
 	}
 	
 	private void updateTurnScale ()

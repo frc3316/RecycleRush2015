@@ -34,7 +34,6 @@ public class Sensors
 	public AnalogInput stackerHeightIR;
 	public DigitalInput stackerSwitchTote;
 	public DigitalInput stackerSwitchGamePiece;
-	// TODO: add level-6 switches
 	
 	/*
 	 * Anschluss
