@@ -13,9 +13,11 @@ public class FieldOrientedDrive extends RobotOrientedDrive
 	protected void setFieldVector (double x, double y)
 	{	
 		double r = Math.sqrt(x*x + y*y); //The vector's magnitude
-		double vectorAngle =  Math.atan2(x, y); //Vector angle from y axis, clockwise is positive and counter-clockwise is negative
-		double robotAngle = Robot.chassis.getHeading(); //Robot angle
-		double angleDiff = vectorAngle - robotAngle; //The angle of the vector oriented to the robot
+		double vectorAngle =  Math.atan2(x, y); //Vector angle from y axis, 
+												//clockwise is positive and 
+												//counter-clockwise is negative
+		double robotAngleRad = Math.toRadians(Robot.chassis.getHeading()); //Robot angle
+		double angleDiff = vectorAngle - robotAngleRad; //The angle of the vector oriented to the robot
 		
 		/*
 		 * Breaks down the field vector to the robot's axes

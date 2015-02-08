@@ -8,9 +8,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingSDB;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
-import org.usfirst.frc.team3316.robot.config.test.LogAll;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,6 +27,7 @@ public class SDB
 		variablesInSDB = new Hashtable <String, Class <?> > ();
 		
 		SmartDashboard.putData(new UpdateVariables());
+		SmartDashboard.putData(new SetHeadingSDB());
 		
 		initSDB();
 	}
@@ -87,6 +88,6 @@ public class SDB
 	
 	private void initSDB ()
 	{	
-		putVariableInSDB("chassis_HeadingOffset");
+		putVariableInSDB("chassis_HeadingToSet");
 	}
 }

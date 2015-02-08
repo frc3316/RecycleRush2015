@@ -210,8 +210,6 @@ public class Chassis extends Subsystem
 		encoderRight = Robot.sensors.chassisEncoderRight;
 		encoderCenter = Robot.sensors.chassisEncoderCenter;
 		
-		updateHeadingOffset();
-		
 		try
 		{
 			CHASSIS_WIDTH = (double) config.get("CHASSIS_WIDTH");
@@ -235,18 +233,21 @@ public class Chassis extends Subsystem
     {
     	updateScales();
     	
-    	this.left1.set(left*leftScale);
-    	this.left2.set(left*leftScale);
+    	this.left1.set (left *leftScale);
+    	this.left2.set (left * leftScale);
     	
-    	this.right1.set(right*rightScale);
-    	this.right2.set(right*rightScale);
+    	this.right1.set (right * rightScale);
+    	this.right2.set (right * rightScale);
     	
-    	this.center1.set(center*centerScale);
-    	this.center2.set(center*centerScale);
+    	this.center1.set (center * centerScale);
+    	this.center2.set (center * centerScale);
     	
     	return true;
     }
     
+    /*
+     * Heading
+     */
     public double getHeading ()
     {
     	double headingToReturn = navx.getYaw() + headingOffset;
@@ -255,6 +256,21 @@ public class Chassis extends Subsystem
     	return headingToReturn;
     }
     
+    /**
+     * Sets the current robot angle to the specified angle
+     * @param headingToSet the angle specified
+     */
+    public void setHeading (double headingToSet)
+    {
+    	double currentHeading = getHeading();
+    	double currentOffset = headingOffset;
+    	
+    	headingOffset = (headingToSet + currentOffset - currentHeading);
+    }
+    
+    /*
+     * Angular velocity
+     */
     public double getAngularVelocity ()
     {
     	return angularVelocity;
@@ -265,6 +281,9 @@ public class Chassis extends Subsystem
     	return angularVelocityEncoders;
     }
     
+    /*
+     * Acceleration
+     */
     public double getAccelX ()
     {
     	return navx.getWorldLinearAccelX();
@@ -275,6 +294,9 @@ public class Chassis extends Subsystem
     	return navx.getWorldLinearAccelY();
     }
     
+    /*
+     * Navigation integrator
+     */
     public boolean addNavigationIntegrator (NavigationIntegrator integrator)
     {
     	return navigationThread.addIntegrator(integrator);
@@ -284,18 +306,6 @@ public class Chassis extends Subsystem
     {
     	return navigationThread.removeIntegrator(integrator);
     }
-    
-    private void updateHeadingOffset () 
-    {
-    	try
-    	{
-    		headingOffset = (double) config.get("chassis_HeadingOffset");
-    	}
-    	catch (ConfigException e)
-    	{
-    		logger.severe(e);
-    	}
-	}
     
     private void updateScales ()
     {
