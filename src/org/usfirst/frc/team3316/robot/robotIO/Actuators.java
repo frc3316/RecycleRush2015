@@ -26,11 +26,9 @@ public class Actuators
 	/*
 	 * Stacker
 	 */
-	public DoubleSolenoid stackerSolenoidUpperLeft;
-	public DoubleSolenoid stackerSolenoidUpperRight;
+	public DoubleSolenoid stackerSolenoidUpper;
 	
-	public DoubleSolenoid stackerSolenoidBottomLeft;
-	public DoubleSolenoid stackerSolenoidBottomRight;
+	public DoubleSolenoid stackerSolenoidBottom;
 	
 	public DoubleSolenoid stackerSolenoidContainer;
 	public DoubleSolenoid stackerSolenoidGripper;
@@ -65,17 +63,11 @@ public class Actuators
 			/*
 			 * Stacker
 			 */
-			stackerSolenoidUpperLeft = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_UPPER_LEFT_FORWARD"), 
-														 (int) config.get("STACKER_SOLENOID_UPPER_LEFT_REVERSE"));
+			stackerSolenoidUpper = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_UPPER_FORWARD"), 
+														 (int) config.get("STACKER_SOLENOID_UPPER_REVERSE"));
 			
-			stackerSolenoidUpperRight = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_UPPER_RIGHT_FORWARD"), 
-					 									  (int) config.get("STACKER_SOLENOID_UPPER_RIGHT_REVERSE"));
-			
-			stackerSolenoidBottomLeft = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_BOTTOM_LEFT_FORWARD"), 
-														 (int) config.get("STACKER_SOLENOID_BOTTOM_LEFT_REVERSE"));
-			
-			stackerSolenoidBottomRight = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_BOTTOM_RIGHT_FORWARD"), 
-														  (int) config.get("STACKER_SOLENOID_BOTTOM_RIGHT_REVERSE"));
+			stackerSolenoidBottom = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_BOTTOM_FORWARD"), 
+														 (int) config.get("STACKER_SOLENOID_BOTTOM_REVERSE"));
 			
 			// Solenoid used to control the pistons connected to the gripper
 			stackerSolenoidGripper = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_GRIPPER_FORWARD"),

@@ -228,6 +228,15 @@ public class Config
 			 * Constants
 			 */
 				//Subsystem
+					addToConstants("STACKER_SOLENOID_CONTAINER_FORWARD", 2);
+					addToConstants("STACKER_SOLENOID_CONTAINER_REVERSE", 3);
+			
+					addToConstants("STACKER_SOLENOID_BOTTOM_FORWARD", 4);
+					addToConstants("STACKER_SOLENOID_BOTTOM_REVERSE", 5);
+					
+					addToConstants("STACKER_SOLENOID_UPPER_FORWARD", 6);
+					addToConstants("STACKER_SOLENOID_UPPER_REVERSE", 7);
+					
 					addToConstants("STACKER_SWITCH_TOTE", 8);
 					addToConstants("STACKER_SWITCH_GAMEPIECE", 9);
 					

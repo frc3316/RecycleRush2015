@@ -22,10 +22,8 @@ public class Stacker extends Subsystem
     Config config = Robot.config;
     DBugLogger logger = Robot.logger;
     
-    private DoubleSolenoid solenoidUpperLeft, 
-    					   solenoidUpperRight, 
-    					   solenoidBottomLeft, 
-    					   solenoidBottomRight; //Lifting solenoids
+    private DoubleSolenoid solenoidUpper, 
+    					   solenoidBottom; //Lifting solenoids
     
     private DoubleSolenoid solenoidContainer; //The solenoid that holds the containers
     private DoubleSolenoid solenoidGripper; //The solenoid that opens and closes the roller gripper
@@ -44,11 +42,9 @@ public class Stacker extends Subsystem
 	     *  - Step Height: bottom solenoid is retracted and upper extended
 		 *  - Tote Height: both solenoids retracted
 		 */
-    	solenoidUpperLeft = Robot.actuators.stackerSolenoidUpperLeft;
-    	solenoidUpperRight = Robot.actuators.stackerSolenoidUpperRight;
+    	solenoidUpper = Robot.actuators.stackerSolenoidUpper;
     	
-    	solenoidBottomLeft = Robot.actuators.stackerSolenoidBottomLeft;
-    	solenoidBottomRight = Robot.actuators.stackerSolenoidBottomRight;
+    	solenoidBottom = Robot.actuators.stackerSolenoidBottom;
     	
     	solenoidContainer = Robot.actuators.stackerSolenoidContainer;
 		solenoidGripper = Robot.actuators.stackerSolenoidGripper;
@@ -65,29 +61,25 @@ public class Stacker extends Subsystem
     
     public boolean openSolenoidUpper ()
     {
-    	solenoidUpperLeft.set(DoubleSolenoid.Value.kForward);
-    	solenoidUpperRight.set(DoubleSolenoid.Value.kForward);
+    	solenoidUpper.set(DoubleSolenoid.Value.kForward);
     	return true;
     }
     
     public boolean closeSolenoidUpper ()
     {
-    	solenoidUpperLeft.set(DoubleSolenoid.Value.kReverse);
-    	solenoidUpperRight.set(DoubleSolenoid.Value.kReverse);
+    	solenoidUpper.set(DoubleSolenoid.Value.kReverse);
     	return true;
     }
     
     public boolean openSolenoidBottom ()
     { 
-    	solenoidBottomLeft.set(DoubleSolenoid.Value.kForward);
-    	solenoidBottomRight.set(DoubleSolenoid.Value.kForward);
+    	solenoidBottom.set(DoubleSolenoid.Value.kForward);
     	return true;
     }
     
     public boolean closeSolenoidBottom ()
     {
-    	solenoidBottomLeft.set(DoubleSolenoid.Value.kReverse);
-    	solenoidBottomRight.set(DoubleSolenoid.Value.kReverse);
+    	solenoidBottom.set(DoubleSolenoid.Value.kReverse);
     	return true;
     }
     
@@ -154,23 +146,22 @@ public class Stacker extends Subsystem
     
     public boolean isFull() 
     {
-    	int totesCount = 0;
-    	for (GamePiece gp : stack)
-    	{
-    		if (gp.getType() == GamePieceType.GreyTote || gp.getType() == GamePieceType.YellowTote)
-    		{
-    			totesCount++;
-    		}
-    	}
-    	return totesCount >= 6;
+    	return stack.size() >= 6;
     }
     
-    public Stack <GamePiece> getStack() {
+    public Stack <GamePiece> getStack() 
+    {
     	return stack;
     }
     
-    public void pushToStack(GamePiece g) {
+    public void pushToStack(GamePiece g) 
+    {
     	stack.push(g);
+    }
+    
+    public void clearStack ()
+    {
+       	stack.clear();
     }
 }
 
