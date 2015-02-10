@@ -28,7 +28,7 @@ public class TankDrive extends Drive
 	
 	protected double getLeftY ()
 	{
-		updateInverts();
+		updateConfigVariables();
 		double y = lowPass(joystickLeft.getY());
 		if (invertY)
 		{
@@ -39,7 +39,7 @@ public class TankDrive extends Drive
 	
 	protected double getLeftX ()
 	{
-		updateInverts();
+		updateConfigVariables();
 		double x = lowPass(joystickLeft.getX());
 		if (invertX)
 		{
@@ -50,7 +50,7 @@ public class TankDrive extends Drive
 	
 	protected double getRightY ()
 	{
-		updateInverts();
+		updateConfigVariables();
 		double y = lowPass(joystickRight.getY());
 		if (invertY)
 		{
@@ -61,7 +61,7 @@ public class TankDrive extends Drive
 	
 	protected double getRightX() 
 	{
-		updateInverts();
+		updateConfigVariables();
 		double x = lowPass(joystickRight.getX());
 		if (invertX)
 		{
@@ -70,10 +70,12 @@ public class TankDrive extends Drive
 		return x;
 	}
 	
-	private void updateInverts ()
+	private void updateConfigVariables ()
 	{
 		try
 		{
+			lowPass = (double)config.get("chassis_TankDrive_LowPass");
+			
 			invertX = (boolean)config.get("chassis_TankDrive_InvertX");
 			invertY = (boolean)config.get("chassis_TankDrive_InvertY");
 		}

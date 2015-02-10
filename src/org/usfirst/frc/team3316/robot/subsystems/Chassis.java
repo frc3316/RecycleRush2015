@@ -229,7 +229,7 @@ public class Chassis extends Subsystem
 	
     public void initDefaultCommand() 
     {
-    	defaultDrive = new TankDrive();
+    	defaultDrive = new RobotOrientedDrive();
     	setDefaultCommand(defaultDrive);
     }
     
