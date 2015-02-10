@@ -13,12 +13,60 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
+import org.usfirst.frc.team3316.robot.stacker.commands.HoldContainer;
+import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToFloor;
+import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToStep;
+import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToTote;
+import org.usfirst.frc.team3316.robot.stacker.commands.ReleaseContainer;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SDB 
 {
+	/*
+	 * Thread that periodically updates values from the robot into the SmartDashboard
+	 * This is the place where all of the robot data should be displayed from
+	 */
+	private class SDBThread extends Thread
+	{
+		public synchronized void run ()
+		{
+			while (true)
+			{
+				put ("Current Heading", Robot.chassis.getHeading());
+				put ("Current Height", Robot.stacker.getHeight());
+				
+				try 
+				{
+					sleep(20);
+				} 
+				catch (InterruptedException e) 
+				{
+					logger.severe(e);
+				}
+			}
+		}
+		
+		private void put (String name, double d)
+	    {
+	    	SmartDashboard.putNumber(name, d);
+	    }
+	    
+	    private void put (String name, int i)
+	    {
+	    	SmartDashboard.putInt(name, i);
+	    }
+	    
+	    private void put (String name, boolean b)
+	    {
+	    	SmartDashboard.putBoolean(name, b);
+	    }
+	}
+	
 	DBugLogger logger = Robot.logger;
 	Config config = Robot.config;
+	
+	private SDBThread thread;
 	
 	private Hashtable <String, Class <?> > variablesInSDB;
 	
@@ -26,10 +74,13 @@ public class SDB
 	{
 		variablesInSDB = new Hashtable <String, Class <?> > ();
 		
-		SmartDashboard.putData(new UpdateVariables());
+		SmartDashboard.putData(new UpdateVariablesInConfig());
 		SmartDashboard.putData(new SetHeadingSDB());
 		
 		initSDB();
+		
+		thread = new SDBThread();
+		thread.start();
 	}
 	
 	/**
@@ -37,7 +88,7 @@ public class SDB
 	 * @param key the key required
 	 * @return whether the value was put in the SmartDashboard
 	 */
-	public boolean putVariableInSDB (String key)
+	public boolean putConfigVariableInSDB (String key)
 	{
 		try
 		{
@@ -71,7 +122,6 @@ public class SDB
 						"BUT DOES NOT ALLOW for its modification");
 			}
 			
-			
 			return true;
 		}
 		catch (ConfigException e)
@@ -88,6 +138,22 @@ public class SDB
 	
 	private void initSDB ()
 	{	
-		putVariableInSDB("chassis_HeadingToSet");
+		SmartDashboard.putData(new UpdateVariablesInConfig()); // NEVER REMOVE THIS COMMAND
+				
+		/*
+		 * Set Heading SDB
+		 */
+		SmartDashboard.putData(new SetHeadingSDB());
+		putConfigVariableInSDB("chassis_HeadingToSet");
+		
+		/*
+		 * Stacker Testing
+		 */
+		SmartDashboard.putData(new MoveStackerToFloor());
+		SmartDashboard.putData(new MoveStackerToStep());
+		SmartDashboard.putData(new MoveStackerToTote());
+		
+		SmartDashboard.putData(new HoldContainer());
+		SmartDashboard.putData(new ReleaseContainer());
 	}
 }

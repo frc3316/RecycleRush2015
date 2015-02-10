@@ -13,11 +13,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Updates all the variables that are in the SmartDashboard
  */
-public class UpdateVariables extends Command 
+public class UpdateVariablesInConfig extends Command 
 {
 	Config config = Robot.config;
 	
-    public UpdateVariables() {}
+    public UpdateVariablesInConfig() {}
 
     protected void initialize()
     {

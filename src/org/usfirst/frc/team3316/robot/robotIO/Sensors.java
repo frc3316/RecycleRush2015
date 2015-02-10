@@ -67,6 +67,13 @@ public class Sensors
 					 						  (int)config.get("CHASSIS_ENCODER_CENTER_B"), 
 					 						  false, 
 					 						  CounterBase.EncodingType.k4X);
+			
+			chassisEncoderLeft.setDistancePerPulse(
+					(double) config.get("chassis_EncoderLeft_DistancePerPulse"));
+			chassisEncoderRight.setDistancePerPulse(
+					(double) config.get("chassis_EncoderRight_DistancePerPulse"));
+			chassisEncoderCenter.setDistancePerPulse(
+					(double) config.get("chassis_EncoderCenter_DistancePerPulse"));
 
 			serial_port = new SerialPort(57600,SerialPort.Port.kMXP);
 			navx = new IMUAdvanced(serial_port);
