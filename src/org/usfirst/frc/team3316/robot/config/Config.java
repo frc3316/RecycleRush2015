@@ -134,9 +134,9 @@ public class Config
 			 */
 
 			 //Subsystem
-			addToVariables("chassis_LeftScale", 0.3);
-			addToVariables("chassis_RightScale", -0.3);
-			addToVariables("chassis_CenterScale", 0.9);
+			addToVariables("chassis_LeftScale", 1);
+			addToVariables("chassis_RightScale", -1);
+			addToVariables("chassis_CenterScale", 1);
 			
 			addToVariables("chassis_HeadingToSet", 0.0); // This is the heading that the SetHeadingSDB command sets to
 														 // It is configurable in the SDB (it should appear in initSDB())
@@ -146,20 +146,20 @@ public class Config
 			
 			addToVariables("chassis_TankDrive_LowPass", 0.0);
 			//RobotOrientedDrive
-			addToVariables("chassis_RobotOrientedDrive_TurnScale", 0.5);
+			addToVariables("chassis_RobotOrientedDrive_TurnScale", 1);
 			
 			//RobotOrientedNavigation
-			addToVariables("chassis_RobotOrientedNavigation_PIDControllerX_KP_0", 0.0);
-			addToVariables("chassis_RobotOrientedNavigation_PIDControllerX_KI_0", 0.0);
-			addToVariables("chassis_RobotOrientedNavigation_PIDControllerX_KD_0", 0.0);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerX_KP", 0.0);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerX_KI", 0.0);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerX_KD", 0.0);
 			
-			addToVariables("chassis_RobotOrientedNavigation_PIDControllerY_KP_0", 0.0);
-			addToVariables("chassis_RobotOrientedNavigation_PIDControllerY_KI_0", 0.0);
-			addToVariables("chassis_RobotOrientedNavigation_PIDControllerY_KD_0", 0.0);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerY_KP", 0.0);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerY_KI", 0.0);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerY_KD", 0.0);
 			
-			addToVariables("chassis_RobotOrientedNavigation_PIDControllerHeading_KP_0", 0.0);
-			addToVariables("chassis_RobotOrientedNavigation_PIDControllerHeading_KI_0", 0.0);
-			addToVariables("chassis_RobotOrientedNavigation_PIDControllerHeading_KD_0", 0.0);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerHeading_KP", 0.0);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerHeading_KI", 0.0);
+			addToVariables("chassis_RobotOrientedNavigation_PIDControllerHeading_KD", 0.0);
 			
 			addToVariables("chassis_RobotOrientedNavigation_PIDControllerX_AbsoluteTolerance", 0.0);
 			addToVariables("chassis_RobotOrientedNavigation_PIDControllerY_AbsoluteTolerance", 0.0);

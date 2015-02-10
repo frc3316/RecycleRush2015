@@ -39,6 +39,10 @@ public class SDB
 				put ("Angular Velocity", Robot.chassis.getAngularVelocity());
 				put ("Angular Velocity Encoders", Robot.chassis.getAngularVelocityEncoders());
 				
+				put ("Speed Left", Robot.chassis.getSpeedLeft());
+				put ("Speed Right", Robot.chassis.getSpeedRight());
+				put ("Speed Center", Robot.chassis.getSpeedCenter());
+				
 				try 
 				{
 					sleep(20);
@@ -81,6 +85,7 @@ public class SDB
 		SmartDashboard.putData(new SetHeadingSDB());
 		
 		initSDB();
+		logger.info("finished initSDB()");
 		
 		thread = new SDBThread();
 		thread.start();

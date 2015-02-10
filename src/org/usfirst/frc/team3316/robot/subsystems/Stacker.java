@@ -141,6 +141,10 @@ public class Stacker extends Subsystem
 	 */
     public GamePiece getStackBase ()
     {
+    	if (stack.isEmpty())
+    	{
+    		return null;
+    	}
     	return stack.get(0);
     }
     

@@ -13,7 +13,8 @@ public class MoveStackerToTote extends MoveStacker
 
 	protected void setSolenoids() 
 	{
-		if (Robot.stacker.getStackBase().getType() == GamePieceType.Container)
+		if (	Robot.stacker.getStackBase() != null &&
+				Robot.stacker.getStackBase().getType() == GamePieceType.Container)
 		{
 			Robot.stacker.openSolenoidContainer();
 		}

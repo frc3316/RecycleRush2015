@@ -286,6 +286,24 @@ public class Chassis extends Subsystem
     }
     
     /*
+     * Speed
+     */
+    public double getSpeedLeft ()
+    {
+      	return encoderLeft.getRate();
+    }
+        
+    public double getSpeedRight ()
+    {
+       	return encoderRight.getRate();
+    }
+        
+    public double getSpeedCenter ()
+    {
+      	return encoderCenter.getRate();
+    }
+    
+    /*
      * Acceleration
      */
     public double getAccelX ()
