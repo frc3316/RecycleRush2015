@@ -3,6 +3,8 @@
  */
 package org.usfirst.frc.team3316.robot;
 
+import java.util.Timer;
+
 import org.usfirst.frc.team3316.robot.subsystems.Anschluss;
 import org.usfirst.frc.team3316.robot.subsystems.Chassis;
 import org.usfirst.frc.team3316.robot.subsystems.Stacker;
@@ -32,6 +34,7 @@ public class Robot extends IterativeRobot
     
     public static Config config;
     public static DBugLogger logger;
+    public static Timer timer;
     /*
      * Human IO
      */
@@ -58,15 +61,19 @@ public class Robot extends IterativeRobot
     {
     	logger = new DBugLogger();
     	config = new Config();
+    	timer = new Timer();
+    	
     	/*
     	 * Human IO (that does not require subsystems)
     	 */
     	joysticks = new Joysticks();
+    	
     	/*
     	 * Robot IO
     	 */
     	actuators = new Actuators();
     	sensors = new Sensors();
+    	
     	/*
     	 * Subsystems
     	 */
@@ -74,6 +81,7 @@ public class Robot extends IterativeRobot
 		anschluss = new Anschluss();
     	rollerGripper = new RollerGripper();
     	stacker = new Stacker();
+    	
     	/*
     	 * Human IO (that requires subsystems)
     	 */

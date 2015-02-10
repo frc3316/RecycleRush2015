@@ -109,21 +109,7 @@ public class Stacker extends Subsystem
 	
     public double getHeight ()
     {
-    	updateDistanceVariables();
-    	return ((heightScale/(heightIR.getVoltage()))+heightOffset);
-    }
-    
-    private void updateDistanceVariables ()
-    {
-    	try 
-    	{
-			heightScale = (double) config.get("stackerHeightScale");
-			heightOffset = (double) config.get("stackerHeightOffset");
-		} 
-    	catch (ConfigException e) 
-    	{
-			logger.severe(e);
-		}
+    	return (1 / heightIR.getVoltage());
     }
     
     public boolean getSwitchTote ()

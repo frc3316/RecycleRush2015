@@ -6,13 +6,13 @@ package org.usfirst.frc.team3316.robot.humanIO;
 import java.util.Hashtable;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TimerTask;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingSDB;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
-
 import org.usfirst.frc.team3316.robot.stacker.commands.HoldContainer;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToFloor;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToStep;
@@ -24,38 +24,26 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SDB 
 {
 	/*
-	 * Thread that periodically updates values from the robot into the SmartDashboard
+	 * Runnable that periodically updates values from the robot into the SmartDashboard
 	 * This is the place where all of the robot data should be displayed from
 	 */
-	private class SDBThread extends Thread
+	private class UpdateSDBTask extends TimerTask
 	{
-		public synchronized void run ()
+		public void run ()
 		{
-			while (true)
-			{
-				put ("Current Heading", Robot.chassis.getHeading());
-				put ("Current Height", Robot.stacker.getHeight());
-				
-				put ("Angular Velocity", Robot.chassis.getAngularVelocity());
-				put ("Angular Velocity Encoders", Robot.chassis.getAngularVelocityEncoders());
-				
-				put ("Speed Left", Robot.chassis.getSpeedLeft());
-				put ("Speed Right", Robot.chassis.getSpeedRight());
-				put ("Speed Center", Robot.chassis.getSpeedCenter());
-				
-				put ("Distance Left", Robot.chassis.getDistanceLeft());
-				put ("Distance Right", Robot.chassis.getDistanceRight());
-				put ("Distance Center", Robot.chassis.getDistanceCenter());
-				
-				try 
-				{
-					sleep(20);
-				} 
-				catch (InterruptedException e) 
-				{
-					logger.severe(e);
-				}
-			}
+			put ("Current Heading", Robot.chassis.getHeading());
+			put ("Current Height", Robot.stacker.getHeight());
+			
+			put ("Angular Velocity", Robot.chassis.getAngularVelocity());
+			put ("Angular Velocity Encoders", Robot.chassis.getAngularVelocityEncoders());
+			
+			put ("Speed Left", Robot.chassis.getSpeedLeft());
+			put ("Speed Right", Robot.chassis.getSpeedRight());
+			put ("Speed Center", Robot.chassis.getSpeedCenter());
+			
+			put ("Distance Left", Robot.chassis.getDistanceLeft());
+			put ("Distance Right", Robot.chassis.getDistanceRight());
+			put ("Distance Center", Robot.chassis.getDistanceCenter());
 		}
 		
 		private void put (String name, double d)
@@ -77,7 +65,7 @@ public class SDB
 	DBugLogger logger = Robot.logger;
 	Config config = Robot.config;
 	
-	private SDBThread thread;
+	private UpdateSDBTask updateSDBTask;
 	
 	private Hashtable <String, Class <?> > variablesInSDB;
 	
@@ -91,8 +79,8 @@ public class SDB
 		initSDB();
 		logger.info("finished initSDB()");
 		
-		thread = new SDBThread();
-		thread.start();
+		updateSDBTask = new UpdateSDBTask();
+		Robot.timer.schedule(updateSDBTask, 0, 20);
 	}
 	
 	/**

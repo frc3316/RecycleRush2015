@@ -4,6 +4,7 @@
 package org.usfirst.frc.team3316.robot.subsystems;
 
 import java.util.HashSet;
+import java.util.TimerTask;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.chassis.commands.Drive;
@@ -68,99 +69,88 @@ public class Chassis extends Subsystem
 	}
 	
 	/*
-	 * Thread that calculates the robot's position in the field
+	 * Runnable that calculates the robot's position in the field
 	 * Calculates x, y, and theta delta and adds it to each integrator in the set
 	 * Also calculates turning rate in chassis
 	 */
-	private class NavigationThread extends Thread
+	private class NavigationTask extends TimerTask
 	{	
 		private HashSet <NavigationIntegrator> integratorSet;
 		private double previousTime = 0;
 		private double previousHeading = 0;
 		
-		public NavigationThread ()
+		public NavigationTask ()
 		{
 			integratorSet = new HashSet <NavigationIntegrator>();
 		}
 		
-		public synchronized void run() 
+		public void run() 
 		{
-			while (true)
+			/*
+			 * Variable init
+			 */
+			if (previousTime == 0)
 			{
-				/*
-				 * Variable init
-				 */
-				if (previousTime == 0)
-				{
-					previousTime = System.currentTimeMillis();
-				}
-				double currentTime = System.currentTimeMillis();
-				double dT = (currentTime - previousTime) / 1000; //conversion to seconds
-				double currentHeading = getHeading();
-				
-				/*
-				 * Calculates speeds in field axes
-				 */
-				double vS, vF; //speeds relative to the robot (forward and sideways)
-				vS = encoderCenter.getRate();
-				vF = (encoderLeft.getRate() + encoderRight.getRate()) / 2;
-				
-				/*
-				 * Calculates dTheta
-				 */
-				double dTheta = currentHeading - previousHeading;
-				//Since heading is in the range (-180) to (180), when 
-				//completing a full turn dTheta will be an absurdly big value
-				//Checks if dTheta is an absurdly big value and fixes it
-				if (dTheta > 340) //340 is a big number
-				{
-					dTheta -= 360;
-				}
-				if (dTheta < -340) //Math.abs(-340) is another big number
-				{
-					dTheta += 360;
-				}
-				
-				/*
-				 * Calculates angular velocity
-				 */
-				//Calculation from gyro
-				angularVelocity = (dTheta)/dT; 
-				//Calculation fron encoders
-				angularVelocityEncoders = (encoderLeft.getRate() - encoderRight.getRate()) / (CHASSIS_WIDTH);
-				angularVelocityEncoders = Math.toDegrees(angularVelocityEncoders); //conversion to (degrees/sec)
-				
-				/*
-				 * Adds all of the deltas to each integrator
-				 */
-				for (NavigationIntegrator integrator : integratorSet)
-				{
-					double vX, vY; //speeds relative to the orientation that the integrator started at
-					double headingRad = Math.toRadians(integrator.getHeading());
-					vX = (vF * Math.sin(headingRad)) + (vS * Math.sin(headingRad + (0.5 * Math.PI)));
-					vY = (vF * Math.cos(headingRad)) + (vS * Math.cos(headingRad + (0.5 * Math.PI)));
-					
-					double dX, dY;
-					dX = vX * dT;
-					dY = vY * dT;
-					
-					integrator.add(dX, dY, dTheta);
-				}
-				
-				/*
-				 * Setting variables for next run
-				 */
-				previousTime = currentTime;
-				previousHeading = currentHeading;
-				try 
-				{
-					sleep(10);
-				} 
-				catch (InterruptedException e) 
-				{
-					logger.severe(e);
-				}
+				previousTime = System.currentTimeMillis();
 			}
+			double currentTime = System.currentTimeMillis();
+			double dT = (currentTime - previousTime) / 1000; //conversion to seconds
+			double currentHeading = getHeading();
+			
+			/*
+			 * Calculates speeds in field axes
+			 */
+			double vS, vF; //speeds relative to the robot (forward and sideways)
+			vS = encoderCenter.getRate();
+			vF = (encoderLeft.getRate() + encoderRight.getRate()) / 2;
+			
+			/*
+			 * Calculates dTheta
+			 */
+			double dTheta = currentHeading - previousHeading;
+			//Since heading is in the range (-180) to (180), when 
+			//completing a full turn dTheta will be an absurdly big value
+			//Checks if dTheta is an absurdly big value and fixes it
+			if (dTheta > 340) //340 is a big number
+			{
+				dTheta -= 360;
+			}
+			if (dTheta < -340) //Math.abs(-340) is another big number
+			{
+				dTheta += 360;
+			}
+			
+			/*
+			 * Calculates angular velocity
+			 */
+			//Calculation from gyro
+			angularVelocity = (dTheta)/dT; 
+			//Calculation fron encoders
+			angularVelocityEncoders = (encoderLeft.getRate() - encoderRight.getRate()) / (CHASSIS_WIDTH);
+			angularVelocityEncoders = Math.toDegrees(angularVelocityEncoders); //conversion to (degrees/sec)
+			
+			/*
+			 * Adds all of the deltas to each integrator
+			 */
+			for (NavigationIntegrator integrator : integratorSet)
+			{
+				double vX, vY; //speeds relative to the orientation that the integrator started at
+				double headingRad = Math.toRadians(integrator.getHeading());
+				vX = (vF * Math.sin(headingRad)) + (vS * Math.sin(headingRad + (0.5 * Math.PI)));
+				vY = (vF * Math.cos(headingRad)) + (vS * Math.cos(headingRad + (0.5 * Math.PI)));
+				
+				double dX, dY;
+				dX = vX * dT;
+				dY = vY * dT;
+				
+				integrator.add(dX, dY, dTheta);
+			}
+			
+			/*
+			 * Setting variables for next run
+			 */
+			previousTime = currentTime;
+			previousHeading = currentHeading;
 		}
 		
 		public boolean addIntegrator (NavigationIntegrator integrator)
@@ -177,7 +167,7 @@ public class Chassis extends Subsystem
 	Config config = Robot.config;
 	DBugLogger logger = Robot.logger;
 	
-	private NavigationThread navigationThread;
+	private NavigationTask navigationTask;
 	
 	private VictorSP left1, left2;
 	private VictorSP right1, right2;
@@ -223,8 +213,8 @@ public class Chassis extends Subsystem
 			logger.severe(e);
 		}
 		
-		navigationThread = new NavigationThread();
-		navigationThread.start();
+		navigationTask = new NavigationTask();
+		Robot.timer.schedule(navigationTask, 0, 10);
 	}
 	
     public void initDefaultCommand() 
@@ -339,12 +329,12 @@ public class Chassis extends Subsystem
      */
     public boolean addNavigationIntegrator (NavigationIntegrator integrator)
     {
-    	return navigationThread.addIntegrator(integrator);
+    	return navigationTask.addIntegrator(integrator);
     }
     
     public boolean removeNavigationIntegrator (NavigationIntegrator integrator)
     {
-    	return navigationThread.removeIntegrator(integrator);
+    	return navigationTask.removeIntegrator(integrator);
     }
     
     private void updateScales ()
