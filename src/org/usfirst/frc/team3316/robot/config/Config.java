@@ -241,6 +241,8 @@ public class Config
 					addToConstants("STACKER_SOLENOID_CONTAINER_FORWARD", 3);
 					addToConstants("STACKER_SOLENOID_CONTAINER_REVERSE", 2);
 					
+					addToConstants("STACKER_IR", 0);
+					
 					addToConstants("STACKER_SWITCH_TOTE", 8);
 					addToConstants("STACKER_SWITCH_GAMEPIECE", 9);
 					
