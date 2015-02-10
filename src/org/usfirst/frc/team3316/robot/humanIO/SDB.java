@@ -43,6 +43,10 @@ public class SDB
 				put ("Speed Right", Robot.chassis.getSpeedRight());
 				put ("Speed Center", Robot.chassis.getSpeedCenter());
 				
+				put ("Distance Left", Robot.chassis.getDistanceLeft());
+				put ("Distance Right", Robot.chassis.getDistanceRight());
+				put ("Distance Center", Robot.chassis.getDistanceCenter());
+				
 				try 
 				{
 					sleep(20);

@@ -286,6 +286,24 @@ public class Chassis extends Subsystem
     }
     
     /*
+     * Distance 
+     */
+    public double getDistanceLeft ()
+    {
+    	return encoderLeft.getDistance();
+    }
+    
+   public double getDistanceRight ()
+    {
+    	return encoderRight.getDistance();
+    }
+    
+    public double getDistanceCenter ()
+    {
+    	return encoderCenter.getDistance();
+    }
+    
+    /*
      * Speed
      */
     public double getSpeedLeft ()

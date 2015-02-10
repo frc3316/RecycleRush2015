@@ -100,6 +100,10 @@ public class Config
 			addToConstants("JOYSTICK_LEFT", 0);
 			addToConstants("JOYSTICK_RIGHT", 1);
 			addToConstants("JOYSTICK_OPERATOR", 2);
+			
+			addToConstants("MOVE_STACKER_TO_FLOOR_BUTTON", 1);
+			addToConstants("MOVE_STACKER_TO_STEP_BUTTON", 2);
+			addToConstants("MOVE_STACKER_TO_TOTE_BUTTON", 3);
 		/*
 		 * Chassis
 		 */
@@ -228,14 +232,14 @@ public class Config
 			 * Constants
 			 */
 				//Subsystem
-					addToConstants("STACKER_SOLENOID_CONTAINER_FORWARD", 2);
-					addToConstants("STACKER_SOLENOID_CONTAINER_REVERSE", 3);
-			
+					addToConstants("STACKER_SOLENOID_UPPER_FORWARD", 6);
+					addToConstants("STACKER_SOLENOID_UPPER_REVERSE", 7);
+					
 					addToConstants("STACKER_SOLENOID_BOTTOM_FORWARD", 4);
 					addToConstants("STACKER_SOLENOID_BOTTOM_REVERSE", 5);
 					
-					addToConstants("STACKER_SOLENOID_UPPER_FORWARD", 6);
-					addToConstants("STACKER_SOLENOID_UPPER_REVERSE", 7);
+					addToConstants("STACKER_SOLENOID_CONTAINER_FORWARD", 3);
+					addToConstants("STACKER_SOLENOID_CONTAINER_REVERSE", 2);
 					
 					addToConstants("STACKER_SWITCH_TOTE", 8);
 					addToConstants("STACKER_SWITCH_GAMEPIECE", 9);

@@ -11,6 +11,9 @@ import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollIn;
 import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollOut;
 import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollTurnClockwise;
 import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollTurnCounterClockwise;
+import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToFloor;
+import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToStep;
+import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToTote;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -59,7 +62,14 @@ public class Joysticks
 	 */
 	public JoystickButton openAnschlussButton;
 	public JoystickButton closeAnschlussButton;
-	public WidePOVButton buttonRollIn, buttonRollOut, buttonRollTurnClockwise, buttonRollTurnCounterClockwise;
+	public WidePOVButton buttonRollIn, 
+						 buttonRollOut, 
+						 buttonRollTurnClockwise, 
+						 buttonRollTurnCounterClockwise;
+	
+	public JoystickButton moveStackerToFloor, 
+						  moveStackerToStep, 
+						  moveStackerToTote;
 	
 	public Joysticks ()
 	{
@@ -85,11 +95,17 @@ public class Joysticks
     	 */
 		try
 		{
+			/*
+			 * Anschluss
+			 */
 	    	openAnschlussButton = new JoystickButton(joystickOperator, 
 	    			(int) config.get("openAnschlussButton"));
 	    	closeAnschlussButton = new JoystickButton(joystickOperator, 
 	    			(int) config.get("closeAnschlussButton"));
 	    	
+	    	/*
+	    	 * Roller Gripper
+	    	 */
 	    	buttonRollIn = new WidePOVButton(joystickOperator, 
 	    			(int[]) config.get("JOYSTICKS_BUTTON_ROLL_IN"));
 	    	buttonRollIn.whileHeld(new RollIn());
@@ -105,6 +121,21 @@ public class Joysticks
 	    	buttonRollTurnCounterClockwise = new WidePOVButton(joystickOperator, 
 	    			(int[]) config.get("JOYSTICKS_BUTTON_ROLL_TURN_COUNTER_CLOCKWISE"));
 	    	buttonRollTurnCounterClockwise.whileHeld(new RollTurnCounterClockwise());
+	    	
+	    	/*
+	    	 * Stacker
+	    	 */
+	    	moveStackerToFloor = new JoystickButton(joystickOperator, 
+ 					(int) config.get("MOVE_STACKER_TO_FLOOR_BUTTON"));
+			moveStackerToFloor.whenPressed(new MoveStackerToFloor());
+			
+			moveStackerToStep = new JoystickButton(joystickOperator, 
+					(int) config.get("MOVE_STACKER_TO_STEP_BUTTON"));
+			moveStackerToStep.whenPressed(new MoveStackerToStep());
+			
+			moveStackerToTote = new JoystickButton(joystickOperator, 
+					(int) config.get("MOVE_STACKER_TO_TOTE_BUTTON"));
+			moveStackerToTote.whenPressed(new MoveStackerToTote());
 		}
 		catch (ConfigException e)
 		{
