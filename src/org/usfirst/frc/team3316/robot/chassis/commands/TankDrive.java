@@ -39,8 +39,8 @@ public class TankDrive extends Drive
 	
 	protected double getLeftX ()
 	{
-		double x = lowPass(joystickLeft.getX());
 		updateInverts();
+		double x = lowPass(joystickLeft.getX());
 		if (invertX)
 		{
 			return -x;
