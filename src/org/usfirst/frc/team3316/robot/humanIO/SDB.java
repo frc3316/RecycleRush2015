@@ -36,6 +36,9 @@ public class SDB
 				put ("Current Heading", Robot.chassis.getHeading());
 				put ("Current Height", Robot.stacker.getHeight());
 				
+				put ("Angular Velocity", Robot.chassis.getAngularVelocity());
+				put ("Angular Velocity Encoders", Robot.chassis.getAngularVelocityEncoders());
+				
 				try 
 				{
 					sleep(20);

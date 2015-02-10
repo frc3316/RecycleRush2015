@@ -90,6 +90,10 @@ public class Chassis extends Subsystem
 				/*
 				 * Variable init
 				 */
+				if (previousTime == 0)
+				{
+					previousTime = System.currentTimeMillis();
+				}
 				double currentTime = System.currentTimeMillis();
 				double dT = (currentTime - previousTime) / 1000; //conversion to seconds
 				double currentHeading = getHeading();

@@ -9,7 +9,8 @@ public class MoveStackerToStep extends MoveStacker
 {
 	public MoveStackerToStep()
     {
-		super("STACKER_MOVE_STACKER_TO_STEP_HEIGHT_MAX", "STACKER_MOVE_STACKER_TO_STEP_HEIGHT_MIN");
+		super("STACKER_MOVE_STACKER_TO_STEP_HEIGHT_MAX", 
+				"STACKER_MOVE_STACKER_TO_STEP_HEIGHT_MIN");
     }
 
 	protected void setSolenoids() 

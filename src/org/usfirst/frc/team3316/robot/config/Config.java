@@ -230,5 +230,19 @@ public class Config
 				//Subsystem
 					addToConstants("STACKER_SWITCH_TOTE", 8);
 					addToConstants("STACKER_SWITCH_GAMEPIECE", 9);
+					
+			/*
+			 * Variables
+			 */
+				//MoveStacker
+					//MoveStackerToFloor
+					addToVariables("stacker_MoveStackerToFloor_HeightMax", 15);
+					addToVariables("stacker_MoveStackerToFloor_HeightMin", 5);
+					//MoveStackerToStep
+					addToVariables("stacker_MoveStackerToStep_HeightMax", 25);
+					addToVariables("stacker_MoveStackerToStep_HeightMin", 20);
+					//MoveStackerToTote
+					addToVariables("stacker_MoveStackerToTote_HeightMax", 27);
+					addToVariables("stacker_MoveStackerToTote_HeightMin",33);
 	}
 }
