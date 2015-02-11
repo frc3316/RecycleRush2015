@@ -101,9 +101,21 @@ public class Config
 			addToConstants("JOYSTICK_RIGHT", 1);
 			addToConstants("JOYSTICK_OPERATOR", 2);
 			
-			addToConstants("MOVE_STACKER_TO_FLOOR_BUTTON", 1);
-			addToConstants("MOVE_STACKER_TO_STEP_BUTTON", 2);
-			addToConstants("MOVE_STACKER_TO_TOTE_BUTTON", 3);
+			//subsystem
+				/*
+				 * Stacker
+				 */
+				addToConstants("MOVE_STACKER_TO_FLOOR_BUTTON", 1);
+				addToConstants("MOVE_STACKER_TO_STEP_BUTTON", 2);
+				addToConstants("MOVE_STACKER_TO_TOTE_BUTTON", 3);
+				
+				addToConstants("HOLD_CONTAINER_BUTTON", 4);
+				addToConstants("RELEASE_CONTAINER_BUTTON", 5);
+				
+				addToConstants("OPEN_GRIPPER_BUTTON", 6);
+				addToConstants("CLOSE_GRIPPER_BUTTON", 7);
+			
+			
 		/*
 		 * Chassis
 		 */

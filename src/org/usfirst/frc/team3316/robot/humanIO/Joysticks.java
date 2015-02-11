@@ -11,10 +11,12 @@ import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollIn;
 import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollOut;
 import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollTurnClockwise;
 import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollTurnCounterClockwise;
+import org.usfirst.frc.team3316.robot.stacker.commands.CloseGripper;
 import org.usfirst.frc.team3316.robot.stacker.commands.HoldContainer;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToFloor;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToStep;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToTote;
+import org.usfirst.frc.team3316.robot.stacker.commands.OpenGripper;
 import org.usfirst.frc.team3316.robot.stacker.commands.ReleaseContainer;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -73,7 +75,9 @@ public class Joysticks
 						  moveStackerToStep, 
 						  moveStackerToTote,
 						  holdContainer,
-						  releaseContainer;
+						  releaseContainer,
+						  openGripper,
+						  closeGripper;
 	
 	public Joysticks ()
 	{
@@ -126,6 +130,8 @@ public class Joysticks
 	    			(int[]) config.get("JOYSTICKS_BUTTON_ROLL_TURN_COUNTER_CLOCKWISE"));
 	    	buttonRollTurnCounterClockwise.whileHeld(new RollTurnCounterClockwise());
 	    	
+	    	
+	    	
 	    	/*
 	    	 * Stacker
 	    	 */
@@ -148,6 +154,16 @@ public class Joysticks
 			releaseContainer = new JoystickButton(joystickOperator,
 					(int) config.get("RELEASE_CONTAINER_BUTTON"));
 			releaseContainer.whenPressed(new ReleaseContainer());
+			
+			openGripper = new JoystickButton(joystickOperator,
+					(int) config.get("OPEN_GRIPPER_BUTTON"));
+			openGripper.whenPressed(new OpenGripper());
+			
+			closeGripper = new JoystickButton(joystickOperator,
+					(int) config.get("CLOSE_GRIPPER_BUTTON"));
+			closeGripper.whenPressed(new CloseGripper());
+			
+			
 		}
 		catch (ConfigException e)
 		{
