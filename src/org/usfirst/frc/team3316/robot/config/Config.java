@@ -114,8 +114,14 @@ public class Config
 				
 				addToConstants("OPEN_GRIPPER_BUTTON", 6);
 				addToConstants("CLOSE_GRIPPER_BUTTON", 7);
-			
-			
+				
+				/*
+				 * Roller-Gripper
+				 */
+				addToConstants("ROLL_IN_BUTTON", 8);
+				addToConstants("ROLL_OUT_BUTTON", 9);
+				addToConstants("ROLL_TURN_CLOCKWISE_BUTTON", 10);
+				addToConstants("ROLL_TURN_COUNTER_CLOCKWISE_BUTTON", 11);
 		/*
 		 * Chassis
 		 */
