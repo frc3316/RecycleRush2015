@@ -200,6 +200,9 @@ public class Config
 			/*
 			 * Constants
 			 */
+			addToConstants("ROLLER_GRIPPER_MOTOR_CONTROLLER_LEFT", 3);
+			addToConstants("ROLLER_GRIPPER_MOTOR_CONTROLLER_RIGHT", 8);
+			
 				//Subsystem
 					addToConstants("ROLLER_GRIPPER_IR_LEFT", 0);
 					addToConstants("ROLLER_GRIPPER_IR_RIGHT", 1);
@@ -207,23 +210,23 @@ public class Config
 			 * Variables
 			 */
 				//Subsystem
-					addToVariables("rollerGripper_LeftScale", -1.0);
-					addToVariables("rollerGripper_RightScale", 1.0);
+					addToVariables("rollerGripper_LeftScale", 0.7);
+					addToVariables("rollerGripper_RightScale", -0.7);
 				//RollIn
-					addToVariables("rollerGripper_RollIn_SpeedLeft", 0.5);
-					addToVariables("rollerGripper_RollIn_SpeedRight", 0.5);
+					addToVariables("rollerGripper_RollIn_SpeedLeft", 1);
+					addToVariables("rollerGripper_RollIn_SpeedRight", 1);
 			
 				//RollOut
-					addToVariables("rollerGripper_RollOut_SpeedLeft", -0.5);
-					addToVariables("rollerGripper_RollOut_SpeedRight", -0.5);
+					addToVariables("rollerGripper_RollOut_SpeedLeft", -1);
+					addToVariables("rollerGripper_RollOut_SpeedRight", -1);
 			
 				//RollTurnClockwise
-					addToVariables("rollerGripper_RollTurnClockwise_SpeedLeft", 0.5);
-					addToVariables("rollerGripper_RollTurnClockwise_SpeedRight", -0.5);
+					addToVariables("rollerGripper_RollTurnClockwise_SpeedLeft", 1);
+					addToVariables("rollerGripper_RollTurnClockwise_SpeedRight", -1);
 			
 				//RollTurnCounterClockwise
-					addToVariables("rollerGripper_RollTurnCounterClockwise_SpeedLeft", 0.5);
-					addToVariables("rollerGripper_RollTurnCounterClockwise_SpeedRight", -0.5);
+					addToVariables("rollerGripper_RollTurnCounterClockwise_SpeedLeft", 1);
+					addToVariables("rollerGripper_RollTurnCounterClockwise_SpeedRight", -1);
 					
 		/*
 		 * Stacker
@@ -240,6 +243,9 @@ public class Config
 					
 					addToConstants("STACKER_SOLENOID_CONTAINER_FORWARD", 3);
 					addToConstants("STACKER_SOLENOID_CONTAINER_REVERSE", 2);
+					
+					addToConstants("STACKER_SOLENOID_GRIPPER_FORWARD", 0);
+					addToConstants("STACKER_SOLENOID_GRIPPER_REVERSE", 1);
 					
 					addToConstants("STACKER_IR", 0);
 					

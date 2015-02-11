@@ -27,10 +27,10 @@ public class Actuators
 	 * Stacker
 	 */
 	public DoubleSolenoid stackerSolenoidUpper;
-	
 	public DoubleSolenoid stackerSolenoidBottom;
 	
 	public DoubleSolenoid stackerSolenoidContainer;
+	
 	public DoubleSolenoid stackerSolenoidGripper;
 	
 	/*

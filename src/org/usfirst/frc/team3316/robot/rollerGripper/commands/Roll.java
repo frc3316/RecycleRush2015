@@ -26,7 +26,7 @@ public abstract class Roll extends Command
     protected void execute() 
     {
     	setSpeed();
-    	Robot.rollerGripper.set(speedLeft, speedLeft);
+    	Robot.rollerGripper.set(speedLeft, speedRight);
     }
 
     protected boolean isFinished() 
