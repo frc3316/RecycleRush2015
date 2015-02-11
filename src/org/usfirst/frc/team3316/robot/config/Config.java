@@ -195,7 +195,7 @@ public class Config
 			/*
 			 * Constants
 			 */
-			addToConstants("ANSCHLUSS_MOTOR_CONTROLLER", 3);
+			addToConstants("ANSCHLUSS_MOTOR_CONTROLLER", 4);
 			
 			addToConstants("ANSCHLUSS_BUTTON_CLOSE", 1);
 			addToConstants("ANSCHLUSS_BUTTON_OPEN", 0);
