@@ -35,9 +35,12 @@ public abstract class MoveStacker extends Command
 
     protected boolean isFinished()
     {
+    	return true;
+    	/*
     	updateHeightRange();
     	double currentHeight = Robot.stacker.getHeight();
     	return (currentHeight > heightMin) && (currentHeight < heightMax);
+    	*/
     }
     
     protected void end() {}
