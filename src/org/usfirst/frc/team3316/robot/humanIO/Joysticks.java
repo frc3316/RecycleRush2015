@@ -4,6 +4,8 @@
 package org.usfirst.frc.team3316.robot.humanIO;
 
 import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.anschluss.commands.CloseAnschluss;
+import org.usfirst.frc.team3316.robot.anschluss.commands.OpenAnschluss;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
@@ -64,8 +66,6 @@ public class Joysticks
 	/*
 	 * Joystick Buttons
 	 */
-	public JoystickButton openAnschlussButton;
-	public JoystickButton closeAnschlussButton;
 	public WidePOVButton buttonRollIn, 
 						 buttonRollOut, 
 						 buttonRollTurnClockwise, 
@@ -77,7 +77,9 @@ public class Joysticks
 						  holdContainer,
 						  releaseContainer,
 						  openGripper,
-						  closeGripper;
+						  closeGripper,
+						  openAnschluss,
+						  closeAnschluss;
 	
 	public Joysticks ()
 	{
@@ -103,14 +105,6 @@ public class Joysticks
     	 */
 		try
 		{
-			/*
-			 * Anschluss
-			 */
-	    	openAnschlussButton = new JoystickButton(joystickOperator, 
-	    			(int) config.get("openAnschlussButton"));
-	    	closeAnschlussButton = new JoystickButton(joystickOperator, 
-	    			(int) config.get("closeAnschlussButton"));
-	    	
 	    	/*
 	    	 * Roller Gripper
 	    	 */
@@ -130,40 +124,47 @@ public class Joysticks
 	    			(int[]) config.get("JOYSTICKS_BUTTON_ROLL_TURN_COUNTER_CLOCKWISE"));
 	    	buttonRollTurnCounterClockwise.whileHeld(new RollTurnCounterClockwise());
 	    	
-	    	
-	    	
 	    	/*
 	    	 * Stacker
 	    	 */
 	    	moveStackerToFloor = new JoystickButton(joystickOperator, 
- 					(int) config.get("MOVE_STACKER_TO_FLOOR_BUTTON"));
+ 					(int) config.get("BUTTON_MOVE_STACKER_TO_FLOOR"));
 			moveStackerToFloor.whenPressed(new MoveStackerToFloor());
 			
 			moveStackerToStep = new JoystickButton(joystickOperator, 
-					(int) config.get("MOVE_STACKER_TO_STEP_BUTTON"));
+					(int) config.get("BUTTON_MOVE_STACKER_TO_STEP"));
 			moveStackerToStep.whenPressed(new MoveStackerToStep());
 			
 			moveStackerToTote = new JoystickButton(joystickOperator, 
-					(int) config.get("MOVE_STACKER_TO_TOTE_BUTTON"));
+					(int) config.get("BUTTON_MOVE_STACKER_TO_TOTE"));
 			moveStackerToTote.whenPressed(new MoveStackerToTote());
 			
 			holdContainer = new JoystickButton(joystickOperator,
-					(int) config.get("HOLD_CONTAINER_BUTTON"));
+					(int) config.get("BUTTON_HOLD_CONTAINER"));
 			holdContainer.whenPressed(new HoldContainer());
 			
 			releaseContainer = new JoystickButton(joystickOperator,
-					(int) config.get("RELEASE_CONTAINER_BUTTON"));
+					(int) config.get("BUTTON_RELEASE_CONTAINER"));
 			releaseContainer.whenPressed(new ReleaseContainer());
 			
 			openGripper = new JoystickButton(joystickOperator,
-					(int) config.get("OPEN_GRIPPER_BUTTON"));
+					(int) config.get("BUTTON_OPEN_GRIPPER"));
 			openGripper.whenPressed(new OpenGripper());
 			
 			closeGripper = new JoystickButton(joystickOperator,
-					(int) config.get("CLOSE_GRIPPER_BUTTON"));
+					(int) config.get("BUTTON_CLOSE_GRIPPER"));
 			closeGripper.whenPressed(new CloseGripper());
 			
+			/*
+			 * Anschluss
+			 */
+			openAnschluss = new JoystickButton(joystickOperator,
+					(int) config.get("BUTTON_OPEN_ANSCHLUSS"));
+			openAnschluss.whileHeld(new OpenAnschluss());
 			
+			closeAnschluss = new JoystickButton(joystickOperator,
+					(int) config.get("BUTTON_CLOSE_ANSCHLUSS"));
+			closeAnschluss.whileHeld(new CloseAnschluss());
 		}
 		catch (ConfigException e)
 		{

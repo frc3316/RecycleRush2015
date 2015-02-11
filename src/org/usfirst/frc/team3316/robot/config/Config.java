@@ -105,23 +105,29 @@ public class Config
 				/*
 				 * Stacker
 				 */
-				addToConstants("MOVE_STACKER_TO_FLOOR_BUTTON", 1);
-				addToConstants("MOVE_STACKER_TO_STEP_BUTTON", 2);
-				addToConstants("MOVE_STACKER_TO_TOTE_BUTTON", 3);
+				addToConstants("BUTTON_MOVE_STACKER_TO_FLOOR", 1);
+				addToConstants("BUTTON_MOVE_STACKER_TO_STEP", 2);
+				addToConstants("BUTTON_MOVE_STACKER_TO_TOTE", 3);
 				
-				addToConstants("HOLD_CONTAINER_BUTTON", 4);
-				addToConstants("RELEASE_CONTAINER_BUTTON", 5);
+				addToConstants("BUTTON_HOLD_CONTAINER", 4);
+				addToConstants("BUTTON_RELEASE_CONTAINER", 5);
 				
-				addToConstants("OPEN_GRIPPER_BUTTON", 6);
-				addToConstants("CLOSE_GRIPPER_BUTTON", 7);
+				addToConstants("BUTTON_OPEN_GRIPPER", 6);
+				addToConstants("BUTTON_CLOSE_GRIPPER", 7);
 				
 				/*
 				 * Roller-Gripper
 				 */
-				addToConstants("ROLL_IN_BUTTON", 8);
-				addToConstants("ROLL_OUT_BUTTON", 9);
-				addToConstants("ROLL_TURN_CLOCKWISE_BUTTON", 10);
-				addToConstants("ROLL_TURN_COUNTER_CLOCKWISE_BUTTON", 11);
+				addToConstants("BUTTON_ROLL_IN", 8);
+				addToConstants("BUTTON_ROLL_OUT", 9);
+				addToConstants("BUTTON_ROLL_TURN_CLOCKWISE", 10);
+				addToConstants("BUTTON_ROLL_TURN_COUNTER_CLOCKWISE", 11);
+				
+				/*
+				 * Anschluss
+				 */
+				addToConstants("BUTTON_OPEN_ANSCHLUSS", 12);
+				addToConstants("BUTTON_CLOSE_ANSCHLUSS", 13);
 		/*
 		 * Chassis
 		 */
