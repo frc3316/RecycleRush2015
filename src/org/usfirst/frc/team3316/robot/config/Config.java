@@ -234,23 +234,23 @@ public class Config
 			 * Variables
 			 */
 				//Subsystem
-					addToVariables("rollerGripper_LeftScale", 0.7);
-					addToVariables("rollerGripper_RightScale", -0.7);
+					addToVariables("rollerGripper_LeftScale", -0.7);
+					addToVariables("rollerGripper_RightScale", 0.7);
 				//RollIn
-					addToVariables("rollerGripper_RollIn_SpeedLeft", 1);
-					addToVariables("rollerGripper_RollIn_SpeedRight", 1);
+					addToVariables("rollerGripper_RollIn_SpeedLeft", 1.0);
+					addToVariables("rollerGripper_RollIn_SpeedRight", 1.0);
 			
 				//RollOut
-					addToVariables("rollerGripper_RollOut_SpeedLeft", -1);
-					addToVariables("rollerGripper_RollOut_SpeedRight", -1);
+					addToVariables("rollerGripper_RollOut_SpeedLeft", -1.0);
+					addToVariables("rollerGripper_RollOut_SpeedRight", -1.0);
 			
 				//RollTurnClockwise
-					addToVariables("rollerGripper_RollTurnClockwise_SpeedLeft", 1);
-					addToVariables("rollerGripper_RollTurnClockwise_SpeedRight", -1);
+					addToVariables("rollerGripper_RollTurnClockwise_SpeedLeft", -1.0);
+					addToVariables("rollerGripper_RollTurnClockwise_SpeedRight", 1.0);
 			
 				//RollTurnCounterClockwise
-					addToVariables("rollerGripper_RollTurnCounterClockwise_SpeedLeft", 1);
-					addToVariables("rollerGripper_RollTurnCounterClockwise_SpeedRight", -1);
+					addToVariables("rollerGripper_RollTurnCounterClockwise_SpeedLeft", 1.0);
+					addToVariables("rollerGripper_RollTurnCounterClockwise_SpeedRight", -1.0);
 					
 		/*
 		 * Stacker
