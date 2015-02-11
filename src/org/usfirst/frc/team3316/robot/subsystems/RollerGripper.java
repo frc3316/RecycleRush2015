@@ -23,8 +23,6 @@ public class RollerGripper extends Subsystem
 	
 	private double leftScale, rightScale;
 	
-	private double angleScale, angleOffset;
-	
     public RollerGripper () 
     {
     	gripperLeft = Robot.actuators.rollerGripperMotorControllerLeft;

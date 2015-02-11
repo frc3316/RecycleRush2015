@@ -107,13 +107,13 @@ public class Config
 				 */
 				addToConstants("BUTTON_MOVE_STACKER_TO_FLOOR", 1);
 				addToConstants("BUTTON_MOVE_STACKER_TO_STEP", 2);
-				addToConstants("BUTTON_MOVE_STACKER_TO_TOTE", 3);
+				addToConstants("BUTTON_MOVE_STACKER_TO_TOTE", 4);
 				
-				addToConstants("BUTTON_HOLD_CONTAINER", 4);
-				addToConstants("BUTTON_RELEASE_CONTAINER", 5);
+				addToConstants("BUTTON_HOLD_CONTAINER", 10);
+				addToConstants("BUTTON_RELEASE_CONTAINER", 9);
 				
-				addToConstants("BUTTON_OPEN_GRIPPER", 6);
-				addToConstants("BUTTON_CLOSE_GRIPPER", 7);
+				addToConstants("BUTTON_OPEN_GRIPPER", 5);
+				addToConstants("BUTTON_CLOSE_GRIPPER", 6);
 				
 				/*
 				 * Roller-Gripper
@@ -126,8 +126,8 @@ public class Config
 				/*
 				 * Anschluss
 				 */
-				addToConstants("BUTTON_OPEN_ANSCHLUSS", 12);
-				addToConstants("BUTTON_CLOSE_ANSCHLUSS", 13);
+				addToConstants("BUTTON_OPEN_ANSCHLUSS", 8);
+				addToConstants("BUTTON_CLOSE_ANSCHLUSS", 7);
 		/*
 		 * Chassis
 		 */
@@ -235,8 +235,8 @@ public class Config
 			 * Variables
 			 */
 				//Subsystem
-					addToVariables("rollerGripper_LeftScale", 0.7);
-					addToVariables("rollerGripper_RightScale", -0.7);
+					addToVariables("rollerGripper_LeftScale", 1.0);
+					addToVariables("rollerGripper_RightScale", -1.0);
 				//RollIn
 					addToVariables("rollerGripper_RollIn_SpeedLeft", 1.0);
 					addToVariables("rollerGripper_RollIn_SpeedRight", 1.0);
