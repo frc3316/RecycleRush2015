@@ -61,6 +61,15 @@ public class Stacker extends Subsystem
     
     public boolean openSolenoidUpper ()
     {
+    	/*
+    	 * Upper solenoid is opened only when trying to move to floor
+    	 * Therefore it is the solenoid that when opened can harm the gripper or the container pistons
+    	 */
+    	if (solenoidContainer.get() == DoubleSolenoid.Value.kForward ||
+    			solenoidGripper.get() == DoubleSolenoid.Value.kReverse)
+    	{
+    		return false;
+    	}
     	solenoidUpper.set(DoubleSolenoid.Value.kForward);
     	return true;
     }
@@ -72,7 +81,7 @@ public class Stacker extends Subsystem
     }
     
     public boolean openSolenoidBottom ()
-    { 
+    {
     	solenoidBottom.set(DoubleSolenoid.Value.kForward);
     	return true;
     }

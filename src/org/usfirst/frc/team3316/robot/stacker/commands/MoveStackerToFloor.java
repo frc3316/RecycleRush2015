@@ -18,7 +18,8 @@ public class MoveStackerToFloor extends MoveStacker
 
 	protected void setSolenoids() 
 	{
-		
+		Robot.stacker.openSolenoidGripper(); //This line is strategically problematic and should be solved
+											 //need to insert condition 'only if there is no gp below the stack'
 		Robot.stacker.closeSolenoidContainer();
 		Robot.stacker.openSolenoidUpper();
 		Robot.stacker.openSolenoidBottom();
