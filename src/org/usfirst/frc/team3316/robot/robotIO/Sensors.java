@@ -42,9 +42,10 @@ public class Sensors
 	public DigitalInput anschlussDigitalInputOpened;
 	
 	/*
-	 * Roller-Gripper
+	 * RollerGripper
 	 */
-	public AnalogInput rollerGripperIRLeft, rollerGripperIRRight;
+	public AnalogInput rollerGripperGPIR;
+	
 	
 	public Sensors ()
 	{
@@ -91,12 +92,11 @@ public class Sensors
 			 */
 			anschlussDigitalInputClosed = new DigitalInput((int) config.get("ANSCHLUSS_DIGITAL_INPUT_CLOSED"));
 			anschlussDigitalInputOpened = new DigitalInput((int) config.get("ANSCHLUSS_DIGITAL_INPUT_OPENED"));
-
+			
 			/*
-			 * Roller-Gripper
+			 * RollerGripper
 			 */
-			rollerGripperIRLeft = new AnalogInput((int) config.get("ROLLER_GRIPPER_IR_LEFT"));
-			rollerGripperIRRight = new AnalogInput((int) config.get("ROLLER_GRIPPER_IR_RIGHT"));
+			rollerGripperGPIR = new AnalogInput((int) config.get("ROLLER_GRIPPER_GAME_PIECE_IR"));
 		}
 		
 		catch (ConfigException e)

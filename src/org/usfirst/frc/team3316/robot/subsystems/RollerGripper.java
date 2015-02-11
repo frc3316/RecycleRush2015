@@ -19,7 +19,7 @@ public class RollerGripper extends Subsystem
 	
 	private VictorSP gripperLeft, gripperRight;
 	
-	private AnalogInput IRLeft, IRRight;
+	private AnalogInput gripperGPIR;
 	
 	private double leftScale, rightScale;
 	
@@ -29,29 +29,18 @@ public class RollerGripper extends Subsystem
     {
     	gripperLeft = Robot.actuators.rollerGripperMotorControllerLeft;
     	gripperRight = Robot.actuators.rollerGripperMotorControllerRight;
+    	
+    	gripperGPIR = Robot.sensors.rollerGripperGPIR;
     }
 
     public void initDefaultCommand() {}
     
-    public boolean set(double speedLeft, double speedRight) 
+    public boolean set (double speedLeft, double speedRight) 
     {
     	updateScales();
      	gripperLeft.set(speedLeft*leftScale);
     	gripperRight.set(speedRight*rightScale);
     	return true;
-    }
-    
-    //TODO: Figure out the calculation for converting from distance to angle
-    public double getLeftAngle ()
-    { 
-    	updateAngleVariables();
-    	return (angleScale / (IRLeft.getVoltage())) + angleOffset; //this calculation is wrong
-    }
-    
-    public double getRightAngle ()
-    {
-    	updateAngleVariables();
-    	return (angleScale / (IRRight.getVoltage())) + angleOffset; //this calculation is wrong
     }
     
     private void updateScales ()
@@ -67,17 +56,9 @@ public class RollerGripper extends Subsystem
     	}
     }
     
-    private void updateAngleVariables ()
+    public double getGPIRDistance ()
     {
-    	try
-    	{
-    		angleScale = (double)config.get("rollerGripper_AngleScale");
-    		angleOffset = (double)config.get("rollerGripper_AngleOffset");
-    	}
-    	catch (ConfigException e)
-    	{
-    		logger.severe(e);
-    	}
+    	return (1 / gripperGPIR.getVoltage());
     }
     
     private void printTheTruth()

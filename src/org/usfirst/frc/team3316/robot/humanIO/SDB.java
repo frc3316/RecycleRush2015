@@ -31,8 +31,12 @@ public class SDB
 	{
 		public void run ()
 		{
+			put ("Operator Joystick POV", Robot.joysticks.joystickOperator.getPOV());
+			
 			put ("Current Heading", Robot.chassis.getHeading());
 			put ("Current Height", Robot.stacker.getHeight());
+			
+			put ("Current GP distance", Robot.rollerGripper.getGPIRDistance());
 			
 			put ("Angular Velocity", Robot.chassis.getAngularVelocity());
 			put ("Angular Velocity Encoders", Robot.chassis.getAngularVelocityEncoders());

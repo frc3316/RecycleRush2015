@@ -118,10 +118,10 @@ public class Config
 				/*
 				 * Roller-Gripper
 				 */
-				addToConstants("BUTTON_ROLL_IN", 8);
-				addToConstants("BUTTON_ROLL_OUT", 9);
-				addToConstants("BUTTON_ROLL_TURN_CLOCKWISE", 10);
-				addToConstants("BUTTON_ROLL_TURN_COUNTER_CLOCKWISE", 11);
+				addToConstants("BUTTON_ROLL_IN", 180);
+				addToConstants("BUTTON_ROLL_OUT", 0);
+				addToConstants("BUTTON_ROLL_TURN_CLOCKWISE", 90);
+				addToConstants("BUTTON_ROLL_TURN_COUNTER_CLOCKWISE", 270);
 				
 				/*
 				 * Anschluss
@@ -162,9 +162,9 @@ public class Config
 			 */
 
 			 //Subsystem
-			addToVariables("chassis_LeftScale", 1);
-			addToVariables("chassis_RightScale", -1);
-			addToVariables("chassis_CenterScale", 1);
+			addToVariables("chassis_LeftScale", 1.0);
+			addToVariables("chassis_RightScale", -1.0);
+			addToVariables("chassis_CenterScale", 1.0);
 			
 			addToVariables("chassis_HeadingToSet", 0.0); // This is the heading that the SetHeadingSDB command sets to
 														 // It is configurable in the SDB (it should appear in initSDB())
@@ -174,7 +174,7 @@ public class Config
 			
 			addToVariables("chassis_TankDrive_LowPass", 0.0);
 			//RobotOrientedDrive
-			addToVariables("chassis_RobotOrientedDrive_TurnScale", 1);
+			addToVariables("chassis_RobotOrientedDrive_TurnScale", 1.0);
 			
 			//RobotOrientedNavigation
 			addToVariables("chassis_RobotOrientedNavigation_PIDControllerX_KP", 0.0);
@@ -209,8 +209,10 @@ public class Config
 			 */
 			addToConstants("ANSCHLUSS_MOTOR_CONTROLLER", 4);
 			
-			addToConstants("ANSCHLUSS_BUTTON_CLOSE", 1);
-			addToConstants("ANSCHLUSS_BUTTON_OPEN", 0);
+			addToConstants("ANSCHLUSS_DIGITAL_INPUT_CLOSED", 6);
+			addToConstants("ANSCHLUSS_DIGITAL_INPUT_OPENED", 7);
+			
+			
 			
 			/*
 			 * Variables
@@ -224,18 +226,17 @@ public class Config
 			/*
 			 * Constants
 			 */
-			addToConstants("ROLLER_GRIPPER_MOTOR_CONTROLLER_LEFT", 3);
-			addToConstants("ROLLER_GRIPPER_MOTOR_CONTROLLER_RIGHT", 8);
+			addToConstants("ROLLER_GRIPPER_GAME_PIECE_IR", 1);
 			
-				//Subsystem
-					addToConstants("ROLLER_GRIPPER_IR_LEFT", 0);
-					addToConstants("ROLLER_GRIPPER_IR_RIGHT", 1);
+			addToConstants("ROLLER_GRIPPER_MOTOR_CONTROLLER_LEFT", 8);
+			addToConstants("ROLLER_GRIPPER_MOTOR_CONTROLLER_RIGHT", 3);
+			
 			/*
 			 * Variables
 			 */
 				//Subsystem
-					addToVariables("rollerGripper_LeftScale", -0.7);
-					addToVariables("rollerGripper_RightScale", 0.7);
+					addToVariables("rollerGripper_LeftScale", 0.7);
+					addToVariables("rollerGripper_RightScale", -0.7);
 				//RollIn
 					addToVariables("rollerGripper_RollIn_SpeedLeft", 1.0);
 					addToVariables("rollerGripper_RollIn_SpeedRight", 1.0);

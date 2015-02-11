@@ -30,11 +30,11 @@ public class Joysticks
 	/*
 	 * Defines a button in a gamepad POV for an array of angles 
 	 */
-	private class WidePOVButton extends Button
+	private class POVButton extends Button
 	{
 		Joystick m_joystick;
-		int [] m_deg;
-		public WidePOVButton (Joystick joystick, int [] deg)
+		int m_deg;
+		public POVButton (Joystick joystick, int deg)
 		{
 			m_joystick = joystick;
 			m_deg = deg;
@@ -42,12 +42,9 @@ public class Joysticks
 		
 		public boolean get()
 		{
-			for (int i = 0; i < m_deg.length; i++)
+			if (m_joystick.getPOV() == m_deg)
 			{
-				if (m_joystick.getPOV() == m_deg[i])
-				{
-					return true;
-				}
+				return true;
 			}
 			return false;
 		}
@@ -66,19 +63,22 @@ public class Joysticks
 	/*
 	 * Joystick Buttons
 	 */
-	public WidePOVButton buttonRollIn, 
+	public POVButton buttonRollIn, 
 						 buttonRollOut, 
 						 buttonRollTurnClockwise, 
 						 buttonRollTurnCounterClockwise;
 	
 	public JoystickButton moveStackerToFloor, 
 						  moveStackerToStep, 
-						  moveStackerToTote,
-						  holdContainer,
-						  releaseContainer,
-						  openGripper,
-						  closeGripper,
-						  openAnschluss,
+						  moveStackerToTote;
+	
+	public JoystickButton holdContainer,
+						  releaseContainer;
+	
+	public JoystickButton openGripper,
+						  closeGripper;
+	
+	public JoystickButton openAnschluss,
 						  closeAnschluss;
 	
 	public Joysticks ()
@@ -108,20 +108,20 @@ public class Joysticks
 	    	/*
 	    	 * Roller Gripper
 	    	 */
-	    	buttonRollIn = new WidePOVButton(joystickOperator, 
-	    			(int[]) config.get("JOYSTICKS_BUTTON_ROLL_IN"));
+	    	buttonRollIn = new POVButton(joystickOperator, 
+	    			(int) config.get("BUTTON_ROLL_IN"));
 	    	buttonRollIn.whileHeld(new RollIn());
 	    	
-	    	buttonRollOut = new WidePOVButton(joystickOperator, 
-	    			(int[]) config.get("JOYSTICKS_BUTTON_ROLL_OUT"));
+	    	buttonRollOut = new POVButton(joystickOperator, 
+	    			(int) config.get("BUTTON_ROLL_OUT"));
 	    	buttonRollOut.whileHeld(new RollOut());
 	    	
-	    	buttonRollTurnClockwise = new WidePOVButton(joystickOperator, 
-	    			(int[]) config.get("JOYSTICKS_BUTTON_ROLL_TURN_CLOCKWISE"));
+	    	buttonRollTurnClockwise = new POVButton(joystickOperator, 
+	    			(int) config.get("BUTTON_ROLL_TURN_CLOCKWISE"));
 	    	buttonRollTurnClockwise.whileHeld(new RollTurnClockwise());
 	    	
-	    	buttonRollTurnCounterClockwise = new WidePOVButton(joystickOperator, 
-	    			(int[]) config.get("JOYSTICKS_BUTTON_ROLL_TURN_COUNTER_CLOCKWISE"));
+	    	buttonRollTurnCounterClockwise = new POVButton(joystickOperator, 
+	    			(int) config.get("BUTTON_ROLL_TURN_COUNTER_CLOCKWISE"));
 	    	buttonRollTurnCounterClockwise.whileHeld(new RollTurnCounterClockwise());
 	    	
 	    	/*
@@ -158,6 +158,7 @@ public class Joysticks
 			/*
 			 * Anschluss
 			 */
+			
 			openAnschluss = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_OPEN_ANSCHLUSS"));
 			openAnschluss.whileHeld(new OpenAnschluss());
@@ -165,6 +166,7 @@ public class Joysticks
 			closeAnschluss = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_CLOSE_ANSCHLUSS"));
 			closeAnschluss.whileHeld(new CloseAnschluss());
+			
 		}
 		catch (ConfigException e)
 		{
