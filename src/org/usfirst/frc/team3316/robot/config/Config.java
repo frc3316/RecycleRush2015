@@ -257,10 +257,10 @@ public class Config
 					addToVariables("rollerGripper_RollJoystick_ChannelX", 0);
 					addToVariables("rollerGripper_RollJoystick_ChannelY", 1);
 					
-					addToVariables("rollerGripper_RollJoystick_InvertX", false);
-					addToVariables("rollerGripper_RollJoystick_InvertY", true);
+					addToVariables("rollerGripper_RollJoystick_InvertX", true);
+					addToVariables("rollerGripper_RollJoystick_InvertY", false);
 					
-					addToVariables("rollerGripper_RollJoystick_LowPass", 0.0);
+					addToVariables("rollerGripper_RollJoystick_LowPass", 0.05);
 					
 		/*
 		 * Stacker
