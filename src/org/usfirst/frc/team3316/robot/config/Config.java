@@ -253,6 +253,15 @@ public class Config
 					addToVariables("rollerGripper_RollTurnCounterClockwise_SpeedLeft", 1.0);
 					addToVariables("rollerGripper_RollTurnCounterClockwise_SpeedRight", -1.0);
 					
+				//RollJoystick
+					addToVariables("rollerGripper_RollJoystick_ChannelX", 0);
+					addToVariables("rollerGripper_RollJoystick_ChannelY", 1);
+					
+					addToVariables("rollerGripper_RollJoystick_InvertX", false);
+					addToVariables("rollerGripper_RollJoystick_InvertY", true);
+					
+					addToVariables("rollerGripper_RollJoystick_LowPass", 0.0);
+					
 		/*
 		 * Stacker
 		 */

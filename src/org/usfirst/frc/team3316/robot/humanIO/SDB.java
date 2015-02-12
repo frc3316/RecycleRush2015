@@ -34,8 +34,6 @@ public class SDB
 	{
 		public void run ()
 		{
-			put ("Operator Joystick POV", Robot.joysticks.joystickOperator.getPOV());
-			
 			put ("Current Heading", Robot.chassis.getHeading());
 			put ("Current Height", Robot.stacker.getHeight());
 			
@@ -148,18 +146,20 @@ public class SDB
 		 * Set Heading SDB
 		 */
 		SmartDashboard.putData("Zero Heading", new SetHeadingPreset(0));
+		
 		SmartDashboard.putData(new SetHeadingSDB());
 		putConfigVariableInSDB("chassis_HeadingToSet");
 		
 		/*
-		 * Stacker Testing
+		 * Roller Gripper
 		 */
-		SmartDashboard.putData(new MoveStackerToFloor());
-		SmartDashboard.putData(new MoveStackerToStep());
-		SmartDashboard.putData(new MoveStackerToTote());
+		putConfigVariableInSDB("rollerGripper_RollJoystick_ChannelX");
+		putConfigVariableInSDB("rollerGripper_RollJoystick_ChannelY");
 		
-		SmartDashboard.putData(new HoldContainer());
-		SmartDashboard.putData(new ReleaseContainer());
+		putConfigVariableInSDB("rollerGripper_RollJoystick_InvertX");
+		putConfigVariableInSDB("rollerGripper_RollJoystick_InvertY");
+		
+		putConfigVariableInSDB("rollerGripper_RollJoystick_LowPass");
 		
 	}
 }

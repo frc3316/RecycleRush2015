@@ -1,15 +1,20 @@
 package org.usfirst.frc.team3316.robot.rollerGripper.commands;
 
-import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
-import org.usfirst.frc.team3316.robot.stacker.GamePiece;
-import org.usfirst.frc.team3316.robot.stacker.GamePieceType;
 
 public class RollIn extends Roll
 {
-	public RollIn() {
-		super("rollerGripper_RollIn_SpeedLeft", 
-				"rollerGripper_RollIn_SpeedRight");
+	protected void setSpeeds() 
+	{
+		try
+		{
+			this.left = (double) config.get("rollerGripper_RollIn_SpeedLeft");
+			this.right = (double) config.get("rollerGripper_RollIn_SpeedRight");
+		}
+		catch (ConfigException e)
+		{
+			logger.severe(e);
+		}
 	}
 	
 	//TODO: add isFinished by switch and IR
