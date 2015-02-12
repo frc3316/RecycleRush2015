@@ -48,10 +48,10 @@ public class SDB
 			put ("Game Piece Switch", Robot.rollerGripper.getSwitchGP());
 			
 			put ("Distance Left", Robot.chassis.getDistanceLeft());
-			put ("Speed Left", Robot.chassis.getSpeedLeft());
-			
 			put ("Distance Right", Robot.chassis.getDistanceRight());
 			put ("Distance Center", Robot.chassis.getDistanceCenter());
+			
+			put ("Speed Left", Robot.chassis.getSpeedLeft());
 		}
 		
 		private void put (String name, double d)
