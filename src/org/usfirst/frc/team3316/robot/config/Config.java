@@ -217,8 +217,8 @@ public class Config
 			/*
 			 * Variables
 			 */
-			addToVariables("anschluss_CloseAnschluss_MotorSpeed", -0.5);
-			addToVariables("anschluss_OpenAnschluss_MotorSpeed", 0.5);
+			addToVariables("anschluss_CloseAnschluss_MotorSpeed", -1.0);
+			addToVariables("anschluss_OpenAnschluss_MotorSpeed", 1.0);
 		/*
 		 * Roller Gripper
 		 */
@@ -274,8 +274,8 @@ public class Config
 					
 					addToConstants("STACKER_IR", 0);
 					
-					addToConstants("STACKER_SWITCH_TOTE", 8);
-					addToConstants("STACKER_SWITCH_GAMEPIECE", 9);
+					addToConstants("SWITCH_RATCHET_RIGHT", 8);
+					addToConstants("SWITCH_RATCHET_LEFT", 9);
 					
 			/*
 			 * Variables

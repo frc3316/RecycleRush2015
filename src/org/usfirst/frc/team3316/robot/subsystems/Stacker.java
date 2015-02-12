@@ -8,6 +8,7 @@ import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.stacker.GamePiece;
 import org.usfirst.frc.team3316.robot.stacker.GamePieceType;
+import org.usfirst.frc.team3316.robot.stacker.StackerPosition;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -29,9 +30,7 @@ public class Stacker extends Subsystem
     private DoubleSolenoid solenoidGripper; //The solenoid that opens and closes the roller gripper
     
     private AnalogInput heightIR; //infrared
-    private DigitalInput switchTote, switchGamePiece; //the switches that signify if there's a tote or a container in the stacker
-    
-    private double heightScale, heightOffset; //variables to make the output of getHeight have a connection to the real world
+    private DigitalInput switchRight, switchLeft; //the switches that signify if there's a tote or a container in the stacker
     
     private Stack <GamePiece> stack; 
 
@@ -51,8 +50,8 @@ public class Stacker extends Subsystem
     	
     	heightIR = Robot.sensors.stackerHeightIR;
     	
-    	switchTote = Robot.sensors.stackerSwitchTote;
-    	switchGamePiece = Robot.sensors.stackerSwitchGamePiece;
+    	switchRight = Robot.sensors.switchRatchetRight;
+    	switchLeft = Robot.sensors.switchRatchetLeft;
     	
     	stack = new Stack <GamePiece>();
     }
@@ -121,14 +120,35 @@ public class Stacker extends Subsystem
     	return (1 / heightIR.getVoltage());
     }
     
-    public boolean getSwitchTote ()
+    public boolean getSwitchRight ()
     {
-    	return switchTote.get();
+    	return switchRight.get();
     }
     
-    public boolean getSwitchGamePiece ()
+    public boolean getSwitchLeft ()
     {
-    	return switchGamePiece.get();
+    	return switchLeft.get();
+    }
+    
+    public StackerPosition getPosition ()
+    {
+    	/*
+    	 * TODO: this method should return a position based on the stacker IR
+    	 */
+    	if (solenoidUpper.get() == DoubleSolenoid.Value.kForward &&
+    			solenoidBottom.get() == DoubleSolenoid.Value.kForward)
+    	{
+    		return StackerPosition.Floor;
+    	}
+    	else if (solenoidUpper.get() == DoubleSolenoid.Value.kReverse &&
+    			solenoidBottom.get() == DoubleSolenoid.Value.kReverse)
+    	{
+    		return StackerPosition.Tote;
+    	}
+    	else
+    	{
+    		return StackerPosition.Step;
+    	}
     }
     
 	/*

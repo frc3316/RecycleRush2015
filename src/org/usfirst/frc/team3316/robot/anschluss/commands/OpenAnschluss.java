@@ -33,7 +33,9 @@ public class OpenAnschluss extends Command
         return Robot.anschluss.isOpened();
     }
 
-    protected void end() {}
+    protected void end() {
+    	Robot.anschluss.set(0);
+    }
     
     protected void interrupted() {}
     
