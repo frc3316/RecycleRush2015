@@ -1,10 +1,19 @@
 package org.usfirst.frc.team3316.robot.rollerGripper.commands;
 
-public class RollTurnClockwise extends Roll{
-	
-	public RollTurnClockwise() 
+import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
+
+public class RollTurnClockwise extends Roll
+{	
+	protected void setSpeeds ()
 	{
-		super("rollerGripper_RollTurnClockwise_SpeedLeft", 
-				"rollerGripper_RollTurnClockwise_SpeedRight");
+		try
+		{
+			this.left = (double) config.get("rollerGripper_RollTurnClockwise_SpeedLeft"); 
+			this.right = (double) config.get("rollerGripper_RollTurnClockwise_SpeedRight");
+		}
+		catch (ConfigException e)
+		{
+			logger.severe(e);
+		}
 	}
 }

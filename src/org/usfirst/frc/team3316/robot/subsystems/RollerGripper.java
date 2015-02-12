@@ -4,6 +4,8 @@ import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+import org.usfirst.frc.team3316.robot.rollerGripper.commands.Roll;
+import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollJoystick;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.VictorSP;
@@ -23,6 +25,8 @@ public class RollerGripper extends Subsystem
 	
 	private double leftScale, rightScale;
 	
+	private Roll defaultRoll;
+	
     public RollerGripper () 
     {
     	gripperLeft = Robot.actuators.rollerGripperMotorControllerLeft;
@@ -31,7 +35,11 @@ public class RollerGripper extends Subsystem
     	gripperGPIR = Robot.sensors.rollerGripperGPIR;
     }
 
-    public void initDefaultCommand() {}
+    public void initDefaultCommand() 
+    {
+    	defaultRoll = new RollJoystick();
+    	setDefaultCommand(defaultRoll);
+    }
     
     public boolean set (double speedLeft, double speedRight) 
     {
