@@ -209,8 +209,8 @@ public class Config
 			 */
 			addToConstants("ANSCHLUSS_MOTOR_CONTROLLER", 4);
 			
-			addToConstants("ANSCHLUSS_DIGITAL_INPUT_CLOSED", 6);
-			addToConstants("ANSCHLUSS_DIGITAL_INPUT_OPENED", 7);
+			addToConstants("ANSCHLUSS_DIGITAL_INPUT_CLOSED", 11);
+			addToConstants("ANSCHLUSS_DIGITAL_INPUT_OPENED", 10);
 			
 			
 			
@@ -227,6 +227,7 @@ public class Config
 			 * Constants
 			 */
 			addToConstants("ROLLER_GRIPPER_GAME_PIECE_IR", 1);
+			addToConstants("ROLLER_GRIPPER_SWITCH_GAME_PIECE", 7);
 			
 			addToConstants("ROLLER_GRIPPER_MOTOR_CONTROLLER_LEFT", 8);
 			addToConstants("ROLLER_GRIPPER_MOTOR_CONTROLLER_RIGHT", 3);
