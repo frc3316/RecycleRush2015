@@ -43,6 +43,12 @@ public class SDB
 			
 			put ("Left Ratchet", Robot.stacker.getSwitchLeft());
 			put ("Right Ratchet", Robot.stacker.getSwitchRight());
+			
+			put ("Game Piece Switch", Robot.rollerGripper.getSwitchGP());
+			
+			put ("Distance Left", Robot.chassis.getDistanceLeft());
+			put ("Distance Right", Robot.chassis.getDistanceRight());
+			put ("Distance Center", Robot.chassis.getDistanceCenter());
 		}
 		
 		private void put (String name, double d)

@@ -152,9 +152,9 @@ public class Config
 			addToConstants("CHASSIS_ENCODER_CENTER_A", 0);
 			addToConstants("CHASSIS_ENCODER_CENTER_B", 1);
 			
-			addToConstants("CHASSIS_ENCODER_LEFT_DISTANCE_PER_PULSE", -0.07363107781851077902646820429561);
-			addToConstants("CHASSIS_ENCODER_RIGHT_DISTANCE_PER_PULSE", 0.07363107781851077902646820429561);
-			addToConstants("CHASSIS_ENCODER_CENTER_DISTANCE_PER_PULSE", 0.02454369260617025967548940143187);
+			addToConstants("CHASSIS_ENCODER_LEFT_DISTANCE_PER_PULSE", -0.0018702293765902); //in meters
+			addToConstants("CHASSIS_ENCODER_RIGHT_DISTANCE_PER_PULSE", 0.0018702293765902); //in meters
+			addToConstants("CHASSIS_ENCODER_CENTER_DISTANCE_PER_PULSE", 0.0012468195843934); //in meters
 			
 			addToConstants("CHASSIS_WIDTH", 0.5322); //in meters
 			/*
@@ -209,8 +209,8 @@ public class Config
 			 */
 			addToConstants("ANSCHLUSS_MOTOR_CONTROLLER", 4);
 			
-			addToConstants("ANSCHLUSS_DIGITAL_INPUT_CLOSED", 6);
-			addToConstants("ANSCHLUSS_DIGITAL_INPUT_OPENED", 7);
+			addToConstants("ANSCHLUSS_DIGITAL_INPUT_CLOSED", 11);
+			addToConstants("ANSCHLUSS_DIGITAL_INPUT_OPENED", 10);
 			
 			
 			
@@ -227,6 +227,7 @@ public class Config
 			 * Constants
 			 */
 			addToConstants("ROLLER_GRIPPER_GAME_PIECE_IR", 1);
+			addToConstants("ROLLER_GRIPPER_SWITCH_GAME_PIECE", 6);
 			
 			addToConstants("ROLLER_GRIPPER_MOTOR_CONTROLLER_LEFT", 8);
 			addToConstants("ROLLER_GRIPPER_MOTOR_CONTROLLER_RIGHT", 3);
@@ -260,7 +261,7 @@ public class Config
 					addToVariables("rollerGripper_RollJoystick_InvertX", true);
 					addToVariables("rollerGripper_RollJoystick_InvertY", false);
 					
-					addToVariables("rollerGripper_RollJoystick_LowPass", 0.05);
+					addToVariables("rollerGripper_RollJoystick_LowPass", 0.15);
 					
 		/*
 		 * Stacker
@@ -284,7 +285,7 @@ public class Config
 					addToConstants("STACKER_IR", 0);
 					
 					addToConstants("SWITCH_RATCHET_RIGHT", 8);
-					addToConstants("SWITCH_RATCHET_LEFT", 9);
+					addToConstants("SWITCH_RATCHET_LEFT", 7);
 					
 			/*
 			 * Variables
