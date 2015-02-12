@@ -8,15 +8,15 @@ import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *Command that closes the anschluss
+ *Command that opens the anschluss
  */
-public class closeAnschluss extends Command 
+public class OpenAnschluss extends Command 
 {
 	Config config = Robot.config;
 	DBugLogger logger = Robot.logger;
 	double motorSpeed;
 	
-    public closeAnschluss() 
+    public OpenAnschluss() 
     {
     	requires(Robot.anschluss);
     }
@@ -30,20 +30,23 @@ public class closeAnschluss extends Command
     }
 
     protected boolean isFinished() {
-        return Robot.anschluss.isClosed();
+        return Robot.anschluss.isOpened();
     }
 
-    protected void end() {}
-
+    protected void end() {
+    	Robot.anschluss.set(0);
+    }
+    
     protected void interrupted() {}
     
     private void updateMotorSpeed() 
     {
     	try 
     	{
-			motorSpeed = (double) config.get("anschluss_CloseAnschluss_MotorSpeed");
+			motorSpeed = (double) config.get("anschluss_OpenAnschluss_MotorSpeed");
 		}
-    	catch (ConfigException e) {
+    	catch (ConfigException e) 
+    	{
     		logger.severe(e);			
 		}
     }

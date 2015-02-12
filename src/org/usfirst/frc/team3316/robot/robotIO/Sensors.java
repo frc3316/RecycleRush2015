@@ -32,8 +32,8 @@ public class Sensors
 	 * Stacker
 	 */	
 	public AnalogInput stackerHeightIR;
-	public DigitalInput stackerSwitchTote;
-	public DigitalInput stackerSwitchGamePiece;
+	public DigitalInput switchRatchetRight,
+						switchRatchetLeft;
 	
 	/*
 	 * Anschluss
@@ -42,9 +42,10 @@ public class Sensors
 	public DigitalInput anschlussDigitalInputOpened;
 	
 	/*
-	 * Roller-Gripper
+	 * RollerGripper
 	 */
-	public AnalogInput rollerGripperIRLeft, rollerGripperIRRight;
+	public AnalogInput rollerGripperGPIR;
+	
 	
 	public Sensors ()
 	{
@@ -83,20 +84,19 @@ public class Sensors
 			 */
 			stackerHeightIR = new AnalogInput((int) config.get("STACKER_IR"));
 			
-			stackerSwitchTote = new DigitalInput((int) config.get("STACKER_SWITCH_TOTE"));
-			stackerSwitchGamePiece = new DigitalInput((int) config.get("STACKER_SWITCH_GAMEPIECE"));
+			switchRatchetRight = new DigitalInput((int) config.get("SWITCH_RATCHET_RIGHT"));
+			switchRatchetLeft = new DigitalInput((int) config.get("SWITCH_RATCHET_LEFT"));
 			
 			/*
 			 * Anschluss
 			 */
 			anschlussDigitalInputClosed = new DigitalInput((int) config.get("ANSCHLUSS_DIGITAL_INPUT_CLOSED"));
 			anschlussDigitalInputOpened = new DigitalInput((int) config.get("ANSCHLUSS_DIGITAL_INPUT_OPENED"));
-
+			
 			/*
-			 * Roller-Gripper
+			 * RollerGripper
 			 */
-			rollerGripperIRLeft = new AnalogInput((int) config.get("ROLLER_GRIPPER_IR_LEFT"));
-			rollerGripperIRRight = new AnalogInput((int) config.get("ROLLER_GRIPPER_IR_RIGHT"));
+			rollerGripperGPIR = new AnalogInput((int) config.get("ROLLER_GRIPPER_GAME_PIECE_IR"));
 		}
 		
 		catch (ConfigException e)

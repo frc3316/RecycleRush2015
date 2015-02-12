@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.TimerTask;
 
 import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingPreset;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingSDB;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
@@ -31,19 +32,17 @@ public class SDB
 	{
 		public void run ()
 		{
+			put ("Operator Joystick POV", Robot.joysticks.joystickOperator.getPOV());
+			
 			put ("Current Heading", Robot.chassis.getHeading());
 			put ("Current Height", Robot.stacker.getHeight());
 			
+			put ("Current GP distance", Robot.rollerGripper.getGPIRDistance());
+			
 			put ("Angular Velocity", Robot.chassis.getAngularVelocity());
-			put ("Angular Velocity Encoders", Robot.chassis.getAngularVelocityEncoders());
 			
-			put ("Speed Left", Robot.chassis.getSpeedLeft());
-			put ("Speed Right", Robot.chassis.getSpeedRight());
-			put ("Speed Center", Robot.chassis.getSpeedCenter());
-			
-			put ("Distance Left", Robot.chassis.getDistanceLeft());
-			put ("Distance Right", Robot.chassis.getDistanceRight());
-			put ("Distance Center", Robot.chassis.getDistanceCenter());
+			put ("Left Ratchet", Robot.stacker.getSwitchLeft());
+			put ("Right Ratchet", Robot.stacker.getSwitchRight());
 		}
 		
 		private void put (String name, double d)
@@ -77,7 +76,7 @@ public class SDB
 		SmartDashboard.putData(new SetHeadingSDB());
 		
 		initSDB();
-		logger.info("finished initSDB()");
+		logger.info("Finished initSDB()");
 		
 		updateSDBTask = new UpdateSDBTask();
 		Robot.timer.schedule(updateSDBTask, 0, 20);
@@ -143,6 +142,7 @@ public class SDB
 		/*
 		 * Set Heading SDB
 		 */
+		SmartDashboard.putData("Zero Heading", new SetHeadingPreset(0));
 		SmartDashboard.putData(new SetHeadingSDB());
 		putConfigVariableInSDB("chassis_HeadingToSet");
 		
@@ -155,5 +155,6 @@ public class SDB
 		
 		SmartDashboard.putData(new HoldContainer());
 		SmartDashboard.putData(new ReleaseContainer());
+		
 	}
 }

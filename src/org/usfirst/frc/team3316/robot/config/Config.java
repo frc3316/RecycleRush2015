@@ -105,23 +105,29 @@ public class Config
 				/*
 				 * Stacker
 				 */
-				addToConstants("MOVE_STACKER_TO_FLOOR_BUTTON", 1);
-				addToConstants("MOVE_STACKER_TO_STEP_BUTTON", 2);
-				addToConstants("MOVE_STACKER_TO_TOTE_BUTTON", 3);
+				addToConstants("BUTTON_MOVE_STACKER_TO_FLOOR", 1);
+				addToConstants("BUTTON_MOVE_STACKER_TO_STEP", 2);
+				addToConstants("BUTTON_MOVE_STACKER_TO_TOTE", 4);
 				
-				addToConstants("HOLD_CONTAINER_BUTTON", 4);
-				addToConstants("RELEASE_CONTAINER_BUTTON", 5);
+				addToConstants("BUTTON_HOLD_CONTAINER", 10);
+				addToConstants("BUTTON_RELEASE_CONTAINER", 9);
 				
-				addToConstants("OPEN_GRIPPER_BUTTON", 6);
-				addToConstants("CLOSE_GRIPPER_BUTTON", 7);
+				addToConstants("BUTTON_OPEN_GRIPPER", 5);
+				addToConstants("BUTTON_CLOSE_GRIPPER", 6);
 				
 				/*
 				 * Roller-Gripper
 				 */
-				addToConstants("ROLL_IN_BUTTON", 8);
-				addToConstants("ROLL_OUT_BUTTON", 9);
-				addToConstants("ROLL_TURN_CLOCKWISE_BUTTON", 10);
-				addToConstants("ROLL_TURN_COUNTER_CLOCKWISE_BUTTON", 11);
+				addToConstants("BUTTON_ROLL_IN", 180);
+				addToConstants("BUTTON_ROLL_OUT", 0);
+				addToConstants("BUTTON_ROLL_TURN_CLOCKWISE", 90);
+				addToConstants("BUTTON_ROLL_TURN_COUNTER_CLOCKWISE", 270);
+				
+				/*
+				 * Anschluss
+				 */
+				addToConstants("BUTTON_OPEN_ANSCHLUSS", 8);
+				addToConstants("BUTTON_CLOSE_ANSCHLUSS", 7);
 		/*
 		 * Chassis
 		 */
@@ -156,9 +162,9 @@ public class Config
 			 */
 
 			 //Subsystem
-			addToVariables("chassis_LeftScale", 1);
-			addToVariables("chassis_RightScale", -1);
-			addToVariables("chassis_CenterScale", 1);
+			addToVariables("chassis_LeftScale", 1.0);
+			addToVariables("chassis_RightScale", -1.0);
+			addToVariables("chassis_CenterScale", 1.0);
 			
 			addToVariables("chassis_HeadingToSet", 0.0); // This is the heading that the SetHeadingSDB command sets to
 														 // It is configurable in the SDB (it should appear in initSDB())
@@ -168,7 +174,7 @@ public class Config
 			
 			addToVariables("chassis_TankDrive_LowPass", 0.0);
 			//RobotOrientedDrive
-			addToVariables("chassis_RobotOrientedDrive_TurnScale", 1);
+			addToVariables("chassis_RobotOrientedDrive_TurnScale", 1.0);
 			
 			//RobotOrientedNavigation
 			addToVariables("chassis_RobotOrientedNavigation_PIDControllerX_KP", 0.0);
@@ -203,14 +209,16 @@ public class Config
 			 */
 			addToConstants("ANSCHLUSS_MOTOR_CONTROLLER", 4);
 			
-			addToConstants("ANSCHLUSS_BUTTON_CLOSE", 1);
-			addToConstants("ANSCHLUSS_BUTTON_OPEN", 0);
+			addToConstants("ANSCHLUSS_DIGITAL_INPUT_CLOSED", 6);
+			addToConstants("ANSCHLUSS_DIGITAL_INPUT_OPENED", 7);
+			
+			
 			
 			/*
 			 * Variables
 			 */
-			addToVariables("anschluss_CloseAnschluss_MotorSpeed", -0.5);
-			addToVariables("anschluss_OpenAnschluss_MotorSpeed", 0.5);
+			addToVariables("anschluss_CloseAnschluss_MotorSpeed", -1.0);
+			addToVariables("anschluss_OpenAnschluss_MotorSpeed", 1.0);
 		/*
 		 * Roller Gripper
 		 */
@@ -218,18 +226,18 @@ public class Config
 			/*
 			 * Constants
 			 */
-			addToConstants("ROLLER_GRIPPER_MOTOR_CONTROLLER_LEFT", 3);
-			addToConstants("ROLLER_GRIPPER_MOTOR_CONTROLLER_RIGHT", 8);
+			addToConstants("ROLLER_GRIPPER_GAME_PIECE_IR", 1);
 			
-				//Subsystem
-					addToConstants("ROLLER_GRIPPER_IR_LEFT", 0);
-					addToConstants("ROLLER_GRIPPER_IR_RIGHT", 1);
+			addToConstants("ROLLER_GRIPPER_MOTOR_CONTROLLER_LEFT", 8);
+			addToConstants("ROLLER_GRIPPER_MOTOR_CONTROLLER_RIGHT", 3);
+			
 			/*
 			 * Variables
 			 */
 				//Subsystem
-					addToVariables("rollerGripper_LeftScale", -0.7);
-					addToVariables("rollerGripper_RightScale", 0.7);
+					addToVariables("rollerGripper_LeftScale", 1.0);
+					addToVariables("rollerGripper_RightScale", -1.0);
+					
 				//RollIn
 					addToVariables("rollerGripper_RollIn_SpeedLeft", 1.0);
 					addToVariables("rollerGripper_RollIn_SpeedRight", 1.0);
@@ -267,8 +275,8 @@ public class Config
 					
 					addToConstants("STACKER_IR", 0);
 					
-					addToConstants("STACKER_SWITCH_TOTE", 8);
-					addToConstants("STACKER_SWITCH_GAMEPIECE", 9);
+					addToConstants("SWITCH_RATCHET_RIGHT", 8);
+					addToConstants("SWITCH_RATCHET_LEFT", 9);
 					
 			/*
 			 * Variables

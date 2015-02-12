@@ -33,21 +33,6 @@ public class Anschluss extends Subsystem
     public boolean set (double motorSpeed) 
     {
     	//assuming motorSpeed > 0 is for opening and motorSpeed < 0 is for closing
-    	if ((motorSpeed > 0 && this.isOpened()) || (motorSpeed < 0 && this.isClosed()))
-    	{
-    		anschluss.set(0);
-    		String state = "";
-    		if (this.isOpened())
-    		{
-    			state = "opened";
-    		}
-    		else if (this.isClosed())
-    		{
-    			state = "closed";
-    		}
-    		logger.info("Tried to set " + motorSpeed + "to Anschluss motor controller when anschluss is " + state);
-    		return false;
-    	}
     	anschluss.set(motorSpeed);
     	return true;
 	}
