@@ -46,7 +46,7 @@ public class SDB
 			put ("Left Ratchet", Robot.stacker.getSwitchLeft());
 			put ("Right Ratchet", Robot.stacker.getSwitchRight());
 			
-			put ("Game Piece Switch", Robot.rollerGripper.getSwitchGP());
+			put ("Game Piece Switch", Robot.rollerGripper.getSwitchGamePiece());
 			
 			put ("Distance Left", Robot.chassis.getDistanceLeft());
 			put ("Distance Right", Robot.chassis.getDistanceRight());
@@ -63,7 +63,6 @@ public class SDB
 			put ("Integrator X", Robot.chassis.navigationIntegrator.getX());
 			put ("Integrator Y", Robot.chassis.navigationIntegrator.getY());
 			put ("Integrator Heading", Robot.chassis.navigationIntegrator.getHeading());
-			
 		}
 		
 		private void put (String name, double d)

@@ -2,6 +2,7 @@ package org.usfirst.frc.team3316.robot.stacker.commands;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
+import org.usfirst.frc.team3316.robot.rollerGripper.GamePieceCollected;
 
 /**
  *
@@ -9,23 +10,18 @@ import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 public class MoveStackerToFloor extends MoveStacker
 {
 	double gpDistanceMin, gpDistanceMax;
-	
-    public MoveStackerToFloor() 
-    {
-        super("STACKER_MOVE_STACKER_TO_FLOOR_HEIGHT_MAX",
-        		"STACKER_MOVE_STACKER_TO_FLOOR_HEIGHT_MIN");
-    }
 
 	protected void setSolenoids() 
 	{
-		Robot.stacker.openSolenoidGripper(); //This line is strategically problematic and should be solved
-											 //need to insert condition 'only if there is no gp below the stack'
+		if (Robot.rollerGripper.getGamePieceCollected() == GamePieceCollected.None)
+		{
+			Robot.stacker.openSolenoidGripper();
+		}
 		Robot.stacker.closeSolenoidContainer();
 		Robot.stacker.openSolenoidUpper();
 		Robot.stacker.openSolenoidBottom();
 	}
 	
-	//TODO: implement this method in setSolenoids()
 	private void updateDistanceRange ()
 	{
 		try

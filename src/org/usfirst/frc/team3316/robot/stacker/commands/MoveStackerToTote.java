@@ -10,8 +10,7 @@ public class MoveStackerToTote extends MoveStacker
 {
 	public MoveStackerToTote() 
     {
-        super("STACKER_MOVE_STACKER_TO_TOTE_HEIGHT_MAX", 
-        		"STACKER_MOVE_STACKER_TO_TOTE_HEIGHT_MIN");
+        super();
     }
 
 	protected void initialize()
