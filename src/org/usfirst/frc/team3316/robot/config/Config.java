@@ -239,6 +239,14 @@ public class Config
 					addToVariables("rollerGripper_LeftScale", 1.0);
 					addToVariables("rollerGripper_RightScale", -1.0);
 					
+					addToVariables("rollerGripper_ToteDistanceMinimum", 0.325);
+					addToVariables("rollerGripper_ToteDistanceMaximum", 0.34);
+					
+					addToVariables("rollerGripper_ContainerDistanceMinimum", 0.39);
+					addToVariables("rollerGripper_ContainerDistanceMaximum", 0.41);
+					
+					addToVariables("rollerGripper_GamePieceDistanceThreshold", 1.0);
+					
 				//RollIn
 					addToVariables("rollerGripper_RollIn_SpeedLeft", 1.0);
 					addToVariables("rollerGripper_RollIn_SpeedRight", 1.0);

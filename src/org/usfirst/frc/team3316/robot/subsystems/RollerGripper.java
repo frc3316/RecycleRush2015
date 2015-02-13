@@ -30,6 +30,14 @@ public class RollerGripper extends Subsystem
 	
 	private double leftScale, rightScale;
 	
+	// Variables for getGamePieceCollected()
+	// They are set in updateDistanceVariables()
+	private double toteDistanceMin, 
+				   toteDistanceMax,
+				   containerDistanceMin, 
+				   containerDistanceMax,
+				   gpDistanceThreshold;
+	
 	private Roll defaultRoll;
 	
     public RollerGripper () 
@@ -56,6 +64,75 @@ public class RollerGripper extends Subsystem
     	return true;
     }
     
+    //TODO: fix name to be getIRGPDistance
+    public double getGPIRDistance ()
+    {
+    	return (1 / gripperGPIR.getVoltage());
+    }
+    
+    public boolean getSwitchGamePiece ()
+    {
+    	return !gripperSwitchGP.get();
+    }
+    
+    /**
+     * Returns which gamepiece there is in the roller gripper (if any)
+     * @return Tote for tote, Container for container, Unsure if there 
+     * is something in but can't figure out which and none if empty 
+     */
+    public GamePieceCollected getGamePieceCollected ()
+    {
+    	updateDistanceVariables();
+    	
+    	double gpDistance = getGPIRDistance();
+    	boolean gpSwitch = getSwitchGamePiece();
+    	
+    	if (gpSwitch)
+    	{
+    		if (gpDistance > toteDistanceMin && gpDistance < toteDistanceMax)
+    		{
+    			return GamePieceCollected.Tote;
+    		}
+    		else if (gpDistance > containerDistanceMin && gpDistance < containerDistanceMax)
+    		{
+    			return GamePieceCollected.Container;
+    		}
+    		else
+    		{
+    			return GamePieceCollected.Unsure;
+    		}
+    	}
+    	else
+    	{
+    		if (gpDistance < gpDistanceThreshold)
+    		{
+    			return GamePieceCollected.Unsure;
+    		}
+    		else
+    		{
+    			return GamePieceCollected.None;
+    		}
+    	}
+    }
+    
+    private void updateDistanceVariables () 
+    {
+    	try 
+    	{
+			toteDistanceMin = (double) config.get("rollerGripper_ToteDistanceMinimum");
+			toteDistanceMax = (double) config.get("rollerGripper_ToteDistanceMaximum");
+			
+			containerDistanceMin = (double) config.get("rollerGripper_ContainerDistanceMinimum");
+			containerDistanceMax = (double) config.get("rollerGripper_ContainerDistanceMaximum");
+			
+			gpDistanceThreshold = (double) config.get("rollerGripper_GamePieceDistanceThreshold");
+		} 
+    	catch (ConfigException e) 
+    	{
+			logger.severe(e);
+		}
+	}
+    
     private void updateScales ()
     {
     	try
@@ -67,17 +144,6 @@ public class RollerGripper extends Subsystem
     	{
     		logger.severe(e);
     	}
-    }
-    
-    //TODO: fix name to be getIRGPDistance
-    public double getGPIRDistance ()
-    {
-    	return (1 / gripperGPIR.getVoltage());
-    }
-    
-    public boolean getSwitchGP ()
-    {
-    	return !gripperSwitchGP.get();
     }
     
     private void printTheTruth()
