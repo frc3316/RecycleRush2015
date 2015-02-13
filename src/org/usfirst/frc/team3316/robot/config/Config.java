@@ -209,8 +209,8 @@ public class Config
 			 */
 			addToConstants("ANSCHLUSS_MOTOR_CONTROLLER", 4);
 			
-			addToConstants("ANSCHLUSS_DIGITAL_INPUT_CLOSED", 6);
-			addToConstants("ANSCHLUSS_DIGITAL_INPUT_OPENED", 7);
+			addToConstants("ANSCHLUSS_DIGITAL_INPUT_CLOSED", 11);
+			addToConstants("ANSCHLUSS_DIGITAL_INPUT_OPENED", 10);
 			
 			
 			
@@ -227,6 +227,7 @@ public class Config
 			 * Constants
 			 */
 			addToConstants("ROLLER_GRIPPER_GAME_PIECE_IR", 1);
+			addToConstants("ROLLER_GRIPPER_SWITCH_GAME_PIECE", 7);
 			
 			addToConstants("ROLLER_GRIPPER_MOTOR_CONTROLLER_LEFT", 8);
 			addToConstants("ROLLER_GRIPPER_MOTOR_CONTROLLER_RIGHT", 3);
@@ -253,6 +254,15 @@ public class Config
 				//RollTurnCounterClockwise
 					addToVariables("rollerGripper_RollTurnCounterClockwise_SpeedLeft", 1.0);
 					addToVariables("rollerGripper_RollTurnCounterClockwise_SpeedRight", -1.0);
+					
+				//RollJoystick
+					addToVariables("rollerGripper_RollJoystick_ChannelX", 0);
+					addToVariables("rollerGripper_RollJoystick_ChannelY", 1);
+					
+					addToVariables("rollerGripper_RollJoystick_InvertX", true);
+					addToVariables("rollerGripper_RollJoystick_InvertY", false);
+					
+					addToVariables("rollerGripper_RollJoystick_LowPass", 0.05);
 					
 		/*
 		 * Stacker
