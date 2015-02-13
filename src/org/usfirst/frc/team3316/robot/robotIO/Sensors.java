@@ -45,6 +45,7 @@ public class Sensors
 	 * RollerGripper
 	 */
 	public AnalogInput rollerGripperGPIR;
+	public DigitalInput rollerGripperSwitchGP;
 	
 	
 	public Sensors ()
@@ -96,7 +97,11 @@ public class Sensors
 			/*
 			 * RollerGripper
 			 */
-			rollerGripperGPIR = new AnalogInput((int) config.get("ROLLER_GRIPPER_GAME_PIECE_IR"));
+			rollerGripperGPIR = new AnalogInput(
+					(int) config.get("ROLLER_GRIPPER_GAME_PIECE_IR"));
+			
+			rollerGripperSwitchGP = new DigitalInput(
+					(int) config.get("ROLLER_GRIPPER_SWITCH_GAME_PIECE"));
 		}
 		
 		catch (ConfigException e)

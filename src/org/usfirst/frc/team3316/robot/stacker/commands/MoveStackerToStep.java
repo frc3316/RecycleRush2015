@@ -3,6 +3,8 @@ package org.usfirst.frc.team3316.robot.stacker.commands;
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.stacker.StackerPosition;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+
 /**
  *
  */
@@ -19,7 +21,8 @@ public class MoveStackerToStep extends MoveStacker
 		/*
 		 * If one of the ratchets is not in place and they should be pressed, dont start
 		 */
-		if (Robot.stacker.getPosition() == StackerPosition.Floor &&
+		if (	Robot.stacker.getSolenoidContainer() == DoubleSolenoid.Value.kReverse &&
+				Robot.stacker.getPosition() == StackerPosition.Floor &&
 				(!Robot.stacker.getSwitchLeft() || !Robot.stacker.getSwitchRight())) 
 		{
 			this.cancel();

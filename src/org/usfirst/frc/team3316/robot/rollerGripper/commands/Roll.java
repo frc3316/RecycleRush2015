@@ -2,7 +2,6 @@ package org.usfirst.frc.team3316.robot.rollerGripper.commands;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
-import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -10,28 +9,24 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class Roll extends Command 
+public abstract class Roll extends Command 
 {
     Config config = Robot.config;
 	DBugLogger logger = Robot.logger;
 	
-	protected String speedLeftName, speedRightName;
-	
-	protected double speedLeft, speedRight;
+	protected double left, right;
 
-    public Roll(String speedLeftName, String speedRightName) 
+    public Roll () 
     {
     	requires(Robot.rollerGripper);
-    	this.speedLeftName = speedLeftName;
-        this.speedRightName = speedRightName;
     }
     
     protected void initialize() {}
 
     protected void execute() 
     {
-    	updateSpeeds();
-    	Robot.rollerGripper.set(speedLeft, speedRight);
+    	setSpeeds();
+    	Robot.rollerGripper.set(left, right);
     }
 
     protected boolean isFinished() 
@@ -49,16 +44,5 @@ public class Roll extends Command
     	end();
     }
     
-    protected void updateSpeeds ()
-    {
-    	try 
-    	{
-			speedLeft = (double) config.get(speedLeftName);
-			speedRight = (double) config.get(speedRightName);
-		} 
-    	catch (ConfigException e) 
-    	{
-			logger.severe(e);
-		}
-    }
+    protected abstract void setSpeeds ();
 }
