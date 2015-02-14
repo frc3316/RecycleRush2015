@@ -21,7 +21,7 @@ public class PickupSequence extends CommandGroup
 	
 	public PickupSequence ()
 	{
-		addSequential(new MoveStackerToTote());
+		addSequential(new MoveStackerToTote()); //TODO: check if this doesn't cause bugs
 		addSequential(new RollIn());
 		
 		addGamePieceSequence = new AddGamePieceSequence();
