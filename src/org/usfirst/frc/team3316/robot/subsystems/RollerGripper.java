@@ -72,7 +72,7 @@ public class RollerGripper extends Subsystem
     
     public boolean getSwitchGamePiece ()
     {
-    	return !gripperSwitchGP.get();
+    	return gripperSwitchGP.get();
     }
     
     /**
