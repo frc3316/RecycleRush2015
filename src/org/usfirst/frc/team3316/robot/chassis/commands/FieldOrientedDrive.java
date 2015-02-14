@@ -19,8 +19,6 @@ public class FieldOrientedDrive extends RobotOrientedDrive
 												//clockwise is positive and 
 												//counter-clockwise is negative
 		double robotAngleRad = Math.toRadians(Robot.chassis.getHeading()); //Robot angle
-		// For D-Bugging purposes
-		SmartDashboard.putNumber("Current Heading", Robot.chassis.getHeading()); //TODO: MOVE THIS TO A BETTER PLACE
 		
 		double angleDiff = vectorAngle - robotAngleRad; //The angle of the vector oriented to the robot
 		
