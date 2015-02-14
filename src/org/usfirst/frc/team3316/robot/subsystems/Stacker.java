@@ -69,6 +69,7 @@ public class Stacker extends Subsystem
     	 * Upper solenoid is opened only when trying to move to floor
     	 * Therefore it is the solenoid that when opened can harm the gripper or the container pistons
     	 */
+    	solenoidContainer.set(DoubleSolenoid.Value.kReverse);
     	solenoidUpper.set(DoubleSolenoid.Value.kForward);
     	return true;
     }

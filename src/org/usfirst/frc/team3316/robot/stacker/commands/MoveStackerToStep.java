@@ -31,8 +31,8 @@ public class MoveStackerToStep extends MoveStacker
 		{
 			Robot.stacker.openSolenoidContainer();
 		}
-		Robot.stacker.closeSolenoidUpper();
-    	Robot.stacker.openSolenoidBottom();
+		Robot.stacker.openSolenoidUpper();
+    	Robot.stacker.closeSolenoidBottom();
 	}
 	
 	protected boolean isFinished ()
