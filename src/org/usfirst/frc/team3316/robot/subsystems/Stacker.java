@@ -32,6 +32,11 @@ public class Stacker extends Subsystem
     private AnalogInput heightIR; //infrared
     private DigitalInput switchRight, switchLeft; //the switches that signify if there's a tote or a container in the stacker
     
+    private double heightFloorMin, heightFloorMax,
+    			   heightStepMin, heightStepMax,
+    			   heightToteMin, heightToteMax,
+    			   heightStuckOnContainerMin, heightStuckOnContainerMax;
+    
     private Stack <GamePiece> stack; 
 
     public Stacker () 
@@ -125,24 +130,56 @@ public class Stacker extends Subsystem
     	return switchLeft.get();
     }
     
+    /*
+     * TODO: check if StuckOnContainer is necessary (if it's not simply step or floor)
+     */
     public StackerPosition getPosition ()
     {
-    	/*
-    	 * TODO: this method should return a position based on the stacker IR
-    	 */
-    	if (solenoidUpper.get() == DoubleSolenoid.Value.kForward &&
-    			solenoidBottom.get() == DoubleSolenoid.Value.kForward)
+    	updateHeights();
+    	
+    	double height = getHeight();
+    	
+    	if ((height > heightFloorMin) && (height < heightFloorMax))
     	{
     		return StackerPosition.Floor;
     	}
-    	else if (solenoidUpper.get() == DoubleSolenoid.Value.kReverse &&
-    			solenoidBottom.get() == DoubleSolenoid.Value.kReverse)
+    	else if ((height > heightToteMin) && (height < heightToteMax))
     	{
     		return StackerPosition.Tote;
     	}
-    	else
+    	else if ((height > heightStepMin) && (height < heightStepMax))
     	{
     		return StackerPosition.Step;
+    	}
+    	else if ((height > heightStuckOnContainerMin) && (height < heightStuckOnContainerMax))
+    	{
+    		return StackerPosition.StuckOnContainer;
+    	}
+    	else 
+    	{
+    		return null;
+    	}
+    }
+    
+    private void updateHeights ()
+    {
+    	try
+    	{
+    		heightFloorMin = (double) config.get("stacker_HeightFloorMinimum");
+    		heightFloorMax = (double) config.get("stacker_HeightFloorMaximum");
+    		
+    		heightToteMin = (double) config.get("stacker_HeightToteMinimum");
+    		heightToteMax = (double) config.get("stacker_HeightToteMaximum");
+    		
+    		heightStepMin = (double) config.get("stacker_HeightStepMinimum");
+    		heightStepMax = (double) config.get("stacker_HeightStepMaximum");
+    		
+    		heightStuckOnContainerMin = (double) config.get("stacker_HeightStuckOnContainerMinimum");
+    		heightStuckOnContainerMax = (double) config.get("stacker_HeightStuckOnContainerMaximum");
+    	}
+    	catch (ConfigException e)
+    	{
+    		logger.severe(e);
     	}
     }
     

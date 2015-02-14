@@ -13,8 +13,8 @@ public class AddGamePieceSequence extends CommandGroup
 {    
     public  AddGamePieceSequence() 
     {
+    	addSequential(new AddGamePieceToStack());
         addSequential(new MoveStackerToFloor());
-        addSequential(new AddGamePieceToStack());
         addSequential(new MoveStackerToTote());
     }
 }
