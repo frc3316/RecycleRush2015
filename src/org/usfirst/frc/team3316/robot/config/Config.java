@@ -152,9 +152,9 @@ public class Config
 			addToConstants("CHASSIS_ENCODER_CENTER_A", 0);
 			addToConstants("CHASSIS_ENCODER_CENTER_B", 1);
 			
-			addToConstants("CHASSIS_ENCODER_LEFT_DISTANCE_PER_PULSE", -0.07363107781851077902646820429561);
-			addToConstants("CHASSIS_ENCODER_RIGHT_DISTANCE_PER_PULSE", 0.07363107781851077902646820429561);
-			addToConstants("CHASSIS_ENCODER_CENTER_DISTANCE_PER_PULSE", 0.02454369260617025967548940143187);
+			addToConstants("CHASSIS_ENCODER_LEFT_DISTANCE_PER_PULSE", -0.0018702293765902);
+			addToConstants("CHASSIS_ENCODER_RIGHT_DISTANCE_PER_PULSE", 0.0018702293765902);
+			addToConstants("CHASSIS_ENCODER_CENTER_DISTANCE_PER_PULSE", 0.0012468195843934);
 			
 			addToConstants("CHASSIS_WIDTH", 0.5322); //in meters
 			/*
@@ -270,7 +270,7 @@ public class Config
 					addToVariables("rollerGripper_RollJoystick_InvertX", true);
 					addToVariables("rollerGripper_RollJoystick_InvertY", false);
 					
-					addToVariables("rollerGripper_RollJoystick_LowPass", 0.05);
+					addToVariables("rollerGripper_RollJoystick_LowPass", 0.15);
 					
 		/*
 		 * Stacker
@@ -293,21 +293,25 @@ public class Config
 					
 					addToConstants("STACKER_IR", 0);
 					
+
+					addToConstants("SWITCH_RATCHET_LEFT", 7);
 					addToConstants("SWITCH_RATCHET_RIGHT", 8);
-					addToConstants("SWITCH_RATCHET_LEFT", 9);
-					
 			/*
 			 * Variables
 			 */
-				//MoveStacker
-					//MoveStackerToFloor
-					addToVariables("stacker_MoveStackerToFloor_HeightMax", 0.4);
-					addToVariables("stacker_MoveStackerToFloor_HeightMin", 0.42);
-					//MoveStackerToStep
-					addToVariables("stacker_MoveStackerToStep_HeightMax", 1.05);
-					addToVariables("stacker_MoveStackerToStep_HeightMin", 0.95);
-					//MoveStackerToTote
-					addToVariables("stacker_MoveStackerToTote_HeightMax", 1.62);
-					addToVariables("stacker_MoveStackerToTote_HeightMin", 1.45);
+				//Subsystem
+					
+					//TODO: re-determine these values 
+					addToVariables("stacker_HeightFloorMinimum", 0.4);
+					addToVariables("stacker_HeightFloorMaximum", 0.42);
+					
+					addToVariables("stacker_HeightToteMinimum", 1.45);
+					addToVariables("stacker_HeightToteMaximum", 1.62);
+					
+					addToVariables("stacker_HeightStepMinimum", 0.95);
+					addToVariables("stacker_HeightStepMaximum", 1.05);
+					
+					addToVariables("stacker_HeightStuckOnContainerMinimum", 1.05);
+					addToVariables("stacker_HeightStuckOnContainerMaximum", 1.05);
 	}
 }
