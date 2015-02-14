@@ -227,7 +227,7 @@ public class Config
 			 * Constants
 			 */
 			addToConstants("ROLLER_GRIPPER_GAME_PIECE_IR", 1);
-			addToConstants("ROLLER_GRIPPER_SWITCH_GAME_PIECE", 7);
+			addToConstants("ROLLER_GRIPPER_SWITCH_GAME_PIECE", 6);
 			
 			addToConstants("ROLLER_GRIPPER_MOTOR_CONTROLLER_LEFT", 8);
 			addToConstants("ROLLER_GRIPPER_MOTOR_CONTROLLER_RIGHT", 3);
