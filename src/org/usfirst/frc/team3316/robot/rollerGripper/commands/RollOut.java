@@ -1,6 +1,8 @@
 package org.usfirst.frc.team3316.robot.rollerGripper.commands;
 
+import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
+import org.usfirst.frc.team3316.robot.rollerGripper.GamePieceCollected;
 
 public class RollOut extends Roll
 {
@@ -15,5 +17,10 @@ public class RollOut extends Roll
 		{
 			logger.severe(e);
 		}
+	}
+	
+	protected boolean isFinished ()
+	{
+		return Robot.rollerGripper.getGamePieceCollected() == GamePieceCollected.None;
 	}
 }

@@ -3,13 +3,13 @@ package org.usfirst.frc.team3316.robot.stacker.commands;
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.rollerGripper.GamePieceCollected;
+import org.usfirst.frc.team3316.robot.stacker.StackerPosition;
 
 /**
  *
  */
 public class MoveStackerToFloor extends MoveStacker
 {
-	double gpDistanceMin, gpDistanceMax;
 
 	protected void setSolenoids() 
 	{
@@ -22,16 +22,15 @@ public class MoveStackerToFloor extends MoveStacker
 		Robot.stacker.openSolenoidBottom();
 	}
 	
-	private void updateDistanceRange ()
+	protected boolean isFinished ()
 	{
-		try
+		if (Robot.rollerGripper.getGamePieceCollected() == GamePieceCollected.Container)
 		{
-			gpDistanceMax = (double) config.get("stacker_MoveStackerToFloor_GPDistanceMax");
-			gpDistanceMin = (double) config.get("stacker_MoveStackerToFloor_GPDistanceMin");
+			return (Robot.stacker.getPosition() == StackerPosition.StuckOnContainer);
 		}
-		catch (ConfigException e)
+		else 
 		{
-			logger.severe(e);
+			return (Robot.stacker.getPosition() == StackerPosition.Floor); 
 		}
 	}
 }
