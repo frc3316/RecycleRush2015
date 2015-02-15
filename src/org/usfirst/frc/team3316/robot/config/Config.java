@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Hashtable;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
@@ -90,6 +92,22 @@ public class Config
 			
 			constants = (Hashtable<String, Object>) input.readObject();
 			variables = (Hashtable<String, Object>) input.readObject();
+			
+			Set <Entry <String, Object> > set;
+			
+			set = constants.entrySet();
+			logger.info(" Logging Constants");
+			for (Entry <String, Object> entry : set)
+			{
+				logger.info(" Key = " + entry.getKey() + " Value = " + entry.getValue());
+			}
+			
+			set = variables.entrySet();
+			logger.info(" Logging Variables");
+			for (Entry <String, Object> entry : set)
+			{
+				logger.info(" Key = " + entry.getKey() + " Value = " + entry.getValue());
+			}
 		} 
 		catch (FileNotFoundException e) 
 		{
