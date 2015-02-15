@@ -16,11 +16,6 @@ import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrive;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
-import org.usfirst.frc.team3316.robot.stacker.commands.HoldContainer;
-import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToFloor;
-import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToStep;
-import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToTote;
-import org.usfirst.frc.team3316.robot.stacker.commands.ReleaseContainer;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
