@@ -9,6 +9,8 @@ import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.VictorSP;
 
 public class Actuators 
@@ -19,9 +21,9 @@ public class Actuators
 	/*
 	 * Chassis
 	 */
-	public VictorSP chassisMotorControllerLeft1, chassisMotorControllerLeft2;
-	public VictorSP chassisMotorControllerRight1, chassisMotorControllerRight2;
-	public VictorSP chassisMotorControllerCenter1, chassisMotorControllerCenter2;
+	public SpeedController chassisMotorControllerLeft1, chassisMotorControllerLeft2;
+	public SpeedController chassisMotorControllerRight1, chassisMotorControllerRight2;
+	public SpeedController chassisMotorControllerCenter1, chassisMotorControllerCenter2;
 	
 	/*
 	 * Stacker
@@ -36,13 +38,13 @@ public class Actuators
 	/*
 	 * Anschluss
 	 */
-	public VictorSP anschlussMotorController;
+	public SpeedController anschlussMotorController;
 	
 	/*
 	 * Roller-Gripper
 	 */
-	public VictorSP rollerGripperMotorControllerLeft;
-	public VictorSP rollerGripperMotorControllerRight;
+	public SpeedController rollerGripperMotorControllerLeft;
+	public SpeedController rollerGripperMotorControllerRight;
 	
 	public Actuators ()
 	{
@@ -51,14 +53,48 @@ public class Actuators
 			/*
 			 * Chassis
 			 */
-			chassisMotorControllerLeft1 = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_LEFT_1"));
-			chassisMotorControllerLeft2 = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_LEFT_2"));
-			
-			chassisMotorControllerRight1 = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT_1"));
-			chassisMotorControllerRight2 = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT_2"));
-			
-			chassisMotorControllerCenter1 = new VictorSP((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER_1"));
-			chassisMotorControllerCenter2 = new VictorSP((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER_2"));
+			if (Robot.config.RobotA)
+			{
+				chassisMotorControllerLeft1 = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_LEFT_1"));
+				chassisMotorControllerLeft2 = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_LEFT_2"));
+				
+				chassisMotorControllerRight1 = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT_1"));
+				chassisMotorControllerRight2 = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT_2"));
+				
+				chassisMotorControllerCenter1 = new VictorSP((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER_1"));
+				chassisMotorControllerCenter2 = new VictorSP((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER_2"));
+				/*
+				 * Anschluss
+				 */
+				anschlussMotorController = new VictorSP ((int) config.get("ANSCHLUSS_MOTOR_CONTROLLER"));
+				
+				/*
+				 * Roller-Gripper
+				 */
+				rollerGripperMotorControllerLeft = new VictorSP ((int) config.get("ROLLER_GRIPPER_MOTOR_CONTROLLER_LEFT"));
+				rollerGripperMotorControllerRight = new VictorSP ((int) config.get("ROLLER_GRIPPER_MOTOR_CONTROLLER_RIGHT"));
+			}
+			else // if (!Robot.config.RobotA)
+			{
+				chassisMotorControllerLeft1 = new Talon ((int) config.get("CHASSIS_MOTOR_CONTROLLER_LEFT_1"));
+				chassisMotorControllerLeft2 = new Talon ((int) config.get("CHASSIS_MOTOR_CONTROLLER_LEFT_2"));
+				
+				chassisMotorControllerRight1 = new Talon ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT_1"));
+				chassisMotorControllerRight2 = new Talon ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT_2"));
+				
+				chassisMotorControllerCenter1 = new Talon((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER_1"));
+				chassisMotorControllerCenter2 = new Talon((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER_2"));
+				/*
+				 * Anschluss
+				 */
+				anschlussMotorController = new Talon ((int) config.get("ANSCHLUSS_MOTOR_CONTROLLER"));
+				
+				/*
+				 * Roller-Gripper
+				 */
+				rollerGripperMotorControllerLeft = new Talon ((int) config.get("ROLLER_GRIPPER_MOTOR_CONTROLLER_LEFT"));
+				rollerGripperMotorControllerRight = new Talon ((int) config.get("ROLLER_GRIPPER_MOTOR_CONTROLLER_RIGHT"));
+			}
 			
 			/*
 			 * Stacker
@@ -76,17 +112,6 @@ public class Actuators
 			// Solenoid used to control the pistons holding the container
 			stackerSolenoidContainer = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_CONTAINER_FORWARD"),
 														  (int) config.get("STACKER_SOLENOID_CONTAINER_REVERSE"));
-			
-			/*
-			 * Anschluss
-			 */
-			anschlussMotorController = new VictorSP ((int) config.get("ANSCHLUSS_MOTOR_CONTROLLER"));
-			
-			/*
-			 * Roller-Gripper
-			 */
-			rollerGripperMotorControllerLeft = new VictorSP ((int) config.get("ROLLER_GRIPPER_MOTOR_CONTROLLER_LEFT"));
-			rollerGripperMotorControllerRight = new VictorSP ((int) config.get("ROLLER_GRIPPER_MOTOR_CONTROLLER_RIGHT"));
 		}
 		catch (ConfigException e) 
     	{
