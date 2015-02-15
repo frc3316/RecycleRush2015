@@ -1,5 +1,9 @@
 package org.usfirst.frc.team3316.robot.config;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Hashtable;
 
 import org.usfirst.frc.team3316.robot.Robot;
@@ -8,6 +12,9 @@ import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 public class Config 
 {
 	DBugLogger logger = Robot.logger;
+	
+	public boolean RobotA; //true if it's robot A, false if it's robot B
+	
 	public class ConfigException extends Exception
 	{
 		/**
@@ -30,7 +37,42 @@ public class Config
 		{
 			variables = new Hashtable<String, Object>();
 			constants = new Hashtable<String, Object>();
+			
+			determineRobotA();
 			initConfig();
+		}
+	}
+	
+	/*
+	 * Reads the file on the roborio that says whether it is robot A or B
+	 * Default is Robot B
+	 */
+	private void determineRobotA ()
+	{
+		String line;
+		BufferedReader in;
+		
+		try 
+		{
+			in = new BufferedReader(new FileReader("/home/lvuser/RobotName/robot.txt"));
+			line = in.readLine();
+			
+			if (line.equals("Robot A"))
+			{
+				RobotA = true;
+			}
+			else
+			{
+				RobotA = false;
+			}
+		} 
+		catch (FileNotFoundException e) 
+		{
+			logger.severe(e);
+		} 
+		catch (IOException e) 
+		{
+			logger.severe(e);
 		}
 	}
 	
