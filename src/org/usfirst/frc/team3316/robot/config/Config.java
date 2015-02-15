@@ -292,13 +292,13 @@ public class Config
 			 */
 				//MoveStacker
 					//MoveStackerToFloor
-					addToVariables("stacker_MoveStackerToFloor_HeightMax", 0.4);
+					addToVariables("stacker_MoveStackerToFloor_HeightMax", 0.46);
 					addToVariables("stacker_MoveStackerToFloor_HeightMin", 0.42);
 					//MoveStackerToStep
-					addToVariables("stacker_MoveStackerToStep_HeightMax", 1.05);
-					addToVariables("stacker_MoveStackerToStep_HeightMin", 0.95);
+					addToVariables("stacker_MoveStackerToStep_HeightMax", 4.1);
+					addToVariables("stacker_MoveStackerToStep_HeightMin", 4.22);
 					//MoveStackerToTote
-					addToVariables("stacker_MoveStackerToTote_HeightMax", 1.62);
-					addToVariables("stacker_MoveStackerToTote_HeightMin", 1.45);
+					addToVariables("stacker_MoveStackerToTote_HeightMax", 15);
+					addToVariables("stacker_MoveStackerToTote_HeightMin", 17);
 	}
 }
