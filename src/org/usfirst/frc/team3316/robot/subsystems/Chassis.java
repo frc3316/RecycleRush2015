@@ -201,6 +201,8 @@ public class Chassis extends Subsystem
 	
 	public Chassis ()
 	{
+		navigationIntegrator = new NavigationIntegrator();
+		
 		left1 = Robot.actuators.chassisMotorControllerLeft1;
 		left2 = Robot.actuators.chassisMotorControllerLeft2;
 		
