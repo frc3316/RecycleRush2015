@@ -10,7 +10,7 @@ import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollJoystick;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -22,7 +22,7 @@ public class RollerGripper extends Subsystem
 	DBugLogger logger = Robot.logger;
 	
 	//TODO: fix all of the private names to not start with gripper
-	private VictorSP gripperLeft, gripperRight;
+	private SpeedController gripperLeft, gripperRight;
 	
 	private AnalogInput gripperGPIR;
 	

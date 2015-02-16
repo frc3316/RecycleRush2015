@@ -19,9 +19,11 @@ import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import com.kauailabs.nav6.frc.IMUAdvanced;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.tables.ITable;
 
 public class Chassis extends Subsystem 
@@ -103,6 +105,9 @@ public class Chassis extends Subsystem
 			double vS, vF; //speeds relative to the robot (forward and sideways)
 			vS = encoderCenter.getRate();
 			vF = (encoderLeft.getRate() + encoderRight.getRate()) / 2;
+			//Added for testing
+			SmartDashboard.putNumber("vS", vS);
+			SmartDashboard.putNumber("vF", vF);
 			
 			/*
 			 * Calculates dTheta
@@ -138,10 +143,15 @@ public class Chassis extends Subsystem
 				double headingRad = Math.toRadians(integrator.getHeading());
 				vX = (vF * Math.sin(headingRad)) + (vS * Math.sin(headingRad + (0.5 * Math.PI)));
 				vY = (vF * Math.cos(headingRad)) + (vS * Math.cos(headingRad + (0.5 * Math.PI)));
+				SmartDashboard.putNumber("vX", vX);
+				SmartDashboard.putNumber("vY", vY);
 				
 				double dX, dY;
 				dX = vX * dT;
 				dY = vY * dT;
+				
+				SmartDashboard.putNumber("dX", dX);
+				SmartDashboard.putNumber("dY", dY);
 				
 				integrator.add(dX, dY, dTheta);
 			}
@@ -169,9 +179,11 @@ public class Chassis extends Subsystem
 	
 	private NavigationTask navigationTask;
 	
-	private VictorSP left1, left2;
-	private VictorSP right1, right2;
-	private VictorSP center1, center2;
+	public NavigationIntegrator navigationIntegrator;
+	
+	private SpeedController left1, left2;
+	private SpeedController right1, right2;
+	private SpeedController center1, center2;
 	
 	private IMUAdvanced navx;
 	
@@ -189,6 +201,8 @@ public class Chassis extends Subsystem
 	
 	public Chassis ()
 	{
+		navigationIntegrator = new NavigationIntegrator();
+		
 		left1 = Robot.actuators.chassisMotorControllerLeft1;
 		left2 = Robot.actuators.chassisMotorControllerLeft2;
 		
@@ -212,7 +226,10 @@ public class Chassis extends Subsystem
 		{
 			logger.severe(e);
 		}
-		
+	}
+	
+	public void timerInit ()
+	{
 		navigationTask = new NavigationTask();
 		Robot.timer.schedule(navigationTask, 0, 10);
 	}
