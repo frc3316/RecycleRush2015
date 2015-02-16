@@ -19,6 +19,7 @@ import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import com.kauailabs.nav6.frc.IMUAdvanced;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -169,9 +170,9 @@ public class Chassis extends Subsystem
 	
 	private NavigationTask navigationTask;
 	
-	private VictorSP left1, left2;
-	private VictorSP right1, right2;
-	private VictorSP center1, center2;
+	private SpeedController left1, left2;
+	private SpeedController right1, right2;
+	private SpeedController center1, center2;
 	
 	private IMUAdvanced navx;
 	

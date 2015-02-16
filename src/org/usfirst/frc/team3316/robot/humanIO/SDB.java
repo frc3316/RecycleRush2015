@@ -9,8 +9,10 @@ import java.util.Set;
 import java.util.TimerTask;
 
 import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.chassis.commands.TankDrive;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingPreset;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingSDB;
+import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrive;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
@@ -32,8 +34,6 @@ public class SDB
 	{
 		public void run ()
 		{
-			put ("Operator Joystick POV", Robot.joysticks.joystickOperator.getPOV());
-			
 			put ("Current Heading", Robot.chassis.getHeading());
 			put ("Current Height", Robot.stacker.getHeight());
 			
@@ -43,6 +43,14 @@ public class SDB
 			
 			put ("Left Ratchet", Robot.stacker.getSwitchLeft());
 			put ("Right Ratchet", Robot.stacker.getSwitchRight());
+			
+			put ("Game Piece Switch", Robot.rollerGripper.getSwitchGP());
+			
+			put ("Distance Left", Robot.chassis.getDistanceLeft());
+			put ("Speed Left", Robot.chassis.getSpeedLeft());
+			
+			put ("Distance Right", Robot.chassis.getDistanceRight());
+			put ("Distance Center", Robot.chassis.getDistanceCenter());
 		}
 		
 		private void put (String name, double d)
@@ -139,22 +147,27 @@ public class SDB
 	{	
 		SmartDashboard.putData(new UpdateVariablesInConfig()); // NEVER REMOVE THIS COMMAND
 				
+		SmartDashboard.putData(new TankDrive());
+		SmartDashboard.putData(new RobotOrientedDrive());
+		
 		/*
 		 * Set Heading SDB
 		 */
 		SmartDashboard.putData("Zero Heading", new SetHeadingPreset(0));
+		
 		SmartDashboard.putData(new SetHeadingSDB());
 		putConfigVariableInSDB("chassis_HeadingToSet");
 		
 		/*
-		 * Stacker Testing
+		 * Roller Gripper
 		 */
-		SmartDashboard.putData(new MoveStackerToFloor());
-		SmartDashboard.putData(new MoveStackerToStep());
-		SmartDashboard.putData(new MoveStackerToTote());
+		putConfigVariableInSDB("rollerGripper_RollJoystick_ChannelX");
+		putConfigVariableInSDB("rollerGripper_RollJoystick_ChannelY");
 		
-		SmartDashboard.putData(new HoldContainer());
-		SmartDashboard.putData(new ReleaseContainer());
+		putConfigVariableInSDB("rollerGripper_RollJoystick_InvertX");
+		putConfigVariableInSDB("rollerGripper_RollJoystick_InvertY");
+		
+		putConfigVariableInSDB("rollerGripper_RollJoystick_LowPass");
 		
 	}
 }
