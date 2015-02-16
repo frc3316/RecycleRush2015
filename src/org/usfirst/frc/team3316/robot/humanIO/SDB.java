@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.TimerTask;
 
 import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.chassis.commands.StrafeDrive;
 import org.usfirst.frc.team3316.robot.chassis.commands.TankDrive;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingPreset;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingSDB;
@@ -148,6 +149,7 @@ public class SDB
 		SmartDashboard.putData(new UpdateVariablesInConfig()); // NEVER REMOVE THIS COMMAND
 				
 		SmartDashboard.putData(new TankDrive());
+		SmartDashboard.putData(new StrafeDrive());
 		SmartDashboard.putData(new RobotOrientedDrive());
 		
 		/*
