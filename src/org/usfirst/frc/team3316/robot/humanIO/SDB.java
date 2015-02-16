@@ -29,6 +29,10 @@ public class SDB
 	 */
 	private class UpdateSDBTask extends TimerTask
 	{
+		public UpdateSDBTask ()
+		{
+			logger.info("Created UpdateSDBTask");
+		}
 		public void run ()
 		{
 			put ("Current Heading", Robot.chassis.getHeading());
@@ -59,6 +63,8 @@ public class SDB
 			put ("Integrator X", Robot.chassis.navigationIntegrator.getX());
 			put ("Integrator Y", Robot.chassis.navigationIntegrator.getY());
 			put ("Integrator Heading", Robot.chassis.navigationIntegrator.getHeading());
+			
+			logger.info("Finished UpdateSDBTask run");
 		}
 		
 		private void put (String name, double d)
@@ -93,7 +99,10 @@ public class SDB
 		
 		initSDB();
 		logger.info("Finished initSDB()");
-		
+	}
+	
+	public void timerInit ()
+	{
 		updateSDBTask = new UpdateSDBTask();
 		Robot.timer.schedule(updateSDBTask, 0, 20);
 	}

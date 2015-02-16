@@ -61,7 +61,6 @@ public class Robot extends IterativeRobot
     {
     	logger = new DBugLogger();
     	config = new Config();
-    	timer = new Timer();
     	
     	/*
     	 * Human IO (that does not require subsystems)
@@ -87,6 +86,13 @@ public class Robot extends IterativeRobot
     	 */
     	joysticks.initButtons();
     	sdb = new SDB();
+    	
+    	/*
+    	 * Timer
+    	 */
+    	timer = new Timer();
+    	chassis.timerInit();
+    	sdb.timerInit();
     }
 	
 	public void disabledPeriodic() {

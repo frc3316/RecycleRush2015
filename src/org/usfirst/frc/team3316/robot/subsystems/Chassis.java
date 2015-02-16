@@ -224,7 +224,10 @@ public class Chassis extends Subsystem
 		{
 			logger.severe(e);
 		}
-		
+	}
+	
+	public void timerInit ()
+	{
 		navigationTask = new NavigationTask();
 		Robot.timer.schedule(navigationTask, 0, 10);
 	}
