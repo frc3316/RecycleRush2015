@@ -34,8 +34,7 @@ public class Stacker extends Subsystem
     
     private double heightFloorMin, heightFloorMax,
     			   heightStepMin, heightStepMax,
-    			   heightToteMin, heightToteMax,
-    			   heightStuckOnContainerMin, heightStuckOnContainerMax;
+    			   heightToteMin, heightToteMax;
     
     private Stack <GamePiece> stack; 
 
@@ -152,10 +151,6 @@ public class Stacker extends Subsystem
     	{
     		return StackerPosition.Step;
     	}
-    	else if ((height > heightStuckOnContainerMin) && (height < heightStuckOnContainerMax))
-    	{
-    		return StackerPosition.StuckOnContainer;
-    	}
     	else 
     	{
     		return null;
@@ -174,9 +169,6 @@ public class Stacker extends Subsystem
     		
     		heightStepMin = (double) config.get("stacker_HeightStepMinimum");
     		heightStepMax = (double) config.get("stacker_HeightStepMaximum");
-    		
-    		heightStuckOnContainerMin = (double) config.get("stacker_HeightStuckOnContainerMinimum");
-    		heightStuckOnContainerMax = (double) config.get("stacker_HeightStuckOnContainerMaximum");
     	}
     	catch (ConfigException e)
     	{

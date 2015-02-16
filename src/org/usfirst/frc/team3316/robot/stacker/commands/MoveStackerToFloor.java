@@ -10,27 +10,9 @@ import org.usfirst.frc.team3316.robot.stacker.StackerPosition;
  */
 public class MoveStackerToFloor extends MoveStacker
 {
-
 	protected void setSolenoids() 
 	{
-		if (Robot.rollerGripper.getGamePieceCollected() == GamePieceCollected.None)
-		{
-			Robot.stacker.openSolenoidGripper();
-		}
-		Robot.stacker.closeSolenoidContainer();
-		Robot.stacker.openSolenoidUpper();
 		Robot.stacker.openSolenoidBottom();
-	}
-	
-	protected boolean isFinished ()
-	{
-		if (Robot.rollerGripper.getGamePieceCollected() == GamePieceCollected.Container)
-		{
-			return (Robot.stacker.getPosition() == StackerPosition.StuckOnContainer);
-		}
-		else 
-		{
-			return (Robot.stacker.getPosition() == StackerPosition.Floor); 
-		}
+		Robot.stacker.openSolenoidUpper();		
 	}
 }
