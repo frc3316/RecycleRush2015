@@ -32,6 +32,8 @@ public class MoveStackerToStep extends MoveStacker
 	
 	protected void setSolenoids() 
 	{
+		if(Robot.stacker.getPosition() == StackerPosition.Tote)
+			Robot.stacker.openSolenoidGripper();
 		Robot.stacker.closeSolenoidUpper();
     	Robot.stacker.openSolenoidBottom();
 	}
