@@ -36,7 +36,10 @@ public class RollerGripper extends Subsystem
 				   toteDistanceMax,
 				   containerDistanceMin, 
 				   containerDistanceMax,
-				   gpDistanceThreshold;
+				   somethingDistanceThreshold,
+				   unsureDistanceThreshold;
+	
+	private boolean newGamePiece = false;
 	
 	private Roll defaultRoll;
 	
@@ -104,7 +107,11 @@ public class RollerGripper extends Subsystem
     	}
     	else
     	{
-    		if (gpDistance < gpDistanceThreshold)
+    		if (gpDistance < somethingDistanceThreshold)
+    		{
+    			return GamePieceCollected.Something;
+    		}
+    		else if (gpDistance < unsureDistanceThreshold)
     		{
     			return GamePieceCollected.Unsure;
     		}
@@ -125,7 +132,8 @@ public class RollerGripper extends Subsystem
 			containerDistanceMin = (double) config.get("rollerGripper_ContainerDistanceMinimum");
 			containerDistanceMax = (double) config.get("rollerGripper_ContainerDistanceMaximum");
 			
-			gpDistanceThreshold = (double) config.get("rollerGripper_GamePieceDistanceThreshold");
+			somethingDistanceThreshold = (double) config.get("rollerGripper_SomethingDistanceThreshold");
+			unsureDistanceThreshold = (double) config.get("rollerGripper_UnsureDistanceThreshold"); 
 		} 
     	catch (ConfigException e) 
     	{

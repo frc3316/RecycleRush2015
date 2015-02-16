@@ -28,6 +28,8 @@ public class Stacker extends Subsystem
 		private StackerPosition currentState;
 		private StackerPosition setpointState;
 		
+		private int directLoweringMaxSize;
+		
 		public StackerManager ()
 		{	
 			currentState = Robot.stacker.getPosition();
@@ -36,38 +38,22 @@ public class Stacker extends Subsystem
 	    	stack = new Stack <GamePiece>();
 		}
 		
-		public StackerPosition getCurrentState ()
+		public StackerPosition setSetpointState (StackerPosition setpoint)
 		{
-			return currentState;
-		}
-		
-		public boolean setSetpointState (StackerPosition setpoint)
-		{
+
+			if (setpoint == null)
+			{
+				return null;
+			}
+			
 			if (setpointState != null)
 			{
-				return false;
+				return null;
 			}
-			setpointState = setpoint;
-			return true;
-		}
-	    
-		public void run ()
-		{
-			currentState = Robot.stacker.getPosition();
-			
-			if (setpointState == null)
-			{
-				return;
-			}
-			else if (currentState == setpointState)
-			{
-				setpointState = null;
-				return;
-			}
-			
+
 			GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
 			
-			if (setpointState == StackerPosition.Tote)
+			if (setpoint == StackerPosition.Tote)
 			{
 				if (currentState == StackerPosition.Step)
 				{
@@ -76,7 +62,14 @@ public class Stacker extends Subsystem
 				
 				else if (currentState == StackerPosition.Floor)
 				{
-					//TODO: check if following condition should include tote as well
+					//if one of the ratchets is not in place - abort
+					if (!Robot.stacker.getSwitchRatchetLeft() ||
+						!Robot.stacker.getSwitchRatchetRight())
+					{
+						return null;
+					}
+					
+					//TODO: check if following condition should include tote as well (only for opening gripper)
 					if (gp == GamePieceCollected.Container)
 					{
 						openSolenoidContainer();
@@ -86,7 +79,7 @@ public class Stacker extends Subsystem
 				}
 			}
 			
-			else if (setpointState == StackerPosition.Step)
+			else if (setpoint == StackerPosition.Step)
 			{
 				if (currentState == StackerPosition.Tote)
 				{
@@ -99,6 +92,14 @@ public class Stacker extends Subsystem
 				
 				else if (currentState == StackerPosition.Floor)
 				{
+					//if one of the ratchets is not in place - abort
+					if (!Robot.stacker.getSwitchRatchetLeft() ||
+						!Robot.stacker.getSwitchRatchetRight())
+					{
+						return null;
+					}
+					
+					//TODO: check if following condition should include tote as well (only for opening gripper)
 					if (gp == GamePieceCollected.Container)
 					{
 						openSolenoidContainer();
@@ -108,16 +109,26 @@ public class Stacker extends Subsystem
 				}
 			}
 			
-			else if (setpointState == StackerPosition.Floor)
+			else if (setpoint == StackerPosition.Floor)
 			{
 				if (currentState == StackerPosition.Tote)
-				{
+				{	
 					if (gp == GamePieceCollected.None)
 					{
 						closeSolenoidContainer();
 						openSolenoidGripper();
 					}
-					moveToFloor();
+					
+					//TODO: check what is the max size before lowering needs to be separated into two parts
+					if (stack.size() > directLoweringMaxSize)
+					{
+						setpointState = StackerPosition.Step;
+						moveToStep();
+					}
+					else
+					{
+						moveToFloor();
+					}
 				}
 				
 				else if (currentState == StackerPosition.Step)
@@ -130,8 +141,36 @@ public class Stacker extends Subsystem
 					moveToFloor();
 				}
 			}
-	
-		}//end of run
+			setpointState = setpoint;
+			
+			return setpointState;
+		}
+	    
+		public void run ()
+		{
+			currentState = Robot.stacker.getPosition();
+			
+			if (currentState == setpointState)
+			{
+				setpointState = null;
+				return;
+			}
+			
+			updateNewGamePiece();
+			updateVariables();
+		}
+		
+		private void updateVariables ()
+		{
+			try
+			{
+				directLoweringMaxSize = (int) config.get("stacker_StackerManager_DirectLoweringMaxSize");
+			}
+			catch (ConfigException e)
+			{
+				logger.severe(e);
+			}
+		}
 	
 	}//end of class
 	
@@ -154,7 +193,9 @@ public class Stacker extends Subsystem
     private Stack <GamePiece> stack;
     
     private StackerManager manager;
-
+    
+    private boolean newGamePiece = false;
+    
     public Stacker () 
     {
 		/* In order to get to each height we use:
@@ -173,32 +214,35 @@ public class Stacker extends Subsystem
     	
     	switchRight = Robot.sensors.switchRatchetRight;
     	switchLeft = Robot.sensors.switchRatchetLeft;
-    	
+    }
+    
+    public void timerInit ()
+    {
     	manager = new StackerManager();
     	Robot.timer.schedule(manager, 0, 20);
     }
     
     public void initDefaultCommand() {}
     
-    public boolean openSolenoidUpper ()
+    private  boolean openSolenoidUpper ()
     {
     	solenoidUpper.set(DoubleSolenoid.Value.kForward);
     	return true;
     }
     
-    public boolean closeSolenoidUpper ()
+    private boolean closeSolenoidUpper ()
     {
     	solenoidUpper.set(DoubleSolenoid.Value.kReverse);
     	return true;
     }
     
-    public boolean openSolenoidBottom ()
+    private boolean openSolenoidBottom ()
     {
     	solenoidBottom.set(DoubleSolenoid.Value.kForward);
     	return true;
     }
     
-    public boolean closeSolenoidBottom ()
+    private boolean closeSolenoidBottom ()
     {
     	solenoidBottom.set(DoubleSolenoid.Value.kReverse);
     	return true;
@@ -216,7 +260,7 @@ public class Stacker extends Subsystem
     	return true;
     }
     
-	public boolean openSolenoidGripper ()
+    public boolean openSolenoidGripper ()
     {
     	solenoidGripper.set(DoubleSolenoid.Value.kForward);
     	return true;
@@ -332,8 +376,13 @@ public class Stacker extends Subsystem
     }
     
     /*
-     * Methods for StackerManager
+     * StackerManager Methods
      */
+    public StackerPosition setSetpointState (StackerPosition setpoint)
+    {
+    	return manager.setSetpointState(setpoint);
+    }
+    
     private void moveToFloor ()
 	{
 		Robot.stacker.openSolenoidBottom();
@@ -350,6 +399,18 @@ public class Stacker extends Subsystem
 	{
 		Robot.stacker.closeSolenoidBottom();
 		Robot.stacker.closeSolenoidUpper();
+	}
+	
+	private void updateNewGamePiece ()
+	{
+		if (Robot.rollerGripper.getGamePieceCollected() == GamePieceCollected.Unsure)
+		{
+			newGamePiece = true;
+		}
+		else if (Robot.rollerGripper.getGamePieceCollected() == GamePieceCollected.None)
+		{
+			newGamePiece = false;
+		}
 	}
 }
 

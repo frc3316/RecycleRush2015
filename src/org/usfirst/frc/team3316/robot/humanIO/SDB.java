@@ -196,7 +196,8 @@ public class SDB
 		putConfigVariableInSDB("rollerGripper_ContainerDistanceMinimum");
 		putConfigVariableInSDB("rollerGripper_ContainerDistanceMaximum");
 		
-		putConfigVariableInSDB("rollerGripper_GamePieceDistanceThreshold");
+		putConfigVariableInSDB("rollerGripper_SomethingDistanceThreshold");
+		putConfigVariableInSDB("rollerGripper_UnsureDistanceThreshold");
 		
 		/*
 		 * Stacker
