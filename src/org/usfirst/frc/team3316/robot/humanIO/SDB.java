@@ -52,6 +52,8 @@ public class SDB
 			put ("Distance Center", Robot.chassis.getDistanceCenter());
 			
 			put ("Speed Left", Robot.chassis.getSpeedLeft());
+			put ("Speed Right", Robot.chassis.getSpeedRight());
+			put ("Speed Center", Robot.chassis.getSpeedCenter());
 		}
 		
 		private void put (String name, double d)
