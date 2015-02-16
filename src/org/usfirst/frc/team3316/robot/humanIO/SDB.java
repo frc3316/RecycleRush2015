@@ -163,5 +163,20 @@ public class SDB
 		
 		putConfigVariableInSDB("rollerGripper_RollJoystick_LowPass");
 		
+		/*
+		 * Stacker
+		 */
+		putConfigVariableInSDB("stacker_HeightFloorMinimum");
+		putConfigVariableInSDB("stacker_HeightFloorMaximum");
+		
+		putConfigVariableInSDB("stacker_HeightToteMinimum");
+		putConfigVariableInSDB("stacker_HeightToteMaximum");
+		
+		putConfigVariableInSDB("stacker_HeightStepMinimum");
+		putConfigVariableInSDB("stacker_HeightStepMaximum");
+		
+		putConfigVariableInSDB("stacker_HeightStuckOnContainerMinimum");
+		putConfigVariableInSDB("stacker_HeightStuckOnContainerMaximum");
+		
 	}
 }

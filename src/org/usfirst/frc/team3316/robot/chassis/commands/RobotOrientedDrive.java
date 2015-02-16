@@ -21,7 +21,6 @@ public class RobotOrientedDrive extends StrafeDrive
 	
 	protected void setRotation (double requiredTurn)
 	{
-		//TODO: figure out PID rotation
 		//NOTE: Required turn cannot be larger than yIn.
 		
 		/*

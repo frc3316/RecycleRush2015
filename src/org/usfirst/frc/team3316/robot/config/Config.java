@@ -296,7 +296,6 @@ public class Config
 
 					addToConstants("SWITCH_RATCHET_LEFT", 7);
 					addToConstants("SWITCH_RATCHET_RIGHT", 8);
-					
 			/*
 			 * Variables
 			 */
