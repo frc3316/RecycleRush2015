@@ -189,6 +189,15 @@ public class SDB
 		
 		putConfigVariableInSDB("rollerGripper_RollJoystick_LowPass");
 		
+		//Game Piece IR
+		putConfigVariableInSDB("rollerGripper_ToteDistanceMinimum");
+		putConfigVariableInSDB("rollerGripper_ToteDistanceMaximum");
+		
+		putConfigVariableInSDB("rollerGripper_ContainerDistanceMinimum");
+		putConfigVariableInSDB("rollerGripper_ContainerDistanceMaximum");
+		
+		putConfigVariableInSDB("rollerGripper_GamePieceDistanceThreshold");
+		
 		/*
 		 * Stacker
 		 */
