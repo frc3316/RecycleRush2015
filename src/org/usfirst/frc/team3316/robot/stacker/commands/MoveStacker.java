@@ -22,7 +22,7 @@ public abstract class MoveStacker extends Command
 
     protected void initialize()
     {
-    	setSolenoids();
+    	set();
     }
 
     protected void execute() {}
@@ -36,5 +36,5 @@ public abstract class MoveStacker extends Command
 
     protected void interrupted() {}
     
-    protected abstract void setSolenoids();
+    protected abstract void set();
 }

@@ -43,8 +43,8 @@ public class SDB
 			put ("Angular Velocity", Robot.chassis.getAngularVelocity());
 			put ("Angular Velocity Encoders", Robot.chassis.getAngularVelocityEncoders());
 			
-			put ("Left Ratchet", Robot.stacker.getSwitchLeft());
-			put ("Right Ratchet", Robot.stacker.getSwitchRight());
+			put ("Left Ratchet", Robot.stacker.getSwitchRatchetLeft());
+			put ("Right Ratchet", Robot.stacker.getSwitchRatchetRight());
 			
 			put ("Game Piece Switch", Robot.rollerGripper.getSwitchGamePiece());
 			

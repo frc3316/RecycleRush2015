@@ -9,9 +9,14 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class MoveStackerToTote extends MoveStacker
 {
-	protected void setSolenoids() 
+	protected void set() 
 	{
 		Robot.stacker.closeSolenoidUpper();
     	Robot.stacker.closeSolenoidBottom();
+	}
+	
+	protected boolean isFinished ()
+	{
+		return (Robot.stacker.getPosition() == StackerPosition.Tote);
 	}
 }

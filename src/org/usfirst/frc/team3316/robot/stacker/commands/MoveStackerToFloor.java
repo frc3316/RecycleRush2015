@@ -10,9 +10,14 @@ import org.usfirst.frc.team3316.robot.stacker.StackerPosition;
  */
 public class MoveStackerToFloor extends MoveStacker
 {
-	protected void setSolenoids() 
+	protected void set() 
 	{
 		Robot.stacker.openSolenoidBottom();
 		Robot.stacker.openSolenoidUpper();		
+	}
+	
+	protected boolean isFinished ()
+	{
+		return (Robot.stacker.getPosition() == StackerPosition.Floor);
 	}
 }

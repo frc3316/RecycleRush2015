@@ -1,11 +1,13 @@
 package org.usfirst.frc.team3316.robot.subsystems;
 
 import java.util.Stack;
+import java.util.TimerTask;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+import org.usfirst.frc.team3316.robot.rollerGripper.GamePieceCollected;
 import org.usfirst.frc.team3316.robot.stacker.GamePiece;
 import org.usfirst.frc.team3316.robot.stacker.GamePieceType;
 import org.usfirst.frc.team3316.robot.stacker.StackerPosition;
@@ -20,6 +22,119 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Stacker extends Subsystem 
 {	
+	private class StackerManager extends TimerTask
+	{
+		
+		private StackerPosition currentState;
+		private StackerPosition setpointState;
+		
+		public StackerManager ()
+		{	
+			currentState = Robot.stacker.getPosition();
+			setpointState = null;
+	    	
+	    	stack = new Stack <GamePiece>();
+		}
+		
+		public StackerPosition getCurrentState ()
+		{
+			return currentState;
+		}
+		
+		public boolean setSetpointState (StackerPosition setpoint)
+		{
+			if (setpointState != null)
+			{
+				return false;
+			}
+			setpointState = setpoint;
+			return true;
+		}
+	    
+		public void run ()
+		{
+			currentState = Robot.stacker.getPosition();
+			
+			if (setpointState == null)
+			{
+				return;
+			}
+			else if (currentState == setpointState)
+			{
+				setpointState = null;
+				return;
+			}
+			
+			GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
+			
+			if (setpointState == StackerPosition.Tote)
+			{
+				if (currentState == StackerPosition.Step)
+				{
+					moveToTote();
+				}
+				
+				else if (currentState == StackerPosition.Floor)
+				{
+					//TODO: check if following condition should include tote as well
+					if (gp == GamePieceCollected.Container)
+					{
+						openSolenoidContainer();
+						openSolenoidGripper();
+					}
+					moveToTote();
+				}
+			}
+			
+			else if (setpointState == StackerPosition.Step)
+			{
+				if (currentState == StackerPosition.Tote)
+				{
+					if (gp == GamePieceCollected.None) //TODO: check if needs to open for container too
+					{
+						openSolenoidGripper();
+					}
+					moveToStep();
+				}
+				
+				else if (currentState == StackerPosition.Floor)
+				{
+					if (gp == GamePieceCollected.Container)
+					{
+						openSolenoidContainer();
+						openSolenoidGripper();
+					}
+					moveToStep();
+				}
+			}
+			
+			else if (setpointState == StackerPosition.Floor)
+			{
+				if (currentState == StackerPosition.Tote)
+				{
+					if (gp == GamePieceCollected.None)
+					{
+						closeSolenoidContainer();
+						openSolenoidGripper();
+					}
+					moveToFloor();
+				}
+				
+				else if (currentState == StackerPosition.Step)
+				{
+					if (gp == GamePieceCollected.None)
+					{
+						closeSolenoidContainer();
+						openSolenoidGripper();
+					}
+					moveToFloor();
+				}
+			}
+	
+		}//end of run
+	
+	}//end of class
+	
     Config config = Robot.config;
     DBugLogger logger = Robot.logger;
     
@@ -36,7 +151,9 @@ public class Stacker extends Subsystem
     			   heightStepMin, heightStepMax,
     			   heightToteMin, heightToteMax;
     
-    private Stack <GamePiece> stack; 
+    private Stack <GamePiece> stack;
+    
+    private StackerManager manager;
 
     public Stacker () 
     {
@@ -57,18 +174,14 @@ public class Stacker extends Subsystem
     	switchRight = Robot.sensors.switchRatchetRight;
     	switchLeft = Robot.sensors.switchRatchetLeft;
     	
-    	stack = new Stack <GamePiece>();
+    	manager = new StackerManager();
+    	Robot.timer.schedule(manager, 0, 20);
     }
     
     public void initDefaultCommand() {}
     
     public boolean openSolenoidUpper ()
     {
-    	/*
-    	 * Upper solenoid is opened only when trying to move to floor
-    	 * Therefore it is the solenoid that when opened can harm the gripper or the container pistons
-    	 */
-    	solenoidContainer.set(DoubleSolenoid.Value.kReverse);
     	solenoidUpper.set(DoubleSolenoid.Value.kForward);
     	return true;
     }
@@ -120,19 +233,16 @@ public class Stacker extends Subsystem
     	return (1 / heightIR.getVoltage());
     }
     
-    public boolean getSwitchRight ()
+    public boolean getSwitchRatchetRight ()
     {
     	return switchRight.get();
     }
     
-    public boolean getSwitchLeft ()
+    public boolean getSwitchRatchetLeft ()
     {
     	return switchLeft.get();
     }
     
-    /*
-     * TODO: check if StuckOnContainer is necessary (if it's not simply step or floor)
-     */
     public StackerPosition getPosition ()
     {
     	updateHeights();
@@ -157,36 +267,7 @@ public class Stacker extends Subsystem
     	}
     }
     
-    private void updateHeights ()
-    {
-    	try
-    	{
-    		heightFloorMin = (double) config.get("stacker_HeightFloorMinimum");
-    		heightFloorMax = (double) config.get("stacker_HeightFloorMaximum");
-    		
-    		heightToteMin = (double) config.get("stacker_HeightToteMinimum");
-    		heightToteMax = (double) config.get("stacker_HeightToteMaximum");
-    		
-    		heightStepMin = (double) config.get("stacker_HeightStepMinimum");
-    		heightStepMax = (double) config.get("stacker_HeightStepMaximum");
-    	}
-    	catch (ConfigException e)
-    	{
-    		logger.severe(e);
-    	}
-    }
-    
-    public DoubleSolenoid.Value getSolenoidContainer ()
-    {
-    	return solenoidContainer.get();
-    }
-    
-    public DoubleSolenoid.Value getSolenoidGripper ()
-    {
-    	return solenoidGripper.get();
-    }
-    
-	/*
+    /*
 	 * Stack methods
 	 */
     public GamePiece getStackBase ()
@@ -217,5 +298,58 @@ public class Stacker extends Subsystem
     {
        	stack.clear();
     }
+    
+    private void addGamePiece ()
+    {
+    	GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
+    	if (gp == GamePieceCollected.Container)
+    	{
+    		Robot.stacker.pushToStack(new GamePiece(GamePieceType.Container));
+    	}
+    	else if (gp == GamePieceCollected.Tote)
+    	{
+    		Robot.stacker.pushToStack(new GamePiece(GamePieceType.Tote));
+    	}
+    }
+    
+    private void updateHeights ()
+    {
+    	try
+    	{
+    		heightFloorMin = (double) config.get("stacker_HeightFloorMinimum");
+    		heightFloorMax = (double) config.get("stacker_HeightFloorMaximum");
+    		
+    		heightToteMin = (double) config.get("stacker_HeightToteMinimum");
+    		heightToteMax = (double) config.get("stacker_HeightToteMaximum");
+    		
+    		heightStepMin = (double) config.get("stacker_HeightStepMinimum");
+    		heightStepMax = (double) config.get("stacker_HeightStepMaximum");
+    	}
+    	catch (ConfigException e)
+    	{
+    		logger.severe(e);
+    	}
+    }
+    
+    /*
+     * Methods for StackerManager
+     */
+    private void moveToFloor ()
+	{
+		Robot.stacker.openSolenoidBottom();
+		Robot.stacker.openSolenoidUpper();
+	}
+	
+	private void moveToStep ()
+	{
+		Robot.stacker.openSolenoidBottom();
+		Robot.stacker.closeSolenoidUpper();
+	}
+	
+	private void moveToTote ()
+	{
+		Robot.stacker.closeSolenoidBottom();
+		Robot.stacker.closeSolenoidUpper();
+	}
 }
 
