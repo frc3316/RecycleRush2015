@@ -10,6 +10,7 @@ import java.util.TimerTask;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.chassis.commands.StrafeDrive;
+import org.usfirst.frc.team3316.robot.chassis.commands.StartIntegrator;
 import org.usfirst.frc.team3316.robot.chassis.commands.TankDrive;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingPreset;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingSDB;
@@ -41,6 +42,7 @@ public class SDB
 			put ("Current GP distance", Robot.rollerGripper.getGPIRDistance());
 			
 			put ("Angular Velocity", Robot.chassis.getAngularVelocity());
+			put ("Angular Velocity Encoders", Robot.chassis.getAngularVelocityEncoders());
 			
 			put ("Left Ratchet", Robot.stacker.getSwitchLeft());
 			put ("Right Ratchet", Robot.stacker.getSwitchRight());
@@ -54,6 +56,14 @@ public class SDB
 			put ("Speed Left", Robot.chassis.getSpeedLeft());
 			put ("Speed Right", Robot.chassis.getSpeedRight());
 			put ("Speed Center", Robot.chassis.getSpeedCenter());
+			
+			/*
+			 * Integrator testing
+			 * should be removed
+			 */
+			put ("Integrator X", Robot.chassis.navigationIntegrator.getX());
+			put ("Integrator Y", Robot.chassis.navigationIntegrator.getY());
+			put ("Integrator Heading", Robot.chassis.navigationIntegrator.getHeading());
 		}
 		
 		private void put (String name, double d)
@@ -149,10 +159,14 @@ public class SDB
 	private void initSDB ()
 	{	
 		SmartDashboard.putData(new UpdateVariablesInConfig()); // NEVER REMOVE THIS COMMAND
-				
+		
 		SmartDashboard.putData(new TankDrive());
 		SmartDashboard.putData(new StrafeDrive());
 		SmartDashboard.putData(new RobotOrientedDrive());
+		SmartDashboard.putData(new StartIntegrator()); //For integrator testing, should be removed
+		
+		SmartDashboard.putData(new TankDrive()); //should be removed
+		SmartDashboard.putData(new RobotOrientedDrive()); //should be removed
 		
 		/*
 		 * Set Heading SDB
