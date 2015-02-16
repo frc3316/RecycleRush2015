@@ -63,7 +63,6 @@ public class SDB
 			put ("Integrator X", Robot.chassis.navigationIntegrator.getX());
 			put ("Integrator Y", Robot.chassis.navigationIntegrator.getY());
 			put ("Integrator Heading", Robot.chassis.navigationIntegrator.getHeading());
-			
 			logger.info("Finished UpdateSDBTask run");
 		}
 		
