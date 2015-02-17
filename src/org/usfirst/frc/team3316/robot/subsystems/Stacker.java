@@ -34,9 +34,9 @@ public class Stacker extends Subsystem
 		
 		public StackerPosition setSetpointState (StackerPosition setpoint)
 		{
-
 			if (setpoint == null)
 			{
+				setpointState = setpoint;
 				return null;
 			}
 			
@@ -46,6 +46,8 @@ public class Stacker extends Subsystem
 			}
 
 			GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
+
+			setpointState = setpoint;
 			
 			if (setpoint == StackerPosition.Tote)
 			{
@@ -77,7 +79,8 @@ public class Stacker extends Subsystem
 			{
 				if (currentState == StackerPosition.Tote)
 				{
-					if (gp == GamePieceCollected.None) //TODO: check if needs to open for container too
+					//TODO: check if needs to open for container too
+					if (gp == GamePieceCollected.None || gp == GamePieceCollected.Unsure)
 					{
 						openSolenoidGripper();
 						closeSolenoidContainer();
@@ -111,7 +114,6 @@ public class Stacker extends Subsystem
 					if (gp == GamePieceCollected.None ||
 							gp == GamePieceCollected.Unsure)
 					{
-						closeSolenoidContainer();
 						openSolenoidGripper();
 						setpointState = StackerPosition.Step;
 						moveToStep();
@@ -119,6 +121,8 @@ public class Stacker extends Subsystem
 					
 					else
 					{
+						closeSolenoidContainer();
+						
 						moveToFloor();
 					}
 				}
@@ -133,7 +137,6 @@ public class Stacker extends Subsystem
 					moveToFloor();
 				}
 			}
-			setpointState = setpoint;
 			
 			return setpointState;
 		}
@@ -149,8 +152,23 @@ public class Stacker extends Subsystem
 			}
 			
 			//FOR TESTING. NEEDS TO BE REMOVED.
-			SmartDashboard.putString("Current State", currentState.toString());
-			SmartDashboard.putString("Setpoint State", setpointState.toString());
+			if (currentState == null)
+			{
+				SmartDashboard.putString("Current State", "null");
+			}
+			else 
+			{
+				SmartDashboard.putString("Current State", currentState.toString());
+			}
+			
+			if (setpointState == null)
+			{
+				SmartDashboard.putString("Setpoint State", "null");
+			}
+			else
+			{
+				SmartDashboard.putString("Setpoint State", setpointState.toString());
+			}
 		}
 	
 	}//end of class
@@ -323,8 +341,8 @@ public class Stacker extends Subsystem
 	
 	private void moveToStep ()
 	{
-		Robot.stacker.openSolenoidBottom();
-		Robot.stacker.closeSolenoidUpper();
+		Robot.stacker.closeSolenoidBottom();
+		Robot.stacker.openSolenoidUpper();
 	}
 	
 	private void moveToTote ()

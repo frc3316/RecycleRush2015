@@ -202,6 +202,8 @@ public class SDB
 		/*
 		 * Stacker
 		 */
+		SmartDashboard.putData(Robot.stacker);
+		
 		putConfigVariableInSDB("stacker_HeightFloorMinimum");
 		putConfigVariableInSDB("stacker_HeightFloorMaximum");
 		
