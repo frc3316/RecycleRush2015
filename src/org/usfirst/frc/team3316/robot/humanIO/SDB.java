@@ -10,6 +10,7 @@ import java.util.TimerTask;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.chassis.commands.StrafeDrive;
+import org.usfirst.frc.team3316.robot.chassis.commands.StartIntegrator;
 import org.usfirst.frc.team3316.robot.chassis.commands.TankDrive;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingPreset;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingSDB;
@@ -17,12 +18,8 @@ import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrive;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
-import org.usfirst.frc.team3316.robot.stacker.commands.HoldContainer;
-import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToFloor;
-import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToStep;
-import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToTote;
-import org.usfirst.frc.team3316.robot.stacker.commands.ReleaseContainer;
 
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SDB 
@@ -33,6 +30,10 @@ public class SDB
 	 */
 	private class UpdateSDBTask extends TimerTask
 	{
+		public UpdateSDBTask ()
+		{
+			logger.info("Created UpdateSDBTask");
+		}
 		public void run ()
 		{
 			put ("Current Heading", Robot.chassis.getHeading());
@@ -41,17 +42,37 @@ public class SDB
 			put ("Current GP distance", Robot.rollerGripper.getGPIRDistance());
 			
 			put ("Angular Velocity", Robot.chassis.getAngularVelocity());
+			put ("Angular Velocity Encoders", Robot.chassis.getAngularVelocityEncoders());
 			
-			put ("Left Ratchet", Robot.stacker.getSwitchLeft());
-			put ("Right Ratchet", Robot.stacker.getSwitchRight());
+			put ("Left Ratchet", Robot.stacker.getSwitchRatchetLeft());
+			put ("Right Ratchet", Robot.stacker.getSwitchRatchetRight());
 			
-			put ("Game Piece Switch", Robot.rollerGripper.getSwitchGP());
+			put ("Game Piece Switch", Robot.rollerGripper.getSwitchGamePiece());
 			
 			put ("Distance Left", Robot.chassis.getDistanceLeft());
-			put ("Speed Left", Robot.chassis.getSpeedLeft());
-			
 			put ("Distance Right", Robot.chassis.getDistanceRight());
 			put ("Distance Center", Robot.chassis.getDistanceCenter());
+			
+			put ("Speed Left", Robot.chassis.getSpeedLeft());
+			put ("Speed Right", Robot.chassis.getSpeedRight());
+			put ("Speed Center", Robot.chassis.getSpeedCenter());
+			
+			if (Robot.rollerGripper.getGamePieceCollected() == null)
+			{
+				put ("Game Piece Collected", null);
+			}
+			else
+			{
+				put ("Game Piece Collected", Robot.rollerGripper.getGamePieceCollected().toString());
+			}
+			
+			/*
+			 * Integrator testing
+			 * should be removed
+			 */
+			put ("Integrator X", Robot.chassis.navigationIntegrator.getX());
+			put ("Integrator Y", Robot.chassis.navigationIntegrator.getY());
+			put ("Integrator Heading", Robot.chassis.navigationIntegrator.getHeading());
 		}
 		
 		private void put (String name, double d)
@@ -67,6 +88,11 @@ public class SDB
 	    private void put (String name, boolean b)
 	    {
 	    	SmartDashboard.putBoolean(name, b);
+	    }
+	    
+	    private void put (String name, String s)
+	    {
+	    	SmartDashboard.putString(name, s);
 	    }
 	}
 	
@@ -86,7 +112,10 @@ public class SDB
 		
 		initSDB();
 		logger.info("Finished initSDB()");
-		
+	}
+	
+	public void timerInit ()
+	{
 		updateSDBTask = new UpdateSDBTask();
 		Robot.timer.schedule(updateSDBTask, 0, 20);
 	}
@@ -147,10 +176,14 @@ public class SDB
 	private void initSDB ()
 	{	
 		SmartDashboard.putData(new UpdateVariablesInConfig()); // NEVER REMOVE THIS COMMAND
-				
+		
 		SmartDashboard.putData(new TankDrive());
 		SmartDashboard.putData(new StrafeDrive());
 		SmartDashboard.putData(new RobotOrientedDrive());
+		SmartDashboard.putData(new StartIntegrator()); //For integrator testing, should be removed
+		
+		SmartDashboard.putData(new TankDrive()); //should be removed
+		SmartDashboard.putData(new RobotOrientedDrive()); //should be removed
 		
 		/*
 		 * Set Heading SDB
@@ -170,6 +203,30 @@ public class SDB
 		putConfigVariableInSDB("rollerGripper_RollJoystick_InvertY");
 		
 		putConfigVariableInSDB("rollerGripper_RollJoystick_LowPass");
+		
+		//Game Piece IR
+		putConfigVariableInSDB("rollerGripper_ToteDistanceMinimum");
+		putConfigVariableInSDB("rollerGripper_ToteDistanceMaximum");
+		
+		putConfigVariableInSDB("rollerGripper_ContainerDistanceMinimum");
+		putConfigVariableInSDB("rollerGripper_ContainerDistanceMaximum");
+		
+		putConfigVariableInSDB("rollerGripper_SomethingDistanceThreshold");
+		putConfigVariableInSDB("rollerGripper_UnsureDistanceThreshold");
+		
+		/*
+		 * Stacker
+		 */
+		SmartDashboard.putData(Robot.stacker);
+		
+		putConfigVariableInSDB("stacker_HeightFloorMinimum");
+		putConfigVariableInSDB("stacker_HeightFloorMaximum");
+		
+		putConfigVariableInSDB("stacker_HeightToteMinimum");
+		putConfigVariableInSDB("stacker_HeightToteMaximum");
+		
+		putConfigVariableInSDB("stacker_HeightStepMinimum");
+		putConfigVariableInSDB("stacker_HeightStepMaximum");
 		
 	}
 }

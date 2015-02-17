@@ -2,5 +2,15 @@ package org.usfirst.frc.team3316.robot.rollerGripper;
 
 public enum GamePieceCollected 
 {
-	Tote, Container, Unsure, None;
+	/*
+	 * Ordered from closest to furthest:
+	 
+	 * Tote - a tote is in the gripper
+	 * Container - a container is in the gripper
+	 * Something - something is in the gripper, not sure what
+	 * Unsure - unsure if there's something in the gripper
+	 * None - the gripper is empty
+	 */
+	 
+	Tote, Container, Something, Unsure, None;
 }

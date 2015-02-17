@@ -61,7 +61,6 @@ public class Robot extends IterativeRobot
     {
     	logger = new DBugLogger();
     	config = new Config();
-    	timer = new Timer();
     	
     	/*
     	 * Human IO (that does not require subsystems)
@@ -87,6 +86,14 @@ public class Robot extends IterativeRobot
     	 */
     	joysticks.initButtons();
     	sdb = new SDB();
+    	
+    	/*
+    	 * Timer
+    	 */
+    	timer = new Timer();
+    	chassis.timerInit();
+    	stacker.timerInit();
+    	sdb.timerInit();
     }
 	
 	public void disabledPeriodic() {
@@ -110,8 +117,9 @@ public class Robot extends IterativeRobot
      * This function is called when the disabled button is hit.
      * You can use it to reset subsystems before shutting down.
      */
-    public void disabledInit(){
-
+    public void disabledInit()
+    {
+    	Robot.stacker.setSetpointState(null);
     }
 
     /**

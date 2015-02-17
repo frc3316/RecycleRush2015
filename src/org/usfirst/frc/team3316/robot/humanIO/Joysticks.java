@@ -9,10 +9,7 @@ import org.usfirst.frc.team3316.robot.anschluss.commands.OpenAnschluss;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
-import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollIn;
-import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollOut;
-import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollTurnClockwise;
-import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollTurnCounterClockwise;
+import org.usfirst.frc.team3316.robot.sequences.PickupSequence;
 import org.usfirst.frc.team3316.robot.stacker.commands.CloseGripper;
 import org.usfirst.frc.team3316.robot.stacker.commands.HoldContainer;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToFloor;
@@ -70,7 +67,7 @@ public class Joysticks
 	
 	public JoystickButton moveStackerToFloor, 
 						  moveStackerToStep, 
-						  moveStackerToTote;
+						  moveStackerToTote; //pickup replaces moveStackerToTote
 	
 	public JoystickButton holdContainer,
 						  releaseContainer;
@@ -105,24 +102,6 @@ public class Joysticks
     	 */
 		try
 		{
-	    	/*
-	    	 * Roller Gripper
-	    	 */
-	    	buttonRollIn = new POVButton(joystickOperator, 
-	    			(int) config.get("BUTTON_ROLL_IN"));
-	    	buttonRollIn.whileHeld(new RollIn());
-	    	
-	    	buttonRollOut = new POVButton(joystickOperator, 
-	    			(int) config.get("BUTTON_ROLL_OUT"));
-	    	buttonRollOut.whileHeld(new RollOut());
-	    	
-	    	buttonRollTurnClockwise = new POVButton(joystickOperator, 
-	    			(int) config.get("BUTTON_ROLL_TURN_CLOCKWISE"));
-	    	buttonRollTurnClockwise.whileHeld(new RollTurnClockwise());
-	    	
-	    	buttonRollTurnCounterClockwise = new POVButton(joystickOperator, 
-	    			(int) config.get("BUTTON_ROLL_TURN_COUNTER_CLOCKWISE"));
-	    	buttonRollTurnCounterClockwise.whileHeld(new RollTurnCounterClockwise());
 	    	
 	    	/*
 	    	 * Stacker

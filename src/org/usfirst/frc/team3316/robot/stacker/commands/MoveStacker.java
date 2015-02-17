@@ -4,6 +4,7 @@ import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+import org.usfirst.frc.team3316.robot.stacker.StackerPosition;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -15,50 +16,55 @@ public abstract class MoveStacker extends Command
 	DBugLogger logger = Robot.logger;
 	Config config = Robot.config;
 	
-	protected double heightMin, heightMax;
+	private StackerPosition setpoint;
 	
-	String heightMaxName = "", heightMinName = "";
+	private boolean setSuccessful = false;
 	
-    public MoveStacker(String heightMaxName, String heightMinName)
+    public MoveStacker()
     {
         requires(Robot.stacker);
-        this.heightMaxName = heightMaxName;
-        this.heightMinName = heightMinName;
+        setpoint = this.setSetpointState();
     }
 
-    protected void initialize()
+    protected void initialize() {}
+
+    protected void execute() 
     {
-    	setSolenoids();
+    	if (!setSuccessful) 
+    	{
+    		set();
+    	}
     }
-
-    protected void execute() {}
 
     protected boolean isFinished()
     {
-    	return true;
-    	/*
-    	updateHeightRange();
-    	double currentHeight = Robot.stacker.getHeight();
-    	return (currentHeight > heightMin) && (currentHeight < heightMax);
-    	*/
+    	
+    	if (Robot.stacker.getPosition() == setpoint)
+    	{
+    		return true;
+    	}
+    	else if (Robot.stacker.getSetpointState() == null && setSuccessful)
+    	{
+    		return true;
+    	}
+    	return false;
     }
     
-    protected void end() {}
+    protected void end() 
+    {
+    	setSuccessful = false;
+    }
 
     protected void interrupted() {}
     
-    protected abstract void setSolenoids();
-    
-    protected void updateHeightRange ()
+    private void set ()
     {
-    	try 
+    	if (Robot.stacker.setSetpointState(setpoint) == setpoint)
     	{
-			heightMax = (double) config.get(heightMaxName);
-			heightMin = (double) config.get(heightMinName);
-		} 
-    	catch (ConfigException e) 
-    	{
-			logger.severe(e);
-		}
+    		setSuccessful = true;
+    	}
+    	Robot.stacker.setSetpointState(setpoint);
     }
+    
+    protected abstract StackerPosition setSetpointState();
 }
