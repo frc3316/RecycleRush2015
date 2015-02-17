@@ -22,7 +22,6 @@ public class Stacker extends Subsystem
 {	
 	private class StackerManager extends TimerTask
 	{
-		
 		private StackerPosition currentState;
 		private StackerPosition setpointState;
 		
@@ -67,6 +66,7 @@ public class Stacker extends Subsystem
 					if (!Robot.stacker.getSwitchRatchetLeft() ||
 						!Robot.stacker.getSwitchRatchetRight())
 					{
+						setpointState = null;
 						return null;
 					}
 					
@@ -99,6 +99,7 @@ public class Stacker extends Subsystem
 					if (!Robot.stacker.getSwitchRatchetLeft() ||
 						!Robot.stacker.getSwitchRatchetRight())
 					{
+						setpointState = null;
 						return null;
 					}
 					
@@ -146,6 +147,7 @@ public class Stacker extends Subsystem
 			return setpointState;
 		}
 	    
+		
 		public void run ()
 		{
 			currentState = Robot.stacker.getPosition();
@@ -272,9 +274,19 @@ public class Stacker extends Subsystem
     	return true;
     }
 	
+    double[] prevHeights = new double[100];
+    
     public double getHeight ()
     {
-    	return (1 / heightIR.getVoltage());
+    	double currentHeight = (1 / heightIR.getVoltage());
+    	double avg = currentHeight;
+    	for(int i=0; i<prevHeights.length-1; i++) {
+    		prevHeights[i] = prevHeights[i+1];
+    		avg += prevHeights[i];
+    	}
+    	prevHeights[prevHeights.length-1] = currentHeight;
+    	avg /= prevHeights.length;
+    	return avg;
     }
     
     public boolean getSwitchRatchetRight ()

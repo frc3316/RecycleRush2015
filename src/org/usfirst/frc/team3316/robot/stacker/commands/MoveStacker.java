@@ -23,7 +23,7 @@ public abstract class MoveStacker extends Command
     public MoveStacker()
     {
         requires(Robot.stacker);
-        setpoint = setSetpointState();
+        setpoint = this.setSetpointState();
     }
 
     protected void initialize() {}
@@ -38,6 +38,7 @@ public abstract class MoveStacker extends Command
 
     protected boolean isFinished()
     {
+    	
     	if (Robot.stacker.getPosition() == setpoint)
     	{
     		return true;
@@ -62,6 +63,7 @@ public abstract class MoveStacker extends Command
     	{
     		setSuccessful = true;
     	}
+    	Robot.stacker.setSetpointState(setpoint);
     }
     
     protected abstract StackerPosition setSetpointState();

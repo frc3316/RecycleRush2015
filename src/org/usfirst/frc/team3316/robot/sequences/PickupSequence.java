@@ -19,10 +19,10 @@ public class PickupSequence extends CommandGroup
     {
         addSequential(new MoveStackerToTote());
         addSequential(new CloseGripper());
-        addSequential(new WaitForGamePiece());
+        //addSequential(new WaitForGamePiece());
         
         //TODO: check if this should be changed to a sequence of floor --> step
-        moveToEndPosition = new MoveStackerToFloor();
+        //moveToEndPosition = new MoveStackerToFloor();
     }
     
     protected void end ()
@@ -31,6 +31,6 @@ public class PickupSequence extends CommandGroup
     	 * This is in end because we don't want this to execute if the sequence
     	 * was cancelled (and interrupted was called instead of end)
     	 */
-    	moveToEndPosition.start();
+    	//moveToEndPosition.start();
     }
 }

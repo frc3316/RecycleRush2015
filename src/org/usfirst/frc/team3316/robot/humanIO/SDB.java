@@ -19,6 +19,7 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SDB 
@@ -56,6 +57,15 @@ public class SDB
 			put ("Speed Right", Robot.chassis.getSpeedRight());
 			put ("Speed Center", Robot.chassis.getSpeedCenter());
 			
+			if (Robot.rollerGripper.getGamePieceCollected() == null)
+			{
+				put ("Game Piece Collected", null);
+			}
+			else
+			{
+				put ("Game Piece Collected", Robot.rollerGripper.getGamePieceCollected().toString());
+			}
+			
 			/*
 			 * Integrator testing
 			 * should be removed
@@ -78,6 +88,11 @@ public class SDB
 	    private void put (String name, boolean b)
 	    {
 	    	SmartDashboard.putBoolean(name, b);
+	    }
+	    
+	    private void put (String name, String s)
+	    {
+	    	SmartDashboard.putString(name, s);
 	    }
 	}
 	

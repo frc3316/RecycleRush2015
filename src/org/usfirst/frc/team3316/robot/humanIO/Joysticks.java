@@ -14,6 +14,7 @@ import org.usfirst.frc.team3316.robot.stacker.commands.CloseGripper;
 import org.usfirst.frc.team3316.robot.stacker.commands.HoldContainer;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToFloor;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToStep;
+import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToTote;
 import org.usfirst.frc.team3316.robot.stacker.commands.OpenGripper;
 import org.usfirst.frc.team3316.robot.stacker.commands.ReleaseContainer;
 
@@ -66,7 +67,7 @@ public class Joysticks
 	
 	public JoystickButton moveStackerToFloor, 
 						  moveStackerToStep, 
-						  pickup; //pickup replaces moveStackerToTote
+						  moveStackerToTote; //pickup replaces moveStackerToTote
 	
 	public JoystickButton holdContainer,
 						  releaseContainer;
@@ -113,9 +114,9 @@ public class Joysticks
 					(int) config.get("BUTTON_MOVE_STACKER_TO_STEP"));
 			moveStackerToStep.whenPressed(new MoveStackerToStep());
 			
-			pickup = new JoystickButton(joystickOperator, 
+			moveStackerToTote = new JoystickButton(joystickOperator, 
 					(int) config.get("BUTTON_MOVE_STACKER_TO_TOTE"));
-			pickup.whenPressed(new PickupSequence());
+			moveStackerToTote.whenPressed(new MoveStackerToTote());
 			
 			holdContainer = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_HOLD_CONTAINER"));
