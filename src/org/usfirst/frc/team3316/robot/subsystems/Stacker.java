@@ -32,11 +32,16 @@ public class Stacker extends Subsystem
 			setpointState = null;
 		}
 		
+		public StackerPosition getSetpointState ()
+		{
+			return setpointState;
+		}
+		
 		public StackerPosition setSetpointState (StackerPosition setpoint)
 		{
 			if (setpoint == null)
 			{
-				setpointState = setpoint;
+				setpointState = null;
 				return null;
 			}
 			
@@ -122,14 +127,14 @@ public class Stacker extends Subsystem
 					else
 					{
 						closeSolenoidContainer();
-						
 						moveToFloor();
 					}
 				}
 				
 				else if (currentState == StackerPosition.Step)
 				{
-					if (gp == GamePieceCollected.None)
+					if (gp == GamePieceCollected.None ||
+							gp == GamePieceCollected.Unsure)
 					{
 						closeSolenoidContainer();
 						openSolenoidGripper();
@@ -292,13 +297,13 @@ public class Stacker extends Subsystem
     	{
     		return StackerPosition.Floor;
     	}
-    	else if ((height > heightToteMin) && (height < heightToteMax))
-    	{
-    		return StackerPosition.Tote;
-    	}
     	else if ((height > heightStepMin) && (height < heightStepMax))
     	{
     		return StackerPosition.Step;
+    	}
+    	else if ((height > heightToteMin) && (height < heightToteMax))
+    	{
+    		return StackerPosition.Tote;
     	}
     	else 
     	{
@@ -331,6 +336,11 @@ public class Stacker extends Subsystem
     public StackerPosition setSetpointState (StackerPosition setpoint)
     {
     	return manager.setSetpointState(setpoint);
+    }
+    
+    public StackerPosition getSetpointState ()
+    {
+    	return manager.getSetpointState();
     }
     
     private void moveToFloor ()

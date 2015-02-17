@@ -38,7 +38,15 @@ public abstract class MoveStacker extends Command
 
     protected boolean isFinished()
     {
-    	return (Robot.stacker.getPosition() == setpoint);
+    	if (Robot.stacker.getPosition() == setpoint)
+    	{
+    		return true;
+    	}
+    	else if (Robot.stacker.getSetpointState() == null && setSuccessful)
+    	{
+    		return true;
+    	}
+    	return false;
     }
     
     protected void end() 

@@ -213,8 +213,5 @@ public class SDB
 		putConfigVariableInSDB("stacker_HeightStepMinimum");
 		putConfigVariableInSDB("stacker_HeightStepMaximum");
 		
-		putConfigVariableInSDB("stacker_HeightStuckOnContainerMinimum");
-		putConfigVariableInSDB("stacker_HeightStuckOnContainerMaximum");
-		
 	}
 }
