@@ -23,7 +23,7 @@ public class Actuators
 	 */
 	public SpeedController chassisMotorControllerLeft1, chassisMotorControllerLeft2;
 	public SpeedController chassisMotorControllerRight1, chassisMotorControllerRight2;
-	public SpeedController chassisMotorControllerCenter1, chassisMotorControllerCenter2;
+	public SpeedController chassisMotorControllerCenter;
 	
 	/*
 	 * Stacker
@@ -61,8 +61,7 @@ public class Actuators
 				chassisMotorControllerRight1 = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT_1"));
 				chassisMotorControllerRight2 = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT_2"));
 				
-				chassisMotorControllerCenter1 = new VictorSP((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER_1"));
-				chassisMotorControllerCenter2 = new VictorSP((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER_2"));
+				chassisMotorControllerCenter = new VictorSP((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER"));
 				/*
 				 * Anschluss
 				 */
@@ -82,8 +81,7 @@ public class Actuators
 				chassisMotorControllerRight1 = new Talon ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT_1"));
 				chassisMotorControllerRight2 = new Talon ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT_2"));
 				
-				chassisMotorControllerCenter1 = new Talon((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER_1"));
-				chassisMotorControllerCenter2 = new Talon((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER_2"));
+				chassisMotorControllerCenter = new Talon((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER"));
 				/*
 				 * Anschluss
 				 */

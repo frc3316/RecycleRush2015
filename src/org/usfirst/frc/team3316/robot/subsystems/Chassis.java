@@ -183,7 +183,7 @@ public class Chassis extends Subsystem
 	
 	private SpeedController left1, left2;
 	private SpeedController right1, right2;
-	private SpeedController center1, center2;
+	private SpeedController center;
 	
 	private IMUAdvanced navx;
 	
@@ -209,8 +209,7 @@ public class Chassis extends Subsystem
 		right1 = Robot.actuators.chassisMotorControllerRight1;
 		right2 = Robot.actuators.chassisMotorControllerRight2;
 		
-		center1 = Robot.actuators.chassisMotorControllerCenter1;
-		center2 = Robot.actuators.chassisMotorControllerCenter2;
+		center = Robot.actuators.chassisMotorControllerCenter;
 		
 		navx = Robot.sensors.navx;
 		
@@ -250,8 +249,7 @@ public class Chassis extends Subsystem
     	this.right1.set (right * rightScale);
     	this.right2.set (right * rightScale);
     	
-    	this.center1.set (center * centerScale);
-    	this.center2.set (center * centerScale);
+    	this.center.set (center * centerScale);
     	
     	return true;
     }
