@@ -30,16 +30,13 @@ public class RollerGripper extends Subsystem
 	
 	private double leftScale, rightScale;
 	
-	// Variables for getGamePieceCollected()
-	// They are set in updateDistanceVariables()
+	// Variables for getGamePieceCollected(). They are set in updateDistanceVariables().
 	private double toteDistanceMin, 
 				   toteDistanceMax,
 				   containerDistanceMin, 
 				   containerDistanceMax,
 				   somethingDistanceThreshold,
 				   unsureDistanceThreshold;
-	
-	private boolean newGamePiece = false;
 	
 	private Roll defaultRoll;
 	
@@ -102,7 +99,7 @@ public class RollerGripper extends Subsystem
     		}
     		else
     		{
-    			return GamePieceCollected.Unsure;
+    			return GamePieceCollected.Something;
     		}
     	}
     	else

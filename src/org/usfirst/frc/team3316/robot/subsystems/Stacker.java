@@ -1,6 +1,5 @@
 package org.usfirst.frc.team3316.robot.subsystems;
 
-import java.util.Stack;
 import java.util.TimerTask;
 
 import org.usfirst.frc.team3316.robot.Robot;
@@ -8,14 +7,13 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.rollerGripper.GamePieceCollected;
-import org.usfirst.frc.team3316.robot.stacker.GamePiece;
-import org.usfirst.frc.team3316.robot.stacker.GamePieceType;
 import org.usfirst.frc.team3316.robot.stacker.StackerPosition;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -28,14 +26,10 @@ public class Stacker extends Subsystem
 		private StackerPosition currentState;
 		private StackerPosition setpointState;
 		
-		private int directLoweringMaxSize;
-		
 		public StackerManager ()
 		{	
 			currentState = Robot.stacker.getPosition();
 			setpointState = null;
-	    	
-	    	stack = new Stack <GamePiece>();
 		}
 		
 		public StackerPosition setSetpointState (StackerPosition setpoint)
@@ -86,6 +80,7 @@ public class Stacker extends Subsystem
 					if (gp == GamePieceCollected.None) //TODO: check if needs to open for container too
 					{
 						openSolenoidGripper();
+						closeSolenoidContainer();
 					}
 					moveToStep();
 				}
@@ -113,18 +108,15 @@ public class Stacker extends Subsystem
 			{
 				if (currentState == StackerPosition.Tote)
 				{	
-					if (gp == GamePieceCollected.None)
+					if (gp == GamePieceCollected.None ||
+							gp == GamePieceCollected.Unsure)
 					{
 						closeSolenoidContainer();
 						openSolenoidGripper();
-					}
-					
-					//TODO: check what is the max size before lowering needs to be separated into two parts
-					if (stack.size() > directLoweringMaxSize)
-					{
 						setpointState = StackerPosition.Step;
 						moveToStep();
 					}
+					
 					else
 					{
 						moveToFloor();
@@ -156,20 +148,9 @@ public class Stacker extends Subsystem
 				return;
 			}
 			
-			updateNewGamePiece();
-			updateVariables();
-		}
-		
-		private void updateVariables ()
-		{
-			try
-			{
-				directLoweringMaxSize = (int) config.get("stacker_StackerManager_DirectLoweringMaxSize");
-			}
-			catch (ConfigException e)
-			{
-				logger.severe(e);
-			}
+			//FOR TESTING. NEEDS TO BE REMOVED.
+			SmartDashboard.putString("Current State", currentState.toString());
+			SmartDashboard.putString("Setpoint State", setpointState.toString());
 		}
 	
 	}//end of class
@@ -190,11 +171,7 @@ public class Stacker extends Subsystem
     			   heightStepMin, heightStepMax,
     			   heightToteMin, heightToteMax;
     
-    private Stack <GamePiece> stack;
-    
     private StackerManager manager;
-    
-    private boolean newGamePiece = false;
     
     public Stacker () 
     {
@@ -224,7 +201,7 @@ public class Stacker extends Subsystem
     
     public void initDefaultCommand() {}
     
-    private  boolean openSolenoidUpper ()
+    private boolean openSolenoidUpper ()
     {
     	solenoidUpper.set(DoubleSolenoid.Value.kForward);
     	return true;
@@ -311,51 +288,6 @@ public class Stacker extends Subsystem
     	}
     }
     
-    /*
-	 * Stack methods
-	 */
-    public GamePiece getStackBase ()
-    {
-    	if (stack.isEmpty())
-    	{
-    		return null;
-    	}
-    	return stack.get(0);
-    }
-    
-    public boolean isFull() 
-    {
-    	return stack.size() >= 6;
-    }
-    
-    public Stack <GamePiece> getStack() 
-    {
-    	return stack;
-    }
-    
-    public void pushToStack(GamePiece g) 
-    {
-    	stack.push(g);
-    }
-    
-    public void clearStack ()
-    {
-       	stack.clear();
-    }
-    
-    private void addGamePiece ()
-    {
-    	GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
-    	if (gp == GamePieceCollected.Container)
-    	{
-    		Robot.stacker.pushToStack(new GamePiece(GamePieceType.Container));
-    	}
-    	else if (gp == GamePieceCollected.Tote)
-    	{
-    		Robot.stacker.pushToStack(new GamePiece(GamePieceType.Tote));
-    	}
-    }
-    
     private void updateHeights ()
     {
     	try
@@ -399,18 +331,6 @@ public class Stacker extends Subsystem
 	{
 		Robot.stacker.closeSolenoidBottom();
 		Robot.stacker.closeSolenoidUpper();
-	}
-	
-	private void updateNewGamePiece ()
-	{
-		if (Robot.rollerGripper.getGamePieceCollected() == GamePieceCollected.Unsure)
-		{
-			newGamePiece = true;
-		}
-		else if (Robot.rollerGripper.getGamePieceCollected() == GamePieceCollected.None)
-		{
-			newGamePiece = false;
-		}
 	}
 }
 
