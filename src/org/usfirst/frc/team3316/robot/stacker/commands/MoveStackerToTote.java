@@ -1,11 +1,12 @@
 package org.usfirst.frc.team3316.robot.stacker.commands;
 
-import org.usfirst.frc.team3316.robot.stacker.StackerPosition;
+import org.usfirst.frc.team3316.robot.Robot;
 
 public class MoveStackerToTote extends MoveStacker
 {
-	protected StackerPosition setSetpointState() 
+	protected void set ()
 	{
-		return StackerPosition.Tote;
+		Robot.stacker.closeSolenoidUpper();
+		Robot.stacker.closeSolenoidBottom();
 	}
 }
