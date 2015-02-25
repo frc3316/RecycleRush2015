@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3316.robot.subsystems;
 
 import java.util.TimerTask;
+import java.util.function.DoubleSupplier;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
@@ -8,6 +9,7 @@ import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.rollerGripper.GamePieceCollected;
 import org.usfirst.frc.team3316.robot.stacker.StackerPosition;
+import org.usfirst.frc.team3316.robot.utils.MovingAverage;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -190,6 +192,8 @@ public class Stacker extends Subsystem
     private DoubleSolenoid solenoidGripper; //The solenoid that opens and closes the roller gripper
     
     private AnalogInput heightIR; //infrared
+    private MovingAverage heightAverage;
+    
     private DigitalInput switchRight, switchLeft; //the switches that signify if there's a tote or a container in the stacker
     
     private double heightFloorMin, heightFloorMax,
@@ -214,6 +218,8 @@ public class Stacker extends Subsystem
     	
     	heightIR = Robot.sensors.stackerHeightIR;
     	
+    	heightAverage = new MovingAverage(100, 20, () -> { return (1 / heightIR.getVoltage()); });
+    	
     	switchRight = Robot.sensors.switchRatchetRight;
     	switchLeft = Robot.sensors.switchRatchetLeft;
     }
@@ -222,6 +228,8 @@ public class Stacker extends Subsystem
     {
     	manager = new StackerManager();
     	Robot.timer.schedule(manager, 0, 20);
+    	
+    	heightAverage.timerInit();
     }
     
     public void initDefaultCommand() {}
@@ -273,20 +281,10 @@ public class Stacker extends Subsystem
     	solenoidGripper.set(DoubleSolenoid.Value.kReverse);
     	return true;
     }
-	
-    double[] prevHeights = new double[100];
     
     public double getHeight ()
     {
-    	double currentHeight = (1 / heightIR.getVoltage());
-    	double avg = currentHeight;
-    	for(int i=0; i<prevHeights.length-1; i++) {
-    		prevHeights[i] = prevHeights[i+1];
-    		avg += prevHeights[i];
-    	}
-    	prevHeights[prevHeights.length-1] = currentHeight;
-    	avg /= prevHeights.length;
-    	return avg;
+    	return heightAverage.get();
     }
     
     public boolean getSwitchRatchetRight ()
