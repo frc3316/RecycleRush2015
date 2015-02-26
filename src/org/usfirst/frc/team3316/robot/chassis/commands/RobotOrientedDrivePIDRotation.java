@@ -1,0 +1,97 @@
+package org.usfirst.frc.team3316.robot.chassis.commands;
+
+import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
+
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+
+public class RobotOrientedDrivePIDRotation extends RobotOrientedDrive 
+{
+	private class PIDSourceRotation implements PIDSource
+	{
+		public double pidGet() 
+		{
+			return Robot.chassis.getAngularVelocity();
+		}
+	}
+	
+	private class PIDOutputRotation implements PIDOutput
+	{
+		public void pidWrite(double output)
+		{
+			outputRotation = output;
+		}
+	}
+	
+	private PIDController pidControllerRotation;
+	
+	private double setpointScale;
+	private double setpointRotation;
+	
+	private double outputRotation;
+	
+	public RobotOrientedDrivePIDRotation ()
+	{
+		pidControllerRotation = new PIDController(0, 
+												  0, 
+												  0, 
+												  new PIDSourceRotation(), 
+												  new PIDOutputRotation(), 
+												  50);
+		pidControllerRotation.setOutputRange(-1, 1);
+	}
+	
+	protected void initialize ()
+	{
+		super.initialize();
+		pidControllerRotation.enable();
+	}
+	
+	protected void set ()
+	{
+		setRobotVector(getRightX(), getRightY());
+		
+		updatePIDVariables();
+		setPIDControllerRotationSetpoint();
+		
+		setRotation(outputRotation);
+	}
+	
+	private void updatePIDVariables ()
+	{
+		try
+		{	
+			pidControllerRotation.setPID(
+					(double) config.get("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_KP"), 
+					(double) config.get("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_KI"), 
+					(double) config.get("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_KD"));
+			
+			pidControllerRotation.setAbsoluteTolerance(
+					(double) config.get("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_AbsoluteTolerance"));
+			
+			pidControllerRotation.setOutputRange(
+					(double) config.get("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_MinimumOutput"), 
+					(double) config.get("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_MaximumOutput"));
+		}
+		catch (ConfigException e)
+		{
+			logger.severe(e);
+		}
+	}
+	
+	protected void setPIDControllerRotationSetpoint ()
+	{
+		try
+		{
+			setpointScale = (double) config.get("chassis_RobotOrientedDrivePIDRotation_SetpointScale");
+			setpointRotation = getLeftX() * setpointScale;
+			pidControllerRotation.setSetpoint(setpointRotation);
+		}
+		catch (ConfigException e)
+		{
+			logger.severe(e);
+		}
+	}
+}
