@@ -71,6 +71,13 @@ public class SDB
 			put ("Speed Right", Robot.chassis.getSpeedRight());
 			put ("Speed Center", Robot.chassis.getSpeedCenter());
 			
+			/*
+			 * TO REMOVE
+			 */
+			put ("Raw Left", Robot.sensors.chassisEncoderLeft.getRaw());
+			put ("Raw Right", Robot.sensors.chassisEncoderRight.getRaw());
+			put ("Raw Center", Robot.sensors.chassisEncoderCenter.getRaw());
+			
 			if (Robot.rollerGripper.getGamePieceCollected() == null)
 			{
 				put ("Game Piece Collected", null);
