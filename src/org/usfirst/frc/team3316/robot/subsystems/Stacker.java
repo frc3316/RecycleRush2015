@@ -20,166 +20,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Stacker extends Subsystem 
 {	
-	private class StackerManager extends TimerTask
-	{
-		private StackerPosition currentState;
-		private StackerPosition setpointState;
-		
-		public StackerManager ()
-		{	
-			currentState = Robot.stacker.getPosition();
-			setpointState = null;
-		}
-		
-		public StackerPosition getSetpointState ()
-		{
-			return setpointState;
-		}
-		
-		public StackerPosition setSetpointState (StackerPosition setpoint)
-		{
-			if (setpoint == null)
-			{
-				setpointState = null;
-				return null;
-			}
-			
-			if (setpointState != null)
-			{
-				return null;
-			}
-
-			GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
-
-			setpointState = setpoint;
-			
-			if (setpoint == StackerPosition.Tote)
-			{
-				if (currentState == StackerPosition.Step)
-				{
-					moveToTote();
-				}
-				
-				else if (currentState == StackerPosition.Floor)
-				{
-					//if one of the ratchets is not in place - abort
-					if (!Robot.stacker.getSwitchRatchetLeft() ||
-						!Robot.stacker.getSwitchRatchetRight())
-					{
-						setpointState = null;
-						return null;
-					}
-					
-					//TODO: check if following condition should include tote as well (only for opening gripper)
-					if (gp == GamePieceCollected.Container)
-					{
-						openSolenoidContainer();
-						openSolenoidGripper();
-					}
-					moveToTote();
-				}
-			}
-			
-			else if (setpoint == StackerPosition.Step)
-			{
-				if (currentState == StackerPosition.Tote)
-				{
-					//TODO: check if needs to open for container too
-					if (gp == GamePieceCollected.None || gp == GamePieceCollected.Unsure)
-					{
-						openSolenoidGripper();
-						closeSolenoidContainer();
-					}
-					moveToStep();
-				}
-				
-				else if (currentState == StackerPosition.Floor)
-				{
-					//if one of the ratchets is not in place - abort
-					if (!Robot.stacker.getSwitchRatchetLeft() ||
-						!Robot.stacker.getSwitchRatchetRight())
-					{
-						setpointState = null;
-						return null;
-					}
-					
-					//TODO: check if following condition should include tote as well (only for opening gripper)
-					if (gp == GamePieceCollected.Container)
-					{
-						openSolenoidContainer();
-						openSolenoidGripper();
-					}
-					moveToStep();
-				}
-			}
-			
-			else if (setpoint == StackerPosition.Floor)
-			{
-				if (currentState == StackerPosition.Tote)
-				{	
-					if (gp == GamePieceCollected.None ||
-							gp == GamePieceCollected.Unsure)
-					{
-						openSolenoidGripper();
-						setpointState = StackerPosition.Step;
-						moveToStep();
-					}
-					
-					else
-					{
-						closeSolenoidContainer();
-						moveToFloor();
-					}
-				}
-				
-				else if (currentState == StackerPosition.Step)
-				{
-					if (gp == GamePieceCollected.None ||
-							gp == GamePieceCollected.Unsure)
-					{
-						closeSolenoidContainer();
-						openSolenoidGripper();
-					}
-					moveToFloor();
-				}
-			}
-			
-			return setpointState;
-		}
-	    
-		
-		public void run ()
-		{
-			currentState = Robot.stacker.getPosition();
-			
-			if (currentState == setpointState)
-			{
-				setpointState = null;
-				return;
-			}
-			
-			//FOR TESTING. NEEDS TO BE REMOVED.
-			if (currentState == null)
-			{
-				SmartDashboard.putString("Current State", "null");
-			}
-			else 
-			{
-				SmartDashboard.putString("Current State", currentState.toString());
-			}
-			
-			if (setpointState == null)
-			{
-				SmartDashboard.putString("Setpoint State", "null");
-			}
-			else
-			{
-				SmartDashboard.putString("Setpoint State", setpointState.toString());
-			}
-		}
-	
-	}//end of class
-	
     Config config = Robot.config;
     DBugLogger logger = Robot.logger;
     
@@ -195,8 +35,6 @@ public class Stacker extends Subsystem
     private double heightFloorMin, heightFloorMax,
     			   heightStepMin, heightStepMax,
     			   heightToteMin, heightToteMax;
-    
-    private StackerManager manager;
     
     public Stacker () 
     {
@@ -216,12 +54,6 @@ public class Stacker extends Subsystem
     	
     	switchRight = Robot.sensors.switchRatchetRight;
     	switchLeft = Robot.sensors.switchRatchetLeft;
-    }
-    
-    public void timerInit ()
-    {
-    	manager = new StackerManager();
-    	Robot.timer.schedule(manager, 0, 20);
     }
     
     public void initDefaultCommand() {}
@@ -340,19 +172,6 @@ public class Stacker extends Subsystem
     	{
     		logger.severe(e);
     	}
-    }
-    
-    /*
-     * StackerManager Methods
-     */
-    public StackerPosition setSetpointState (StackerPosition setpoint)
-    {
-    	return manager.setSetpointState(setpoint);
-    }
-    
-    public StackerPosition getSetpointState ()
-    {
-    	return manager.getSetpointState();
     }
     
     private void moveToFloor ()
