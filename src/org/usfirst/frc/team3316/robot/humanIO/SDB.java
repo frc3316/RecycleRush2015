@@ -10,6 +10,7 @@ import java.util.TimerTask;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.chassis.commands.FieldOrientedDrive;
+import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrivePIDRotation;
 import org.usfirst.frc.team3316.robot.chassis.commands.StrafeDrive;
 import org.usfirst.frc.team3316.robot.chassis.commands.StartIntegrator;
 import org.usfirst.frc.team3316.robot.chassis.commands.TankDrive;
@@ -192,11 +193,20 @@ public class SDB
 	}
 	
 	private void initSDB ()
-	{	
+	{
+		/*
+		 * Basic Drives
+		 */
 		SmartDashboard.putData(new TankDrive());
 		SmartDashboard.putData(new StrafeDrive());
 		SmartDashboard.putData(new RobotOrientedDrive());
 		SmartDashboard.putData(new FieldOrientedDrive());
+		
+		/*
+		 * PID Drives
+		 */
+		SmartDashboard.putData(new RobotOrientedDrivePIDRotation());
+		
 		SmartDashboard.putData(new StartIntegrator()); //For integrator testing, should be removed
 		
 		/*
@@ -208,39 +218,18 @@ public class SDB
 		putConfigVariableInSDB("chassis_HeadingToSet");
 		
 		/*
-		 * Roller Gripper
+		 * Robot Oriented Drive PID Rotation
 		 */
-		putConfigVariableInSDB("rollerGripper_RollJoystick_ChannelX");
-		putConfigVariableInSDB("rollerGripper_RollJoystick_ChannelY");
+		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_KP");
+		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_KI");
+		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_KD");
 		
-		putConfigVariableInSDB("rollerGripper_RollJoystick_InvertX");
-		putConfigVariableInSDB("rollerGripper_RollJoystick_InvertY");
+		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_AbsoluteTolerance");
+
+		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_MinimumOutput");
+		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_MaximumOutput");
 		
-		putConfigVariableInSDB("rollerGripper_RollJoystick_LowPass");
-		
-		//Game Piece IR
-		putConfigVariableInSDB("rollerGripper_ToteDistanceMinimum");
-		putConfigVariableInSDB("rollerGripper_ToteDistanceMaximum");
-		
-		putConfigVariableInSDB("rollerGripper_ContainerDistanceMinimum");
-		putConfigVariableInSDB("rollerGripper_ContainerDistanceMaximum");
-		
-		putConfigVariableInSDB("rollerGripper_SomethingDistanceThreshold");
-		putConfigVariableInSDB("rollerGripper_UnsureDistanceThreshold");
-		
-		/*
-		 * Stacker
-		 */
-		SmartDashboard.putData(Robot.stacker);
-		
-		putConfigVariableInSDB("stacker_HeightFloorMinimum");
-		putConfigVariableInSDB("stacker_HeightFloorMaximum");
-		
-		putConfigVariableInSDB("stacker_HeightToteMinimum");
-		putConfigVariableInSDB("stacker_HeightToteMaximum");
-		
-		putConfigVariableInSDB("stacker_HeightStepMinimum");
-		putConfigVariableInSDB("stacker_HeightStepMaximum");
+		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_SetpointScale");
 		
 		
 		logger.info("Finished initSDB()");

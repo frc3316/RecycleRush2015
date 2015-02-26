@@ -5,36 +5,25 @@ import org.usfirst.frc.team3316.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * This command is currently only for testing purposes and should be deleted
  */
-public class StartIntegrator extends Command {
+public class StartIntegrator extends Command 
+{
+    public StartIntegrator() {}
 
-    public StartIntegrator() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    }
-
-    // Called just before this Command runs the first time
     protected void initialize() 
     {
     	Robot.chassis.addNavigationIntegrator(Robot.chassis.navigationIntegrator);
     }
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    }
+    protected void execute() {}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
+    protected boolean isFinished() 
+    {
         return true;
     }
 
-    // Called once after isFinished returns true
-    protected void end() {
-    }
+    protected void end() {}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
+    protected void interrupted() {}
 }
