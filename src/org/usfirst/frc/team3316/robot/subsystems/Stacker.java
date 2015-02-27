@@ -128,7 +128,7 @@ public class Stacker extends Subsystem
     	return switchLeft.get();
     }
     
-    public StackerPosition getPosition ()
+    public StackerPosition getPositionIR ()
     {
     	updateHeights();
     	
