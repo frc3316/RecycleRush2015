@@ -1,7 +1,5 @@
 package org.usfirst.frc.team3316.robot.subsystems;
 
-import java.util.TimerTask;
-
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
@@ -13,7 +11,6 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -58,25 +55,25 @@ public class Stacker extends Subsystem
     
     public void initDefaultCommand() {}
     
-    private boolean openSolenoidUpper ()
+    public boolean openSolenoidUpper ()
     {
     	solenoidUpper.set(DoubleSolenoid.Value.kForward);
     	return true;
     }
     
-    private boolean closeSolenoidUpper ()
+    public boolean closeSolenoidUpper ()
     {
     	solenoidUpper.set(DoubleSolenoid.Value.kReverse);
     	return true;
     }
     
-    private boolean openSolenoidBottom ()
+    public boolean openSolenoidBottom ()
     {
     	solenoidBottom.set(DoubleSolenoid.Value.kForward);
     	return true;
     }
     
-    private boolean closeSolenoidBottom ()
+    public boolean closeSolenoidBottom ()
     {
     	solenoidBottom.set(DoubleSolenoid.Value.kReverse);
     	return true;
@@ -173,23 +170,5 @@ public class Stacker extends Subsystem
     		logger.severe(e);
     	}
     }
-    
-    private void moveToFloor ()
-	{
-		Robot.stacker.openSolenoidBottom();
-		Robot.stacker.openSolenoidUpper();
-	}
-	
-	private void moveToStep ()
-	{
-		Robot.stacker.closeSolenoidBottom();
-		Robot.stacker.openSolenoidUpper();
-	}
-	
-	private void moveToTote ()
-	{
-		Robot.stacker.closeSolenoidBottom();
-		Robot.stacker.closeSolenoidUpper();
-	}
 }
 
