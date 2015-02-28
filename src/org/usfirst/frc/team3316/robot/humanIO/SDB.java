@@ -19,7 +19,9 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
-import edu.wpi.first.wpilibj.command.Scheduler;
+import com.ni.vision.NIVision.Image;
+
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SDB 
@@ -36,6 +38,9 @@ public class SDB
 		}
 		public void run ()
 		{
+			/*
+			 * Robot Info
+			 */
 			put ("Current Heading", Robot.chassis.getHeading());
 			put ("Current Height", Robot.stacker.getHeight());
 			
@@ -107,11 +112,11 @@ public class SDB
 	{
 		variablesInSDB = new Hashtable <String, Class <?> > ();
 		
-		SmartDashboard.putData(new UpdateVariablesInConfig());
-		SmartDashboard.putData(new SetHeadingSDB());
+		SmartDashboard.putData(new UpdateVariablesInConfig()); //NEVER REMOVE THIS COMMAND
 		
 		initSDB();
-		logger.info("Finished initSDB()");
+		
+		CameraServer.getInstance().startAutomaticCapture("cam0");
 	}
 	
 	public void timerInit ()
@@ -175,8 +180,6 @@ public class SDB
 	
 	private void initSDB ()
 	{	
-		SmartDashboard.putData(new UpdateVariablesInConfig()); // NEVER REMOVE THIS COMMAND
-		
 		SmartDashboard.putData(new TankDrive());
 		SmartDashboard.putData(new StrafeDrive());
 		SmartDashboard.putData(new RobotOrientedDrive());
@@ -228,5 +231,7 @@ public class SDB
 		putConfigVariableInSDB("stacker_HeightStepMinimum");
 		putConfigVariableInSDB("stacker_HeightStepMaximum");
 		
+		
+		logger.info("Finished initSDB()");
 	}
 }
