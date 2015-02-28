@@ -39,6 +39,8 @@ public class Stacker extends Subsystem
     
     public boolean openSolenoidUpper ()
     {
+    	closeSolenoidContainer();
+    	openSolenoidGripper();
     	solenoidUpper.set(DoubleSolenoid.Value.kForward);
     	return true;
     }
