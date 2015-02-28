@@ -19,11 +19,6 @@ public class MoveStackerToFloor extends MoveStacker
 			 */
 			Robot.stacker.openSolenoidGripper();
 		}
-		/* We always want to close the container pistons so they don't colide
-		 *  with any gamepiece that might be at floor position.
-		 */
-		Robot.stacker.closeSolenoidContainer();
-		
 		super.initialize();
 	}
 	
@@ -31,5 +26,9 @@ public class MoveStackerToFloor extends MoveStacker
 	{
 		Robot.stacker.openSolenoidUpper();
 		Robot.stacker.openSolenoidBottom();
+		/* We always want to close the container pistons so they don't colide
+		 *  with any gamepiece that might be at floor position.
+		 */
+		Robot.stacker.closeSolenoidContainer();
 	}
 }

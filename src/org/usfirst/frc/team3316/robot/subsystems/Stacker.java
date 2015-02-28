@@ -57,48 +57,88 @@ public class Stacker extends Subsystem
     
     public boolean openSolenoidUpper ()
     {
+    	if (solenoidUpper.get() == DoubleSolenoid.Value.kForward)
+    	{
+    		return false;
+    	}
+    	if (solenoidContainer.get() == DoubleSolenoid.Value.kForward)
+    	{
+    		return false;
+    	}
     	solenoidUpper.set(DoubleSolenoid.Value.kForward);
     	return true;
     }
     
     public boolean closeSolenoidUpper ()
     {
+    	if (solenoidUpper.get() == DoubleSolenoid.Value.kReverse)
+    	{
+    		return false;
+    	}
     	solenoidUpper.set(DoubleSolenoid.Value.kReverse);
     	return true;
     }
     
     public boolean openSolenoidBottom ()
     {
+    	if (solenoidBottom.get() == DoubleSolenoid.Value.kForward)
+    	{
+    		return false;
+    	}
+    	if (solenoidContainer.get() == DoubleSolenoid.Value.kForward)
+    	{
+    		return false;
+    	}
     	solenoidBottom.set(DoubleSolenoid.Value.kForward);
     	return true;
     }
     
     public boolean closeSolenoidBottom ()
     {
+    	if (solenoidBottom.get() == DoubleSolenoid.Value.kReverse)
+    	{
+    		return false;
+    	}
     	solenoidBottom.set(DoubleSolenoid.Value.kReverse);
     	return true;
     }
     
     public boolean openSolenoidContainer ()
     {
+    	if (solenoidContainer.get() == DoubleSolenoid.Value.kForward)
+    	{
+    		return false;
+    	}
     	solenoidContainer.set(DoubleSolenoid.Value.kForward);
     	return true;
     }
     
     public boolean closeSolenoidContainer ()
     {
+    	if (solenoidContainer.get() == DoubleSolenoid.Value.kReverse)
+    	{
+    		return false;
+    	}
     	solenoidContainer.set(DoubleSolenoid.Value.kReverse);
     	return true;
     }
     
     public boolean openSolenoidGripper ()
     {
+    	if (solenoidGripper.get() == DoubleSolenoid.Value.kForward)
+    	{
+    		return false;
+    	}
     	solenoidGripper.set(DoubleSolenoid.Value.kForward);
     	return true;
     }
     
     public boolean closeSolenoidGripper ()
     {
+    	if (solenoidGripper.get() == DoubleSolenoid.Value.kReverse)
+    	{
+    		return false;
+    	}
     	solenoidGripper.set(DoubleSolenoid.Value.kReverse);
     	return true;
     }
