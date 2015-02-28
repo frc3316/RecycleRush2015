@@ -235,7 +235,7 @@ public class Chassis extends Subsystem
 	
     public void initDefaultCommand() 
     {
-    	defaultDrive = new RobotOrientedDrive();
+    	defaultDrive = new FieldOrientedDrive();
     	setDefaultCommand(defaultDrive);
     }
     

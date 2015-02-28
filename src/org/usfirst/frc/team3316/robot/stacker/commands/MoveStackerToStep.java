@@ -14,26 +14,24 @@ public class MoveStackerToStep extends MoveStacker
 	{
 		StackerPosition sp = Robot.stacker.getPosition();
 		
-		if (sp == StackerPosition.Tote)
+		if (Robot.rollerGripper.getGamePieceCollected() == GamePieceCollected.None)
 		{
-			if (Robot.rollerGripper.getGamePieceCollected() == GamePieceCollected.None)
-			{
-				/* If there is nothing at floor position, what we might have on
-				 * the stacker will colide with the roller gripper.
-				 */
-				Robot.stacker.openSolenoidGripper();
-			}
+			/* If there is nothing at floor position, what we might have on
+			 * the stacker will colide with the roller gripper.
+			 */
+			Robot.stacker.openSolenoidGripper();
 		}
 		super.initialize();
 	}
 	
 	protected void setSolenoids()
 	{
+		Robot.stacker.closeSolenoidContainer();
+		
 		Robot.stacker.openSolenoidUpper();
 		Robot.stacker.closeSolenoidBottom();
 		/*  We always want to close the container pistons so they don't colide
 		 *  with any gamepiece that might be at floor position.
 		 */
-		Robot.stacker.closeSolenoidContainer();
 	}
 }

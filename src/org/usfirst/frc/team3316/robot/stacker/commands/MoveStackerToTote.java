@@ -16,6 +16,7 @@ public class MoveStackerToTote extends MoveStacker
 		{
 			//If there is a container at floor position, it might colide with the roller gripper
 			Robot.stacker.openSolenoidGripper();
+			Robot.stacker.openSolenoidContainer();
 		}
 		super.initialize();
 	}
