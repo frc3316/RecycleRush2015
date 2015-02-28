@@ -13,7 +13,6 @@ public class MoveStackerToFloor extends MoveStacker
 	{
 		GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
 		if (gp == GamePieceCollected.None)
-			//|| gp == GamePieceCollected.Unsure)
 		{
 			/* If there is nothing at floor position, what we might have on
 			 * the stacker will colide with the roller gripper.

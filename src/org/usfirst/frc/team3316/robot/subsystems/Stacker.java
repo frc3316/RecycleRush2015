@@ -128,6 +128,24 @@ public class Stacker extends Subsystem
     	return switchLeft.get();
     }
     
+    public StackerPosition getPosition ()
+    {
+    	if (solenoidUpper.get() == DoubleSolenoid.Value.kForward &&
+    			solenoidBottom.get() == DoubleSolenoid.Value.kForward)
+    	{
+    		return StackerPosition.Floor;
+    	}
+    	if (solenoidUpper.get() == DoubleSolenoid.Value.kReverse &&
+    			solenoidBottom.get() == DoubleSolenoid.Value.kReverse)
+    	{
+    		return StackerPosition.Tote;
+    	}
+    	else
+    	{
+    		return StackerPosition.Step;
+    	}
+    }
+    
     public StackerPosition getPositionIR ()
     {
     	updateHeights();

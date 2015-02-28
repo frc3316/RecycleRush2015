@@ -2,6 +2,7 @@ package org.usfirst.frc.team3316.robot.stacker.commands;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.rollerGripper.GamePieceCollected;
+import org.usfirst.frc.team3316.robot.stacker.StackerPosition;
 
 /**
  * Moves stacker to step position while checking
@@ -11,12 +12,17 @@ public class MoveStackerToStep extends MoveStacker
 {
 	protected void initialize()
 	{
-		if (Robot.rollerGripper.getGamePieceCollected() == GamePieceCollected.None)
+		StackerPosition sp = Robot.stacker.getPosition();
+		
+		if (sp == StackerPosition.Tote)
 		{
-			/* If there is nothing at floor position, what we might have on
-			 * the stacker will colide with the roller gripper.
-			 */
-			Robot.stacker.openSolenoidGripper();
+			if (Robot.rollerGripper.getGamePieceCollected() == GamePieceCollected.None)
+			{
+				/* If there is nothing at floor position, what we might have on
+				 * the stacker will colide with the roller gripper.
+				 */
+				Robot.stacker.openSolenoidGripper();
+			}
 		}
 		/*  We always want to close the container pistons so they don't colide
 		 *  with any gamepiece that might be at floor position.
