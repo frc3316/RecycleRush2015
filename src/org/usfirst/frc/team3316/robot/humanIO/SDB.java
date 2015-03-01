@@ -104,6 +104,8 @@ public class SDB
 	DBugLogger logger = Robot.logger;
 	Config config = Robot.config;
 	
+	public CameraServer server;
+	
 	private UpdateSDBTask updateSDBTask;
 	
 	private Hashtable <String, Class <?> > variablesInSDB;
@@ -116,7 +118,9 @@ public class SDB
 		
 		initSDB();
 		
-		CameraServer.getInstance().startAutomaticCapture("cam0");
+		server = CameraServer.getInstance();
+		server.setQuality(50);
+		server.startAutomaticCapture("cam0");
 	}
 	
 	public void timerInit ()
