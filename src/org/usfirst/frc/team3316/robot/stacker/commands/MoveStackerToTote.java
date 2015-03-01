@@ -12,6 +12,8 @@ public class MoveStackerToTote extends MoveStacker
 {
 	protected void initialize()
 	{	
+		logger.fine("MoveStackerToTote command initialize");
+
 		GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
 		if (gp == GamePieceCollected.Container)
 		{

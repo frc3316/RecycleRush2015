@@ -11,6 +11,8 @@ public class MoveStackerToFloor extends MoveStacker
 {
 	protected void initialize()
 	{
+		logger.fine("MoveStackerToFloor command initialize");
+		
 		GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
 		if (gp == GamePieceCollected.None)
 		{
