@@ -12,9 +12,8 @@ public class MoveStackerToStep extends MoveStacker
 {
 	protected void initialize()
 	{
-		StackerPosition sp = Robot.stacker.getPosition();
-		
-		if (Robot.rollerGripper.getGamePieceCollected() == GamePieceCollected.None)
+		GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
+		if (gp == GamePieceCollected.None)
 		{
 			/* If there is nothing at floor position, what we might have on
 			 * the stacker will colide with the roller gripper.

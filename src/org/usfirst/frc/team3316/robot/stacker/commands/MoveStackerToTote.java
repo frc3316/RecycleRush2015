@@ -11,8 +11,9 @@ import org.usfirst.frc.team3316.robot.stacker.StackerPosition;
 public class MoveStackerToTote extends MoveStacker
 {
 	protected void initialize()
-	{
-		if (Robot.rollerGripper.getGamePieceCollected() == GamePieceCollected.Container)
+	{	
+		GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
+		if (gp == GamePieceCollected.Container)
 		{
 			//If there is a container at floor position, it might colide with the roller gripper
 			Robot.stacker.openSolenoidGripper();
