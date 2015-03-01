@@ -24,11 +24,12 @@ public class MoveStackerToFloor extends MoveStacker
 	
 	protected void setSolenoids() 
 	{
-		Robot.stacker.openSolenoidUpper();
-		Robot.stacker.openSolenoidBottom();
 		/* We always want to close the container pistons so they don't colide
 		 *  with any gamepiece that might be at floor position.
 		 */
 		Robot.stacker.closeSolenoidContainer();
+		
+		Robot.stacker.openSolenoidUpper();
+		Robot.stacker.openSolenoidBottom();
 	}
 }
