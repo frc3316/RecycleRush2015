@@ -4,60 +4,92 @@ import org.usfirst.frc.team3316.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 /**
  *
  */
-public class WiggleWiggle extends CommandGroup {
-    
-    public  WiggleWiggle() {
-        addSequential(new RightMove(), 0.25);
-        addSequential(new LeftMove(), 0.25);
-        addSequential(new RightMove(), 0.25);
-        addSequential(new LeftMove(), 0.25);
+public class WiggleWiggle extends Command 
+{    
+	private double [][] voltageValues = new double [][]
+		    {
+		        {0, 5, 10, 15, 20, 25},
+		        {0, 1, -1, 1, -1, 0}
+		    };
+	
+	private int counter;
+	
+    public  WiggleWiggle() 
+    {
+    	requires(Robot.chassis);
+    }
+		
+    protected void initialize() 
+    {
+    	counter = 0;
+    }
+    	
+	protected void execute() 
+	{
+		double speedCenter = valueInterpolation(counter, voltageValues);
+		Robot.chassis.set(0, 0, speedCenter);
+		counter++;
+	}
+
+    protected boolean isFinished() 
+    {
+        return (counter >= voltageValues [0][(voltageValues[0].length) - 1]); //last cell in first row
+    }
+
+	protected void end() {}
+
+	protected void interrupted() {}
+
+
+    /*
+     * returns a linear interpolation from a lookup table
+     * assuming x=0 is for x values and x=1 is for y values
+     * if the requiredIndex is lower than the min x value or higher than the max x value, 
+     * returns the minimum or maximum value accordingly
+     */
+    private double valueInterpolation (double requiredIndex, double table [][])
+    {
+        if (requiredIndex < table[0][0])
+        {
+            return table[1][0];
+        }
+        if (requiredIndex > table[0][table[0].length-1])
+        {
+            return table[1][table[1].length-1];
+        }
+        
+        //binary search to find the appropriate indexes
+        int bot = 0, top = table[0].length - 1;
+        
+        int mid = (bot+top)/2;
+        while (mid != bot)
+        {
+            if (table[0][mid] > requiredIndex)
+            {
+                top = mid;
+                mid = (bot+top)/2;
+            }
+            else
+            {
+                bot = mid;
+                mid = (bot+top)/2;
+            }
+        }
+        
+        //linear interpolation between the points in the lookup table
+        double valueToReturn = scale(requiredIndex,
+                new Point(table[0][bot], table[1][bot]),
+                new Point(table[0][top], table[1][top]));
+        return valueToReturn;
     }
     
-    private class RightMove extends Command {
-    	
-    	public RightMove () {
-    		requires(Robot.chassis);
-    	}
-    	
-		protected void initialize() {}
-    	
-    	protected void execute() {
-    		Robot.chassis.set(0, 1, 0);
-    	}
-
-        protected boolean isFinished() 
-        {
-            return false;
-        }
-
-		protected void end() {}
-
-		protected void interrupted() {}
-    }
-    
-    private class LeftMove extends Command {
-    	
-    	public LeftMove () {
-    		requires(Robot.chassis);
-    	}
-    	
-		protected void initialize() {}
-    	
-    	protected void execute() {
-    		Robot.chassis.set(1, 0, 0);
-    	}
-
-        protected boolean isFinished() 
-        {
-            return false;
-        }
-
-		protected void end() {}
-
-		protected void interrupted() {}
+    private double scale (double x, Point a, Point b)
+    {
+        return ((x - a.x)*(a.y - b.y)/(a.x - b.x) + a.y);
     }
 }

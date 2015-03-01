@@ -10,6 +10,7 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.sequences.PickupSequence;
+import org.usfirst.frc.team3316.robot.sequences.WiggleWiggle;
 import org.usfirst.frc.team3316.robot.stacker.commands.CloseGripper;
 import org.usfirst.frc.team3316.robot.stacker.commands.HoldContainer;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToFloor;
@@ -78,6 +79,8 @@ public class Joysticks
 	public JoystickButton openAnschluss,
 						  closeAnschluss;
 	
+	public JoystickButton wiggleWiggle;
+	
 	public Joysticks ()
 	{
 		try 
@@ -102,7 +105,12 @@ public class Joysticks
     	 */
 		try
 		{
-	    	
+			/*
+			 * Chassis
+			 */
+			wiggleWiggle = new JoystickButton(joystickLeft, 2);
+			wiggleWiggle.whenPressed(new WiggleWiggle());
+			
 	    	/*
 	    	 * Stacker
 	    	 */
