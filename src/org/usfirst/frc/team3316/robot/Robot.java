@@ -93,6 +93,7 @@ public class Robot extends IterativeRobot
     	timer = new Timer();
     	chassis.timerInit();
     	stacker.timerInit();
+    	rollerGripper.timerInit();
     	sdb.timerInit();
     }
 	

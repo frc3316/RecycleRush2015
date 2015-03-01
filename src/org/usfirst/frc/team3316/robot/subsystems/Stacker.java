@@ -7,8 +7,8 @@ import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
-import org.usfirst.frc.team3316.robot.rollerGripper.GamePieceCollected;
 import org.usfirst.frc.team3316.robot.stacker.StackerPosition;
+import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
 import org.usfirst.frc.team3316.robot.utils.MovingAverage;
 
 import edu.wpi.first.wpilibj.AnalogInput;

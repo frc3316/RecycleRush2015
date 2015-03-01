@@ -1,7 +1,7 @@
 package org.usfirst.frc.team3316.robot.rollerGripper.commands;
 
 import org.usfirst.frc.team3316.robot.Robot;
-import org.usfirst.frc.team3316.robot.rollerGripper.GamePieceCollected;
+import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
 
 import edu.wpi.first.wpilibj.command.Command;
 

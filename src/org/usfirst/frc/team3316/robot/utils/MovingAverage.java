@@ -14,15 +14,15 @@ public class MovingAverage
 	
 	private TimerTask insertTask;
 	
-	DoubleSupplier func;
+	DoubleSupplier supplier;
 	
 	/**
 	 * Constructor
 	 * @param size the number of values to keep track of
 	 * @param updateRate the rate that a value is taken from func
-	 * @param func a function that returns a double
+	 * @param supplier a function that returns a double
 	 */
-	public MovingAverage (int size, int updateRate, DoubleSupplier func)
+	public MovingAverage (int size, int updateRate, DoubleSupplier supplier)
 	{
 		lastValues = new double [size];
 		for (int i = 0; i < size; i++)
@@ -32,7 +32,7 @@ public class MovingAverage
 		
 		this.updateRate = updateRate;
 		
-		this.func = func;
+		this.supplier = supplier;
 	}
 	
 	/**
@@ -50,7 +50,7 @@ public class MovingAverage
 		{
 			public void run() 
 			{
-				insert(func.getAsDouble());				
+				insert(supplier.getAsDouble());				
 			}
 		};
 		
