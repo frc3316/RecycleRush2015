@@ -4,9 +4,10 @@ import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
-import org.usfirst.frc.team3316.robot.rollerGripper.GamePieceCollected;
 import org.usfirst.frc.team3316.robot.rollerGripper.commands.Roll;
 import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollJoystick;
+import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
+import org.usfirst.frc.team3316.robot.utils.MovingAverage;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -25,6 +26,7 @@ public class RollerGripper extends Subsystem
 	private SpeedController gripperLeft, gripperRight;
 	
 	private AnalogInput gripperGPIR;
+	private MovingAverage gpDistanceAverage;
 	
 	private DigitalInput gripperSwitchGP;
 	
@@ -46,8 +48,24 @@ public class RollerGripper extends Subsystem
     	gripperRight = Robot.actuators.rollerGripperMotorControllerRight;
     	
     	gripperGPIR = Robot.sensors.rollerGripperGPIR;
-    	
     	gripperSwitchGP = Robot.sensors.rollerGripperSwitchGP;
+
+    	try
+    	{
+    		gpDistanceAverage = new MovingAverage(
+    				(int) config.get("rollerGripper_GPDistanceAverage_Size"), 
+    				(int) config.get("rollerGripper_GPDistanceAverage_UpdateRate"), 
+    				() -> {return 1 / gripperGPIR.getVoltage();} );
+    	}
+    	catch (ConfigException e)
+    	{
+    		logger.severe(e);
+    	}
+    }
+    
+    public void timerInit ()
+    {
+    	gpDistanceAverage.timerInit();
     }
 
     public void initDefaultCommand() 
@@ -67,7 +85,7 @@ public class RollerGripper extends Subsystem
     //TODO: fix name to be getIRGPDistance
     public double getGPIRDistance ()
     {
-    	return (1 / gripperGPIR.getVoltage());
+    	return gpDistanceAverage.get();
     }
     
     public boolean getSwitchGamePiece ()
