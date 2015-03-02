@@ -19,6 +19,7 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
+import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
 
 import edu.wpi.first.wpilibj.CameraServer;
@@ -38,6 +39,14 @@ public class SDB
 		}
 		public void run ()
 		{
+			/*
+			 * Camera
+			 */
+			if (Robot.sensors.isCameraFound())
+			{
+				NIVision.IMAQdxGrab(Robot.sensors.getCameraSession(), frame, 1);
+				CameraServer.getInstance().setImage(frame);
+			}
 			/*
 			 * Robot Info
 			 */
@@ -104,7 +113,7 @@ public class SDB
 	DBugLogger logger = Robot.logger;
 	Config config = Robot.config;
 	
-	public CameraServer server;
+	private Image frame;
 	
 	private UpdateSDBTask updateSDBTask;
 	
@@ -118,9 +127,10 @@ public class SDB
 		
 		initSDB();
 		
-		server = CameraServer.getInstance();
-		server.setQuality(50);
-		server.startAutomaticCapture("cam0");
+		if (Robot.sensors.isCameraFound())
+		{
+			frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
+		}
 	}
 	
 	public void timerInit ()

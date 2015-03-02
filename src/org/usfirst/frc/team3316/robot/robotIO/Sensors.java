@@ -4,6 +4,7 @@
 package org.usfirst.frc.team3316.robot.robotIO;
 
 import com.kauailabs.nav6.frc.IMUAdvanced;
+import com.ni.vision.NIVision;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
@@ -20,6 +21,12 @@ public class Sensors
 {
 	Config config = Robot.config;
 	DBugLogger logger = Robot.logger;
+	
+	/*
+	 * Camera
+	 */
+	private boolean cameraFound;
+	private int session;
 	
 	/*
 	 * Chassis
@@ -50,6 +57,23 @@ public class Sensors
 	
 	public Sensors ()
 	{	
+		try
+		{
+			session = NIVision.IMAQdxOpenCamera("cam0",
+	                NIVision.IMAQdxCameraControlMode.CameraControlModeController);
+	        logger.info("Session is " + session);
+	        cameraFound = true;
+			NIVision.IMAQdxConfigureGrab(session);
+			NIVision.IMAQdxStartAcquisition(session);
+		}
+		catch (Exception e)
+		{
+			logger.severe("Camera not found!");
+			logger.severe(e);
+			session = -1;
+			cameraFound = false;
+		}
+		
 		try 
 		{
 			/*
@@ -108,5 +132,15 @@ public class Sensors
 		{
 			logger.severe(e);
 		}
+	}
+	
+	public boolean isCameraFound ()
+	{
+		return cameraFound;
+	}
+	
+	public int getCameraSession ()
+	{
+		return session;
 	}
 }
