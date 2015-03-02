@@ -14,7 +14,12 @@ import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 import com.kauailabs.nav6.frc.IMUAdvanced;
+import com.ni.vision.NIVision;
+import com.ni.vision.NIVision.Image;
+import com.ni.vision.NIVision.ImageType;
+import com.ni.vision.NIVision.Range;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -374,6 +379,44 @@ public class Chassis extends Subsystem
     		toReturn -= 360;
     	}
     	return toReturn;
+    }
+    
+    /*
+     * Camera
+     */
+    private class chassisVision
+    {
+    	private NIVision.Range H_Range = new NIVision.Range();
+    	private NIVision.Range S_Range = new NIVision.Range();
+    	private NIVision.Range V_Range = new NIVision.Range();
+    	
+    	public void processTotes ()
+        {
+        	if (Robot.sensors.isCameraFound())
+        	{
+        		Image image = NIVision.imaqCreateImage(ImageType.IMAGE_RGB, 0);
+        		
+        		logger.fine("Image taken, actual buffer number: " + 
+        				NIVision.IMAQdxGrab(Robot.sensors.getCameraSession(), image, 1));
+        		
+        		Image binaryImage = NIVision.imaqCreateImage(ImageType.IMAGE_U8, 0);
+        		
+        		NIVision.imaqColorThreshold(binaryImage, 
+        									image, 
+        									255, 
+        									NIVision.ColorMode.HSV, 
+        									H_Range, 
+        									S_Range, 
+        									V_Range);
+        		
+        		NIVision.imaqWriteJPEGFile(binaryImage, 
+        								   "/home/lvuser/chassisProcessTotes.jpg", 
+        								   50, 
+        								   new NIVision.RawData());
+        		
+        		logger.fine("processTotes() particle number " + NIVision.imaqCountParticles(binaryImage, 1));
+        	}
+        }
     }
 }
 
