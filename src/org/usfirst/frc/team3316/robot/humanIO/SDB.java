@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.TimerTask;
 
 import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.chassis.commands.FieldOrientedDrive;
 import org.usfirst.frc.team3316.robot.chassis.commands.StrafeDrive;
 import org.usfirst.frc.team3316.robot.chassis.commands.StartIntegrator;
 import org.usfirst.frc.team3316.robot.chassis.commands.TankDrive;
@@ -52,8 +53,6 @@ public class SDB
 			 */
 			put ("Current Heading", Robot.chassis.getHeading());
 			put ("Current Height", Robot.stacker.getHeight());
-			
-			put ("Current GP distance", Robot.rollerGripper.getGPIRDistance());
 			
 			put ("Angular Velocity", Robot.chassis.getAngularVelocity());
 			put ("Angular Velocity Encoders", Robot.chassis.getAngularVelocityEncoders());
@@ -197,10 +196,8 @@ public class SDB
 		SmartDashboard.putData(new TankDrive());
 		SmartDashboard.putData(new StrafeDrive());
 		SmartDashboard.putData(new RobotOrientedDrive());
+		SmartDashboard.putData(new FieldOrientedDrive());
 		SmartDashboard.putData(new StartIntegrator()); //For integrator testing, should be removed
-		
-		SmartDashboard.putData(new TankDrive()); //should be removed
-		SmartDashboard.putData(new RobotOrientedDrive()); //should be removed
 		
 		/*
 		 * Set Heading SDB

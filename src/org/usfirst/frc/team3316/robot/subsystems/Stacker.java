@@ -1,187 +1,22 @@
 package org.usfirst.frc.team3316.robot.subsystems;
 
-import java.util.TimerTask;
-import java.util.function.DoubleSupplier;
-
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.stacker.StackerPosition;
-import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
 import org.usfirst.frc.team3316.robot.utils.MovingAverage;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 public class Stacker extends Subsystem 
 {	
-	private class StackerManager extends TimerTask
-	{
-		private StackerPosition currentState;
-		private StackerPosition setpointState;
-		
-		public StackerManager ()
-		{	
-			currentState = Robot.stacker.getPosition();
-			setpointState = null;
-		}
-		
-		public StackerPosition getSetpointState ()
-		{
-			return setpointState;
-		}
-		
-		public StackerPosition setSetpointState (StackerPosition setpoint)
-		{
-			if (setpoint == null)
-			{
-				setpointState = null;
-				return null;
-			}
-			
-			if (setpointState != null)
-			{
-				return null;
-			}
-
-			GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
-
-			setpointState = setpoint;
-			
-			if (setpoint == StackerPosition.Tote)
-			{
-				if (currentState == StackerPosition.Step)
-				{
-					moveToTote();
-				}
-				
-				else if (currentState == StackerPosition.Floor)
-				{
-					//if one of the ratchets is not in place - abort
-					if (!Robot.stacker.getSwitchRatchetLeft() ||
-						!Robot.stacker.getSwitchRatchetRight())
-					{
-						setpointState = null;
-						return null;
-					}
-					
-					//TODO: check if following condition should include tote as well (only for opening gripper)
-					if (gp == GamePieceCollected.Container)
-					{
-						openSolenoidContainer();
-						openSolenoidGripper();
-					}
-					moveToTote();
-				}
-			}
-			
-			else if (setpoint == StackerPosition.Step)
-			{
-				if (currentState == StackerPosition.Tote)
-				{
-					//TODO: check if needs to open for container too
-					if (gp == GamePieceCollected.None || gp == GamePieceCollected.Unsure)
-					{
-						openSolenoidGripper();
-						closeSolenoidContainer();
-					}
-					moveToStep();
-				}
-				
-				else if (currentState == StackerPosition.Floor)
-				{
-					//if one of the ratchets is not in place - abort
-					if (!Robot.stacker.getSwitchRatchetLeft() ||
-						!Robot.stacker.getSwitchRatchetRight())
-					{
-						setpointState = null;
-						return null;
-					}
-					
-					//TODO: check if following condition should include tote as well (only for opening gripper)
-					if (gp == GamePieceCollected.Container)
-					{
-						openSolenoidContainer();
-						openSolenoidGripper();
-					}
-					moveToStep();
-				}
-			}
-			
-			else if (setpoint == StackerPosition.Floor)
-			{
-				if (currentState == StackerPosition.Tote)
-				{	
-					if (gp == GamePieceCollected.None ||
-							gp == GamePieceCollected.Unsure)
-					{
-						openSolenoidGripper();
-						setpointState = StackerPosition.Step;
-						moveToStep();
-					}
-					
-					else
-					{
-						closeSolenoidContainer();
-						moveToFloor();
-					}
-				}
-				
-				else if (currentState == StackerPosition.Step)
-				{
-					if (gp == GamePieceCollected.None ||
-							gp == GamePieceCollected.Unsure)
-					{
-						closeSolenoidContainer();
-						openSolenoidGripper();
-					}
-					moveToFloor();
-				}
-			}
-			
-			return setpointState;
-		}
-	    
-		
-		public void run ()
-		{
-			currentState = Robot.stacker.getPosition();
-			
-			if (currentState == setpointState)
-			{
-				setpointState = null;
-				return;
-			}
-			
-			//FOR TESTING. NEEDS TO BE REMOVED.
-			if (currentState == null)
-			{
-				SmartDashboard.putString("Current State", "null");
-			}
-			else 
-			{
-				SmartDashboard.putString("Current State", currentState.toString());
-			}
-			
-			if (setpointState == null)
-			{
-				SmartDashboard.putString("Setpoint State", "null");
-			}
-			else
-			{
-				SmartDashboard.putString("Setpoint State", setpointState.toString());
-			}
-		}
-	
-	}//end of class
-	
     Config config = Robot.config;
     DBugLogger logger = Robot.logger;
     
@@ -199,8 +34,6 @@ public class Stacker extends Subsystem
     private double heightFloorMin, heightFloorMax,
     			   heightStepMin, heightStepMax,
     			   heightToteMin, heightToteMax;
-    
-    private StackerManager manager;
     
     public Stacker () 
     {
@@ -236,58 +69,121 @@ public class Stacker extends Subsystem
     
     public void timerInit ()
     {
-    	manager = new StackerManager();
-    	Robot.timer.schedule(manager, 0, 20);
-    	
     	heightAverage.timerInit();
     }
-    
+
     public void initDefaultCommand() {}
     
-    private boolean openSolenoidUpper ()
+    public boolean openSolenoidUpper ()
     {
+    	logger.fine("Try to open upper solenoid");
+    	if (solenoidUpper.get() == DoubleSolenoid.Value.kForward)
+    	{
+    		logger.fine("Solenoid is already opened, aborting");
+    		return false;
+    	}
+    	if (solenoidContainer.get() == DoubleSolenoid.Value.kForward)
+    	{
+    		logger.fine("Container solenoid is opened, aborting");
+    		return false;
+    	}
+    	logger.fine("Solenoid upper opened");
     	solenoidUpper.set(DoubleSolenoid.Value.kForward);
     	return true;
     }
     
-    private boolean closeSolenoidUpper ()
+    public boolean closeSolenoidUpper ()
     {
+    	logger.fine("Try to close upper solenoid");
+    	if (solenoidUpper.get() == DoubleSolenoid.Value.kReverse)
+    	{
+    		logger.fine("Solenoid is already closed, aborting");
+    		return false;
+    	}
+    	logger.fine("Solenoid upper closed");
     	solenoidUpper.set(DoubleSolenoid.Value.kReverse);
     	return true;
     }
     
-    private boolean openSolenoidBottom ()
+    public boolean openSolenoidBottom ()
     {
+    	logger.fine("Try to open bottom solenoid");
+    	if (solenoidBottom.get() == DoubleSolenoid.Value.kForward)
+    	{
+    		logger.fine("Solenoid is already opened, aborting");
+    		return false;
+    	}
+    	if (solenoidContainer.get() == DoubleSolenoid.Value.kForward)
+    	{
+    		logger.fine("Container solenoid is opened, aborting");
+    		return false;
+    	}
+    	logger.fine("Solenoid bottom opened");
     	solenoidBottom.set(DoubleSolenoid.Value.kForward);
     	return true;
     }
     
-    private boolean closeSolenoidBottom ()
+    public boolean closeSolenoidBottom ()
     {
+    	logger.fine("Try to close bottom solenoid");
+    	if (solenoidBottom.get() == DoubleSolenoid.Value.kReverse)
+    	{
+    		logger.fine("Solenoid is already closed, aborting");
+    		return false;
+    	}
+    	logger.fine("Solenoid upper closed");
     	solenoidBottom.set(DoubleSolenoid.Value.kReverse);
     	return true;
     }
     
     public boolean openSolenoidContainer ()
     {
+    	logger.fine("Try to open container solenoid");
+    	if (solenoidContainer.get() == DoubleSolenoid.Value.kForward)
+    	{
+    		logger.fine("Solenoid is already opened, aborting");
+    		return false;
+    	}
+    	logger.fine("Solenoid container opened");
     	solenoidContainer.set(DoubleSolenoid.Value.kForward);
     	return true;
     }
     
     public boolean closeSolenoidContainer ()
     {
+    	logger.fine("Try to close container solenoid");
+    	if (solenoidContainer.get() == DoubleSolenoid.Value.kReverse)
+    	{
+    		logger.fine("Solenoid is already closed, aborting");
+    		return false;
+    	}
+    	logger.fine("Solenoid container closed");
     	solenoidContainer.set(DoubleSolenoid.Value.kReverse);
     	return true;
     }
     
     public boolean openSolenoidGripper ()
     {
+    	logger.fine("Try to open gripper solenoid");
+    	if (solenoidGripper.get() == DoubleSolenoid.Value.kForward)
+    	{
+    		logger.fine("Solenoid is already opened, aborting");
+    		return false;
+    	}
+    	logger.fine("Solenoid gripper opened");
     	solenoidGripper.set(DoubleSolenoid.Value.kForward);
     	return true;
     }
     
     public boolean closeSolenoidGripper ()
     {
+    	logger.fine("Try to close gripper solenoid");
+    	if (solenoidGripper.get() == DoubleSolenoid.Value.kReverse)
+    	{
+    		logger.fine("Solenoid is already closed, aborting");
+    		return false;
+    	}
+    	logger.fine("Solenoid gripper closed");
     	solenoidGripper.set(DoubleSolenoid.Value.kReverse);
     	return true;
     }
@@ -308,6 +204,24 @@ public class Stacker extends Subsystem
     }
     
     public StackerPosition getPosition ()
+    {
+    	if (solenoidUpper.get() == DoubleSolenoid.Value.kForward &&
+    			solenoidBottom.get() == DoubleSolenoid.Value.kForward)
+    	{
+    		return StackerPosition.Floor;
+    	}
+    	if (solenoidUpper.get() == DoubleSolenoid.Value.kReverse &&
+    			solenoidBottom.get() == DoubleSolenoid.Value.kReverse)
+    	{
+    		return StackerPosition.Tote;
+    	}
+    	else
+    	{
+    		return StackerPosition.Step;
+    	}
+    }
+    
+    public StackerPosition getPositionIR ()
     {
     	updateHeights();
     	
@@ -349,36 +263,5 @@ public class Stacker extends Subsystem
     		logger.severe(e);
     	}
     }
-    
-    /*
-     * StackerManager Methods
-     */
-    public StackerPosition setSetpointState (StackerPosition setpoint)
-    {
-    	return manager.setSetpointState(setpoint);
-    }
-    
-    public StackerPosition getSetpointState ()
-    {
-    	return manager.getSetpointState();
-    }
-    
-    private void moveToFloor ()
-	{
-		Robot.stacker.openSolenoidBottom();
-		Robot.stacker.openSolenoidUpper();
-	}
-	
-	private void moveToStep ()
-	{
-		Robot.stacker.closeSolenoidBottom();
-		Robot.stacker.openSolenoidUpper();
-	}
-	
-	private void moveToTote ()
-	{
-		Robot.stacker.closeSolenoidBottom();
-		Robot.stacker.closeSolenoidUpper();
-	}
 }
 

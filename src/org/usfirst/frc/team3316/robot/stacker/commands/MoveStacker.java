@@ -2,9 +2,7 @@ package org.usfirst.frc.team3316.robot.stacker.commands;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
-import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
-import org.usfirst.frc.team3316.robot.stacker.StackerPosition;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -16,55 +14,26 @@ public abstract class MoveStacker extends Command
 	DBugLogger logger = Robot.logger;
 	Config config = Robot.config;
 	
-	private StackerPosition setpoint;
-	
-	private boolean setSuccessful = false;
-	
     public MoveStacker()
     {
         requires(Robot.stacker);
-        setpoint = this.setSetpointState();
     }
 
-    protected void initialize() {}
-
-    protected void execute() 
+    protected void initialize()
     {
-    	if (!setSuccessful) 
-    	{
-    		set();
-    	}
+    	setSolenoids();
     }
+
+    protected void execute() {}
 
     protected boolean isFinished()
     {
-    	
-    	if (Robot.stacker.getPosition() == setpoint)
-    	{
-    		return true;
-    	}
-    	else if (Robot.stacker.getSetpointState() == null && setSuccessful)
-    	{
-    		return true;
-    	}
-    	return false;
+    	return true;
     }
     
-    protected void end() 
-    {
-    	setSuccessful = false;
-    }
+    protected void end() {}
 
     protected void interrupted() {}
     
-    private void set ()
-    {
-    	if (Robot.stacker.setSetpointState(setpoint) == setpoint)
-    	{
-    		setSuccessful = true;
-    	}
-    	Robot.stacker.setSetpointState(setpoint);
-    }
-    
-    protected abstract StackerPosition setSetpointState();
+    protected abstract void setSolenoids();
 }

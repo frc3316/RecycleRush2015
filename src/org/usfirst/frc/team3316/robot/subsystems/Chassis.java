@@ -9,9 +9,6 @@ import java.util.TimerTask;
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.chassis.commands.Drive;
 import org.usfirst.frc.team3316.robot.chassis.commands.FieldOrientedDrive;
-import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrive;
-import org.usfirst.frc.team3316.robot.chassis.commands.StrafeDrive;
-import org.usfirst.frc.team3316.robot.chassis.commands.TankDrive;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
@@ -20,11 +17,8 @@ import com.kauailabs.nav6.frc.IMUAdvanced;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.tables.ITable;
 
 public class Chassis extends Subsystem 
 {	
@@ -235,7 +229,7 @@ public class Chassis extends Subsystem
 	
     public void initDefaultCommand() 
     {
-    	defaultDrive = new RobotOrientedDrive();
+    	defaultDrive = new FieldOrientedDrive();
     	setDefaultCommand(defaultDrive);
     }
     

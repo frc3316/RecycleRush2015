@@ -115,14 +115,11 @@ public class Robot extends IterativeRobot
     public void teleopInit() {}
 
     /**
-     * This function is called when the disabled button is hit.
-     * You can use it to reset subsystems before shutting down.
-     */
-    public void disabledInit()
-    {
-    	Robot.stacker.setSetpointState(null);
-    }
-
+     * * This function is called when the disabled button is hit.		
+     * You can use it to reset subsystems before shutting down.		
+     */		
+    public void disabledInit() {}		
+		
     /**
      * This function is called periodically during operator control
      */

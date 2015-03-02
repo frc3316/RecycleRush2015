@@ -30,15 +30,10 @@ public class RollerGripper extends Subsystem
 	
 	private DigitalInput gripperSwitchGP;
 	
-	private double leftScale, rightScale;
+	private DigitalInput switchRight;
+	private DigitalInput switchLeft;
 	
-	// Variables for getGamePieceCollected(). They are set in updateDistanceVariables().
-	private double toteDistanceMin, 
-				   toteDistanceMax,
-				   containerDistanceMin, 
-				   containerDistanceMax,
-				   somethingDistanceThreshold,
-				   unsureDistanceThreshold;
+	private double leftScale, rightScale;
 	
 	private Roll defaultRoll;
 	
@@ -49,6 +44,9 @@ public class RollerGripper extends Subsystem
     	
     	gripperGPIR = Robot.sensors.rollerGripperGPIR;
     	gripperSwitchGP = Robot.sensors.rollerGripperSwitchGP;
+    	
+    	switchRight = Robot.sensors.switchRatchetRight;
+    	switchLeft = Robot.sensors.switchRatchetLeft;
 
     	try
     	{
@@ -82,10 +80,19 @@ public class RollerGripper extends Subsystem
     	return true;
     }
     
-    //TODO: fix name to be getIRGPDistance
-    public double getGPIRDistance ()
+    public double getGPDistance ()
     {
     	return gpDistanceAverage.get();
+    }
+    
+    public boolean getSwitchRight ()
+    {
+    	return switchRight.get();
+    }
+    
+    public boolean getSwitchLeft ()
+    {
+    	return switchLeft.get();
     }
     
     public boolean getSwitchGamePiece ()
@@ -100,61 +107,20 @@ public class RollerGripper extends Subsystem
      */
     public GamePieceCollected getGamePieceCollected ()
     {
-    	updateDistanceVariables();
-    	
-    	double gpDistance = getGPIRDistance();
     	boolean gpSwitch = getSwitchGamePiece();
+    	boolean gpSwitchRight = getSwitchRight();
+    	boolean gpSwitchLeft = getSwitchLeft();
     	
-    	if (gpSwitch)
-    	{
-    		if (gpDistance > toteDistanceMin && gpDistance < toteDistanceMax)
-    		{
-    			return GamePieceCollected.Tote;
-    		}
-    		else if (gpDistance > containerDistanceMin && gpDistance < containerDistanceMax)
-    		{
-    			return GamePieceCollected.Container;
-    		}
-    		else
-    		{
-    			return GamePieceCollected.Something;
-    		}
-    	}
-    	else
-    	{
-    		if (gpDistance < somethingDistanceThreshold)
-    		{
-    			return GamePieceCollected.Something;
-    		}
-    		else if (gpDistance < unsureDistanceThreshold)
-    		{
-    			return GamePieceCollected.Unsure;
-    		}
-    		else
-    		{
-    			return GamePieceCollected.None;
-    		}
+    	if (!gpSwitch) {
+    		return GamePieceCollected.None;
+    	
+    	} else if (!gpSwitchRight && !gpSwitchLeft) {
+    		return GamePieceCollected.Container;
+    	
+    	} else {
+    		return GamePieceCollected.Tote;
     	}
     }
-    
-    private void updateDistanceVariables () 
-    {
-    	try 
-    	{
-			toteDistanceMin = (double) config.get("rollerGripper_ToteDistanceMinimum");
-			toteDistanceMax = (double) config.get("rollerGripper_ToteDistanceMaximum");
-			
-			containerDistanceMin = (double) config.get("rollerGripper_ContainerDistanceMinimum");
-			containerDistanceMax = (double) config.get("rollerGripper_ContainerDistanceMaximum");
-			
-			somethingDistanceThreshold = (double) config.get("rollerGripper_SomethingDistanceThreshold");
-			unsureDistanceThreshold = (double) config.get("rollerGripper_UnsureDistanceThreshold"); 
-		} 
-    	catch (ConfigException e) 
-    	{
-			logger.severe(e);
-		}
-	}
     
     private void updateScales ()
     {

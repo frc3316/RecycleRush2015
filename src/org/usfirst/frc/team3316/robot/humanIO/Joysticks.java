@@ -6,6 +6,7 @@ package org.usfirst.frc.team3316.robot.humanIO;
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.anschluss.commands.CloseAnschluss;
 import org.usfirst.frc.team3316.robot.anschluss.commands.OpenAnschluss;
+import org.usfirst.frc.team3316.robot.chassis.commands.WiggleWiggle;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
@@ -78,6 +79,8 @@ public class Joysticks
 	public JoystickButton openAnschluss,
 						  closeAnschluss;
 	
+	public JoystickButton wiggleWiggle;
+	
 	public Joysticks ()
 	{
 		try 
@@ -102,7 +105,12 @@ public class Joysticks
     	 */
 		try
 		{
-	    	
+			/*
+			 * Chassis
+			 */
+			wiggleWiggle = new JoystickButton(joystickLeft, 2);
+			wiggleWiggle.whenPressed(new WiggleWiggle());
+			
 	    	/*
 	    	 * Stacker
 	    	 */
