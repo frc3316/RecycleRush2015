@@ -218,10 +218,20 @@ public class Stacker extends Subsystem
     	
     	heightIR = Robot.sensors.stackerHeightIR;
     	
-    	heightAverage = new MovingAverage(100, 20, () -> { return (1 / heightIR.getVoltage()); });
-    	
     	switchRight = Robot.sensors.switchRatchetRight;
     	switchLeft = Robot.sensors.switchRatchetLeft;
+    	
+    	try
+    	{
+    		heightAverage = new MovingAverage(
+    				(int) config.get("stacker_HeightAverage_Size"), 
+    				(int) config.get("stacker_HeightAverage_UpdateRate"), 
+    				() -> { return (1 / heightIR.getVoltage()); });
+    	}
+    	catch (ConfigException e)
+    	{
+    		logger.severe(e);
+    	}
     }
     
     public void timerInit ()

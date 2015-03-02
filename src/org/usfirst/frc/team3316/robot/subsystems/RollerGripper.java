@@ -48,9 +48,19 @@ public class RollerGripper extends Subsystem
     	gripperRight = Robot.actuators.rollerGripperMotorControllerRight;
     	
     	gripperGPIR = Robot.sensors.rollerGripperGPIR;
-    	gpDistanceAverage = new MovingAverage(20, 20, () -> {return 1 / gripperGPIR.getVoltage();} );
-    	
     	gripperSwitchGP = Robot.sensors.rollerGripperSwitchGP;
+
+    	try
+    	{
+    		gpDistanceAverage = new MovingAverage(
+    				(int) config.get("rollerGripper_GPDistanceAverage_Size"), 
+    				(int) config.get("rollerGripper_GPDistanceAverage_UpdateRate"), 
+    				() -> {return 1 / gripperGPIR.getVoltage();} );
+    	}
+    	catch (ConfigException e)
+    	{
+    		logger.severe(e);
+    	}
     }
     
     public void timerInit ()
