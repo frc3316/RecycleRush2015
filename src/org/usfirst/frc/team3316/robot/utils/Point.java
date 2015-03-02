@@ -1,4 +1,4 @@
-package org.usfirst.frc.team3316.robot.sequences;
+package org.usfirst.frc.team3316.robot.utils;
 
 /*
  * point class for math calculates
