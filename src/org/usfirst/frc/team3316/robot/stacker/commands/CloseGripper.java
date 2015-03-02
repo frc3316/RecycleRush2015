@@ -19,7 +19,7 @@ public class CloseGripper extends Command
 
     protected void initialize() 
     {
-    	logger.fine("HoldContainer command initialize");
+    	logger.fine("CloseGripper command initialize");
     	Robot.stacker.closeSolenoidGripper();
     }
 

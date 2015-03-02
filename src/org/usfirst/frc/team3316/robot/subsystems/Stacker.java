@@ -132,7 +132,7 @@ public class Stacker extends Subsystem
     
     public boolean closeSolenoidContainer ()
     {
-    	logger.fine("Try to close solenoid solenoid");
+    	logger.fine("Try to close container solenoid");
     	if (solenoidContainer.get() == DoubleSolenoid.Value.kReverse)
     	{
     		logger.fine("Solenoid is already closed, aborting");
