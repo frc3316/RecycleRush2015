@@ -238,6 +238,10 @@ public class SDB
 		
 		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_SetpointScale");
 		
+		putConfigVariableInSDB("CHASSIS_ENCODER_LEFT_REVERSE_DIRECTION");
+		putConfigVariableInSDB("CHASSIS_ENCODER_RIGHT_REVERSE_DIRECTION");
+		putConfigVariableInSDB("CHASSIS_ENCODER_CENTER_REVERSE_DIRECTION");
+		
 		
 		logger.info("Finished initSDB()");
 	}

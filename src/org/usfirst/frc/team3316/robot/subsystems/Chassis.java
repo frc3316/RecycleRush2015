@@ -97,8 +97,8 @@ public class Chassis extends Subsystem
 			 * Calculates speeds in field axes
 			 */
 			double vS, vF; //speeds relative to the robot (forward and sideways)
-			vS = encoderCenter.getRate();
-			vF = (encoderLeft.getRate() + encoderRight.getRate()) / 2;
+			vS = getSpeedCenter();
+			vF = (getSpeedLeft() + getSpeedRight()) / 2;
 			//Added for testing
 			SmartDashboard.putNumber("vS", vS);
 			SmartDashboard.putNumber("vF", vF);
@@ -193,7 +193,9 @@ public class Chassis extends Subsystem
 	
 	Drive defaultDrive;
 	
-	int leftEncoderScale = 1, rightEncoderScale = 1, centerEncoderScale = 1;
+	double leftEncoderScale = 1, 
+		   rightEncoderScale = 1, 
+		   centerEncoderScale = 1;
 	
 	public Chassis ()
 	{
@@ -313,17 +315,20 @@ public class Chassis extends Subsystem
      */
     public double getSpeedLeft ()
     {
-      	return encoderLeft.getRate();
+    	updateEncoderScales();
+      	return encoderLeft.getRate() * leftEncoderScale;
     }
         
     public double getSpeedRight ()
     {
-       	return encoderRight.getRate();
+    	updateEncoderScales();
+       	return encoderRight.getRate() * rightEncoderScale;
     }
         
     public double getSpeedCenter ()
     {
-      	return encoderCenter.getRate();
+    	updateEncoderScales();
+      	return encoderCenter.getRate() * centerEncoderScale;
     }
     
     /*
@@ -356,9 +361,9 @@ public class Chassis extends Subsystem
     {
     	try
     	{
-    		leftScale = (double)config.get("chassis_LeftScale");
-    		rightScale = (double)config.get("chassis_RightScale");
-    		centerScale = (double)config.get("chassis_CenterScale");
+    		leftScale = (double) config.get("chassis_LeftScale");
+    		rightScale = (double) config.get("chassis_RightScale");
+    		centerScale = (double) config.get("chassis_CenterScale");
     	}
     	catch (ConfigException e)
     	{
@@ -370,9 +375,9 @@ public class Chassis extends Subsystem
     {
     	try
     	{
-    		leftEncoderScale = (int)config.get("chassis_LeftEncoderScale");
-    		rightEncoderScale = (int)config.get("chassis_RightEncoderScale");
-    		centerEncoderScale = (int)config.get("chassis_CenterEncoderScale");
+    		leftEncoderScale = (double) config.get("chassis_LeftEncoderScale");
+    		rightEncoderScale = (double) config.get("chassis_RightEncoderScale");
+    		centerEncoderScale = (double) config.get("chassis_CenterEncoderScale");
     	}
     	catch (ConfigException e)
     	{
