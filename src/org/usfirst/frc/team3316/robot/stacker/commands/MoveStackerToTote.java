@@ -9,7 +9,7 @@ import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
  */
 public class MoveStackerToTote extends MoveStacker
 {
-	protected void initialize()
+	protected void prepareSolenoids()
 	{
 		if (gp == GamePieceCollected.Container)
 		{
@@ -22,9 +22,8 @@ public class MoveStackerToTote extends MoveStacker
 		{
 			logger.fine("NO container in the roller gripper");
 		}
-		
-		super.initialize();
 	}
+	
 	protected void setSolenoids() 
 	{
 		Robot.stacker.closeSolenoidUpper();

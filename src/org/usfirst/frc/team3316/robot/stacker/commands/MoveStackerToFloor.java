@@ -11,7 +11,7 @@ public class MoveStackerToFloor extends MoveStacker
 {
 	GamePieceCollected gp;
 	
-	protected void initialize()
+	protected void prepareSolenoids() 
 	{
 		if (gp == GamePieceCollected.None)
 		{
@@ -26,16 +26,14 @@ public class MoveStackerToFloor extends MoveStacker
 			logger.fine("YES game piece in roller gripper");
 		}
 		
-		super.initialize();
-	}
-	
-	protected void setSolenoids() 
-	{
 		/* We always want to close the container pistons so they don't colide
 		 * with any gamepiece that might be at floor position.
 		 */
 		Robot.stacker.closeSolenoidContainer();
-		
+	}
+	
+	protected void setSolenoids ()
+	{
 		Robot.stacker.openSolenoidUpper();
 		Robot.stacker.openSolenoidBottom();
 	}

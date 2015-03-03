@@ -6,7 +6,7 @@ import org.usfirst.frc.team3316.robot.utils.StackerPosition;
 
 public class ControlledMoveStackerToTote extends MoveStackerToTote 
 {
-	protected void setSolenoids() 
+	protected void prepareSolenoids() 
 	{
 		//If there is a tote inside and one of the ratchets is not in place - abort
 		//If can't close the upper or bottom pistons - abort

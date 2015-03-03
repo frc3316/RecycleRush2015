@@ -17,6 +17,8 @@ public abstract class MoveStacker extends Command
 	
 	GamePieceCollected gp;
 	
+	boolean firstExecute = false;
+	
     public MoveStacker()
     {
         requires(Robot.stacker);
@@ -28,10 +30,17 @@ public abstract class MoveStacker extends Command
     	
     	gp = Robot.rollerGripper.getGamePieceCollected();
     	
-    	setSolenoids();
+    	prepareSolenoids();
     }
 
-    protected void execute() {}
+    protected void execute() 
+    {
+    	if (!firstExecute)
+    	{
+    		setSolenoids();
+    		firstExecute = true;
+    	}
+    }
 
     protected boolean isFinished()
     {
@@ -48,5 +57,6 @@ public abstract class MoveStacker extends Command
     	logger.fine(this.getName() + "interrupted");
     }
     
-    protected abstract void setSolenoids();
+    protected abstract void prepareSolenoids();
+    protected abstract void setSolenoids(); 
 }

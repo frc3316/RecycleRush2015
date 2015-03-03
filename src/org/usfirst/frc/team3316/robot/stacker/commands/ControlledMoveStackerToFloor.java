@@ -5,7 +5,7 @@ import org.usfirst.frc.team3316.robot.utils.StackerPosition;
 
 public class ControlledMoveStackerToFloor extends MoveStackerToFloor 
 {
-	protected void setSolenoids() 
+	protected void prepareSolenoids() 
 	{
 		//If can't open upper or bottom solenoids - abort
 		if (!Robot.stacker.closeSolenoidContainer() ||

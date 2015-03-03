@@ -5,7 +5,7 @@ import org.usfirst.frc.team3316.robot.utils.StackerPosition;
 
 public class ControlledMoveStackerToStep extends MoveStackerToStep 
 {
-	protected void setSolenoids() 
+	protected void prepareSolenoids() 
 	{
 		if (!Robot.stacker.closeSolenoidContainer() ||
 			!Robot.stacker.openSolenoidUpper() || 

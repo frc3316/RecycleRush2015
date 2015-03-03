@@ -8,8 +8,10 @@ import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
  * for mechanical safety constraints. 
  */
 public class MoveStackerToStep extends MoveStacker
-{
-	protected void initialize()
+{	
+	GamePieceCollected gp;
+
+	protected void prepareSolenoids() 
 	{
 		if (gp == GamePieceCollected.None)
 		{
@@ -24,16 +26,14 @@ public class MoveStackerToStep extends MoveStacker
 			logger.fine("YES game piece in roller gripper");
 		}
 		
-		super.initialize();
-	}
-	
-	protected void setSolenoids()
-	{
 		/* We always want to close the container pistons so they don't colide
 		 * with any gamepiece that might be at floor position.
 		 */
 		Robot.stacker.closeSolenoidContainer();
-		
+	}
+	
+	protected void setSolenoids ()
+	{
 		Robot.stacker.openSolenoidUpper();
 		Robot.stacker.closeSolenoidBottom();
 	}
