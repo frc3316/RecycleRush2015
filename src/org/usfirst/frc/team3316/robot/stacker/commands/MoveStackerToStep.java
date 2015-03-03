@@ -9,13 +9,8 @@ import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
  */
 public class MoveStackerToStep extends MoveStacker
 {
-	GamePieceCollected gp;
-	
 	protected void initialize()
 	{
-		logger.fine("MoveStackerToStep command initialize");
-		
-		gp = Robot.rollerGripper.getGamePieceCollected();
 		if (gp == GamePieceCollected.None)
 		{
 			/* If there is nothing at floor position, what we might have on
@@ -28,6 +23,7 @@ public class MoveStackerToStep extends MoveStacker
 		{
 			logger.fine("YES game piece in roller gripper");
 		}
+		
 		super.initialize();
 	}
 	

@@ -192,9 +192,7 @@ public class SDB
 	}
 	
 	private void initSDB ()
-	{	
-		SmartDashboard.putData(new TankDrive());
-		SmartDashboard.putData(new StrafeDrive());
+	{
 		SmartDashboard.putData(new RobotOrientedDrive());
 		SmartDashboard.putData(new FieldOrientedDrive());
 		SmartDashboard.putData(new StartIntegrator()); //For integrator testing, should be removed
@@ -206,17 +204,6 @@ public class SDB
 		
 		SmartDashboard.putData(new SetHeadingSDB());
 		putConfigVariableInSDB("chassis_HeadingToSet");
-		
-		/*
-		 * Roller Gripper
-		 */
-		putConfigVariableInSDB("rollerGripper_RollJoystick_ChannelX");
-		putConfigVariableInSDB("rollerGripper_RollJoystick_ChannelY");
-		
-		putConfigVariableInSDB("rollerGripper_RollJoystick_InvertX");
-		putConfigVariableInSDB("rollerGripper_RollJoystick_InvertY");
-		
-		putConfigVariableInSDB("rollerGripper_RollJoystick_LowPass");
 		
 		//Game Piece IR
 		putConfigVariableInSDB("rollerGripper_ToteDistanceMinimum");

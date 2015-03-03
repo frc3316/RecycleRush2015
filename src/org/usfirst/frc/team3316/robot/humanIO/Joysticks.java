@@ -68,7 +68,8 @@ public class Joysticks
 	
 	public JoystickButton moveStackerToFloor, 
 						  moveStackerToStep, 
-						  moveStackerToTote; //pickup replaces moveStackerToTote
+						  moveStackerToTote, 
+						  pickup;
 	
 	public JoystickButton holdContainer,
 						  releaseContainer;
@@ -108,7 +109,7 @@ public class Joysticks
 			/*
 			 * Chassis
 			 */
-			wiggleWiggle = new JoystickButton(joystickLeft, 2);
+			wiggleWiggle = new JoystickButton(joystickRight, 2);
 			wiggleWiggle.whenPressed(new WiggleWiggle());
 			
 	    	/*
@@ -125,6 +126,10 @@ public class Joysticks
 			moveStackerToTote = new JoystickButton(joystickOperator, 
 					(int) config.get("BUTTON_MOVE_STACKER_TO_TOTE"));
 			moveStackerToTote.whenPressed(new MoveStackerToTote());
+			
+			pickup = new JoystickButton(joystickOperator, 
+					(int) config.get("BUTTON_PICKUP"));
+			pickup.whenPressed(new PickupSequence());
 			
 			holdContainer = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_HOLD_CONTAINER"));

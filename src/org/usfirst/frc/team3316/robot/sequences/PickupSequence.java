@@ -4,6 +4,8 @@ import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.rollerGripper.commands.WaitForGamePiece;
 import org.usfirst.frc.team3316.robot.stacker.commands.CloseGripper;
+import org.usfirst.frc.team3316.robot.stacker.commands.ControlledMoveStackerToFloor;
+import org.usfirst.frc.team3316.robot.stacker.commands.ControlledMoveStackerToTote;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToFloor;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToStep;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToTote;
@@ -22,7 +24,7 @@ public class PickupSequence extends CommandGroup
 	
     public PickupSequence() 
     {
-        addSequential(new MoveStackerToTote());
+        addSequential(new ControlledMoveStackerToTote());
         addSequential(new CloseGripper());
         addSequential(new WaitForGamePiece());
         
@@ -31,12 +33,12 @@ public class PickupSequence extends CommandGroup
     
     protected void initialize ()
     {
-    	logger.fine("PickupSequence initialize");
+    	logger.fine(this.getName() + "initialize");
     }
     
     protected void end ()
     {
-    	logger.fine("PickupSequence end");
+    	logger.fine(this.getName() + "end");
     	/*
     	 * This is in end because we don't want this to execute if the sequence
     	 * was cancelled (and interrupted was called instead of end)
@@ -46,16 +48,31 @@ public class PickupSequence extends CommandGroup
     
     protected void interrupted ()
     {
-    	logger.fine("PickupSequence interrupted");
+    	logger.fine(this.getName() + "interrupted");
     }
     
     private class MoveToEndPosition extends CommandGroup
     {
     	public MoveToEndPosition ()
     	{
-    		addSequential(new MoveStackerToFloor());
+    		addSequential(new ControlledMoveStackerToFloor());
     		addSequential(new WaitForGamePiece());
-    		addSequential(new MoveStackerToTote());
+    		addSequential(new ControlledMoveStackerToTote());
     	}
+    	
+    	protected void initialize ()
+    	{
+    	   	logger.fine(this.getName() + "initialize");
+    	}
+    	   
+    	protected void end ()
+    	{
+    	  	logger.fine(this.getName() + "end");
+    	}
+    	
+    	protected void interrupted ()
+        {
+        	logger.fine(this.getName() + "interrupted");
+        }
     }
 }

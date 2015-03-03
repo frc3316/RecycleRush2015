@@ -10,10 +10,7 @@ import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
 public class MoveStackerToTote extends MoveStacker
 {
 	protected void initialize()
-	{	
-		logger.fine("MoveStackerToTote command initialize");
-
-		GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
+	{
 		if (gp == GamePieceCollected.Container)
 		{
 			//If there is a container at floor position, it might colide with the roller gripper
@@ -25,6 +22,7 @@ public class MoveStackerToTote extends MoveStacker
 		{
 			logger.fine("NO container in the roller gripper");
 		}
+		
 		super.initialize();
 	}
 	protected void setSolenoids() 

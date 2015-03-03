@@ -13,9 +13,6 @@ public class MoveStackerToFloor extends MoveStacker
 	
 	protected void initialize()
 	{
-		logger.fine("MoveStackerToFloor command initialize");
-		
-		gp = Robot.rollerGripper.getGamePieceCollected();
 		if (gp == GamePieceCollected.None)
 		{
 			/* If there is nothing at floor position, what we might have on
@@ -28,6 +25,7 @@ public class MoveStackerToFloor extends MoveStacker
 		{
 			logger.fine("YES game piece in roller gripper");
 		}
+		
 		super.initialize();
 	}
 	
