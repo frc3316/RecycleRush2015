@@ -6,17 +6,28 @@ import org.usfirst.frc.team3316.robot.utils.StackerPosition;
 
 public class ControlledMoveStackerToTote extends MoveStackerToTote 
 {
-	protected void prepareSolenoids() 
+	protected void prepareSolenoids ()
 	{
-		//If there is a tote inside and one of the ratchets is not in place - abort
-		//If can't close the upper or bottom pistons - abort
-		if (gp == GamePieceCollected.Tote && 
-				(!Robot.stacker.getSwitchRatchetLeft() || !Robot.stacker.getSwitchRatchetRight())
-			||
-			(!Robot.stacker.closeSolenoidBottom() || !Robot.stacker.closeSolenoidUpper()))
+		//TODO: Make sure gp will not be determined by the ratchets (because currently this condition is never met)
+		if (gp == GamePieceCollected.Tote &&
+				(!Robot.rollerGripper.getSwitchLeft() || !Robot.rollerGripper.getSwitchRight()))
 		{
 			this.cancel();
 		}
+		else
+		{
+			super.prepareSolenoids();
+		}
+	}
+	
+	protected boolean setSolenoids ()
+	{
+		if (!super.setSolenoids())
+		{
+			this.cancel();
+			return false;
+		}
+		return true;
 	}
 	
 	protected boolean isFinished ()

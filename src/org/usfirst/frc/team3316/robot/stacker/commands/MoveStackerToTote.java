@@ -24,9 +24,8 @@ public class MoveStackerToTote extends MoveStacker
 		}
 	}
 	
-	protected void setSolenoids() 
+	protected boolean setSolenoids() 
 	{
-		Robot.stacker.closeSolenoidUpper();
-		Robot.stacker.closeSolenoidBottom();
+		return (Robot.stacker.closeSolenoidUpper() && Robot.stacker.closeSolenoidBottom());
 	}
 }

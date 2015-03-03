@@ -57,6 +57,15 @@ public abstract class MoveStacker extends Command
     	logger.fine(this.getName() + "interrupted");
     }
     
+    /**
+     * This method should be used for any preparation that is needed for the set solenoids
+     * It should only contain methods that are certain to not fail
+     */
     protected abstract void prepareSolenoids();
-    protected abstract void setSolenoids(); 
+    
+    /**
+     * This method should move the stacker
+     * @return whether the solenoids were successfully set
+     */
+    protected abstract boolean setSolenoids(); 
 }

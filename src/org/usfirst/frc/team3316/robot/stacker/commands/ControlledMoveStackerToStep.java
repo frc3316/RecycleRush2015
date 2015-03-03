@@ -5,14 +5,14 @@ import org.usfirst.frc.team3316.robot.utils.StackerPosition;
 
 public class ControlledMoveStackerToStep extends MoveStackerToStep 
 {
-	protected void prepareSolenoids() 
+	protected boolean setSolenoids ()
 	{
-		if (!Robot.stacker.closeSolenoidContainer() ||
-			!Robot.stacker.openSolenoidUpper() || 
-			!Robot.stacker.closeSolenoidBottom())
+		if (!super.setSolenoids())
 		{
 			this.cancel();
+			return false;
 		}
+		return true;
 	}
 	
 	protected boolean isFinished ()

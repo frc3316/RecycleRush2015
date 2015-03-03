@@ -32,9 +32,8 @@ public class MoveStackerToFloor extends MoveStacker
 		Robot.stacker.closeSolenoidContainer();
 	}
 	
-	protected void setSolenoids ()
+	protected boolean setSolenoids ()
 	{
-		Robot.stacker.openSolenoidUpper();
-		Robot.stacker.openSolenoidBottom();
+		return (Robot.stacker.openSolenoidUpper() && Robot.stacker.openSolenoidBottom());
 	}
 }

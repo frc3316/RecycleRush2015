@@ -4,16 +4,15 @@ import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.utils.StackerPosition;
 
 public class ControlledMoveStackerToFloor extends MoveStackerToFloor 
-{
-	protected void prepareSolenoids() 
+{	
+	protected boolean setSolenoids ()
 	{
-		//If can't open upper or bottom solenoids - abort
-		if (!Robot.stacker.closeSolenoidContainer() ||
-			!Robot.stacker.openSolenoidUpper() || 
-			!Robot.stacker.openSolenoidBottom())
+		if (!super.setSolenoids())
 		{
 			this.cancel();
+			return false;
 		}
+		return true;
 	}
 	
 	protected boolean isFinished ()
