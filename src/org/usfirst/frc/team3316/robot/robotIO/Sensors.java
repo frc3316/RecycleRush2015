@@ -57,6 +57,7 @@ public class Sensors
 	
 	public Sensors ()
 	{	
+		
 		try
 		{
 			session = NIVision.IMAQdxOpenCamera("cam0",

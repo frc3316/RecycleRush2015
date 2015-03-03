@@ -193,6 +193,8 @@ public class Chassis extends Subsystem
 	
 	Drive defaultDrive;
 	
+	int leftEncoderScale = 1, rightEncoderScale = 1, centerEncoderScale = 1;
+	
 	public Chassis ()
 	{
 		navigationIntegrator = new NavigationIntegrator();
@@ -289,17 +291,21 @@ public class Chassis extends Subsystem
      */
     public double getDistanceLeft ()
     {
-    	return encoderLeft.getDistance();
+    	updateEncoderScales();
+    	return encoderLeft.getDistance() * leftEncoderScale;
     }
+    
     
    public double getDistanceRight ()
     {
-    	return encoderRight.getDistance();
+	    updateEncoderScales();
+    	return encoderRight.getDistance() * rightEncoderScale;
     }
     
     public double getDistanceCenter ()
     {
-    	return encoderCenter.getDistance();
+    	updateEncoderScales();
+    	return encoderCenter.getDistance() * centerEncoderScale;
     }
     
     /*
@@ -353,6 +359,20 @@ public class Chassis extends Subsystem
     		leftScale = (double)config.get("chassis_LeftScale");
     		rightScale = (double)config.get("chassis_RightScale");
     		centerScale = (double)config.get("chassis_CenterScale");
+    	}
+    	catch (ConfigException e)
+    	{
+    		logger.severe(e);
+    	}
+    }
+    
+    private void updateEncoderScales ()
+    {
+    	try
+    	{
+    		leftEncoderScale = (int)config.get("chassis_LeftEncoderScale");
+    		rightEncoderScale = (int)config.get("chassis_RightEncoderScale");
+    		centerEncoderScale = (int)config.get("chassis_CenterEncoderScale");
     	}
     	catch (ConfigException e)
     	{
