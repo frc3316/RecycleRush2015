@@ -73,7 +73,7 @@ public class Chassis extends Subsystem
 	{	
 		private HashSet <NavigationIntegrator> integratorSet;
 		private double previousTime = 0;
-		private double previousHeading = 0;
+		private double previousS = 0, previousF = 0, previousHeading = 0;
 		
 		public NavigationTask ()
 		{
@@ -82,31 +82,26 @@ public class Chassis extends Subsystem
 		
 		public void run() 
 		{
-			/*
-			 * Variable init
-			 */
+			//Makes sure the first time delta will not be since 1970
 			if (previousTime == 0)
 			{
 				previousTime = System.currentTimeMillis();
 			}
+			/*
+			 * Current variables
+			 */
 			double currentTime = System.currentTimeMillis();
-			double dT = (currentTime - previousTime) / 1000; //conversion to seconds
 			double currentHeading = getHeading();
+			double currentS = getDistanceCenter(); //Sideways distance
+			double currentF = (getDistanceLeft() + getDistanceRight()) / 2; //Forward distance
 			
 			/*
-			 * Calculates speeds in field axes
+			 * Calculates deltas between current and previous
 			 */
-			double vS, vF; //speeds relative to the robot (forward and sideways)
-			vS = getSpeedCenter();
-			vF = (getSpeedLeft() + getSpeedRight()) / 2;
-			//Added for testing
-			SmartDashboard.putNumber("vS", vS);
-			SmartDashboard.putNumber("vF", vF);
-			
-			/*
-			 * Calculates dTheta
-			 */
+			double dT = (currentTime - previousTime) / 1000; //conversion to seconds
 			double dTheta = currentHeading - previousHeading;
+			double dS = currentS - previousS;
+			double dF = currentF - previousF;
 			//Since heading is in the range (-180) to (180), when 
 			//completing a full turn dTheta will be an absurdly big value
 			//Checks if dTheta is an absurdly big value and fixes it
@@ -122,27 +117,19 @@ public class Chassis extends Subsystem
 			/*
 			 * Calculates angular velocity
 			 */
-			//Calculation from gyro
-			angularVelocity = (dTheta)/dT; 
-			//Calculation fron encoders
-			angularVelocityEncoders = (encoderLeft.getRate() - encoderRight.getRate()) / (CHASSIS_WIDTH);
-			angularVelocityEncoders = Math.toDegrees(angularVelocityEncoders); //conversion to (degrees/sec)
+			angularVelocity = (dTheta)/dT;
 			
 			/*
-			 * Adds all of the deltas to each integrator
+			 * Adds all of the deltas to each integrator, relatively to
+			 * its starting position
 			 */
 			for (NavigationIntegrator integrator : integratorSet)
 			{
-				double vX, vY; //speeds relative to the orientation that the integrator started at
-				double headingRad = Math.toRadians(integrator.getHeading());
-				vX = (vF * Math.sin(headingRad)) + (vS * Math.sin(headingRad + (0.5 * Math.PI)));
-				vY = (vF * Math.cos(headingRad)) + (vS * Math.cos(headingRad + (0.5 * Math.PI)));
-				SmartDashboard.putNumber("vX", vX);
-				SmartDashboard.putNumber("vY", vY);
-				
-				double dX, dY;
-				dX = vX * dT;
-				dY = vY * dT;
+				double dX, dY; //speeds relative to the orientation that the integrator started at
+				//headingRad is the average of the previous integrator angle and the angle it will have (in radians)
+				double headingRad = (Math.toRadians(integrator.getHeading() + dTheta/2)); 
+				dX = (dF * Math.sin(headingRad)) + (dS * Math.sin(headingRad + (0.5 * Math.PI)));
+				dY = (dF * Math.cos(headingRad)) + (dS * Math.cos(headingRad + (0.5 * Math.PI)));
 				
 				SmartDashboard.putNumber("dX", dX);
 				SmartDashboard.putNumber("dY", dY);
@@ -155,6 +142,8 @@ public class Chassis extends Subsystem
 			 */
 			previousTime = currentTime;
 			previousHeading = currentHeading;
+			previousS = currentS;
+			previousF = currentF;
 		}
 		
 		public boolean addIntegrator (NavigationIntegrator integrator)
