@@ -7,6 +7,7 @@ import org.usfirst.frc.team3316.robot.subsystems.Chassis.NavigationIntegrator;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -124,6 +125,10 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 		integrator = new NavigationIntegrator();
 		Robot.chassis.addNavigationIntegrator(integrator);
 		
+		SmartDashboard.putNumber("Setpoint X", setpointX);
+		SmartDashboard.putNumber("Setpoint Y", setpointY);
+		SmartDashboard.putNumber("Setpoint Heading", setpointHeading);
+		
 		pidControllerX.setSetpoint(setpointX);
 		pidControllerY.setSetpoint(setpointY);
 		pidControllerHeading.setSetpoint(setpointHeading);
@@ -143,6 +148,9 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	
 	protected boolean isFinished ()
 	{
+		SmartDashboard.putBoolean("PID X on target", pidControllerX.onTarget());
+		SmartDashboard.putBoolean("PID Y on target", pidControllerY.onTarget());
+		SmartDashboard.putBoolean("PID Heading on target", pidControllerHeading.onTarget());
 		return (pidControllerX.onTarget() && pidControllerY.onTarget() && pidControllerHeading.onTarget());
 	}
 	
@@ -157,6 +165,11 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 		pidControllerHeading.reset();
 	}
 	
+	protected void interrupted ()
+	{
+		end();
+	}
+	
 	private void updatePIDVariables ()
 	{
 		try
@@ -165,19 +178,19 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 			 * Kp, Ki, Kd values
 			 */
 			pidControllerX.setPID(
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerX_KP"), 
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerX_KI"), 
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerX_KD"));
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerX_KP") / 1000, 
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerX_KI") / 1000, 
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerX_KD") / 1000);
 			
 			pidControllerY.setPID(
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerY_KP"), 
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerY_KI"), 
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerY_KD"));
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerY_KP") / 1000, 
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerY_KI") / 1000, 
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerY_KD") / 1000);
 			
 			pidControllerHeading.setPID(
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerHeading_KP"), 
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerHeading_KI"), 
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerHeading_KD"));
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerHeading_KP") / 1000, 
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerHeading_KI") / 1000, 
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerHeading_KD") / 1000);
 			
 			/*
 			 * Absolute tolerances

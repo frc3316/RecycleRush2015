@@ -21,6 +21,7 @@ import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrive;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+import org.usfirst.frc.team3316.robot.sequences.AutonomousSequence;
 
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
@@ -224,6 +225,9 @@ public class SDB
 		SmartDashboard.putData("RobotOrientedNavigation 0, 2, 90", new RobotOrientedNavigation(0, 2, 90));
 		//Three non-zero parameters
 		SmartDashboard.putData("RobotOrientedNavigation 2, 2, 0", new RobotOrientedNavigation(2, 2, 0));
+		
+		//AutonomousSequence
+		SmartDashboard.putData(new AutonomousSequence());
 		
 		SmartDashboard.putData(new StartIntegrator()); //For integrator testing, should be removed
 		
