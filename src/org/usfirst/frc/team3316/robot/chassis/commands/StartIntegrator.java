@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3316.robot.chassis.commands;
 
 import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.subsystems.Chassis.NavigationIntegrator;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -13,6 +14,8 @@ public class StartIntegrator extends Command
 
     protected void initialize() 
     {
+    	Robot.chassis.removeNavigationIntegrator(Robot.chassis.navigationIntegrator);
+    	Robot.chassis.navigationIntegrator = new NavigationIntegrator();
     	Robot.chassis.addNavigationIntegrator(Robot.chassis.navigationIntegrator);
     }
 
