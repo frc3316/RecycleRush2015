@@ -20,6 +20,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	{
 		public double pidGet() 
 		{
+			logger.fine("" + integrator.getX());
 			return integrator.getX();
 		}
 	}
@@ -27,6 +28,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	{
 		public double pidGet() 
 		{
+			logger.fine("" + integrator.getY());
 			return integrator.getY();
 		}
 	}
@@ -34,6 +36,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	{
 		public double pidGet() 
 		{
+			logger.fine("" + integrator.getHeading());
 			return integrator.getHeading();
 		}
 	}
@@ -45,6 +48,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	{
 		public void pidWrite (double output) 
 		{
+			logger.fine("" + output);
 			outputX = output;
 		}
 	}
@@ -52,6 +56,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	{
 		public void pidWrite (double output) 
 		{
+			logger.fine("" + output);
 			outputY = output;
 		}
 	}
@@ -59,6 +64,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	{
 		public void pidWrite (double output) 
 		{
+			logger.fine("" + output);
 			outputHeading = output;
 		}
 	}
@@ -89,7 +95,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 										   0, //Kd
 										   new PIDSourceX(), //PIDSource 
 										   new PIDOutputX(), //PIDOutput
-										   20); //Update rate in ms
+										   0.05); //Update rate in ms
 		pidControllerX.setOutputRange(-1, 1);
 		
 		pidControllerY = new PIDController(0, //Kp
@@ -97,7 +103,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 										   0, //Kd
 										   new PIDSourceY(), //PIDSource 
 										   new PIDOutputY(), //PIDOutput
-										   20); //Update rate in ms
+										   0.05); //Update rate in ms
 		pidControllerY.setOutputRange(-1, 1);
 		
 		pidControllerHeading = new PIDController(0, //Kp
@@ -105,7 +111,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 												 0, //Kd
 												 new PIDSourceHeading(), //PIDSource 
 												 new PIDOutputHeading(), //PIDOutput
-												 20); //Update rate in ms
+												 0.05); //Update rate in ms
 		pidControllerHeading.setOutputRange(-1, 1);
 		pidControllerHeading.setInputRange(-180, 180);
 		pidControllerHeading.setContinuous(true);
@@ -130,7 +136,8 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	protected void set ()
 	{
 		updatePIDVariables();
-		setFieldVector(outputX, outputY);
+		logger.fine("output(" + outputX + ", " + outputY + ", " + outputHeading + ")");
+		setFieldVector(outputX, outputY, integrator.getHeading());
 		setRotation(outputHeading);
 	}
 	
