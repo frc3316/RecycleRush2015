@@ -14,7 +14,7 @@ public class MovingAverage
 	
 	private TimerTask insertTask;
 	
-	DoubleSupplier supplier;
+	private DoubleSupplier supplier;
 	
 	/**
 	 * Constructor

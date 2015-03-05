@@ -4,7 +4,9 @@ import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 
 public class RobotOrientedDrive extends StrafeDrive 
 {	
-	double turnScale;
+	private double turnScale;
+	
+	private double s, f, turn;
 	
 	protected void set ()
 	{
@@ -12,11 +14,14 @@ public class RobotOrientedDrive extends StrafeDrive
 		setRotation(getLeftX());
 	}
 	
-	protected void setRobotVector (double x, double y)
+	protected void setRobotVector (double s, double f)
 	{
-		this.left = y;
-		this.right = y;
-		this.center = x;
+		this.left = f;
+		this.right = f;
+		this.center = s;
+		
+		this.s = s;
+		this.f = f;
 	}
 	
 	protected void setRotation (double requiredTurn)
@@ -32,6 +37,8 @@ public class RobotOrientedDrive extends StrafeDrive
 		 */
 		updateTurnScale();
 		requiredTurn *= turnScale;
+		
+		this.turn = requiredTurn;
 		
 		this.left += requiredTurn;
 		this.right -= requiredTurn;
@@ -63,5 +70,20 @@ public class RobotOrientedDrive extends StrafeDrive
 		{
 			logger.severe(e);
 		}
+	}
+	
+	public double getS ()
+	{
+		return this.s;
+	}
+	
+	public double getF ()
+	{
+		return this.f;
+	}
+	
+	public double getTurn ()
+	{
+		return this.turn;
 	}
 }
