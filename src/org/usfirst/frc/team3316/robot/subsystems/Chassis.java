@@ -3,8 +3,10 @@
  */
 package org.usfirst.frc.team3316.robot.subsystems;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.TimerTask;
+import java.util.Vector;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.chassis.commands.Drive;
@@ -22,6 +24,7 @@ import com.ni.vision.NIVision.Range;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -386,12 +389,33 @@ public class Chassis extends Subsystem
      */
     private class chassisVision
     {
-    	private NIVision.Range H_Range = new NIVision.Range();
-    	private NIVision.Range S_Range = new NIVision.Range();
-    	private NIVision.Range V_Range = new NIVision.Range();
+    	private NIVision.Range H_Range = new NIVision.Range(24, 49);
+    	private NIVision.Range S_Range = new NIVision.Range(67, 255);
+    	private NIVision.Range V_Range = new NIVision.Range(49, 255);
     	
+    	public class ParticleReport implements Comparator<ParticleReport>, Comparable<ParticleReport>{
+			double PercentAreaToImageArea;
+			double Area;
+			double ConvexHullArea;
+			double BoundingRectLeft;
+			double BoundingRectTop;
+			double BoundingRectRight;
+			double BoundingRectBottom;
+			
+			public int compareTo(ParticleReport r)
+			{
+				return (int)(r.Area - this.Area);
+			}
+			
+			public int compare(ParticleReport r1, ParticleReport r2)
+			{
+				return (int)(r1.Area - r2.Area);
+			}
+		};
+		
     	public void processTotes ()
         {
+    		DBugLogger logger = Robot.logger;
         	if (Robot.sensors.isCameraFound())
         	{
         		Image image = NIVision.imaqCreateImage(ImageType.IMAGE_RGB, 0);
@@ -401,20 +425,54 @@ public class Chassis extends Subsystem
         		
         		Image binaryImage = NIVision.imaqCreateImage(ImageType.IMAGE_U8, 0);
         		
-        		NIVision.imaqColorThreshold(binaryImage, 
-        									image, 
-        									255, 
-        									NIVision.ColorMode.HSV, 
-        									H_Range, 
-        									S_Range, 
-        									V_Range);
-        		
         		NIVision.imaqWriteJPEGFile(binaryImage, 
         								   "/home/lvuser/chassisProcessTotes.jpg", 
         								   50, 
         								   new NIVision.RawData());
         		
-        		logger.fine("processTotes() particle number " + NIVision.imaqCountParticles(binaryImage, 1));
+        		NIVision.imaqReadFile(image, "/home/lvuser/chassisProcessTotes.jpg");
+				
+        		NIVision.imaqColorThreshold(binaryImage, 
+											image, 
+											255, 
+											NIVision.ColorMode.HSV, 
+											H_Range, 
+											S_Range, 
+											V_Range);
+
+        		int numParticles = NIVision.imaqCountParticles(binaryImage, 1);
+
+				if(numParticles > 0)
+				{
+					Vector<ParticleReport> particles = new Vector<ParticleReport>();
+					for(int particleIndex = 0; particleIndex < numParticles; particleIndex++)
+					{
+						ParticleReport par = new ParticleReport();
+						par.PercentAreaToImageArea = NIVision.imaqMeasureParticle(binaryImage, particleIndex, 0, NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA);
+						par.Area = NIVision.imaqMeasureParticle(binaryImage, particleIndex, 0, NIVision.MeasurementType.MT_AREA);
+						par.ConvexHullArea = NIVision.imaqMeasureParticle(binaryImage, particleIndex, 0, NIVision.MeasurementType.MT_CONVEX_HULL_AREA);
+						par.BoundingRectTop = NIVision.imaqMeasureParticle(binaryImage, particleIndex, 0, NIVision.MeasurementType.MT_BOUNDING_RECT_TOP);
+						par.BoundingRectLeft = NIVision.imaqMeasureParticle(binaryImage, particleIndex, 0, NIVision.MeasurementType.MT_BOUNDING_RECT_LEFT);
+						par.BoundingRectBottom = NIVision.imaqMeasureParticle(binaryImage, particleIndex, 0, NIVision.MeasurementType.MT_BOUNDING_RECT_BOTTOM);
+						par.BoundingRectRight = NIVision.imaqMeasureParticle(binaryImage, particleIndex, 0, NIVision.MeasurementType.MT_BOUNDING_RECT_RIGHT);
+						particles.add(par);
+					}
+					particles.sort(null);
+					
+					ParticleReport report = particles.firstElement(); //biggest particle?
+					
+					double normalizedWidth, targetWidth;
+					NIVision.GetImageSizeResult size;
+
+					size = NIVision.imaqGetImageSize(image);
+					normalizedWidth = 2*(report.BoundingRectRight - report.BoundingRectLeft)/size.width;
+					targetWidth = 26.0;
+
+					logger.info("Distance: " + targetWidth/(normalizedWidth*12*Math.tan(60*Math.PI/(180*2))));
+					
+				}
+				
+				Timer.delay(0.005);	// wait for a motor update time
         	}
         }
     }

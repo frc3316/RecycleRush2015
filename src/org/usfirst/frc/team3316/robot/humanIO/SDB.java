@@ -19,6 +19,7 @@ import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrive;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+import org.usfirst.frc.team3316.robot.rollerGripper.commands.SavePictures;
 
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
@@ -198,7 +199,7 @@ public class SDB
 		SmartDashboard.putData(new RobotOrientedDrive());
 		SmartDashboard.putData(new FieldOrientedDrive());
 		SmartDashboard.putData(new StartIntegrator()); //For integrator testing, should be removed
-		
+		SmartDashboard.putData(new SavePictures());
 		/*
 		 * Set Heading SDB
 		 */
