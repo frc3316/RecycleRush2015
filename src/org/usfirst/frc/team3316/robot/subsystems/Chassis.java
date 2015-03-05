@@ -12,6 +12,7 @@ import org.usfirst.frc.team3316.robot.chassis.commands.FieldOrientedDrive;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+import org.usfirst.frc.team3316.robot.utils.MovingAverage;
 
 import com.kauailabs.nav6.frc.IMUAdvanced;
 
@@ -72,8 +73,10 @@ public class Chassis extends Subsystem
 	private class NavigationTask extends TimerTask
 	{	
 		private HashSet <NavigationIntegrator> integratorSet;
+		
 		private double previousTime = 0;
-		private double previousS = 0, previousF = 0, previousHeading = 0;
+		private double previousF = 0, previousHeading = 0;
+		private double speedS = 0; //speed sideways
 		
 		public NavigationTask ()
 		{
@@ -92,16 +95,17 @@ public class Chassis extends Subsystem
 			 */
 			double currentTime = System.currentTimeMillis();
 			double currentHeading = getHeading();
-			double currentS = getDistanceCenter(); //Sideways distance
 			double currentF = (getDistanceLeft() + getDistanceRight()) / 2; //Forward distance
 			
 			/*
 			 * Calculates deltas between current and previous
 			 */
+			
+			//delta time
 			double dT = (currentTime - previousTime) / 1000; //conversion to seconds
+			
+			//delta heading (theta)
 			double dTheta = currentHeading - previousHeading;
-			double dS = currentS - previousS;
-			double dF = currentF - previousF;
 			//Since heading is in the range (-180) to (180), when 
 			//completing a full turn dTheta will be an absurdly big value
 			//Checks if dTheta is an absurdly big value and fixes it
@@ -114,14 +118,27 @@ public class Chassis extends Subsystem
 				dTheta += 360;
 			}
 			
+			//delta forward
+			double dF = currentF - previousF;
+			
+			//delta sideways 
+			//this is calculated with the accelerometer because the center wheel slides too much 
+			speedS += getAccelX() * dT;
+			//Resets the speed accumulator to prevent drift
+			if (getSpeedCenter() == 0)
+			{
+				speedS = 0;
+			}
+			double dS = speedS*dT;
+			
 			/*
 			 * Calculates angular velocity
 			 */
 			angularVelocity = (dTheta)/dT;
 			
 			/*
-			 * Adds all of the deltas to each integrator, relatively to
-			 * its starting position
+			 * Adds all of the deltas to each integrator, relatively 
+			 * to its starting position
 			 */
 			for (NavigationIntegrator integrator : integratorSet)
 			{
@@ -131,6 +148,7 @@ public class Chassis extends Subsystem
 				dX = (dF * Math.sin(headingRad)) + (dS * Math.sin(headingRad + (0.5 * Math.PI)));
 				dY = (dF * Math.cos(headingRad)) + (dS * Math.cos(headingRad + (0.5 * Math.PI)));
 				
+				//TODO: REMOVE THESE WHEN TESTING IS OVER.
 				SmartDashboard.putNumber("dX", dX);
 				SmartDashboard.putNumber("dY", dY);
 				
@@ -142,7 +160,6 @@ public class Chassis extends Subsystem
 			 */
 			previousTime = currentTime;
 			previousHeading = currentHeading;
-			previousS = currentS;
 			previousF = currentF;
 		}
 		
@@ -169,6 +186,7 @@ public class Chassis extends Subsystem
 	private SpeedController center;
 	
 	private IMUAdvanced navx;
+	private MovingAverage accelXAverage, accelYAverage;
 	
 	private Encoder encoderLeft, encoderRight, encoderCenter;
 	
@@ -176,7 +194,7 @@ public class Chassis extends Subsystem
 	
 	private double headingOffset = 0;
 	
-	private double angularVelocity = 0, angularVelocityEncoders = 0; //this is constantly calculated by NavigationThread
+	private double angularVelocity = 0; //this is constantly calculated by NavigationThread
 	
 	private double CHASSIS_WIDTH; //initialized in constructor 
 	
@@ -207,6 +225,16 @@ public class Chassis extends Subsystem
 		try
 		{
 			CHASSIS_WIDTH = (double) config.get("CHASSIS_WIDTH");
+			
+			accelXAverage = new MovingAverage(
+					(int) config.get("chassis_AccelXAverage_Size"), 
+					(int) config.get("chassis_AccelXAverage_UpdateRate"), 
+					() -> {return navx.getWorldLinearAccelX();});
+			
+			accelYAverage = new MovingAverage(
+					(int) config.get("chassis_AccelYAverage_Size"), 
+					(int) config.get("chassis_AccelYAverage_UpdateRate"), 
+					() -> {return navx.getWorldLinearAccelY();});
 		}
 		catch (ConfigException e)
 		{
@@ -230,7 +258,7 @@ public class Chassis extends Subsystem
     {
     	updateScales();
     	
-    	this.left1.set (left *leftScale);
+    	this.left1.set (left * leftScale);
     	this.left2.set (left * leftScale);
     	
     	this.right1.set (right * rightScale);
@@ -272,11 +300,6 @@ public class Chassis extends Subsystem
     	return angularVelocity;
     }
     
-    public double getAngularVelocityEncoders ()
-    {
-    	return angularVelocityEncoders;
-    }
-    
     /*
      * Distance 
      */
@@ -285,7 +308,6 @@ public class Chassis extends Subsystem
     	updateEncoderScales();
     	return encoderLeft.getDistance() * leftEncoderScale;
     }
-    
     
    public double getDistanceRight ()
     {
@@ -323,14 +345,38 @@ public class Chassis extends Subsystem
     /*
      * Acceleration
      */
+    private double accelLowPass = 0.0;
+    
     public double getAccelX ()
     {
-    	return navx.getWorldLinearAccelX();
+    	return accelLowPass(accelXAverage.get());
     }
     
     public double getAccelY ()
     {
-    	return navx.getWorldLinearAccelY();
+    	return accelLowPass(accelYAverage.get());
+    }
+    
+    private double accelLowPass (double x)
+	{
+    	updateAccelLowPass();
+		if (Math.abs(x) < accelLowPass)
+		{
+			return 0;
+		}
+		return x;
+	}
+    
+    private void updateAccelLowPass ()
+    {
+    	try
+    	{
+    		accelLowPass = (double) config.get("chassis_AccelLowPass");
+    	}
+    	catch (ConfigException e)
+    	{
+    		logger.severe(e);
+    	}
     }
     
     /*
