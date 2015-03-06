@@ -160,6 +160,10 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 		
 		Robot.chassis.removeNavigationIntegrator(integrator);
 		
+		pidControllerX.setSetpoint(0);
+		pidControllerY.setSetpoint(0);
+		pidControllerHeading.setSetpoint(0);
+		
 		pidControllerX.reset();
 		pidControllerY.reset();
 		pidControllerHeading.reset();

@@ -132,8 +132,6 @@ public class SDB
 	{
 		variablesInSDB = new Hashtable <String, Class <?> > ();
 		
-		SmartDashboard.putData(new UpdateVariablesInConfig()); //NEVER REMOVE THIS COMMAND
-		
 		initSDB();
 		
 		if (Robot.sensors.isCameraFound())
@@ -203,6 +201,7 @@ public class SDB
 	
 	private void initSDB ()
 	{
+		SmartDashboard.putData(new UpdateVariablesInConfig()); //NEVER REMOVE THIS COMMAND
 		/*
 		 * Basic Drives
 		 */
