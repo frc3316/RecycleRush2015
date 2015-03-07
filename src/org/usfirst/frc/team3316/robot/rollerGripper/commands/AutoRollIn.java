@@ -7,40 +7,46 @@ import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 /**
  *
  */
-public class AutoRollIn extends Roll {
-	double left = 0, right = 0;
-	double leftScale = 0, rightScale  = 0;
+public class AutoRollIn extends Roll 
+{
+	private int finishCounter;
+	private int maxFinishCounter;
 	
-    public AutoRollIn() {
+    public AutoRollIn() 
+    {
         requires(Robot.rollerGripper);
     }
 
-    protected void initialize() {
-    	updatesSpeeds();
+    protected void initialize() 
+    {
+    	finishCounter = 0;
     }
 
-    protected boolean isFinished() {
-        return Robot.rollerGripper.getSwitchGamePiece();
-    }
-
-	protected void setSpeeds() {
-		
-		this.left = left * leftScale;
-		this.right = right * rightScale;
-	}
-	
-	private void updatesSpeeds() {
+	protected void setSpeeds() 
+	{	
 		try
 		{
-			left = (double) config.get("RollerGripper_Auto_Roll_In_Motor_Speed_Left");
-			right = (double) config.get("RollerGripper_Auto_Roll_In_Motor_Speed_Right");
-			leftScale = (double) config.get("rollerGripper_LeftScale");
-			rightScale = (double) config.get("rollerGripper_RightScale");
+			left = (double) config.get("rollerGripper_AutoRollIn_Left");
+			right = (double) config.get("rollerGripper_AutoRollIn_Right");
 			
+			maxFinishCounter = (int) config.get("rollerGripper_AutoRollIn_MaxFinishCounter");
 		}
 		catch (ConfigException e)
 		{
 			logger.severe(e);
 		}
 	}
+	
+	protected boolean isFinished() 
+    {
+        if (Robot.rollerGripper.getSwitchGamePiece())
+        {
+        	finishCounter++;
+        }
+        else
+        {
+        	finishCounter = 0;
+        }
+        return finishCounter >= maxFinishCounter;
+    }
 }

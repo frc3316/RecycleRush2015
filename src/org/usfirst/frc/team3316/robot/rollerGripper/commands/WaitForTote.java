@@ -1,6 +1,8 @@
 package org.usfirst.frc.team3316.robot.rollerGripper.commands;
 
 import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.config.Config;
+import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
 
@@ -12,11 +14,26 @@ import edu.wpi.first.wpilibj.command.Command;
 public class WaitForTote extends Command 
 {
 	DBugLogger logger = Robot.logger;
+	Config config = Robot.config;
+	
+	private int finishCounter;
+	private int maxFinishCounter;
 	
     public WaitForTote() {}
 
-    protected void initialize() {
+    protected void initialize() 
+    {
     	logger.fine("WaitForGamePiece command initialize");
+    	
+    	finishCounter = 0;
+    	try 
+    	{
+			maxFinishCounter = (int) config.get("rollerGripper_WaitForTote_MaxFinishCounter");
+		} 
+    	catch (ConfigException e) 
+    	{
+			logger.severe(e);
+		}
     }
 
     protected void execute() {}
@@ -24,7 +41,17 @@ public class WaitForTote extends Command
     protected boolean isFinished() 
     {
     	GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
-        return gp == GamePieceCollected.Tote;
+        
+    	if (gp == GamePieceCollected.Tote)
+        {
+        	finishCounter++;
+        }
+        else
+        {
+        	finishCounter = 0;
+        }
+        
+        return finishCounter >= maxFinishCounter;
     }
 
     protected void end() {}
