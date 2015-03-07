@@ -17,7 +17,10 @@ public class UpdateVariablesInConfig extends Command
 {
 	Config config = Robot.config;
 	
-    public UpdateVariablesInConfig() {}
+    public UpdateVariablesInConfig() 
+    {
+    	setRunWhenDisabled(true);
+    }
 
     protected void initialize()
     {

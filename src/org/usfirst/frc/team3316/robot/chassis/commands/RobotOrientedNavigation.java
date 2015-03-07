@@ -72,13 +72,17 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	
 	private NavigationIntegrator integrator;
 	
-	private PIDController pidControllerX, pidControllerY, pidControllerHeading;
+	protected PIDController pidControllerX, pidControllerY, pidControllerHeading;
 	
 	private double setpointX, setpointY, setpointHeading;
 	
 	private double outputX, outputY, outputHeading;
 	
-	public RobotOrientedNavigation (double setpointX , double setpointY, double setpointHeading)
+	private int set; //the set of pid values to use
+	
+	private int finishCounter = 0, maxFinishCounter;
+	
+	public RobotOrientedNavigation (double setpointX , double setpointY, double setpointHeading, int set)
 	{
 		/*
 		 * variable init
@@ -86,6 +90,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 		this.setpointX = setpointX;
 		this.setpointY = setpointY;
 		this.setpointHeading = setpointHeading;
+		this.set = set;
 		
 		/*
 		 * Init of pid controllers
@@ -116,6 +121,10 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 		pidControllerHeading.setOutputRange(-1, 1);
 		pidControllerHeading.setInputRange(-180, 180);
 		pidControllerHeading.setContinuous(true);
+		
+		pidControllerX.setSetpoint(setpointX);
+		pidControllerY.setSetpoint(setpointY);
+		pidControllerHeading.setSetpoint(setpointHeading);
 	}
 	
 	protected void initialize ()
@@ -129,9 +138,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 		SmartDashboard.putNumber("Setpoint Y", setpointY);
 		SmartDashboard.putNumber("Setpoint Heading", setpointHeading);
 		
-		pidControllerX.setSetpoint(setpointX);
-		pidControllerY.setSetpoint(setpointY);
-		pidControllerHeading.setSetpoint(setpointHeading);
+		finishCounter = 0;
 		
 		pidControllerX.enable();
 		pidControllerY.enable();
@@ -151,7 +158,17 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 		SmartDashboard.putBoolean("PID X on target", pidControllerX.onTarget());
 		SmartDashboard.putBoolean("PID Y on target", pidControllerY.onTarget());
 		SmartDashboard.putBoolean("PID Heading on target", pidControllerHeading.onTarget());
-		return (pidControllerX.onTarget() && pidControllerY.onTarget() && pidControllerHeading.onTarget());
+		
+		if (pidControllerX.onTarget() && pidControllerY.onTarget() && pidControllerHeading.onTarget())
+		{
+			finishCounter++;
+		}
+		else
+		{
+			finishCounter = 0;
+		}
+		
+		return finishCounter >= maxFinishCounter;
 	}
 	
 	protected void end ()
@@ -159,10 +176,6 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 		super.end();
 		
 		Robot.chassis.removeNavigationIntegrator(integrator);
-		
-		pidControllerX.setSetpoint(0);
-		pidControllerY.setSetpoint(0);
-		pidControllerHeading.setSetpoint(0);
 		
 		pidControllerX.reset();
 		pidControllerY.reset();
@@ -182,46 +195,48 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 			 * Kp, Ki, Kd values
 			 */
 			pidControllerX.setPID(
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerX_KP") / 1000, 
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerX_KI") / 1000, 
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerX_KD") / 1000);
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerX_KP_" + set) / 1000, 
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerX_KI_" + set) / 1000, 
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerX_KD_" + set) / 1000);
 			
 			pidControllerY.setPID(
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerY_KP") / 1000, 
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerY_KI") / 1000, 
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerY_KD") / 1000);
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerY_KP_" + set) / 1000, 
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerY_KI_" + set) / 1000, 
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerY_KD_" + set) / 1000);
 			
 			pidControllerHeading.setPID(
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerHeading_KP") / 1000, 
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerHeading_KI") / 1000, 
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerHeading_KD") / 1000);
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerHeading_KP_" + set) / 1000, 
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerHeading_KI_" + set) / 1000, 
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerHeading_KD_" + set) / 1000);
 			
 			/*
 			 * Absolute tolerances
 			 */
 			pidControllerX.setAbsoluteTolerance(
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerX_AbsoluteTolerance"));
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerX_AbsoluteTolerance_" + set));
 			
 			pidControllerY.setAbsoluteTolerance(
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerY_AbsoluteTolerance"));
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerY_AbsoluteTolerance_" + set));
 			
 			pidControllerHeading.setAbsoluteTolerance(
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerHeading_AbsoluteTolerance"));
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerHeading_AbsoluteTolerance_" + set));
 			
 			/*
 			 * Output ranges
 			 */
 			pidControllerX.setOutputRange(
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerX_MinimumOutput"), 
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerX_MaximumOutput"));
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerX_MinimumOutput_" + set), 
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerX_MaximumOutput_" + set));
 			
 			pidControllerY.setOutputRange(
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerY_MinimumOutput"), 
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerY_MaximumOutput"));
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerY_MinimumOutput_" + set), 
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerY_MaximumOutput_" + set));
 			
 			pidControllerHeading.setOutputRange(
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerHeading_MinimumOutput"), 
-					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerHeading_MaximumOutput"));
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerHeading_MinimumOutput_" + set), 
+					(double)config.get("chassis_RobotOrientedNavigation_PIDControllerHeading_MaximumOutput_" + set));
+			
+			maxFinishCounter = (int) config.get("chassis_RobotOrientedNavigation_MaxFinishCounter_" + set);
 		}
 		catch (ConfigException e)
 		{

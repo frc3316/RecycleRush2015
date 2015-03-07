@@ -19,7 +19,10 @@ public abstract class SetHeading extends Command
 	
     public SetHeading () {}
 
-    protected void initialize() {}
+    protected void initialize() 
+    {
+    	setRunWhenDisabled(true);
+    }
 
     protected void execute() {}
 
