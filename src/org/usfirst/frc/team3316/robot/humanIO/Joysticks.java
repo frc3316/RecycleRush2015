@@ -69,7 +69,7 @@ public class Joysticks
 	public JoystickButton moveStackerToFloor, 
 						  moveStackerToStep, 
 						  moveStackerToTote, 
-						  pickup;
+						  totePickup;
 	
 	public JoystickButton holdContainer,
 						  releaseContainer;
@@ -106,6 +106,10 @@ public class Joysticks
     	 */
 		try
 		{
+			totePickup = new JoystickButton(joystickOperator, 
+ 					(int) config.get("BUTTON_TOTE_PICKUP"));
+			totePickup.whenPressed(new TotePickupSequence());
+			
 			/*
 			 * Chassis
 			 */
