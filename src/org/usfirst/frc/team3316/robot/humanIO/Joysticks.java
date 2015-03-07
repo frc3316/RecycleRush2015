@@ -131,9 +131,9 @@ public class Joysticks
 					(int) config.get("BUTTON_MOVE_STACKER_TO_TOTE"));
 			moveStackerToTote.whenPressed(new MoveStackerToTote());
 			
-			pickup = new JoystickButton(joystickOperator, 
+			totePickup = new JoystickButton(joystickOperator, 
 					(int) config.get("BUTTON_PICKUP"));
-			pickup.whenPressed(new TotePickupSequence());
+			totePickup.whenPressed(new TotePickupSequence());
 			
 			holdContainer = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_HOLD_CONTAINER"));

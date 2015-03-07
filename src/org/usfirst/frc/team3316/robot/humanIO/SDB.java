@@ -19,6 +19,7 @@ import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrive;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+import org.usfirst.frc.team3316.robot.sequences.AutonomousSequenceWithoutDrive;
 
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
@@ -123,6 +124,8 @@ public class SDB
 		variablesInSDB = new Hashtable <String, Class <?> > ();
 		
 		SmartDashboard.putData(new UpdateVariablesInConfig()); //NEVER REMOVE THIS COMMAND
+		
+		SmartDashboard.putData(new AutonomousSequenceWithoutDrive());
 		
 		initSDB();
 		
