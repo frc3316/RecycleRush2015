@@ -34,6 +34,6 @@ public class MoveStackerToStep extends MoveStacker
 	
 	protected boolean setSolenoids ()
 	{
-		return (Robot.stacker.openSolenoidUpper() && Robot.stacker.closeSolenoidBottom());
+		return (Robot.stacker.closeSolenoidUpper() && Robot.stacker.openSolenoidBottom());
 	}
 }

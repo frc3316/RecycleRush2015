@@ -18,13 +18,15 @@ public class MoveStackerToFloor extends MoveStacker
 			/* If there is nothing at floor position, what we might have on
 			 * the stacker will colide with the roller gripper.
 			 */
-			logger.fine("NO game piece in roller gripper");
-			Robot.stacker.openSolenoidGripper();
+			logger.fine("NO game piece in roller gripper");			
 		}
 		else
 		{
 			logger.fine("YES game piece in roller gripper");
 		}
+		
+		// The stacker will colide with the roller gripper.
+		Robot.stacker.openSolenoidGripper();
 		
 		/* We always want to close the container pistons so they don't colide
 		 * with any gamepiece that might be at floor position.

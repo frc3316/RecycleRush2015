@@ -7,6 +7,7 @@ import org.usfirst.frc.team3316.robot.stacker.commands.CloseGripper;
 import org.usfirst.frc.team3316.robot.stacker.commands.ControlledMoveStackerToFloor;
 import org.usfirst.frc.team3316.robot.stacker.commands.ControlledMoveStackerToTote;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToFloor;
+import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerDownToTote;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToStep;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToTote;
 
@@ -16,15 +17,15 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class PickupSequence extends CommandGroup 
+public class TotePickupSequence extends CommandGroup 
 {    
 	DBugLogger logger = Robot.logger;
 	
 	Command moveToEndPosition;
 	
-    public PickupSequence() 
+    public TotePickupSequence() 
     {
-        addSequential(new ControlledMoveStackerToTote());
+        addSequential(new MoveStackerToTote());
         addSequential(new CloseGripper());
         addSequential(new WaitForGamePiece());
         
@@ -55,9 +56,9 @@ public class PickupSequence extends CommandGroup
     {
     	public MoveToEndPosition ()
     	{
-    		addSequential(new ControlledMoveStackerToFloor());
+    		addSequential(new MoveStackerDownToTote());
     		addSequential(new WaitForGamePiece());
-    		addSequential(new ControlledMoveStackerToTote());
+    		addSequential(new MoveStackerToTote());
     	}
     	
     	protected void initialize ()

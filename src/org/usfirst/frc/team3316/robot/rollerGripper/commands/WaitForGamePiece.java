@@ -23,8 +23,8 @@ public class WaitForGamePiece extends Command
 
     protected boolean isFinished() 
     {
-        return (Robot.rollerGripper.getGamePieceCollected() == GamePieceCollected.Container ||
-        		Robot.rollerGripper.getGamePieceCollected() == GamePieceCollected.Tote);
+    	GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
+        return !(gp == GamePieceCollected.None);
     }
 
     protected void end() {}
