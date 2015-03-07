@@ -28,6 +28,8 @@ public abstract class MoveStacker extends Command
     {
     	logger.fine(this.getName() + " initialized");
     	
+    	firstExecute = false;
+    	
     	gp = Robot.rollerGripper.getGamePieceCollected();
     	
     	prepareSolenoids();

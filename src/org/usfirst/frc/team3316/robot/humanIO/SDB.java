@@ -127,12 +127,6 @@ public class SDB
 		
 		SmartDashboard.putData(new UpdateVariablesInConfig()); //NEVER REMOVE THIS COMMAND
 		
-		SmartDashboard.putData(new AutonomousSequenceWithoutDrive());
-		
-		SmartDashboard.putData(new AutoTotePickup());
-		
-		SmartDashboard.putData(new AutoToteCollect());
-		
 		initSDB();
 		
 		if (Robot.sensors.isCameraFound())
@@ -238,6 +232,11 @@ public class SDB
 		putConfigVariableInSDB("stacker_HeightStepMinimum");
 		putConfigVariableInSDB("stacker_HeightStepMaximum");
 		
+		/*
+		 * Auto stacker testing
+		 */
+		SmartDashboard.putData(new AutoTotePickup());
+		SmartDashboard.putData(new AutoToteCollect());
 		
 		logger.info("Finished initSDB()");
 	}

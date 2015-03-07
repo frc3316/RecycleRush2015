@@ -9,11 +9,11 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * Command that finishes when a game piece is completely collected
  */
-public class WaitForGamePiece extends Command 
+public class WaitForTote extends Command 
 {
 	DBugLogger logger = Robot.logger;
 	
-    public WaitForGamePiece() {}
+    public WaitForTote() {}
 
     protected void initialize() {
     	logger.fine("WaitForGamePiece command initialize");

@@ -2,7 +2,7 @@ package org.usfirst.frc.team3316.robot.sequences;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
-import org.usfirst.frc.team3316.robot.rollerGripper.commands.WaitForGamePiece;
+import org.usfirst.frc.team3316.robot.rollerGripper.commands.WaitForTote;
 import org.usfirst.frc.team3316.robot.stacker.commands.CloseGripper;
 import org.usfirst.frc.team3316.robot.stacker.commands.ControlledMoveStackerToFloor;
 import org.usfirst.frc.team3316.robot.stacker.commands.ControlledMoveStackerToTote;
@@ -27,7 +27,7 @@ public class TotePickup extends CommandGroup
     {
         addSequential(new MoveStackerToTote());
         addSequential(new CloseGripper());
-        addSequential(new WaitForGamePiece());
+        addSequential(new WaitForTote());
         
         moveToEndPosition = new MoveToEndPosition();
     }
@@ -57,7 +57,7 @@ public class TotePickup extends CommandGroup
     	public MoveToEndPosition ()
     	{
     		addSequential(new MoveStackerDownToTote());
-    		addSequential(new WaitForGamePiece());
+    		addSequential(new WaitForTote());
     		addSequential(new MoveStackerToTote());
     	}
     	
