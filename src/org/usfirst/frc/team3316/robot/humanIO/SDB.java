@@ -19,6 +19,8 @@ import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrive;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+import org.usfirst.frc.team3316.robot.sequences.AutoToteCollect;
+import org.usfirst.frc.team3316.robot.sequences.AutoTotePickup;
 import org.usfirst.frc.team3316.robot.sequences.AutonomousSequenceWithoutDrive;
 
 import com.ni.vision.NIVision;
@@ -126,6 +128,10 @@ public class SDB
 		SmartDashboard.putData(new UpdateVariablesInConfig()); //NEVER REMOVE THIS COMMAND
 		
 		SmartDashboard.putData(new AutonomousSequenceWithoutDrive());
+		
+		SmartDashboard.putData(new AutoTotePickup());
+		
+		SmartDashboard.putData(new AutoToteCollect());
 		
 		initSDB();
 		

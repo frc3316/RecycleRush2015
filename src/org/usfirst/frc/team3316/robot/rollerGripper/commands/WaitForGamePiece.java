@@ -24,7 +24,7 @@ public class WaitForGamePiece extends Command
     protected boolean isFinished() 
     {
     	GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
-        return !(gp == GamePieceCollected.None);
+        return gp == GamePieceCollected.Tote;
     }
 
     protected void end() {}

@@ -10,7 +10,7 @@ import org.usfirst.frc.team3316.robot.chassis.commands.WiggleWiggle;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
-import org.usfirst.frc.team3316.robot.sequences.TotePickupSequence;
+import org.usfirst.frc.team3316.robot.sequences.TotePickup;
 import org.usfirst.frc.team3316.robot.stacker.commands.CloseGripper;
 import org.usfirst.frc.team3316.robot.stacker.commands.HoldContainer;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToFloor;
@@ -108,7 +108,7 @@ public class Joysticks
 		{
 			totePickup = new JoystickButton(joystickOperator, 
  					(int) config.get("BUTTON_TOTE_PICKUP"));
-			totePickup.whenPressed(new TotePickupSequence());
+			totePickup.whenPressed(new TotePickup());
 			
 			/*
 			 * Chassis
@@ -132,8 +132,8 @@ public class Joysticks
 			moveStackerToTote.whenPressed(new MoveStackerToTote());
 			
 			totePickup = new JoystickButton(joystickOperator, 
-					(int) config.get("BUTTON_PICKUP"));
-			totePickup.whenPressed(new TotePickupSequence());
+					(int) config.get("BUTTON_TOTE_PICKUP"));
+			totePickup.whenPressed(new TotePickup());
 			
 			holdContainer = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_HOLD_CONTAINER"));

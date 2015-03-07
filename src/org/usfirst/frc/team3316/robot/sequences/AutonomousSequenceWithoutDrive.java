@@ -14,10 +14,6 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 public class AutonomousSequenceWithoutDrive extends CommandGroup {
     
     public  AutonomousSequenceWithoutDrive() {
-        addSequential(new AutoRollIn());
-        addSequential(new MoveStackerToStep());
-        addSequential(new OpenGripper());
-        addSequential(new WaitCommand(1));
-        addSequential(new MoveStackerToTote());
+        
     }
 }

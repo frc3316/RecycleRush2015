@@ -17,13 +17,13 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class TotePickupSequence extends CommandGroup 
+public class TotePickup extends CommandGroup 
 {    
 	DBugLogger logger = Robot.logger;
 	
 	Command moveToEndPosition;
 	
-    public TotePickupSequence() 
+    public TotePickup() 
     {
         addSequential(new MoveStackerToTote());
         addSequential(new CloseGripper());
