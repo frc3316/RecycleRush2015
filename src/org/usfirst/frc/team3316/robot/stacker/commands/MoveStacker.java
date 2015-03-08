@@ -6,6 +6,7 @@ import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 /**
  *
@@ -17,7 +18,8 @@ public abstract class MoveStacker extends Command
 	
 	GamePieceCollected gp;
 	
-	boolean firstExecute = false;
+	boolean setSuccesful;
+	int countUnsuccesful;
 	
     public MoveStacker()
     {
@@ -28,25 +30,22 @@ public abstract class MoveStacker extends Command
     {
     	logger.fine(this.getName() + " initialized");
     	
-    	firstExecute = false;
+    	setSuccesful = false;
     	
     	gp = Robot.rollerGripper.getGamePieceCollected();
     	
     	prepareSolenoids();
+    	
     }
 
     protected void execute() 
     {
-    	if (!firstExecute)
-    	{
-    		setSolenoids();
-    		firstExecute = true;
-    	}
+    	setSuccesful = setSolenoids();
     }
 
     protected boolean isFinished()
     {
-    	return true;
+    	return setSuccesful;
     }
     
     protected void end() 
