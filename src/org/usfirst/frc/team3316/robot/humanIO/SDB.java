@@ -16,7 +16,6 @@ import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrive;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
-
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
 
@@ -103,7 +102,7 @@ public class SDB
 	public void timerInit ()
 	{
 		updateSDBTask = new UpdateSDBTask();
-		Robot.timer.schedule(updateSDBTask, 0, 20);
+		Robot.timer.schedule(updateSDBTask, 0, 100);
 	}
 	
 	/**
@@ -171,7 +170,6 @@ public class SDB
 		
 		SmartDashboard.putData(new SetHeadingSDB());
 		putConfigVariableInSDB("chassis_HeadingToSet");
-		
 		
 		logger.info("Finished initSDB()");
 	}

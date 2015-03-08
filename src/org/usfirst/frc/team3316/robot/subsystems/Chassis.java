@@ -208,7 +208,7 @@ public class Chassis extends Subsystem
 	public void timerInit ()
 	{
 		navigationTask = new NavigationTask();
-		Robot.timer.schedule(navigationTask, 0, 10);
+		Robot.timer.schedule(navigationTask, 0, 50);
 	}
 	
     public void initDefaultCommand() 
