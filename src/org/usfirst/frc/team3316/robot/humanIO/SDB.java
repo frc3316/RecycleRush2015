@@ -10,9 +10,6 @@ import java.util.TimerTask;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.chassis.commands.FieldOrientedDrive;
-import org.usfirst.frc.team3316.robot.chassis.commands.StrafeDrive;
-import org.usfirst.frc.team3316.robot.chassis.commands.StartIntegrator;
-import org.usfirst.frc.team3316.robot.chassis.commands.TankDrive;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingPreset;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingSDB;
 import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrive;
@@ -52,40 +49,11 @@ public class SDB
 			 * Robot Info
 			 */
 			put ("Current Heading", Robot.chassis.getHeading());
-			put ("Current Height", Robot.stacker.getHeight());
-			
-			put ("Angular Velocity", Robot.chassis.getAngularVelocity());
-			put ("Angular Velocity Encoders", Robot.chassis.getAngularVelocityEncoders());
 			
 			put ("Left Ratchet", Robot.stacker.getSwitchRatchetLeft());
 			put ("Right Ratchet", Robot.stacker.getSwitchRatchetRight());
 			
 			put ("Game Piece Switch", Robot.rollerGripper.getSwitchGamePiece());
-			
-			put ("Distance Left", Robot.chassis.getDistanceLeft());
-			put ("Distance Right", Robot.chassis.getDistanceRight());
-			put ("Distance Center", Robot.chassis.getDistanceCenter());
-			
-			put ("Speed Left", Robot.chassis.getSpeedLeft());
-			put ("Speed Right", Robot.chassis.getSpeedRight());
-			put ("Speed Center", Robot.chassis.getSpeedCenter());
-			
-			if (Robot.rollerGripper.getGamePieceCollected() == null)
-			{
-				put ("Game Piece Collected", null);
-			}
-			else
-			{
-				put ("Game Piece Collected", Robot.rollerGripper.getGamePieceCollected().toString());
-			}
-			
-			/*
-			 * Integrator testing
-			 * should be removed
-			 */
-			put ("Integrator X", Robot.chassis.navigationIntegrator.getX());
-			put ("Integrator Y", Robot.chassis.navigationIntegrator.getY());
-			put ("Integrator Heading", Robot.chassis.navigationIntegrator.getHeading());
 		}
 		
 		private void put (String name, double d)
@@ -192,12 +160,9 @@ public class SDB
 	}
 	
 	private void initSDB ()
-	{	
-		SmartDashboard.putData(new TankDrive());
-		SmartDashboard.putData(new StrafeDrive());
+	{
 		SmartDashboard.putData(new RobotOrientedDrive());
 		SmartDashboard.putData(new FieldOrientedDrive());
-		SmartDashboard.putData(new StartIntegrator()); //For integrator testing, should be removed
 		
 		/*
 		 * Set Heading SDB
@@ -206,41 +171,6 @@ public class SDB
 		
 		SmartDashboard.putData(new SetHeadingSDB());
 		putConfigVariableInSDB("chassis_HeadingToSet");
-		
-		/*
-		 * Roller Gripper
-		 */
-		putConfigVariableInSDB("rollerGripper_RollJoystick_ChannelX");
-		putConfigVariableInSDB("rollerGripper_RollJoystick_ChannelY");
-		
-		putConfigVariableInSDB("rollerGripper_RollJoystick_InvertX");
-		putConfigVariableInSDB("rollerGripper_RollJoystick_InvertY");
-		
-		putConfigVariableInSDB("rollerGripper_RollJoystick_LowPass");
-		
-		//Game Piece IR
-		putConfigVariableInSDB("rollerGripper_ToteDistanceMinimum");
-		putConfigVariableInSDB("rollerGripper_ToteDistanceMaximum");
-		
-		putConfigVariableInSDB("rollerGripper_ContainerDistanceMinimum");
-		putConfigVariableInSDB("rollerGripper_ContainerDistanceMaximum");
-		
-		putConfigVariableInSDB("rollerGripper_SomethingDistanceThreshold");
-		putConfigVariableInSDB("rollerGripper_UnsureDistanceThreshold");
-		
-		/*
-		 * Stacker
-		 */
-		SmartDashboard.putData(Robot.stacker);
-		
-		putConfigVariableInSDB("stacker_HeightFloorMinimum");
-		putConfigVariableInSDB("stacker_HeightFloorMaximum");
-		
-		putConfigVariableInSDB("stacker_HeightToteMinimum");
-		putConfigVariableInSDB("stacker_HeightToteMaximum");
-		
-		putConfigVariableInSDB("stacker_HeightStepMinimum");
-		putConfigVariableInSDB("stacker_HeightStepMaximum");
 		
 		
 		logger.info("Finished initSDB()");

@@ -18,7 +18,6 @@ import com.kauailabs.nav6.frc.IMUAdvanced;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Chassis extends Subsystem 
 {	
@@ -99,9 +98,6 @@ public class Chassis extends Subsystem
 			double vS, vF; //speeds relative to the robot (forward and sideways)
 			vS = encoderCenter.getRate();
 			vF = (encoderLeft.getRate() + encoderRight.getRate()) / 2;
-			//Added for testing
-			SmartDashboard.putNumber("vS", vS);
-			SmartDashboard.putNumber("vF", vF);
 			
 			/*
 			 * Calculates dTheta
@@ -123,10 +119,7 @@ public class Chassis extends Subsystem
 			 * Calculates angular velocity
 			 */
 			//Calculation from gyro
-			angularVelocity = (dTheta)/dT; 
-			//Calculation fron encoders
-			angularVelocityEncoders = (encoderLeft.getRate() - encoderRight.getRate()) / (CHASSIS_WIDTH);
-			angularVelocityEncoders = Math.toDegrees(angularVelocityEncoders); //conversion to (degrees/sec)
+			angularVelocity = (dTheta)/dT;
 			
 			/*
 			 * Adds all of the deltas to each integrator
@@ -137,15 +130,10 @@ public class Chassis extends Subsystem
 				double headingRad = Math.toRadians(integrator.getHeading());
 				vX = (vF * Math.sin(headingRad)) + (vS * Math.sin(headingRad + (0.5 * Math.PI)));
 				vY = (vF * Math.cos(headingRad)) + (vS * Math.cos(headingRad + (0.5 * Math.PI)));
-				SmartDashboard.putNumber("vX", vX);
-				SmartDashboard.putNumber("vY", vY);
 				
 				double dX, dY;
 				dX = vX * dT;
 				dY = vY * dT;
-				
-				SmartDashboard.putNumber("dX", dX);
-				SmartDashboard.putNumber("dY", dY);
 				
 				integrator.add(dX, dY, dTheta);
 			}
@@ -173,8 +161,6 @@ public class Chassis extends Subsystem
 	
 	private NavigationTask navigationTask;
 	
-	public NavigationIntegrator navigationIntegrator;
-	
 	private SpeedController left1, left2;
 	private SpeedController right1, right2;
 	private SpeedController center;
@@ -187,7 +173,7 @@ public class Chassis extends Subsystem
 	
 	private double headingOffset = 0;
 	
-	private double angularVelocity = 0, angularVelocityEncoders = 0; //this is constantly calculated by NavigationThread
+	private double angularVelocity = 0; //this is constantly calculated by NavigationThread
 	
 	private double CHASSIS_WIDTH; //initialized in constructor 
 	
@@ -195,8 +181,6 @@ public class Chassis extends Subsystem
 	
 	public Chassis ()
 	{
-		navigationIntegrator = new NavigationIntegrator();
-		
 		left1 = Robot.actuators.chassisMotorControllerLeft1;
 		left2 = Robot.actuators.chassisMotorControllerLeft2;
 		
@@ -237,7 +221,7 @@ public class Chassis extends Subsystem
     {
     	updateScales();
     	
-    	this.left1.set (left *leftScale);
+    	this.left1.set (left * leftScale);
     	this.left2.set (left * leftScale);
     	
     	this.right1.set (right * rightScale);
@@ -277,11 +261,6 @@ public class Chassis extends Subsystem
     public double getAngularVelocity ()
     {
     	return angularVelocity;
-    }
-    
-    public double getAngularVelocityEncoders ()
-    {
-    	return angularVelocityEncoders;
     }
     
     /*

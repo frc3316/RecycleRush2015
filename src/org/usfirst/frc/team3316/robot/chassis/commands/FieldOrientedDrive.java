@@ -2,8 +2,6 @@ package org.usfirst.frc.team3316.robot.chassis.commands;
 
 import org.usfirst.frc.team3316.robot.Robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 public class FieldOrientedDrive extends RobotOrientedDrive 
 {	
 	protected void set ()
