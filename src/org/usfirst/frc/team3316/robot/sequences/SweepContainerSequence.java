@@ -14,6 +14,8 @@ public class SweepContainerSequence extends Command
 	RobotOrientedNavigation pushContainer;
 	NavigationIntegrator returnIntegrator;
 	RobotOrientedNavigation returnToTrack;
+	
+	private boolean pushContainerStarted, returnToTrackStarted;
 
 	public SweepContainerSequence ()
 	{
@@ -26,30 +28,41 @@ public class SweepContainerSequence extends Command
 		returnIntegrator = new NavigationIntegrator();
 		Robot.chassis.addNavigationIntegrator(returnIntegrator);
 		
+		pushContainerStarted = returnToTrackStarted = false;
+		
 		pushContainer.start();
 	}
 
 	protected void execute() 
 	{
-		if (!pushContainer.isRunning())
+		if (pushContainer.isRunning())
+		{
+			pushContainerStarted = true;
+		}
+		
+		if (!pushContainer.isRunning() && pushContainerStarted)
 		{
 			returnToTrack = new RobotOrientedNavigation(
-					0, 
-					0, 
-					- returnIntegrator.getHeading(), 
-					2);
-			
+					0, 0, -returnIntegrator.getHeading(), 2);
 			returnToTrack.start();
+		}
+		
+		if (returnToTrack.isRunning())
+		{
+			returnToTrackStarted = true;
 		}
 	}
 
 	protected boolean isFinished()
 	{
-		return (!pushContainer.isRunning() && !returnToTrack.isRunning());
+		return (!returnToTrack.isRunning() && returnToTrackStarted);
 	}
 
 	protected void end() 
 	{
+		pushContainer.cancel();
+		returnToTrack.cancel();
+		
 		Robot.chassis.removeNavigationIntegrator(returnIntegrator);
 	}
 
