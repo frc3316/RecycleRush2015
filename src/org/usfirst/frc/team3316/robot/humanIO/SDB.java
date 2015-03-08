@@ -10,11 +10,7 @@ import java.util.TimerTask;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.chassis.commands.FieldOrientedDrive;
-import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrivePIDRotation;
 import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedNavigation;
-import org.usfirst.frc.team3316.robot.chassis.commands.StrafeDrive;
-import org.usfirst.frc.team3316.robot.chassis.commands.StartIntegrator;
-import org.usfirst.frc.team3316.robot.chassis.commands.TankDrive;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingPreset;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingSDB;
 import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrive;
@@ -23,7 +19,6 @@ import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.sequences.AutonomousSequence;
 import org.usfirst.frc.team3316.robot.sequences.SweepContainerSequence;
-
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
 
@@ -162,6 +157,7 @@ public class SDB
 	private void initSDB ()
 	{
 		SmartDashboard.putData(new UpdateVariablesInConfig()); //NEVER REMOVE THIS COMMAND
+		
 		/*
 		 * Basic Drives
 		 */
@@ -205,7 +201,6 @@ public class SDB
 		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_AbsoluteTolerance_1");
 		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerY_AbsoluteTolerance_1");
 		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_AbsoluteTolerance_1");
-		
 		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_MinimumOutput_1");
 		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_MaximumOutput_1");
 		

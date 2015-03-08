@@ -19,7 +19,7 @@ public class ReleaseContainer extends Command
 
     protected void initialize() 
     {
-    	logger.fine("ReleaseContainer command initialize");
+    	logger.fine(this.getName() + "initialize");
     	Robot.stacker.closeSolenoidContainer();
     }
 
@@ -30,7 +30,13 @@ public class ReleaseContainer extends Command
         return true;
     }
 
-    protected void end() {}
+    protected void end() 
+    {
+    	logger.fine(this.getName() + "end");
+    }
 
-    protected void interrupted() {}
+    protected void interrupted() 
+    {
+    	logger.fine(this.getName() + "interrupted");
+    }
 }

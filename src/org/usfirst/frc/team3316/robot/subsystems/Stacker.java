@@ -37,11 +37,6 @@ public class Stacker extends Subsystem
     
     public Stacker () 
     {
-		/* In order to get to each height we use:
-		 *  - Floor Height: both solenoids extended
-	     *  - Step Height: bottom solenoid is retracted and upper extended
-		 *  - Tote Height: both solenoids retracted
-		 */
     	solenoidUpper = Robot.actuators.stackerSolenoidUpper;
     	
     	solenoidBottom = Robot.actuators.stackerSolenoidBottom;
@@ -74,117 +69,102 @@ public class Stacker extends Subsystem
 
     public void initDefaultCommand() {}
     
+    /* 
+	 * In order to get to each height we use:
+	 *  - Floor Height: both solenoids extended
+     *  - Step Height: bottom solenoid is retracted and upper extended
+	 *  - Tote Height: both solenoids retracted
+	 */
+    
     public boolean openSolenoidUpper ()
     {
     	logger.fine("Try to open upper solenoid");
-    	if (solenoidUpper.get() == DoubleSolenoid.Value.kForward)
-    	{
-    		logger.fine("Solenoid is already opened, aborting");
-    		return false;
-    	}
+    	
     	if (solenoidContainer.get() == DoubleSolenoid.Value.kForward)
     	{
     		logger.fine("Container solenoid is opened, aborting");
     		return false;
     	}
-    	logger.fine("Solenoid upper opened");
+    	
     	solenoidUpper.set(DoubleSolenoid.Value.kForward);
+    	logger.fine("Solenoid upper opened");
+    	
     	return true;
     }
     
     public boolean closeSolenoidUpper ()
     {
     	logger.fine("Try to close upper solenoid");
-    	if (solenoidUpper.get() == DoubleSolenoid.Value.kReverse)
-    	{
-    		logger.fine("Solenoid is already closed, aborting");
-    		return false;
-    	}
-    	logger.fine("Solenoid upper closed");
+    	
     	solenoidUpper.set(DoubleSolenoid.Value.kReverse);
+    	logger.fine("Solenoid upper closed");
+    	
     	return true;
     }
     
     public boolean openSolenoidBottom ()
     {
     	logger.fine("Try to open bottom solenoid");
-    	if (solenoidBottom.get() == DoubleSolenoid.Value.kForward)
-    	{
-    		logger.fine("Solenoid is already opened, aborting");
-    		return false;
-    	}
+    	
     	if (solenoidContainer.get() == DoubleSolenoid.Value.kForward)
     	{
     		logger.fine("Container solenoid is opened, aborting");
     		return false;
     	}
-    	logger.fine("Solenoid bottom opened");
+    	
     	solenoidBottom.set(DoubleSolenoid.Value.kForward);
+    	logger.fine("Solenoid bottom opened");
+    	
     	return true;
     }
     
     public boolean closeSolenoidBottom ()
     {
     	logger.fine("Try to close bottom solenoid");
-    	if (solenoidBottom.get() == DoubleSolenoid.Value.kReverse)
-    	{
-    		logger.fine("Solenoid is already closed, aborting");
-    		return false;
-    	}
-    	logger.fine("Solenoid upper closed");
+    	
     	solenoidBottom.set(DoubleSolenoid.Value.kReverse);
+    	logger.fine("Solenoid upper closed");
+    	
     	return true;
     }
     
     public boolean openSolenoidContainer ()
     {
     	logger.fine("Try to open container solenoid");
-    	if (solenoidContainer.get() == DoubleSolenoid.Value.kForward)
-    	{
-    		logger.fine("Solenoid is already opened, aborting");
-    		return false;
-    	}
-    	logger.fine("Solenoid container opened");
+    	
     	solenoidContainer.set(DoubleSolenoid.Value.kForward);
+    	logger.fine("Solenoid container opened");
+    	
     	return true;
     }
     
     public boolean closeSolenoidContainer ()
     {
     	logger.fine("Try to close container solenoid");
-    	if (solenoidContainer.get() == DoubleSolenoid.Value.kReverse)
-    	{
-    		logger.fine("Solenoid is already closed, aborting");
-    		return false;
-    	}
-    	logger.fine("Solenoid container closed");
+    	
     	solenoidContainer.set(DoubleSolenoid.Value.kReverse);
+    	logger.fine("Solenoid container closed");
+    	
     	return true;
     }
     
     public boolean openSolenoidGripper ()
     {
     	logger.fine("Try to open gripper solenoid");
-    	if (solenoidGripper.get() == DoubleSolenoid.Value.kForward)
-    	{
-    		logger.fine("Solenoid is already opened, aborting");
-    		return false;
-    	}
-    	logger.fine("Solenoid gripper opened");
+    	
     	solenoidGripper.set(DoubleSolenoid.Value.kForward);
+    	logger.fine("Solenoid gripper opened");
+    	
     	return true;
     }
     
     public boolean closeSolenoidGripper ()
     {
     	logger.fine("Try to close gripper solenoid");
-    	if (solenoidGripper.get() == DoubleSolenoid.Value.kReverse)
-    	{
-    		logger.fine("Solenoid is already closed, aborting");
-    		return false;
-    	}
-    	logger.fine("Solenoid gripper closed");
+    	
     	solenoidGripper.set(DoubleSolenoid.Value.kReverse);
+    	logger.fine("Solenoid gripper closed");
+    	
     	return true;
     }
     

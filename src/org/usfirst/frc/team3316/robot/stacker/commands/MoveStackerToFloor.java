@@ -11,34 +11,31 @@ public class MoveStackerToFloor extends MoveStacker
 {
 	GamePieceCollected gp;
 	
-	protected void initialize()
+	protected void prepareSolenoids() 
 	{
-		logger.fine("MoveStackerToFloor command initialize");
-		
-		gp = Robot.rollerGripper.getGamePieceCollected();
 		if (gp == GamePieceCollected.None)
 		{
 			/* If there is nothing at floor position, what we might have on
 			 * the stacker will colide with the roller gripper.
 			 */
-			logger.fine("NO game piece in roller gripper");
-			Robot.stacker.openSolenoidGripper();
+			logger.fine("NO game piece in roller gripper");			
 		}
 		else
 		{
 			logger.fine("YES game piece in roller gripper");
 		}
-		super.initialize();
-	}
-	
-	protected void setSolenoids() 
-	{
+		
+		// The stacker will colide with the roller gripper.
+		Robot.stacker.openSolenoidGripper();
+		
 		/* We always want to close the container pistons so they don't colide
 		 * with any gamepiece that might be at floor position.
 		 */
 		Robot.stacker.closeSolenoidContainer();
-		
-		Robot.stacker.openSolenoidUpper();
-		Robot.stacker.openSolenoidBottom();
+	}
+	
+	protected boolean setSolenoids ()
+	{
+		return (Robot.stacker.openSolenoidUpper() && Robot.stacker.openSolenoidBottom());
 	}
 }

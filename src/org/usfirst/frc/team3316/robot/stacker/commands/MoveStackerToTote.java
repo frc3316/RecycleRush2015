@@ -9,27 +9,25 @@ import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
  */
 public class MoveStackerToTote extends MoveStacker
 {
-	protected void initialize()
-	{	
-		logger.fine("MoveStackerToTote command initialize");
-
-		GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
+	protected void prepareSolenoids()
+	{
 		if (gp == GamePieceCollected.Container)
 		{
 			//If there is a container at floor position, it might colide with the roller gripper
 			logger.fine("YES container in roller gripper");
-			Robot.stacker.openSolenoidGripper();
-			Robot.stacker.openSolenoidContainer();
+			Robot.stacker.closeSolenoidContainer();
 		}
 		else
 		{
 			logger.fine("NO container in the roller gripper");
 		}
-		super.initialize();
+		
+		// The stacker will colide with the roller gripper.
+		Robot.stacker.openSolenoidGripper();
 	}
-	protected void setSolenoids() 
+	
+	protected boolean setSolenoids() 
 	{
-		Robot.stacker.closeSolenoidUpper();
-		Robot.stacker.closeSolenoidBottom();
+		return (Robot.stacker.closeSolenoidUpper() && Robot.stacker.closeSolenoidBottom());
 	}
 }

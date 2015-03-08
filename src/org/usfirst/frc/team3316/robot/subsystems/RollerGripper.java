@@ -8,6 +8,7 @@ import org.usfirst.frc.team3316.robot.rollerGripper.commands.Roll;
 import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollJoystick;
 import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
 import org.usfirst.frc.team3316.robot.utils.MovingAverage;
+import org.usfirst.frc.team3316.robot.utils.StackerPosition;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -113,12 +114,20 @@ public class RollerGripper extends Subsystem
     	
     	if (!gpSwitch) {
     		return GamePieceCollected.None;
+    	}
     	
-    	} else if (!gpSwitchRight && !gpSwitchLeft) {
-    		return GamePieceCollected.Container;
+    	else if(Robot.stacker.getPosition() == StackerPosition.Floor) {
+	    	if (!gpSwitchRight && !gpSwitchLeft) {
+	    		return GamePieceCollected.Container;
+	    	}
+	    	
+	    	else {
+	    		return GamePieceCollected.Tote;
+	    	}
+    	}
     	
-    	} else {
-    		return GamePieceCollected.Tote;
+    	else {
+    		return GamePieceCollected.Something;
     	}
     }
     
