@@ -9,6 +9,7 @@ import org.usfirst.frc.team3316.robot.subsystems.Anschluss;
 import org.usfirst.frc.team3316.robot.subsystems.Chassis;
 import org.usfirst.frc.team3316.robot.subsystems.Stacker;
 import org.usfirst.frc.team3316.robot.subsystems.RollerGripper;
+import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingSDB;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.humanIO.Joysticks;
 import org.usfirst.frc.team3316.robot.humanIO.SDB;
@@ -59,6 +60,9 @@ public class Robot extends IterativeRobot
      */
     public void robotInit() 
     {
+    	/*
+    	 * Above all else
+    	 */
     	logger = new DBugLogger();
     	config = new Config();
     	
@@ -95,6 +99,11 @@ public class Robot extends IterativeRobot
     	stacker.timerInit();
     	rollerGripper.timerInit();
     	sdb.timerInit();
+    	
+    	/*
+    	 * Pre-match Init
+    	 */
+    	(new SetHeadingSDB()).start();
     }
 	
 	public void disabledPeriodic() {

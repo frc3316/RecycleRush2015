@@ -176,9 +176,7 @@ public class Chassis extends Subsystem
 	
 	private double headingOffset = 0;
 	
-	private double angularVelocity = 0, angularVelocityEncoders = 0; //this is constantly calculated by NavigationThread
-	
-	private double CHASSIS_WIDTH; //initialized in constructor 
+	private double angularVelocity = 0; //this is constantly calculated by NavigationThread
 	
 	Drive defaultDrive;
 	
@@ -203,15 +201,6 @@ public class Chassis extends Subsystem
 		encoderLeft = Robot.sensors.chassisEncoderLeft;
 		encoderRight = Robot.sensors.chassisEncoderRight;
 		encoderCenter = Robot.sensors.chassisEncoderCenter;
-		
-		try
-		{
-			CHASSIS_WIDTH = (double) config.get("CHASSIS_WIDTH");
-		}
-		catch (ConfigException e)
-		{
-			logger.severe(e);
-		}
 	}
 	
 	public void timerInit ()
@@ -270,11 +259,6 @@ public class Chassis extends Subsystem
     public double getAngularVelocity ()
     {
     	return angularVelocity;
-    }
-    
-    public double getAngularVelocityEncoders ()
-    {
-    	return angularVelocityEncoders;
     }
     
     /*
