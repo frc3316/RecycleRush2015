@@ -12,7 +12,7 @@ public class FieldOrientedDrive extends RobotOrientedDrive
 	
 	protected void setFieldVector (double x, double y, double robotAngle)
 	{	
-		logger.fine("input(" + x + ", " + y + ", " + robotAngle + ")");
+		logger.finest("input(" + x + ", " + y + ", " + robotAngle + ")");
 		double r = Math.sqrt(x*x + y*y); //The vector's magnitude
 		double vectorAngle =  Math.atan2(x, y); //Vector angle from y axis, 
 												//clockwise is positive and 
@@ -34,7 +34,7 @@ public class FieldOrientedDrive extends RobotOrientedDrive
 			outputX /= max;
 			outputY /= max;
 		}
-		logger.fine("output(" + outputX + ", " + outputY + ")");
+		logger.finest("output(" + outputX + ", " + outputY + ")");
 		setRobotVector(outputX, outputY);
 	}
 }

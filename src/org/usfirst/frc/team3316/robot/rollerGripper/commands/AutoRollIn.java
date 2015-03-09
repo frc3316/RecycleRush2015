@@ -19,6 +19,7 @@ public class AutoRollIn extends Roll
 
     protected void initialize() 
     {
+    	super.initialize();
     	finishCounter = 0;
     }
 

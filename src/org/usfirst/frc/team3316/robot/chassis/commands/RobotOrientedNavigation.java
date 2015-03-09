@@ -21,7 +21,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	{
 		public double pidGet() 
 		{
-			logger.fine("" + integrator.getX());
+			logger.finest("" + integrator.getX());
 			return integrator.getX();
 		}
 	}
@@ -29,7 +29,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	{
 		public double pidGet() 
 		{
-			logger.fine("" + integrator.getY());
+			logger.finest("" + integrator.getY());
 			return integrator.getY();
 		}
 	}
@@ -37,7 +37,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	{
 		public double pidGet() 
 		{
-			logger.fine("" + integrator.getHeading());
+			logger.finest("" + integrator.getHeading());
 			return integrator.getHeading();
 		}
 	}
@@ -49,7 +49,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	{
 		public void pidWrite (double output) 
 		{
-			logger.fine("" + output);
+			logger.finest("" + output);
 			outputX = output;
 		}
 	}
@@ -57,7 +57,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	{
 		public void pidWrite (double output) 
 		{
-			logger.fine("" + output);
+			logger.finest("" + output);
 			outputY = output;
 		}
 	}
@@ -65,7 +65,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	{
 		public void pidWrite (double output) 
 		{
-			logger.fine("" + output);
+			logger.finest("" + output);
 			outputHeading = output;
 		}
 	}
@@ -129,6 +129,8 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	
 	protected void initialize ()
 	{
+		logger.fine(this.getName() + "initialize");
+		
 		super.initialize();
 		
 		integrator = new NavigationIntegrator();
@@ -148,7 +150,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	protected void set ()
 	{
 		updatePIDVariables();
-		logger.fine("output(" + outputX + ", " + outputY + ", " + outputHeading + ")");
+		logger.finest("output(" + outputX + ", " + outputY + ", " + outputHeading + ")");
 		setFieldVector(outputX, outputY, integrator.getHeading());
 		setRotation(outputHeading);
 	}
@@ -173,6 +175,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	
 	protected void end ()
 	{
+		logger.fine(this.getName() + " end");
 		super.end();
 		
 		Robot.chassis.removeNavigationIntegrator(integrator);
@@ -184,6 +187,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	
 	protected void interrupted ()
 	{
+		logger.fine(this.getName() + " interrupted");
 		end();
 	}
 	

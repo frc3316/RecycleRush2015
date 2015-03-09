@@ -21,7 +21,10 @@ public abstract class Roll extends Command
     	requires(Robot.rollerGripper);
     }
     
-    protected void initialize() {}
+    protected void initialize() 
+    {
+    	logger.fine(this.getName() + " initialize");
+    }
 
     protected void execute() 
     {
@@ -36,12 +39,14 @@ public abstract class Roll extends Command
 
     protected void end() 
     {
+    	logger.fine(this.getName() + " end");
     	Robot.rollerGripper.set(0, 0);
     }
 
     protected void interrupted() 
     {
-    	end();
+    	logger.fine(this.getName() + " interrupted");
+    	Robot.rollerGripper.set(0, 0);
     }
     
     protected abstract void setSpeeds ();
