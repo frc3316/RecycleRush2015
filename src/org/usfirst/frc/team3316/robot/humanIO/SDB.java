@@ -171,8 +171,8 @@ public class SDB
 		
 		SmartDashboard.putData("Auton Movement Segment 1", new RobotOrientedNavigation(0, 0, -45, 1));
 		SmartDashboard.putData("Auton Movement Segment 2", new RobotOrientedNavigation(0, 0, 45, 2));
-		SmartDashboard.putData("Auton Movement Segment 3", new RobotOrientedNavigation(0, 2.06, 0, 3));
-		SmartDashboard.putData("Auton Movement Segment 4", new RobotOrientedNavigation(3, 0, -179, 4));
+		SmartDashboard.putData("Auton Movement Segment 3", new RobotOrientedNavigation(0, 2.11, 0, 3));
+		SmartDashboard.putData("Auton Movement Segment 4", new RobotOrientedNavigation(3.3, 0, -179, 4));
 		
 		/*
 		 * Set Heading SDB
