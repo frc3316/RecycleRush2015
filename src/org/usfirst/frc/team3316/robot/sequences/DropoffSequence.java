@@ -1,25 +1,23 @@
 package org.usfirst.frc.team3316.robot.sequences;
 
 import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedNavigation;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
-import org.usfirst.frc.team3316.robot.rollerGripper.commands.WaitForTote;
+import org.usfirst.frc.team3316.robot.stacker.commands.CloseGripper;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToFloor;
-import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToStep;
-import org.usfirst.frc.team3316.robot.stacker.commands.OpenGripper;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class AutoTotePickup extends CommandGroup 
+public class DropoffSequence extends CommandGroup 
 {    
-    public  AutoTotePickup() 
+    public DropoffSequence() 
     {
-        addSequential(new OpenGripper());
-        addSequential(new MoveStackerToFloor());
-        addSequential(new WaitForTote());
-        addSequential(new MoveStackerToStep());
+    	addSequential(new MoveStackerToFloor());
+    	addSequential(new CloseGripper());
+    	addSequential(new RobotOrientedNavigation(0, -1, 0, 3));
     }
     
     DBugLogger logger = Robot.logger;

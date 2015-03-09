@@ -5,6 +5,7 @@ package org.usfirst.frc.team3316.robot;
 
 import java.util.Timer;
 
+import org.usfirst.frc.team3316.robot.sequences.AutonomousSequence;
 import org.usfirst.frc.team3316.robot.subsystems.Anschluss;
 import org.usfirst.frc.team3316.robot.subsystems.Chassis;
 import org.usfirst.frc.team3316.robot.subsystems.Stacker;
@@ -46,6 +47,7 @@ public class Robot extends IterativeRobot
      */
     public static Actuators actuators;
     public static Sensors sensors;
+    
     /*
      * Subsystems
      */
@@ -53,6 +55,11 @@ public class Robot extends IterativeRobot
 	public static Anschluss anschluss;
 	public static Stacker stacker;
 	public static RollerGripper rollerGripper;
+	
+	/*
+	 * Autonomous
+	 */
+	AutonomousSequence sts;
 	
     /**
      * This function is run when the robot is first started up and should be
@@ -104,14 +111,17 @@ public class Robot extends IterativeRobot
     	 * Pre-match Init
     	 */
     	(new SetHeadingSDB()).start();
+    	
+    	sts = new AutonomousSequence();
     }
 	
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
-    public void autonomousInit() {
-        
+    public void autonomousInit() 
+    {
+    	sts.start();
     }
 
     /**

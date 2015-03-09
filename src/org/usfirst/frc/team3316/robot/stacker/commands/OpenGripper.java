@@ -19,7 +19,7 @@ public class OpenGripper extends Command
 
     protected void initialize() 
     {
-    	logger.fine(this.getName() + "initialize");
+    	logger.fine(this.getName() + " initialize");
     	Robot.stacker.openSolenoidGripper();
     }
 
@@ -32,11 +32,11 @@ public class OpenGripper extends Command
 
     protected void end() 
     {
-    	logger.fine(this.getName() + "end");
+    	logger.fine(this.getName() + " end");
     }
 
     protected void interrupted() 
     {
-    	logger.fine(this.getName() + "interrupted");
+    	logger.fine(this.getName() + " interrupted");
     }
 }

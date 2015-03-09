@@ -1,73 +1,46 @@
 package org.usfirst.frc.team3316.robot.sequences;
 
 import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.chassis.commands.FieldOrientedNavigation;
 import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedNavigation;
-import org.usfirst.frc.team3316.robot.subsystems.Chassis.NavigationIntegrator;
+import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollOut;
+import org.usfirst.frc.team3316.robot.stacker.commands.CloseGripper;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class SweepContainerSequence extends Command 
+public class SweepContainerSequence extends CommandGroup
 {
-	RobotOrientedNavigation pushContainer;
-	NavigationIntegrator returnIntegrator;
-	RobotOrientedNavigation returnToTrack;
+	DBugLogger logger = Robot.logger;
 	
-	private boolean pushContainerStarted, returnToTrackStarted;
-
+	ReturnToTrackSequence returnToTrack;
+	
+	
 	public SweepContainerSequence ()
 	{
-		pushContainer = new RobotOrientedNavigation(0, 0, -45, 1);
-		returnToTrack = new RobotOrientedNavigation(0, 0, 0, 2);
+		returnToTrack = new ReturnToTrackSequence();
+		
+		addSequential(new PushContainerSequence());
+		addSequential(new CloseGripper()); //Closing gripper before driving forward
+		addSequential(returnToTrack);
 	}
 	
-	protected void initialize() 
+	protected void initialize ()
 	{
-		returnIntegrator = new NavigationIntegrator();
-		Robot.chassis.addNavigationIntegrator(returnIntegrator);
-		
-		pushContainerStarted = returnToTrackStarted = false;
-		
-		pushContainer.start();
+		logger.info(this.getName() + " initialize");
+		returnToTrack.startFieldIntegrator();
 	}
-
-	protected void execute() 
-	{
-		if (pushContainer.isRunning())
-		{
-			pushContainerStarted = true;
-		}
-		
-		if (!pushContainer.isRunning() && pushContainerStarted)
-		{
-			returnToTrack = new RobotOrientedNavigation(
-					0, 0, -returnIntegrator.getHeading(), 2);
-			returnToTrack.start();
-		}
-		
-		if (returnToTrack.isRunning())
-		{
-			returnToTrackStarted = true;
-		}
-	}
-
-	protected boolean isFinished()
-	{
-		return (!returnToTrack.isRunning() && returnToTrackStarted);
-	}
-
-	protected void end() 
-	{
-		pushContainer.cancel();
-		returnToTrack.cancel();
-		
-		Robot.chassis.removeNavigationIntegrator(returnIntegrator);
-	}
-
-	protected void interrupted() 
-	{
-		end();
-	}
+	    
+    protected void end ()
+    {
+    	logger.info(this.getName() + " end");
+    }
+    
+    protected void interrupted ()
+    {
+    	logger.info(this.getName() + " interrupted");
+    }
 }

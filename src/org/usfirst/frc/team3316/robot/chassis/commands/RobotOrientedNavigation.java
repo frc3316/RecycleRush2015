@@ -70,11 +70,11 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 		}
 	}
 	
-	private NavigationIntegrator integrator;
+	protected NavigationIntegrator integrator;
 	
 	protected PIDController pidControllerX, pidControllerY, pidControllerHeading;
 	
-	private double setpointX, setpointY, setpointHeading;
+	protected double setpointX, setpointY, setpointHeading;
 	
 	private double outputX, outputY, outputHeading;
 	

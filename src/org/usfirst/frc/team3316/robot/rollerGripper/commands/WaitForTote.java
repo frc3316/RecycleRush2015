@@ -23,7 +23,7 @@ public class WaitForTote extends Command
 
     protected void initialize() 
     {
-    	logger.fine("WaitForGamePiece command initialize");
+    	logger.fine(this.getName() + " initialize");
     	
     	finishCounter = 0;
     	try 
@@ -54,7 +54,13 @@ public class WaitForTote extends Command
         return finishCounter >= maxFinishCounter;
     }
 
-    protected void end() {}
+    protected void end() 
+    {
+    	logger.fine(this.getName() + " end");
+    }
 
-    protected void interrupted() {}
+    protected void interrupted() 
+    {
+    	logger.fine(this.getName() + " interrupted");
+    }
 }

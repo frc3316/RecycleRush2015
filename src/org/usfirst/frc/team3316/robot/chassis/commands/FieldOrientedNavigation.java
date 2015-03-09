@@ -5,13 +5,7 @@ import org.usfirst.frc.team3316.robot.subsystems.Chassis.NavigationIntegrator;
 
 public class FieldOrientedNavigation extends RobotOrientedNavigation 
 {
-	public static NavigationIntegrator fieldIntegrator;
-	
-	static
-	{
-		fieldIntegrator = new NavigationIntegrator();
-		Robot.chassis.addNavigationIntegrator(fieldIntegrator);
-	}
+	private NavigationIntegrator fieldIntegrator;
 	
 	private double setpointX, setpointY, setpointHeading;
 	
@@ -31,5 +25,15 @@ public class FieldOrientedNavigation extends RobotOrientedNavigation
 		pidControllerHeading.setSetpoint(setpointHeading - fieldIntegrator.getHeading());
 		
 		super.initialize();
+	}
+	
+	public void startFieldIntegrator ()
+	{
+		if (fieldIntegrator != null)
+		{
+			Robot.chassis.removeNavigationIntegrator(fieldIntegrator);
+		}
+		fieldIntegrator = new NavigationIntegrator();
+		Robot.chassis.addNavigationIntegrator(fieldIntegrator);
 	}
 }

@@ -18,8 +18,8 @@ public class CloseGripper extends Command
     }
 
     protected void initialize() 
-    {
-    	logger.fine(this.getName() + "initialize");
+    { 
+    	logger.fine(this.getName() + " initialize");
     	Robot.stacker.closeSolenoidGripper();
     }
 
@@ -32,11 +32,11 @@ public class CloseGripper extends Command
 
     protected void end() 
     {
-    	logger.fine(this.getName() + "end");
+    	logger.fine(this.getName() + " end");
     }
 
     protected void interrupted() 
     {
-    	logger.fine(this.getName() + "interrupted");
+    	logger.fine(this.getName() + " interrupted");
     }
 }
