@@ -72,7 +72,7 @@ public class Chassis extends Subsystem
 	{	
 		private HashSet <NavigationIntegrator> integratorSet;
 		private double previousTime = 0;
-		private double previousHeading = 0;
+		private double previousS = 0, previousF = 0, previousHeading = 0;
 		
 		public NavigationTask ()
 		{
@@ -81,28 +81,26 @@ public class Chassis extends Subsystem
 		
 		public void run() 
 		{
-			/*
-			 * Variable init
-			 */
+			//Makes sure the first time delta will not be since 1970
 			if (previousTime == 0)
 			{
 				previousTime = System.currentTimeMillis();
 			}
+			/*
+			 * Current variables
+			 */
 			double currentTime = System.currentTimeMillis();
-			double dT = (currentTime - previousTime) / 1000; //conversion to seconds
 			double currentHeading = getHeading();
+			double currentS = getDistanceCenter(); //Sideways distance
+			double currentF = (getDistanceLeft() + getDistanceRight()) / 2; //Forward distance
 			
 			/*
-			 * Calculates speeds in field axes
+			 * Calculates deltas between current and previous
 			 */
-			double vS, vF; //speeds relative to the robot (forward and sideways)
-			vS = encoderCenter.getRate();
-			vF = (encoderLeft.getRate() + encoderRight.getRate()) / 2;
-			
-			/*
-			 * Calculates dTheta
-			 */
+			double dT = (currentTime - previousTime) / 1000; //conversion to seconds
 			double dTheta = currentHeading - previousHeading;
+			double dS = currentS - previousS;
+			double dF = currentF - previousF;
 			//Since heading is in the range (-180) to (180), when 
 			//completing a full turn dTheta will be an absurdly big value
 			//Checks if dTheta is an absurdly big value and fixes it
@@ -118,22 +116,19 @@ public class Chassis extends Subsystem
 			/*
 			 * Calculates angular velocity
 			 */
-			//Calculation from gyro
 			angularVelocity = (dTheta)/dT;
 			
 			/*
-			 * Adds all of the deltas to each integrator
+			 * Adds all of the deltas to each integrator, relatively to
+			 * its starting position
 			 */
 			for (NavigationIntegrator integrator : integratorSet)
 			{
-				double vX, vY; //speeds relative to the orientation that the integrator started at
-				double headingRad = Math.toRadians(integrator.getHeading());
-				vX = (vF * Math.sin(headingRad)) + (vS * Math.sin(headingRad + (0.5 * Math.PI)));
-				vY = (vF * Math.cos(headingRad)) + (vS * Math.cos(headingRad + (0.5 * Math.PI)));
-				
-				double dX, dY;
-				dX = vX * dT;
-				dY = vY * dT;
+				double dX, dY; //speeds relative to the orientation that the integrator started at
+				//headingRad is the average of the previous integrator angle and the angle it will have (in radians)
+				double headingRad = (Math.toRadians(integrator.getHeading() + dTheta/2)); 
+				dX = (dF * Math.sin(headingRad)) + (dS * Math.sin(headingRad + (0.5 * Math.PI)));
+				dY = (dF * Math.cos(headingRad)) + (dS * Math.cos(headingRad + (0.5 * Math.PI)));
 				
 				integrator.add(dX, dY, dTheta);
 			}
@@ -143,6 +138,8 @@ public class Chassis extends Subsystem
 			 */
 			previousTime = currentTime;
 			previousHeading = currentHeading;
+			previousS = currentS;
+			previousF = currentF;
 		}
 		
 		public boolean addIntegrator (NavigationIntegrator integrator)
@@ -175,9 +172,11 @@ public class Chassis extends Subsystem
 	
 	private double angularVelocity = 0; //this is constantly calculated by NavigationThread
 	
-	private double CHASSIS_WIDTH; //initialized in constructor 
-	
 	Drive defaultDrive;
+	
+	double leftEncoderScale = 1, 
+		   rightEncoderScale = 1, 
+		   centerEncoderScale = 1;
 	
 	public Chassis ()
 	{
@@ -194,15 +193,6 @@ public class Chassis extends Subsystem
 		encoderLeft = Robot.sensors.chassisEncoderLeft;
 		encoderRight = Robot.sensors.chassisEncoderRight;
 		encoderCenter = Robot.sensors.chassisEncoderCenter;
-		
-		try
-		{
-			CHASSIS_WIDTH = (double) config.get("CHASSIS_WIDTH");
-		}
-		catch (ConfigException e)
-		{
-			logger.severe(e);
-		}
 	}
 	
 	public void timerInit ()
@@ -268,17 +258,21 @@ public class Chassis extends Subsystem
      */
     public double getDistanceLeft ()
     {
-    	return encoderLeft.getDistance();
+    	updateEncoderScales();
+    	return encoderLeft.getDistance() * leftEncoderScale;
     }
+    
     
    public double getDistanceRight ()
     {
-    	return encoderRight.getDistance();
+	    updateEncoderScales();
+    	return encoderRight.getDistance() * rightEncoderScale;
     }
     
     public double getDistanceCenter ()
     {
-    	return encoderCenter.getDistance();
+    	updateEncoderScales();
+    	return encoderCenter.getDistance() * centerEncoderScale;
     }
     
     /*
@@ -286,17 +280,20 @@ public class Chassis extends Subsystem
      */
     public double getSpeedLeft ()
     {
-      	return encoderLeft.getRate();
+    	updateEncoderScales();
+      	return encoderLeft.getRate() * leftEncoderScale;
     }
         
     public double getSpeedRight ()
     {
-       	return encoderRight.getRate();
+    	updateEncoderScales();
+       	return encoderRight.getRate() * rightEncoderScale;
     }
         
     public double getSpeedCenter ()
     {
-      	return encoderCenter.getRate();
+    	updateEncoderScales();
+      	return encoderCenter.getRate() * centerEncoderScale;
     }
     
     /*
@@ -329,9 +326,23 @@ public class Chassis extends Subsystem
     {
     	try
     	{
-    		leftScale = (double)config.get("chassis_LeftScale");
-    		rightScale = (double)config.get("chassis_RightScale");
-    		centerScale = (double)config.get("chassis_CenterScale");
+    		leftScale = (double) config.get("chassis_LeftScale");
+    		rightScale = (double) config.get("chassis_RightScale");
+    		centerScale = (double) config.get("chassis_CenterScale");
+    	}
+    	catch (ConfigException e)
+    	{
+    		logger.severe(e);
+    	}
+    }
+    
+    private void updateEncoderScales ()
+    {
+    	try
+    	{
+    		leftEncoderScale = (double) config.get("chassis_LeftEncoderScale");
+    		rightEncoderScale = (double) config.get("chassis_RightEncoderScale");
+    		centerEncoderScale = (double) config.get("chassis_CenterEncoderScale");
     	}
     	catch (ConfigException e)
     	{

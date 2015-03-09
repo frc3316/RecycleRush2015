@@ -2,7 +2,6 @@ package org.usfirst.frc.team3316.robot.chassis.heading;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
-import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -17,7 +16,10 @@ public abstract class SetHeading extends Command
 	
 	protected double headingToSet = 0; 
 	
-    public SetHeading () {}
+    public SetHeading () 
+    {
+    	setRunWhenDisabled(true);
+    }
 
     protected void initialize() {}
 

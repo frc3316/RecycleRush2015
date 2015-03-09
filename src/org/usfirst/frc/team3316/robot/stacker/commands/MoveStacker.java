@@ -28,7 +28,7 @@ public abstract class MoveStacker extends Command
 
     protected void initialize()
     {
-    	logger.fine(this.getName() + " initialized");
+    	logger.fine(this.getName() + " initialize");
     	
     	setSuccesful = false;
     	
@@ -50,12 +50,12 @@ public abstract class MoveStacker extends Command
     
     protected void end() 
     {
-    	logger.fine(this.getName() + "ended");
+    	logger.fine(this.getName() + " end");
     }
 
     protected void interrupted() 
     {
-    	logger.fine(this.getName() + "interrupted");
+    	logger.fine(this.getName() + " interrupted");
     }
     
     /**

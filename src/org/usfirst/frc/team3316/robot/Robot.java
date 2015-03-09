@@ -5,10 +5,12 @@ package org.usfirst.frc.team3316.robot;
 
 import java.util.Timer;
 
+import org.usfirst.frc.team3316.robot.sequences.AutonomousSequence;
 import org.usfirst.frc.team3316.robot.subsystems.Anschluss;
 import org.usfirst.frc.team3316.robot.subsystems.Chassis;
 import org.usfirst.frc.team3316.robot.subsystems.Stacker;
 import org.usfirst.frc.team3316.robot.subsystems.RollerGripper;
+import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingSDB;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.humanIO.Joysticks;
 import org.usfirst.frc.team3316.robot.humanIO.SDB;
@@ -45,6 +47,7 @@ public class Robot extends IterativeRobot
      */
     public static Actuators actuators;
     public static Sensors sensors;
+    
     /*
      * Subsystems
      */
@@ -53,12 +56,20 @@ public class Robot extends IterativeRobot
 	public static Stacker stacker;
 	public static RollerGripper rollerGripper;
 	
+	/*
+	 * Autonomous
+	 */
+	AutonomousSequence sts;
+	
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() 
     {
+    	/*
+    	 * Above all else
+    	 */
     	logger = new DBugLogger();
     	config = new Config();
     	
@@ -95,14 +106,22 @@ public class Robot extends IterativeRobot
     	stacker.timerInit();
     	rollerGripper.timerInit();
     	sdb.timerInit();
+    	
+    	/*
+    	 * Pre-match Init
+    	 */
+    	(new SetHeadingSDB()).start();
+    	
+    	sts = new AutonomousSequence();
     }
 	
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
-    public void autonomousInit() {
-        
+    public void autonomousInit() 
+    {
+    	sts.start();
     }
 
     /**

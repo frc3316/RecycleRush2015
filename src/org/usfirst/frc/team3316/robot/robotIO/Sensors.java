@@ -57,6 +57,7 @@ public class Sensors
 	
 	public Sensors ()
 	{	
+		
 		try
 		{
 			session = NIVision.IMAQdxOpenCamera("cam0",
@@ -81,17 +82,17 @@ public class Sensors
 			 */
 			chassisEncoderLeft = new Encoder((int)config.get("CHASSIS_ENCODER_LEFT_A"), 
 											 (int)config.get("CHASSIS_ENCODER_LEFT_B"), 
-											 false, 
+											 (boolean) config.get("CHASSIS_ENCODER_LEFT_REVERSE_DIRECTION"), 
 											 CounterBase.EncodingType.k4X);
 			
 			chassisEncoderRight = new Encoder((int)config.get("CHASSIS_ENCODER_RIGHT_A"), 
 											 (int)config.get("CHASSIS_ENCODER_RIGHT_B"), 
-											 false, 
+											 (boolean) config.get("CHASSIS_ENCODER_RIGHT_REVERSE_DIRECTION"), 
 											 CounterBase.EncodingType.k4X);
 			
 			chassisEncoderCenter = new Encoder((int)config.get("CHASSIS_ENCODER_CENTER_A"), 
 					 						  (int)config.get("CHASSIS_ENCODER_CENTER_B"), 
-					 						  false, 
+					 						 (boolean) config.get("CHASSIS_ENCODER_CENTER_REVERSE_DIRECTION"), 
 					 						  CounterBase.EncodingType.k4X);
 			
 			chassisEncoderLeft.setDistancePerPulse(
