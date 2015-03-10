@@ -13,22 +13,7 @@ public class AutonomousSequence extends CommandGroup
 {    
     public AutonomousSequence() 
     {
-    	/*
-    	 * Movement profile #3
-    	 */
-    	addSequential(new AutoTotePickup());
-        
-    	addSequential(new SweepContainerSequence());
-    	addParallel(new RobotOrientedNavigation(0, 2.11, 0, 3));
-    	addSequential(new AutoToteCollect());
-    	
-    	addSequential(new SweepContainerSequence());
-    	addParallel(new RobotOrientedNavigation(0, 2.11, 0, 3));
-    	addSequential(new AutoToteCollect());
-    	
-        addSequential(new RobotOrientedNavigation(3.3, 0, -179, 4));
-        
-        addSequential(new DropoffSequence());
+    	addSequential(new RobotOrientedNavigation(0, 1.5, 0, 3));
     }
     
     DBugLogger logger = Robot.logger;
