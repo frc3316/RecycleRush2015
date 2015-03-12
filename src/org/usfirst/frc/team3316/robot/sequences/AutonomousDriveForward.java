@@ -9,9 +9,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class AutonomousSequence extends CommandGroup 
+public class AutonomousDriveForward extends CommandGroup 
 {    
-    public AutonomousSequence() 
+    public AutonomousDriveForward() 
     {
     	addSequential(new RobotOrientedNavigation(0, 1.5, 0, 3));
     }

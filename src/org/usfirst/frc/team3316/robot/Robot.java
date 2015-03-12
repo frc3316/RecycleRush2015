@@ -5,7 +5,8 @@ package org.usfirst.frc.team3316.robot;
 
 import java.util.Timer;
 
-import org.usfirst.frc.team3316.robot.sequences.AutonomousSequence;
+import org.usfirst.frc.team3316.robot.sequences.AutonomousDriveForward;
+import org.usfirst.frc.team3316.robot.sequences.AutonomousNone;
 import org.usfirst.frc.team3316.robot.subsystems.Anschluss;
 import org.usfirst.frc.team3316.robot.subsystems.Chassis;
 import org.usfirst.frc.team3316.robot.subsystems.Stacker;
@@ -22,6 +23,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -32,7 +34,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Robot extends IterativeRobot
 {
-    Command autonomousCommand;
+    Command autonDriveForward, autonNone;
+    SendableChooser autonChooser;
     
     public static Config config;
     public static DBugLogger logger;
@@ -55,11 +58,6 @@ public class Robot extends IterativeRobot
 	public static Anschluss anschluss;
 	public static Stacker stacker;
 	public static RollerGripper rollerGripper;
-	
-	/*
-	 * Autonomous
-	 */
-	AutonomousSequence sts;
 	
     /**
      * This function is run when the robot is first started up and should be
@@ -112,7 +110,12 @@ public class Robot extends IterativeRobot
     	 */
     	(new SetHeadingSDB()).start();
     	
-    	sts = new AutonomousSequence();
+    	autonDriveForward = new AutonomousDriveForward();
+    	autonNone = new AutonomousNone();
+    	
+    	autonChooser = new SendableChooser();
+    	autonChooser.addDefault("None", autonNone);
+    	autonChooser.addObject("Drive Forward", autonDriveForward);
     }
 	
 	public void disabledPeriodic() {
@@ -121,7 +124,10 @@ public class Robot extends IterativeRobot
 
     public void autonomousInit() 
     {
-    	sts.start();
+    	if (autonChooser != null && autonChooser.getSelected() != null)
+    	{
+        	((Command) autonChooser.getSelected()).start();
+    	}
     }
 
     /**
@@ -131,8 +137,14 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().run();
     }
 
-    public void teleopInit() {}
-
+    public void teleopInit() 
+    {
+    	if (autonChooser != null && autonChooser.getSelected() != null)
+    	{
+    		((Command) autonChooser.getSelected()).cancel();
+    	}
+    }
+    
     /**
      * * This function is called when the disabled button is hit.		
      * You can use it to reset subsystems before shutting down.		
