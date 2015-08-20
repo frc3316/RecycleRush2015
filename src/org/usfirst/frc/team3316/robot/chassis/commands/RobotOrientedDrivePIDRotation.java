@@ -6,6 +6,7 @@ import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RobotOrientedDrivePIDRotation extends RobotOrientedDrive 
 {
@@ -55,7 +56,8 @@ public class RobotOrientedDrivePIDRotation extends RobotOrientedDrive
 		
 		updatePIDVariables();
 		setPIDControllerRotationSetpoint();
-		
+		SmartDashboard.putNumber("setpointRotation" , setpointRotation);
+		SmartDashboard.putNumber("outputRotation" , outputRotation);
 		setRotation(outputRotation);
 	}
 	
@@ -94,4 +96,10 @@ public class RobotOrientedDrivePIDRotation extends RobotOrientedDrive
 			logger.severe(e);
 		}
 	}
+    
+	protected void end() 
+    {
+    	super.end();
+    	pidControllerRotation.disable();
+    }
 }
