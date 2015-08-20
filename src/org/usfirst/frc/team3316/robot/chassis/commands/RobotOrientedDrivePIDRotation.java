@@ -66,9 +66,9 @@ public class RobotOrientedDrivePIDRotation extends RobotOrientedDrive
 		try
 		{	
 			pidControllerRotation.setPID(
-					(double) config.get("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_KP"), 
-					(double) config.get("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_KI"), 
-					(double) config.get("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_KD"));
+					(double) config.get("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_KP") / 1000, 
+					(double) config.get("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_KI") / 1000, 
+					(double) config.get("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_KD") / 1000);
 			
 			pidControllerRotation.setAbsoluteTolerance(
 					(double) config.get("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_AbsoluteTolerance"));
