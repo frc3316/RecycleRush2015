@@ -190,6 +190,7 @@ public class SDB
 		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_AbsoluteTolerance");
 		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_MinimumOutput");
 		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_MaximumOutput");
+		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_SetpointScale");
 		logger.info("Finished initSDB()");
 	}
 }
