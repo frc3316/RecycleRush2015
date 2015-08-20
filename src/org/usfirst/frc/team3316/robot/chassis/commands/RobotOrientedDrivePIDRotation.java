@@ -40,7 +40,7 @@ public class RobotOrientedDrivePIDRotation extends RobotOrientedDrive
 												  0, 
 												  new PIDSourceRotation(), 
 												  new PIDOutputRotation(), 
-												  50);
+												  0.05);
 		pidControllerRotation.setOutputRange(-1, 1);
 	}
 	
