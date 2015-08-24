@@ -10,6 +10,7 @@ import org.usfirst.frc.team3316.robot.utils.StackerPosition;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -20,26 +21,27 @@ public class Stacker extends Subsystem
     Config config = Robot.config;
     DBugLogger logger = Robot.logger;
     
-    private DoubleSolenoid solenoidUpper, 
-    					   solenoidBottom; //Lifting solenoids
+
     
     private DoubleSolenoid solenoidContainer; //The solenoid that holds the containers
     private DoubleSolenoid solenoidGripper; //The solenoid that opens and closes the roller gripper
+    private DoubleSolenoid solenoidElevatorBrake; // The solenoid that brake the elevator
     
     private AnalogInput heightIR; //infrared
     private MovingAverage heightAverage;
     
-    private DigitalInput switchRight, switchLeft; //the switches that signify if there's a tote or a container in the stacker
+    private DigitalInput switchRight, switchLeft, switchUp , switchMiddle , switchBottom; //the switches that signify if there's a tote or a container in the stacker
     
     private double heightFloorMin, heightFloorMax,
     			   heightStepMin, heightStepMax,
     			   heightToteMin, heightToteMax;
     
+    private SpeedController left1, left2;
+	private SpeedController right1, right2;
+	private double leftScale , rightScale ;
+    
     public Stacker () 
     {
-    	solenoidUpper = Robot.actuators.stackerSolenoidUpper;
-    	
-    	solenoidBottom = Robot.actuators.stackerSolenoidBottom;
     	
     	solenoidContainer = Robot.actuators.stackerSolenoidContainer;
 		solenoidGripper = Robot.actuators.stackerSolenoidGripper;
@@ -76,57 +78,43 @@ public class Stacker extends Subsystem
 	 *  - Tote Height: both solenoids retracted
 	 */
     
-    public boolean openSolenoidUpper ()
-    {
-    	logger.fine("Try to open upper solenoid");
-    	
-    	if (solenoidContainer.get() == DoubleSolenoid.Value.kForward)
+   
+    
+    public boolean setMotors (double v)
+    { 
+    	if (solenoidElevatorBrake.get() == DoubleSolenoid.Value.kReverse)
     	{
-    		logger.fine("Container solenoid is opened, aborting");
     		return false;
     	}
     	
-    	solenoidUpper.set(DoubleSolenoid.Value.kForward);
-    	logger.fine("Solenoid upper opened");
+    	this.left1.set (v * leftScale);
+    	this.left2.set (v * leftScale);
+    	
+    	this.right1.set (v * rightScale);
+    	this.right2.set (v * rightScale);
     	
     	return true;
+    	
+    	
     }
     
-    public boolean closeSolenoidUpper ()
+    public boolean brakeOpen()
     {
-    	logger.fine("Try to close upper solenoid");
-    	
-    	solenoidUpper.set(DoubleSolenoid.Value.kReverse);
-    	logger.fine("Solenoid upper closed");
-    	
-    	return true;
-    }
-    
-    public boolean openSolenoidBottom ()
-    {
-    	logger.fine("Try to open bottom solenoid");
-    	
-    	if (solenoidContainer.get() == DoubleSolenoid.Value.kForward)
+    	solenoidElevatorBrake.set(DoubleSolenoid.Value.kForward);
     	{
-    		logger.fine("Container solenoid is opened, aborting");
-    		return false;
+    		return true;
     	}
-    	
-    	solenoidBottom.set(DoubleSolenoid.Value.kForward);
-    	logger.fine("Solenoid bottom opened");
-    	
-    	return true;
     }
-    
-    public boolean closeSolenoidBottom ()
+   
+    public boolean brakeClose()
     {
-    	logger.fine("Try to close bottom solenoid");
-    	
-    	solenoidBottom.set(DoubleSolenoid.Value.kReverse);
-    	logger.fine("Solenoid upper closed");
-    	
-    	return true;
+       solenoidElevatorBrake.set(DoubleSolenoid.Value.kReverse);
+       {
+    	   return true;
+       }
     }
+   
+    
     
     public boolean openSolenoidContainer ()
     {
@@ -185,21 +173,25 @@ public class Stacker extends Subsystem
     
     public StackerPosition getPosition ()
     {
-    	if (solenoidUpper.get() == DoubleSolenoid.Value.kForward &&
-    			solenoidBottom.get() == DoubleSolenoid.Value.kForward)
-    	{
-    		return StackerPosition.Floor;
-    	}
-    	if (solenoidUpper.get() == DoubleSolenoid.Value.kReverse &&
-    			solenoidBottom.get() == DoubleSolenoid.Value.kReverse)
+    	if (switchUp.get())
     	{
     		return StackerPosition.Tote;
     	}
-    	else
+    	
+    	if (switchBottom.get())
+    	{
+    		return StackerPosition.Floor;
+    		
+    	}
+    	
+    	if (switchMiddle.get())
     	{
     		return StackerPosition.Step;
     	}
+    	
+    	return null;
     }
+    
     
     public StackerPosition getPositionIR ()
     {
