@@ -5,6 +5,9 @@ import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 public class RobotOrientedDrive extends StrafeDrive 
 {	
 	double turnScale;
+	RotationPID rotationPID = new RotationPID();
+	
+	static boolean isPIDOn = false;
 	
 	protected void set ()
 	{
@@ -20,6 +23,18 @@ public class RobotOrientedDrive extends StrafeDrive
 	}
 	
 	protected void setRotation (double requiredTurn)
+	{
+		if (isPIDOn)
+		{
+			set_rotation(rotationPID.get());
+		}
+		else
+		{
+			set_rotation(requiredTurn);
+		}
+	}
+	
+	private void set_rotation (double requiredTurn)
 	{
 		//NOTE: Required turn cannot be larger than yIn.
 		
@@ -64,4 +79,6 @@ public class RobotOrientedDrive extends StrafeDrive
 			logger.severe(e);
 		}
 	}
+	
+	
 }
