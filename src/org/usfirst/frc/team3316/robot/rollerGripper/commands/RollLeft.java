@@ -11,8 +11,8 @@ public class RollLeft extends Roll
 	{
 		try
 		{
-			left = (double) config.get("rollerGripper_RollOut_Left");
-			right = (double) config.get("rollerGripper_RollOut_Right");
+			left = (double) config.get("rollerGripper_PushContainerSequence_LeftSpeed_MoveLeft");
+			right = (double) config.get("rollerGripper_PushContainerSequence_RightSpeed_MoveLeft");
 		}
 		catch (ConfigException e)
 		{
