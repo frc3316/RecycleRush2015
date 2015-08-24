@@ -10,6 +10,7 @@ import java.util.TimerTask;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.chassis.commands.FieldOrientedDrive;
+import org.usfirst.frc.team3316.robot.chassis.commands.FieldOrientedDrivePIDRotation;
 import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrivePIDRotation;
 import org.usfirst.frc.team3316.robot.chassis.commands.StrafeDrive;
 import org.usfirst.frc.team3316.robot.chassis.commands.TankDrive;
@@ -175,6 +176,7 @@ public class SDB
 		
 		SmartDashboard.putData(new RobotOrientedDrive());
 		SmartDashboard.putData(new RobotOrientedDrivePIDRotation());
+		SmartDashboard.putData(new FieldOrientedDrivePIDRotation());
 		SmartDashboard.putData(new FieldOrientedDrive());
 		
 		/*
@@ -184,6 +186,7 @@ public class SDB
 		
 		SmartDashboard.putData(new SetHeadingSDB());
 		putConfigVariableInSDB("chassis_HeadingToSet");
+		
 		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_KP");
 		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_KI");
 		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_KD");
@@ -191,6 +194,8 @@ public class SDB
 		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_MinimumOutput");
 		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_MaximumOutput");
 		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_SetpointScale");
+		
+		
 		logger.info("Finished initSDB()");
 	}
 }
