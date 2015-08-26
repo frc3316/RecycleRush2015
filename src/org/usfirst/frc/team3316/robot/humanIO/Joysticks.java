@@ -17,6 +17,8 @@ import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToStep;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToTote;
 import org.usfirst.frc.team3316.robot.stacker.commands.OpenGripper;
 import org.usfirst.frc.team3316.robot.stacker.commands.ReleaseContainer;
+import org.usfirst.frc.team3316.robot.vision.SaveBinaryFrame;
+import org.usfirst.frc.team3316.robot.vision.SaveFrame;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -80,6 +82,8 @@ public class Joysticks
 						  closeAnschluss;
 	
 	public JoystickButton wiggleWiggle;
+	
+	public JoystickButton saveFrame, saveBinaryFrame;
 	
 	public Joysticks ()
 	{
@@ -154,6 +158,15 @@ public class Joysticks
 					(int) config.get("BUTTON_CLOSE_ANSCHLUSS"));
 			closeAnschluss.whileHeld(new CloseAnschluss());
 			
+			
+			/*
+			 * Vision
+			 */
+			saveFrame = new JoystickButton(joystickLeft, 4);
+			saveFrame.whenPressed(new SaveFrame());
+			
+			saveBinaryFrame = new JoystickButton(joystickLeft, 5);
+			saveBinaryFrame.whenPressed(new SaveBinaryFrame());
 		}
 		catch (ConfigException e)
 		{
