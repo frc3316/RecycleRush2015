@@ -187,6 +187,7 @@ public class SDB
 		putConfigVariableInSDB("chassis_HeadingToSet");
 		putConfigVariableInSDB("rollerGripper_RollContainer_LeftSpeed");
 		putConfigVariableInSDB("rollerGripper_RollContainer_RightSpeed");
+		putConfigVariableInSDB("rollerGripper_PushContainer_PushTime");
 		
 		logger.info("Finished initSDB()");
 	}
