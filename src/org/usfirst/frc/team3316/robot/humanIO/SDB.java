@@ -187,6 +187,7 @@ public class SDB
 		
 		SmartDashboard.putData(new SetHeadingSDB());
 		putConfigVariableInSDB("chassis_HeadingToSet");
+		putConfigVariableInSDB("AutonomousCamera_ScoreMinRectangle");
 		
 		logger.info("Finished initSDB()");
 	}
