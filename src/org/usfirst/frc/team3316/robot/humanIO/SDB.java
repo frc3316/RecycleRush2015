@@ -185,6 +185,8 @@ public class SDB
 		
 		SmartDashboard.putData(new SetHeadingSDB());
 		putConfigVariableInSDB("chassis_HeadingToSet");
+		putConfigVariableInSDB("rollerGripper_RollContainer_LeftSpeed");
+		putConfigVariableInSDB("rollerGripper_RollContainer_RightSpeed");
 		
 		logger.info("Finished initSDB()");
 	}
