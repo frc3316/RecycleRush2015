@@ -1,5 +1,7 @@
 package org.usfirst.frc.team3316.robot.chassis.commands;
 
+import java.util.function.DoubleSupplier;
+
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
@@ -13,6 +15,8 @@ public class RotationPID
 {
 	protected Config config = Robot.config;
 	protected DBugLogger logger = Robot.logger;
+	
+	private DoubleSupplier setpointSource; 
 	
 	private class PIDSourceRotation implements PIDSource
 	{
@@ -39,6 +43,12 @@ public class RotationPID
 	
 	public RotationPID ()
 	{
+		this ( () -> {return TankDrive.getLeftX();} );
+	}
+	
+	public RotationPID (DoubleSupplier setpointSource)
+	{
+		this.setpointSource = setpointSource;
 		pidControllerRotation = new PIDController(0, 
 												  0, 
 												  0, 
@@ -46,6 +56,11 @@ public class RotationPID
 												  new PIDOutputRotation(), 
 												  0.05);
 		pidControllerRotation.setOutputRange(-1, 1);
+	}
+	
+	public void setSetpointSource (DoubleSupplier setpointSource)
+	{
+		this.setpointSource = setpointSource;
 	}
 	
 	public double get ()
@@ -84,7 +99,7 @@ public class RotationPID
 		try
 		{
 			setpointScale = (double) config.get("chassis_RobotOrientedDrivePIDRotation_SetpointScale");
-			setpointRotation = TankDrive.getLeftX() * setpointScale;
+			setpointRotation = setpointSource.getAsDouble() * setpointScale;
 			pidControllerRotation.setSetpoint(setpointRotation);
 		}
 		catch (ConfigException e)
