@@ -6,6 +6,8 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
+import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
@@ -22,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class AutonomousCamera extends Command
 {
-	Logger logger = Robot.logger;
+	DBugLogger logger = Robot.logger;
 
 	// A structure to hold measurements of a particle
 	public class ParticleReport implements Comparator<ParticleReport>,
@@ -51,7 +53,7 @@ public class AutonomousCamera extends Command
 	// identification
 	public class Scores
 	{
-		double Trapezoid;
+		double Rectangle;
 		double LongAspect;
 		double ShortAspect;
 		double AreaToConvexHullArea;
@@ -85,6 +87,7 @@ public class AutonomousCamera extends Command
 	double SHORT_RATIO = 1.4; // Tote short side = 16.9 / Tote height = 12.1 =
 								// 1.4
 	double SCORE_MIN = 75.0; // Minimum score to be considered a tote
+	double SCORE_MIN_RECTANGLE;
 	double VIEW_ANGLE = 49.4; // View angle fo camera, set to Axis m1011 by
 								// default, 64 for m1013, 51.7 for 206, 52 for
 								// HD3000 square, 60 for HD3000 640x480
@@ -118,6 +121,13 @@ public class AutonomousCamera extends Command
 		SmartDashboard.putNumber("Tote val min", TOTE_VAL_RANGE.minValue);
 		SmartDashboard.putNumber("Tote val max", TOTE_VAL_RANGE.maxValue);
 		SmartDashboard.putNumber("Area min %", AREA_MINIMUM);
+		
+		try {
+			SCORE_MIN_RECTANGLE = (double)Robot.config.get("AutonomousCamera_ScoreMinRectangle");
+		}
+		catch (ConfigException e) {
+			logger.severe(e);
+		}
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -201,8 +211,8 @@ public class AutonomousCamera extends Command
 			// single tote and will not work for a stack of 2 or more totes.
 			// Modification of the code to accommodate 2 or more stacked totes
 			// is left as an exercise for the reader.
-			scores.Trapezoid = TrapezoidScore(particles.elementAt(0));
-			SmartDashboard.putNumber("Trapezoid", scores.Trapezoid);
+			scores.Rectangle = RectangleScore(particles.elementAt(0));
+			SmartDashboard.putNumber("Rectangle", scores.Rectangle);
 			scores.LongAspect = LongSideScore(particles.elementAt(0));
 			SmartDashboard.putNumber("Long Aspect", scores.LongAspect);
 			scores.ShortAspect = ShortSideScore(particles.elementAt(0));
@@ -211,7 +221,7 @@ public class AutonomousCamera extends Command
 					.elementAt(0));
 			SmartDashboard.putNumber("Convex Hull Area",
 					scores.AreaToConvexHullArea);
-			boolean isTote = scores.Trapezoid > SCORE_MIN
+			boolean isTote = scores.Rectangle > SCORE_MIN_RECTANGLE
 					&& (scores.LongAspect > SCORE_MIN || scores.ShortAspect > SCORE_MIN)
 					&& scores.AreaToConvexHullArea > SCORE_MIN;
 			boolean isLong = scores.LongAspect > scores.ShortAspect;
@@ -275,6 +285,11 @@ public class AutonomousCamera extends Command
 	double ConvexHullAreaScore(ParticleReport report)
 	{
 		return ratioToScore((report.Area / report.ConvexHullArea) * 1.18);
+	}
+	
+	double RectangleScore(ParticleReport report)
+	{
+		return ratioToScore((report.BoundingRectRight - report.BoundingRectLeft) * (report.BoundingRectBottom - report.BoundingRectTop) / report.Area);
 	}
 
 	/**
