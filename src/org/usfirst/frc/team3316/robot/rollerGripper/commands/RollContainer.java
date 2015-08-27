@@ -5,14 +5,14 @@ import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 /**
  *
  */
-public class RollLeft extends Roll 
+public class RollContainer extends Roll 
 {
 	protected void setSpeeds() 
 	{
 		try
 		{
-			left = (double) config.get("rollerGripper_PushContainerSequence_LeftSpeed_MoveLeft");
-			right = (double) config.get("rollerGripper_PushContainerSequence_RightSpeed_MoveLeft");
+			left = (double) config.get("rollerGripper_RollContainer_LeftSpeed");
+			right = (double) config.get("rollerGripper_RollContainer_RightSpeed");
 		}
 		catch (ConfigException e)
 		{
