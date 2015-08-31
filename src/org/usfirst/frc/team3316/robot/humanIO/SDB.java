@@ -189,6 +189,36 @@ public class SDB
 		putConfigVariableInSDB("rollerGripper_RollContainer_RightSpeed");
 		putConfigVariableInSDB("rollerGripper_PushContainer_PushTime");
 		
+		/*
+		 * Autonomous test
+		 */
+		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_KP_1");
+		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_KI_1");
+		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_KD_1");
+		
+		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerY_KP_1");
+		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerY_KI_1");
+		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerY_KD_1");
+		
+		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_KP_1");
+		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_KI_1");
+		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_KD_1");
+		
+		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_AbsoluteTolerance_1");
+		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerY_AbsoluteTolerance_1");
+		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_AbsoluteTolerance_1");
+		
+		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_MinimumOutput_1");
+		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_MaximumOutput_1");
+		
+		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerY_MinimumOutput_1");
+		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerY_MaximumOutput_1");
+		
+		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_MinimumOutput_1");
+		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_MaximumOutput_1");
+		
+		putConfigVariableInSDB("chassis_RobotOrientedNavigation_MaxFinishCounter_1");
+		
 		logger.info("Finished initSDB()");
 	}
 }
