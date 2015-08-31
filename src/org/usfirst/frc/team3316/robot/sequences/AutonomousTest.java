@@ -18,10 +18,12 @@ public class AutonomousTest extends CommandGroup {
 	double pushTime;
     public AutonomousTest() 
     {
+    	addParallel(new RobotOrientedNavigation(0.15, 0, 0, 1));
     	addParallel(new RobotOrientedNavigation(0, 2.11, 0, 3));
     	addSequential(new RollContainer(), pushTime);
     	addSequential(new AutoToteCollect());
     }
+    
     DBugLogger logger = Robot.logger;
     Config config= Robot.config;
 
@@ -32,6 +34,7 @@ public class AutonomousTest extends CommandGroup {
 		{
     		pushTime = (double) config.get("rollerGripper_PushContainer_PushTime");
 		}
+    	
 		catch (ConfigException e)
 		{
 			logger.severe(e);
