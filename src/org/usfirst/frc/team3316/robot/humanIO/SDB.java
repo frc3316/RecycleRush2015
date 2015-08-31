@@ -14,6 +14,7 @@ import org.usfirst.frc.team3316.robot.chassis.commands.EnablePIDRotation;
 import org.usfirst.frc.team3316.robot.chassis.commands.FieldOrientedDrive;
 import org.usfirst.frc.team3316.robot.chassis.commands.FieldOrientedDrivePIDRotation;
 import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrivePIDRotation;
+import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedNavigation;
 import org.usfirst.frc.team3316.robot.chassis.commands.RotationPID;
 import org.usfirst.frc.team3316.robot.chassis.commands.StrafeDrive;
 import org.usfirst.frc.team3316.robot.chassis.commands.TankDrive;
@@ -176,11 +177,12 @@ public class SDB
 		 */
 		SmartDashboard.putData(new TankDrive());
 		SmartDashboard.putData(new StrafeDrive());
-		
 		SmartDashboard.putData(new RobotOrientedDrive());
 		SmartDashboard.putData(new DisablePIDRotation());
 		SmartDashboard.putData(new EnablePIDRotation());
 		SmartDashboard.putData(new FieldOrientedDrive());
+		SmartDashboard.putData(new RobotOrientedNavigation(0, 2, 0, 3));
+		SmartDashboard.putData(new RobotOrientedNavigation(0, 0, 90, 2));
 		
 		/*
 		 * Set Heading SDB
