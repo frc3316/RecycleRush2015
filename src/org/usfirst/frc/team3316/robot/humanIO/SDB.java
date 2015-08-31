@@ -219,6 +219,13 @@ public class SDB
 		
 		putConfigVariableInSDB("chassis_RobotOrientedNavigation_MaxFinishCounter_1");
 		
+		
+		
+		putConfigVariableInSDB("chassis_Velocity_ResetVelocity");
+		putConfigVariableInSDB("chassis_Velocity_Lowpass");
+		putConfigVariableInSDB("chassis_Velocity_UseLowPass");
+		
+		
 		logger.info("Finished initSDB()");
 	}
 }
