@@ -221,20 +221,12 @@ public class AutonomousCamera extends Command
 					.elementAt(0));
 			SmartDashboard.putNumber("Convex Hull Area",
 					scores.AreaToConvexHullArea);
-			boolean isTote = scores.Rectangle > SCORE_MIN_RECTANGLE
-					&& (scores.LongAspect > SCORE_MIN || scores.ShortAspect > SCORE_MIN)
-					&& scores.AreaToConvexHullArea > SCORE_MIN;
-			boolean isLong = scores.LongAspect > scores.ShortAspect;
+			boolean isTote = scores.Rectangle > SCORE_MIN_RECTANGLE;
 
 			// Send distance and tote status to dashboard. The bounding rect,
 			// particularly the horizontal center (left - right) may be useful
 			// for rotating/driving towards a tote
 			SmartDashboard.putBoolean("IsTote", isTote);
-			SmartDashboard
-					.putNumber(
-							"Distance",
-							computeDistance(binaryFrame,
-									particles.elementAt(0), isLong));
 		}
 		else
 		{
