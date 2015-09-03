@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.buttons.Trigger;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -25,10 +26,9 @@ public class Stacker extends Subsystem
 		public boolean get()
 		{
 			return heightSwitch.get();
-		}	
+		}
 	}
-	
-	
+
 	Config config = Robot.config;
 	DBugLogger logger = Robot.logger;
 
@@ -39,17 +39,19 @@ public class Stacker extends Subsystem
 	private DoubleSolenoid solenoidBrake; // The solenoid that brakes the
 											// elevator
 
-	private static DigitalInput switchRight, switchLeft, heightSwitch; // the switches
-	private static int heightPosition = 0;						// that signify
-																// if there's a
-																// tote or a
-																// container in
-																// the stacker
-	
-	
+	private static DigitalInput switchRight, switchLeft, heightSwitch; // the
+																		// switches
+	private static int heightPosition = 0; // that signify
+	// if there's a
+	// tote or a
+	// container in
+	// the stacker
+
 	private SpeedController left1, left2;
 	private SpeedController right1, right2;
-	private double leftScale, rightScale;
+	private double scale;
+
+	private HeightTrigger heightTrigger;
 
 	public Stacker()
 	{
@@ -57,8 +59,36 @@ public class Stacker extends Subsystem
 		solenoidContainer = Robot.actuators.stackerSolenoidContainer;
 		solenoidGripper = Robot.actuators.stackerSolenoidGripper;
 
-		switchRight = Robot.sensors.switchRatchetRight;
-		switchLeft = Robot.sensors.switchRatchetLeft;
+		switchRight = Robot.sensors.stackerSwitchRatchetRight;
+		switchLeft = Robot.sensors.stackerSwitchRatchetLeft;
+		heightSwitch = Robot.sensors.stackerSwitchHeight;
+
+		heightTrigger = new HeightTrigger();
+		heightTrigger.whenActive(new Command()
+		{
+			protected boolean isFinished()
+			{
+				return true;
+			}
+
+			protected void interrupted() {}
+
+			protected void initialize() {}
+
+			protected void execute()
+			{
+				if (left1.get() > 0)
+				{
+					heightPosition++;
+				}
+				else if (left1.get() < 0)
+				{
+					heightPosition--;
+				}
+			}
+
+			protected void end() {}
+		});
 
 	}
 
@@ -74,16 +104,17 @@ public class Stacker extends Subsystem
 
 	public boolean setMotors(double v)
 	{
+		updateScale();
 		if (solenoidBrake.get() == DoubleSolenoid.Value.kReverse)
 		{
 			return false;
 		}
 
-		this.left1.set(v * leftScale);
-		this.left2.set(v * leftScale);
+		this.left1.set(v * scale);
+		this.left2.set(v * scale);
 
-		this.right1.set(v * rightScale);
-		this.right2.set(v * rightScale);
+		this.right1.set(v * -scale);
+		this.right2.set(v * -scale);
 
 		return true;
 
@@ -96,10 +127,10 @@ public class Stacker extends Subsystem
 			return true;
 		}
 	}
-	
+
 	public void moveDown()
 	{
-		
+
 	}
 
 	public boolean brakeClose()
@@ -162,7 +193,23 @@ public class Stacker extends Subsystem
 
 	public StackerPosition getPosition()
 	{
-		return null;
+		if (heightPosition == 0)
+			return StackerPosition.Floor;
+		if (heightPosition == 1)
+			return StackerPosition.Step;
+		else
+			return StackerPosition.Tote;
 	}
 
+	 private void updateScale()
+	    {
+	    	try
+	    	{
+	    		scale = (double) config.get("stacker_Scale");
+	    	}
+	    	catch (ConfigException e)
+	    	{
+	    		logger.severe(e);
+	    	}
+	    }
 }
