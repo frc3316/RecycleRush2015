@@ -88,6 +88,8 @@ public class AutonomousCamera extends Command
 								// 1.4
 	double SCORE_MIN = 75.0; // Minimum score to be considered a tote
 	double SCORE_MIN_RECTANGLE;
+	double RATIO_MIN;
+	double RATIO_MAX;
 	double VIEW_ANGLE = 49.4; // View angle fo camera, set to Axis m1011 by
 								// default, 64 for m1013, 51.7 for 206, 52 for
 								// HD3000 square, 60 for HD3000 640x480
@@ -124,6 +126,8 @@ public class AutonomousCamera extends Command
 		
 		try {
 			SCORE_MIN_RECTANGLE = (double)Robot.config.get("AutonomousCamera_ScoreMinRectangle");
+			RATIO_MIN = (double)Robot.config.get("AutonomousCamera_RatioMin");
+			RATIO_MAX = (double)Robot.config.get("AutonomousCamera_RatioMax");
 		}
 		catch (ConfigException e) {
 			logger.severe(e);
@@ -211,6 +215,9 @@ public class AutonomousCamera extends Command
 			// single tote and will not work for a stack of 2 or more totes.
 			// Modification of the code to accommodate 2 or more stacked totes
 			// is left as an exercise for the reader.
+			
+			double sizeRatio = ParticleSizeRatio(particles.elementAt(0));
+			
 			scores.Rectangle = RectangleScore(particles.elementAt(0));
 			SmartDashboard.putNumber("Rectangle", scores.Rectangle);
 			scores.LongAspect = LongSideScore(particles.elementAt(0));
@@ -221,7 +228,10 @@ public class AutonomousCamera extends Command
 					.elementAt(0));
 			SmartDashboard.putNumber("Convex Hull Area",
 					scores.AreaToConvexHullArea);
-			boolean isTote = scores.Rectangle > SCORE_MIN_RECTANGLE;
+			SmartDashboard.putNumber("Particle Size Ratio", sizeRatio);
+			
+			
+			boolean isTote = scores.Rectangle > SCORE_MIN_RECTANGLE && sizeRatio >= RATIO_MIN && sizeRatio <= RATIO_MAX;
 
 			// Send distance and tote status to dashboard. The bounding rect,
 			// particularly the horizontal center (left - right) may be useful
@@ -285,19 +295,6 @@ public class AutonomousCamera extends Command
 	}
 
 	/**
-	 * Method to score if the particle appears to be a trapezoid. Compares the
-	 * convex hull (filled in) area to the area of the bounding box. The
-	 * expectation is that the convex hull area is about 95.4% of the bounding
-	 * box area for an ideal tote.
-	 */
-	double TrapezoidScore(ParticleReport report)
-	{
-		return ratioToScore(report.ConvexHullArea
-				/ ((report.BoundingRectRight - report.BoundingRectLeft)
-						* (report.BoundingRectBottom - report.BoundingRectTop) * .954));
-	}
-
-	/**
 	 * Method to score if the aspect ratio of the particle appears to match the
 	 * long side of a tote.
 	 */
@@ -315,6 +312,10 @@ public class AutonomousCamera extends Command
 	{
 		return ratioToScore(((report.BoundingRectRight - report.BoundingRectLeft) / (report.BoundingRectBottom - report.BoundingRectTop))
 				/ SHORT_RATIO);
+	}
+	
+	double ParticleSizeRatio (ParticleReport report) {
+		return (report.BoundingRectBottom - report.BoundingRectTop) / (report.BoundingRectRight - report.BoundingRectLeft);
 	}
 
 	/**
