@@ -24,7 +24,7 @@ public class MoveStackerToFloor extends MoveStacker
 		{
 			logger.fine("YES game piece in roller gripper");
 		}
-		
+		logger.fine("Vita is the melech!!!1");
 		// The stacker will colide with the roller gripper.
 		Robot.stacker.openSolenoidGripper();
 		
@@ -33,9 +33,16 @@ public class MoveStackerToFloor extends MoveStacker
 		 */
 		Robot.stacker.closeSolenoidContainer();
 	}
-	
-	protected boolean setSolenoids ()
+
+	@Override
+	protected boolean setSolenoids()
 	{
-		return (Robot.stacker.openSolenoidUpper() && Robot.stacker.openSolenoidBottom());
+		// TODO Auto-generated method stub
+		return false;
 	}
+	
+	/* protected boolean setSolenoids ()
+	{
+		return null
+	} */
 }

@@ -28,12 +28,14 @@ public class Actuators
 	/*
 	 * Stacker
 	 */
-	public DoubleSolenoid stackerSolenoidUpper;
-	public DoubleSolenoid stackerSolenoidBottom;
+	public DoubleSolenoid stackerSolenoidBrake;
 	
 	public DoubleSolenoid stackerSolenoidContainer;
-	
+
 	public DoubleSolenoid stackerSolenoidGripper;
+	
+	public SpeedController elevatorMotorControllerLeft1, elevatorMotorControllerLeft2;
+	public SpeedController elevatorMotorControllerRight1, elevatorMotorControllerRight2;
 	
 	/*
 	 * Anschluss
@@ -60,7 +62,7 @@ public class Actuators
 				
 				chassisMotorControllerRight1 = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT_1"));
 				chassisMotorControllerRight2 = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT_2"));
-				
+
 				chassisMotorControllerCenter = new VictorSP((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER"));
 				/*
 				 * Anschluss
@@ -97,11 +99,15 @@ public class Actuators
 			/*
 			 * Stacker
 			 */
-			stackerSolenoidUpper = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_UPPER_FORWARD"), 
-														 (int) config.get("STACKER_SOLENOID_UPPER_REVERSE"));
+			stackerSolenoidBrake = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_BRAKE"), 
+														 (int) config.get("STACKER_SOLENOID_BRAKE"));
 			
-			stackerSolenoidBottom = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_BOTTOM_FORWARD"), 
-														 (int) config.get("STACKER_SOLENOID_BOTTOM_REVERSE"));
+			elevatorMotorControllerLeft1 = new VictorSP ((int) config.get("ELEVATOR_MOTOR_CONTROLLER_LEFT_1"));
+			elevatorMotorControllerLeft2 = new VictorSP ((int) config.get("ELEVATOR_MOTOR_CONTROLLER_LEFT_2"));
+			
+			elevatorMotorControllerRight1 = new VictorSP ((int) config.get("ELEVATOR_MOTOR_CONTROLLER_RIGHT_1"));
+			elevatorMotorControllerRight2 = new VictorSP ((int) config.get("ELEVATOR_MOTOR_CONTROLLER_RIGHT_2"));
+	
 			
 			// Solenoid used to control the pistons connected to the gripper
 			stackerSolenoidGripper = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_GRIPPER_FORWARD"),
