@@ -66,7 +66,8 @@ public class Chassis extends Subsystem {
 	 * y, and theta delta and adds it to each integrator in the set Also
 	 * calculates turning rate in chassis
 	 */
-	private class NavigationTask extends TimerTask {
+	private class NavigationTask extends TimerTask 
+	{
 		private HashSet<NavigationIntegrator> integratorSet;
 
 		public boolean resetVelocity;
@@ -86,6 +87,12 @@ public class Chassis extends Subsystem {
 			// Makes sure the first time delta will not be since 1970
 			if (previousTime == 0) {
 				previousTime = System.currentTimeMillis();
+			}
+			
+			//Makes sure the first rotation delta will not be stupidly big
+			if (previousHeading == 0)
+			{
+				previousHeading = getHeading();
 			}
 			/*
 			 * Current variables
@@ -119,6 +126,8 @@ public class Chassis extends Subsystem {
 
 			velocityF += getAccelY() * dT;
 			velocityS += getAccelX() * dT;
+			
+			//TODO: Reset velocity is a variable for testing purposes and should not appear in the final version
 			if (resetVelocity) {
 				if (encoderCenter.getStopped()) {
 					velocityS = 0;
@@ -154,14 +163,23 @@ public class Chassis extends Subsystem {
 			 */
 			previousTime = currentTime;
 			previousHeading = currentHeading;
+			
+			
 		}
-
+		
 		public boolean addIntegrator(NavigationIntegrator integrator) {
 			return integratorSet.add(integrator);
 		}
 
 		public boolean removeIntegrator(NavigationIntegrator integrator) {
 			return integratorSet.remove(integrator);
+		}
+		
+		public double getVelocityS() {
+			return velocityS;
+		}
+		public double getVelocityF() {
+			return velocityF;
 		}
 	}
 
@@ -343,7 +361,18 @@ public class Chassis extends Subsystem {
 			return navx.getWorldLinearAccelY();
 		}
 	}
+	
+	 public double getVelocityF() {
+		return navigationTask.getVelocityF();
+	}
+	
+	public double getVelocityS() {
+		return navigationTask.getVelocityS();
+	}
 
+
+	
+	
 	/*
 	 * variables for the config
 	 */
@@ -355,12 +384,15 @@ public class Chassis extends Subsystem {
 			averageUpdateRate = (int) config.get("chassis_Accelaverage_Size");
 			averageSize = (int) config.get("chassis_Accelaverage_UpdateRate");
 			useMovingAverage = (boolean) Robot.config.get("chassis_Accelaverage_useMovingAverage");
+			
+			
 			} 
 		catch (ConfigException e) {
-
+			logger.severe(e);
 		}
 	}
-
+	
+	
 	/*
 	 * Navigation integrator
 	 */

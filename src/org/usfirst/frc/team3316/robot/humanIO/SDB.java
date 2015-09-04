@@ -19,6 +19,7 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.sequences.AutonomousTest;
+import org.usfirst.frc.team3316.robot.subsystems.Chassis;
 
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
@@ -57,6 +58,13 @@ public class SDB
 			put ("Right Ratchet", Robot.stacker.getSwitchRatchetRight());
 			
 			put ("Game Piece Switch", Robot.rollerGripper.getSwitchGamePiece());
+			
+			put("velocity X", Robot.chassis.getVelocityS());
+			put("velocity Y", Robot.chassis.getVelocityF());
+			
+			put("accel X", Robot.chassis.getAccelX());
+			put("accel Y", Robot.chassis.getAccelY());
+			
 		}
 		
 		private void put (String name, double d)
@@ -185,13 +193,10 @@ public class SDB
 		
 		SmartDashboard.putData(new SetHeadingSDB());
 		putConfigVariableInSDB("chassis_HeadingToSet");
-		putConfigVariableInSDB("rollerGripper_RollContainer_LeftSpeed");
-		putConfigVariableInSDB("rollerGripper_RollContainer_RightSpeed");
-		putConfigVariableInSDB("rollerGripper_PushContainer_PushTime");
-		
 		/*
 		 * Autonomous test
 		 */
+		/*
 		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_KP_1");
 		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_KI_1");
 		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_KD_1");
@@ -218,9 +223,12 @@ public class SDB
 		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_MaximumOutput_1");
 		
 		putConfigVariableInSDB("chassis_RobotOrientedNavigation_MaxFinishCounter_1");
+		*/
 		
-		
-		
+		/*
+		 * Chassis navigation task test
+		 * TODO: TO REMOVE
+		 */
 		putConfigVariableInSDB("chassis_Velocity_ResetVelocity");
 		putConfigVariableInSDB("chassis_Velocity_Lowpass");
 		putConfigVariableInSDB("chassis_Velocity_UseLowPass");
@@ -228,6 +236,8 @@ public class SDB
 		putConfigVariableInSDB("chassis_Accelaverage_Size");
 		putConfigVariableInSDB("averageUpdateRate");
 		putConfigVariableInSDB("chassis_Accelaverage_useMovingAverage");
+		
+		
 		
 		
 		logger.info("Finished initSDB()");
