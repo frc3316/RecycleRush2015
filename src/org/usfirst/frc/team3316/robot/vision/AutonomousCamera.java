@@ -17,6 +17,7 @@ import com.ni.vision.NIVision.RawData;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -37,6 +38,9 @@ public class AutonomousCamera extends Command
 		double BoundingRectTop;
 		double BoundingRectRight;
 		double BoundingRectBottom;
+		double CenterMassY;
+		double ToteAngle;
+		double ToteDistance;
 
 		public int compareTo(ParticleReport r)
 		{
@@ -88,11 +92,17 @@ public class AutonomousCamera extends Command
 								// 1.4
 	double SCORE_MIN = 75.0; // Minimum score to be considered a tote
 	double SCORE_MIN_RECTANGLE;
+	
 	double RATIO_MIN;
 	double RATIO_MAX;
-	double VIEW_ANGLE = 49.4; // View angle fo camera, set to Axis m1011 by
-								// default, 64 for m1013, 51.7 for 206, 52 for
-								// HD3000 square, 60 for HD3000 640x480
+	
+	double VIEW_ANGLE; 
+	
+	int Y_IMAGE_RES;
+	int IMAGE_SIZE;
+	
+	double TARGET_SIZE_SQRT;
+	
 	NIVision.ParticleFilterCriteria2 criteria[] = new NIVision.ParticleFilterCriteria2[1];
 	NIVision.ParticleFilterOptions2 filterOptions = new NIVision.ParticleFilterOptions2(
 			0, 0, 1, 1);
@@ -111,6 +121,8 @@ public class AutonomousCamera extends Command
 		frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
 
 		binaryFrame = NIVision.imaqCreateImage(ImageType.IMAGE_U8, 0);
+		Y_IMAGE_RES = NIVision.imaqGetImageSize(binaryFrame).height;
+		IMAGE_SIZE = NIVision.imaqGetImageSize(binaryFrame).height * NIVision.imaqGetImageSize(binaryFrame).width;
 		criteria[0] = new NIVision.ParticleFilterCriteria2(
 				NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA, AREA_MINIMUM,
 				100.0, 0, 0);
@@ -128,6 +140,8 @@ public class AutonomousCamera extends Command
 			SCORE_MIN_RECTANGLE = (double)Robot.config.get("AutonomousCamera_ScoreMinRectangle");
 			RATIO_MIN = (double)Robot.config.get("AutonomousCamera_RatioMin");
 			RATIO_MAX = (double)Robot.config.get("AutonomousCamera_RatioMax");
+			TARGET_SIZE_SQRT = (double)Robot.config.get("AutonomousCamera_TargetSize");
+			VIEW_ANGLE = (double)Robot.config.get("AutonomousCamera_ViewAngle");
 		}
 		catch (ConfigException e) {
 			logger.severe(e);
@@ -205,6 +219,9 @@ public class AutonomousCamera extends Command
 				par.BoundingRectRight = NIVision.imaqMeasureParticle(
 						binaryFrame, particleIndex, 0,
 						NIVision.MeasurementType.MT_BOUNDING_RECT_RIGHT);
+				par.CenterMassY = NIVision.imaqMeasureParticle(
+						binaryFrame, particleIndex, 0,
+						NIVision.MeasurementType.MT_CENTER_OF_MASS_Y);
 				particles.add(par);
 			}
 			particles.sort(null);
@@ -217,6 +234,12 @@ public class AutonomousCamera extends Command
 			// is left as an exercise for the reader.
 			
 			double sizeRatio = ParticleSizeRatio(particles.elementAt(0));
+			
+			particles.elementAt(0).ToteAngle = computeAngleFromTarget(particles.elementAt(0));
+			particles.elementAt(0).ToteDistance = computeDistance(particles.elementAt(0));
+			
+			SmartDashboard.putNumber("Tote Angle", particles.elementAt(0).ToteAngle);
+			SmartDashboard.putNumber("Tote Distance", particles.elementAt(0).ToteDistance);
 			
 			scores.Rectangle = RectangleScore(particles.elementAt(0));
 			SmartDashboard.putNumber("Rectangle", scores.Rectangle);
@@ -317,38 +340,20 @@ public class AutonomousCamera extends Command
 	double ParticleSizeRatio (ParticleReport report) {
 		return (report.BoundingRectBottom - report.BoundingRectTop) / (report.BoundingRectRight - report.BoundingRectLeft);
 	}
-
-	/**
-	 * Computes the estimated distance to a target using the width of the
-	 * particle in the image. For more information and graphics showing the math
-	 * behind this approach see the Vision Processing section of the
-	 * ScreenStepsLive documentation.
-	 *
-	 * @param image
-	 *            The image to use for measuring the particle estimated
-	 *            rectangle
-	 * @param report
-	 *            The Particle Analysis Report for the particle
-	 * @param isLong
-	 *            Boolean indicating if the target is believed to be the long
-	 *            side of a tote
-	 * @return The estimated distance to the target in feet.
-	 */
-	double computeDistance(Image image, ParticleReport report, boolean isLong)
-	{
-		double normalizedWidth, targetWidth;
-		NIVision.GetImageSizeResult size;
-
-		size = NIVision.imaqGetImageSize(image);
-		normalizedWidth = 2
-				* (report.BoundingRectRight - report.BoundingRectLeft)
-				/ size.width;
-		targetWidth = isLong ? 26.0 : 16.9;
-
-		return targetWidth
-				/ (normalizedWidth * 12 * Math.tan(VIEW_ANGLE * Math.PI
-						/ (180 * 2)));
-	}
+	
+	double computeAngleFromTarget (ParticleReport report)
+    {
+        double yDiff = (report.CenterMassY - Y_IMAGE_RES / 2);
+        double angleToReturn = (yDiff * VIEW_ANGLE) / Y_IMAGE_RES;
+        return angleToReturn;
+    }
+	
+	public double computeDistance (ParticleReport report)
+    {
+        double ConvexHullAreaRatio;
+        ConvexHullAreaRatio = report.ConvexHullArea / IMAGE_SIZE; 
+        return (Math.sqrt(ConvexHullAreaRatio) * TARGET_SIZE_SQRT);
+    }
 
 	int photosSaved = 0;
 
