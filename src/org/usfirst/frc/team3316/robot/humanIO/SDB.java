@@ -225,6 +225,10 @@ public class SDB
 		putConfigVariableInSDB("chassis_Velocity_Lowpass");
 		putConfigVariableInSDB("chassis_Velocity_UseLowPass");
 		
+		putConfigVariableInSDB("chassis_Accelaverage_Size");
+		putConfigVariableInSDB("averageUpdateRate");
+		putConfigVariableInSDB("chassis_Accelaverage_useMovingAverage");
+		
 		
 		logger.info("Finished initSDB()");
 	}
