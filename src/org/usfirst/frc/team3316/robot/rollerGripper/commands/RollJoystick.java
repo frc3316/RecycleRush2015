@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Joystick;
 /**
  *
  */
-public class RollJoystick extends Roll 
+public class RollJoystick extends Roll
 {
 	Joystick joystick = Robot.joysticks.joystickOperator;
 	
@@ -30,6 +30,7 @@ public class RollJoystick extends Roll
 		 * (right + left) = 2y
 		 * -1 <= x, y <= 1 
 		 */
+		
 		this.left = (y - x);
 		this.right = (y + x);
 		

@@ -41,11 +41,20 @@ public class Stacker extends Subsystem
 
 	private static DigitalInput switchRight, switchLeft, heightSwitch; // the
 																		// switches
-	private static int heightPosition = 0; // that signify
-	// if there's a
-	// tote or a
-	// container in
-	// the stacker
+																		// that
+																		// signify
+																		// if
+																		// there's
+																		// a
+																		// tote
+																		// or a
+																		// container
+																		// in
+																		// the
+																		// stacker
+
+	private static int heightPosition = 0; // the position of the stacker:
+											// 0 - floor, 1 - step, 2 - tote
 
 	private SpeedController left1, left2;
 	private SpeedController right1, right2;
@@ -71,9 +80,13 @@ public class Stacker extends Subsystem
 				return true;
 			}
 
-			protected void interrupted() {}
+			protected void interrupted()
+			{
+			}
 
-			protected void initialize() {}
+			protected void initialize()
+			{
+			}
 
 			protected void execute()
 			{
@@ -87,7 +100,9 @@ public class Stacker extends Subsystem
 				}
 			}
 
-			protected void end() {}
+			protected void end()
+			{
+			}
 		});
 
 	}
@@ -117,7 +132,6 @@ public class Stacker extends Subsystem
 		this.right2.set(v * -scale);
 
 		return true;
-
 	}
 
 	public boolean brakeOpen()
@@ -128,17 +142,16 @@ public class Stacker extends Subsystem
 		}
 	}
 
-	public void moveDown()
-	{
-
-	}
-
 	public boolean brakeClose()
 	{
 		solenoidBrake.set(DoubleSolenoid.Value.kReverse);
 		{
 			return true;
 		}
+	}
+
+	public void moveDown()
+	{
 	}
 
 	public boolean openSolenoidContainer()
@@ -181,6 +194,26 @@ public class Stacker extends Subsystem
 		return true;
 	}
 
+	public boolean closeBrake()
+	{
+		logger.fine("Try to close brake solenoid");
+
+		solenoidGripper.set(DoubleSolenoid.Value.kReverse);
+		logger.fine("Solenoid brake closed");
+
+		return true;
+	}
+
+	public boolean openBrake()
+	{
+		logger.fine("Try to close brake solenoid");
+
+		solenoidGripper.set(DoubleSolenoid.Value.kForward);
+		logger.fine("Solenoid brake closed");
+
+		return true;
+	}
+
 	public boolean getSwitchRatchetRight()
 	{
 		return switchRight.get();
@@ -201,15 +234,15 @@ public class Stacker extends Subsystem
 			return StackerPosition.Tote;
 	}
 
-	 private void updateScale()
-	    {
-	    	try
-	    	{
-	    		scale = (double) config.get("stacker_Scale");
-	    	}
-	    	catch (ConfigException e)
-	    	{
-	    		logger.severe(e);
-	    	}
-	    }
+	private void updateScale()
+	{
+		try
+		{
+			scale = (double) config.get("stacker_Scale");
+		}
+		catch (ConfigException e)
+		{
+			logger.severe(e);
+		}
+	}
 }
