@@ -8,38 +8,46 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class MoveStackerManually extends Command
+public abstract class MoveStackerManually extends Command
 {
-
+	double v;
 	DBugLogger logger = Robot.logger;
-	
-    public MoveStackerManually()
-    {}
 
-    // Called just before this Command runs the first time
-    protected void initialize()
-    {
-    	logger.fine(this.getName() + " initialize");
-    	//Robot.stacker.closeBrake();
-    }
+	public MoveStackerManually()
+	{
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() 
-    {
-    	setMotors();
-    }
+	// Called just before this Command runs the first time
+	protected void initialize()
+	{
+		logger.fine(this.getName() + " initialize");
+		// Robot.stacker.closeBrake();
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
-    }
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute()
+	{
+		v = Robot.joysticks.joystickOperator.getRawAxis(5);
+		Robot.stacker.setMotors(v);
+	}
 
-    // Called once after isFinished returns true
-    protected void end() {
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished()
+	{
+		return false;
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
+	// Called once after isFinished returns true
+	protected void end()
+	{
+		Robot.stacker.setMotors(0);
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted()
+	{
+	}
+
+
 }

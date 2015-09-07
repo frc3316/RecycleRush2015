@@ -2,6 +2,7 @@ package org.usfirst.frc.team3316.robot.stacker.commands;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
+import org.usfirst.frc.team3316.robot.utils.StackerPosition;
 
 /**
  * Moves stacker to tote position while checking
@@ -9,25 +10,27 @@ import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
  */
 public class MoveStackerToTote extends MoveStacker
 {
-	protected void prepareSolenoids()
+	@Override
+	protected void initialize()
+    {
+		super.initialize();
+		Robot.stacker.lastStackerPosition = StackerPosition.Tote;
+    }
+
+	@Override
+	protected void execute()
 	{
-		if (gp == GamePieceCollected.Container)
-		{
-			//If there is a container at floor position, it might colide with the roller gripper
-			logger.fine("YES container in roller gripper");
-			Robot.stacker.openSolenoidContainer();
-		}
-		else
-		{
-			logger.fine("NO container in the roller gripper");
-		}
-		
-		// The stacker will colide with the roller gripper.
-		Robot.stacker.openSolenoidGripper();
+		Robot.stacker.setMotors(v);
 	}
-	
-	protected boolean setSolenoids() 
+
+	@Override
+	protected boolean isFinished()
 	{
-		return (Robot.stacker.closeSolenoidUpper() && Robot.stacker.closeSolenoidBottom());
+		if (Robot.stacker.getPosition() == StackerPosition.Tote)
+		{
+			Robot.stacker.closeBrake();
+			return true;
+		}
+		return false;
 	}
 }

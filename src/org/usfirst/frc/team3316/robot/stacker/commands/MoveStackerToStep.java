@@ -2,40 +2,42 @@ package org.usfirst.frc.team3316.robot.stacker.commands;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
+import org.usfirst.frc.team3316.robot.utils.StackerPosition;
 
 /**
  * Moves stacker to step position while checking
  * for mechanical safety constraints. 
  */
 public class MoveStackerToStep extends MoveStacker
-{	
-	GamePieceCollected gp;
+{
+	@Override
+	protected void initialize()
+    {
+		super.initialize();
+		Robot.stacker.lastStackerPosition = StackerPosition.Step;
+    }
 
-	protected void prepareSolenoids() 
+	@Override
+	protected void execute()
 	{
-		if (gp == GamePieceCollected.None)
+		if (Robot.stacker.lastStackerPosition == StackerPosition.Floor)
 		{
-			/* If there is nothing at floor position, what we might have on
-			 * the stacker will colide with the roller gripper.
-			 */
-			logger.fine("NO game piece in roller gripper");
+			Robot.stacker.setMotors(v);
 		}
-		else
+		else if (Robot.stacker.lastStackerPosition == StackerPosition.Tote)
 		{
-			logger.fine("YES game piece in roller gripper");
+			Robot.stacker.setMotors(v);
 		}
-		
-		// The stacker will colide with the roller gripper.
-		Robot.stacker.openSolenoidGripper();
-				
-		/* We always want to close the container pistons so they don't colide
-		 * with any gamepiece that might be at floor position.
-		 */
-		Robot.stacker.closeSolenoidContainer();
 	}
-	
-	protected boolean setSolenoids ()
+
+	@Override
+	protected boolean isFinished()
 	{
-		return (Robot.stacker.closeSolenoidUpper() && Robot.stacker.openSolenoidBottom());
+		if (Robot.stacker.getPosition() == StackerPosition.Step)
+		{
+			Robot.stacker.closeBrake();
+			return true;
+		}
+		return false;
 	}
 }

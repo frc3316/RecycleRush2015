@@ -15,17 +15,18 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 public class Stacker extends Subsystem
 {
-	public static class HeightTrigger extends Trigger
+	public class HeightTrigger extends Trigger
 	{
 		public boolean get()
 		{
-			return heightSwitch.get();
+			return getHeightSwitch();
 		}
 	}
 
@@ -61,6 +62,10 @@ public class Stacker extends Subsystem
 	private double scale;
 
 	private HeightTrigger heightTrigger;
+
+	public StackerPosition lastStackerPosition = StackerPosition.Floor;
+	public double v;
+	
 
 	public Stacker()
 	{
@@ -125,6 +130,7 @@ public class Stacker extends Subsystem
 			return false;
 		}
 
+		SmartDashboard.putNumber("Stacker setMotors value: ", v);
 		this.left1.set(v * scale);
 		this.left2.set(v * scale);
 
@@ -148,10 +154,6 @@ public class Stacker extends Subsystem
 		{
 			return true;
 		}
-	}
-
-	public void moveDown()
-	{
 	}
 
 	public boolean openSolenoidContainer()
@@ -232,6 +234,11 @@ public class Stacker extends Subsystem
 			return StackerPosition.Step;
 		else
 			return StackerPosition.Tote;
+	}
+
+	public boolean getHeightSwitch()
+	{
+		return !(heightSwitch.get());
 	}
 
 	private void updateScale()
