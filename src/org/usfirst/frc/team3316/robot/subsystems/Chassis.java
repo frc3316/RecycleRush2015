@@ -187,13 +187,14 @@ public class Chassis extends Subsystem {
 	DBugLogger logger = Robot.logger;
 
 	private NavigationTask navigationTask;
+	public NavigationIntegrator testIntegrator;
 
 	private SpeedController left1, left2;
 	private SpeedController right1, right2;
 	private SpeedController center;
 
 	private IMUAdvanced navx;
-	MovingAverage accelXAverage, accelYAverage;
+	private MovingAverage accelXAverage, accelYAverage;
 
 	private Encoder encoderLeft, encoderRight, encoderCenter;
 
@@ -212,7 +213,10 @@ public class Chassis extends Subsystem {
 
 	double leftEncoderScale = 1, rightEncoderScale = 1, centerEncoderScale = 1;
 
-	public Chassis() {
+	public Chassis() 
+	{
+		testIntegrator = new NavigationIntegrator();
+		
 		left1 = Robot.actuators.chassisMotorControllerLeft1;
 		left2 = Robot.actuators.chassisMotorControllerLeft2;
 
@@ -242,9 +246,10 @@ public class Chassis extends Subsystem {
 		navigationTask = new NavigationTask();
 		Robot.timer.schedule(navigationTask, 0, 50);
 		
-		if(useMovingAverage) {
-		accelXAverage.timerInit();
-		accelYAverage.timerInit();
+		if(useMovingAverage) 
+		{
+			accelXAverage.timerInit();
+			accelYAverage.timerInit();
 		}
 	}
 
@@ -360,6 +365,16 @@ public class Chassis extends Subsystem {
 		} else {
 			return navx.getWorldLinearAccelY();
 		}
+	}
+	
+	public double getAccelXAverage ()
+	{
+		return accelXAverage.get();
+	}
+
+	public double getAccelYAverage ()
+	{
+		return accelYAverage.get();
 	}
 	
 	 public double getVelocityF() {

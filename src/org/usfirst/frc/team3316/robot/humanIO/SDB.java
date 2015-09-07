@@ -10,6 +10,7 @@ import java.util.TimerTask;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.chassis.commands.FieldOrientedDrive;
+import org.usfirst.frc.team3316.robot.chassis.commands.SetNewIntegrator;
 import org.usfirst.frc.team3316.robot.chassis.commands.StrafeDrive;
 import org.usfirst.frc.team3316.robot.chassis.commands.TankDrive;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingPreset;
@@ -59,11 +60,23 @@ public class SDB
 			
 			put ("Game Piece Switch", Robot.rollerGripper.getSwitchGamePiece());
 			
-			put("velocity X", Robot.chassis.getVelocityS());
-			put("velocity Y", Robot.chassis.getVelocityF());
+			put("Velocity X", Robot.chassis.getVelocityS());
+			put("Velocity Y", Robot.chassis.getVelocityF());
 			
-			put("accel X", Robot.chassis.getAccelX());
-			put("accel Y", Robot.chassis.getAccelY());
+			put("Accel X", Robot.chassis.getAccelX());
+			put("Accel Y", Robot.chassis.getAccelY());
+			
+			put("Encoder center stopped", Robot.sensors.chassisEncoderCenter.getStopped());
+			put("Encoder left stopped", Robot.sensors.chassisEncoderLeft.getStopped());
+			put("Encoder right stopped", Robot.sensors.chassisEncoderRight.getStopped());
+			
+			put("AccelXAverage",Robot.chassis.getAccelXAverage());
+			put("AccelYAverage",Robot.chassis.getAccelYAverage());
+			
+			put("Integrator X", Robot.chassis.testIntegrator.getX());
+			put("Integrator Y", Robot.chassis.testIntegrator.getY());
+			put("Integrator Heading", Robot.chassis.testIntegrator.getHeading());
+			SmartDashboard.putData(new SetNewIntegrator());
 			
 		}
 		
