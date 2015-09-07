@@ -175,14 +175,11 @@ public class SDB
 		/*
 		 * TO REMOVE
 		 */
-		SmartDashboard.putData(new TankDrive());
-		SmartDashboard.putData(new StrafeDrive());
 		SmartDashboard.putData(new RobotOrientedDrive());
 		SmartDashboard.putData(new DisablePIDRotation());
 		SmartDashboard.putData(new EnablePIDRotation());
 		SmartDashboard.putData(new FieldOrientedDrive());
-		SmartDashboard.putData("Drive two meters forward", new RobotOrientedNavigation(0, 2, 0, 3));
-		SmartDashboard.putData("Turn right", new RobotOrientedNavigation(0, 0, 90, 2));
+		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_UsePIDRotation");
 		
 		/*
 		 * Set Heading SDB
@@ -191,15 +188,6 @@ public class SDB
 		
 		SmartDashboard.putData(new SetHeadingSDB());
 		putConfigVariableInSDB("chassis_HeadingToSet");
-		
-		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_KP");
-		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_KI");
-		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_KD");
-		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_AbsoluteTolerance");
-		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_MinimumOutput");
-		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_PIDControllerRotation_MaximumOutput");
-		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_SetpointScale");
-		
 		
 		logger.info("Finished initSDB()");
 	}

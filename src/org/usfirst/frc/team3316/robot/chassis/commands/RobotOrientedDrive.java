@@ -23,9 +23,10 @@ public class RobotOrientedDrive extends StrafeDrive
 		this.right = y;
 		this.center = x;
 	}
-
+	
 	protected void setRotation(double requiredTurn)
 	{
+		updateIsPIDOn();
 		if (isPIDOn)
 		{
 			set_rotation(rotationPID.get());
@@ -33,6 +34,18 @@ public class RobotOrientedDrive extends StrafeDrive
 		else
 		{
 			set_rotation(requiredTurn);
+		}
+	}
+	
+	private void updateIsPIDOn()
+	{
+		try
+		{
+			isPIDOn = (boolean) config.get("chassis_RobotOrientedDrivePIDRotation_UsePIDRotation");
+		}
+		catch (ConfigException e)
+		{
+			logger.severe(e);
 		}
 	}
 
@@ -78,18 +91,6 @@ public class RobotOrientedDrive extends StrafeDrive
 		catch (ConfigException e)
 		{
 			logger.severe(e);
-		}
-	}
-
-	public static void activate(boolean on)
-	{
-		if (on)
-		{
-			isPIDOn = true;
-		}
-		else
-		{
-			isPIDOn = false;
 		}
 	}
 
