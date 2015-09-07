@@ -181,8 +181,8 @@ public class SDB
 		SmartDashboard.putData(new DisablePIDRotation());
 		SmartDashboard.putData(new EnablePIDRotation());
 		SmartDashboard.putData(new FieldOrientedDrive());
-		SmartDashboard.putData(new RobotOrientedNavigation(0, 2, 0, 3));
-		SmartDashboard.putData(new RobotOrientedNavigation(0, 0, 90, 2));
+		SmartDashboard.putData("Drive two meters forward", new RobotOrientedNavigation(0, 2, 0, 3));
+		SmartDashboard.putData("Turn right", new RobotOrientedNavigation(0, 0, 90, 2));
 		
 		/*
 		 * Set Heading SDB
