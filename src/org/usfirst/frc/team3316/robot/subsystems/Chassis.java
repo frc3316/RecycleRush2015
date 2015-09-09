@@ -5,6 +5,7 @@ package org.usfirst.frc.team3316.robot.subsystems;
 
 import java.util.HashSet;
 import java.util.TimerTask;
+import java.util.function.DoubleSupplier;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.chassis.commands.Drive;
@@ -12,6 +13,7 @@ import org.usfirst.frc.team3316.robot.chassis.commands.FieldOrientedDrive;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+import org.usfirst.frc.team3316.robot.utils.MovingAverage;
 
 import com.kauailabs.nav6.frc.IMUAdvanced;
 
@@ -68,8 +70,8 @@ public class Chassis extends Subsystem {
 	{
 		private HashSet<NavigationIntegrator> integratorSet;
 
-		public boolean changeVelocitySpeed;
-		
+		public boolean resetVelocity;
+
 		private double previousTime = 0;
 		private double previousHeading = 0;
 
@@ -79,13 +81,18 @@ public class Chassis extends Subsystem {
 			integratorSet = new HashSet<NavigationIntegrator>();
 		}
 
-		public void run() 
-		{
+		public void run() {
 			autonomousTestVariables();
-			
+
 			// Makes sure the first time delta will not be since 1970
 			if (previousTime == 0) {
 				previousTime = System.currentTimeMillis();
+			}
+			
+			//Makes sure the first rotation delta will not be stupidly big
+			if (previousHeading == 0)
+			{
+				previousHeading = getHeading();
 			}
 			/*
 			 * Current variables
@@ -119,15 +126,14 @@ public class Chassis extends Subsystem {
 
 			velocityF += getAccelY() * dT;
 			velocityS += getAccelX() * dT;
-			if ( changeVelocitySpeed) 
-			{
-				if (encoderCenter.getStopped()) 
-				{
+			
+			//TODO: Reset velocity is a variable for testing purposes and should not appear in the final version
+			if (resetVelocity) {
+				if (encoderCenter.getStopped()) {
 					velocityS = 0;
 				}
 
-				if (encoderLeft.getStopped() && encoderRight.getStopped()) 
-				{
+				if (encoderLeft.getStopped() && encoderRight.getStopped()) {
 					velocityF = 0;
 				}
 			}
@@ -157,8 +163,10 @@ public class Chassis extends Subsystem {
 			 */
 			previousTime = currentTime;
 			previousHeading = currentHeading;
+			
+			
 		}
-
+		
 		public boolean addIntegrator(NavigationIntegrator integrator) {
 			return integratorSet.add(integrator);
 		}
@@ -166,18 +174,27 @@ public class Chassis extends Subsystem {
 		public boolean removeIntegrator(NavigationIntegrator integrator) {
 			return integratorSet.remove(integrator);
 		}
+		
+		public double getVelocityS() {
+			return velocityS;
+		}
+		public double getVelocityF() {
+			return velocityF;
+		}
 	}
 
 	Config config = Robot.config;
 	DBugLogger logger = Robot.logger;
 
 	private NavigationTask navigationTask;
+	public NavigationIntegrator testIntegrator;
 
 	private SpeedController left1, left2;
 	private SpeedController right1, right2;
 	private SpeedController center;
 
 	private IMUAdvanced navx;
+	private MovingAverage accelXAverage, accelYAverage;
 
 	private Encoder encoderLeft, encoderRight, encoderCenter;
 
@@ -190,9 +207,16 @@ public class Chassis extends Subsystem {
 
 	Drive defaultDrive;
 
+	int averageSize = 20;
+	int averageUpdateRate = 10;
+	boolean useMovingAverage = true;
+
 	double leftEncoderScale = 1, rightEncoderScale = 1, centerEncoderScale = 1;
 
-	public Chassis() {
+	public Chassis() 
+	{
+		testIntegrator = new NavigationIntegrator();
+		
 		left1 = Robot.actuators.chassisMotorControllerLeft1;
 		left2 = Robot.actuators.chassisMotorControllerLeft2;
 
@@ -206,11 +230,27 @@ public class Chassis extends Subsystem {
 		encoderLeft = Robot.sensors.chassisEncoderLeft;
 		encoderRight = Robot.sensors.chassisEncoderRight;
 		encoderCenter = Robot.sensors.chassisEncoderCenter;
+
+		accelXAverage = new MovingAverage(averageSize, averageUpdateRate,
+				() -> {
+					return getAccelX();
+				});
+
+		accelYAverage = new MovingAverage(averageSize, averageUpdateRate,
+				() -> {
+					return getAccelY();
+				});
 	}
 
 	public void timerInit() {
 		navigationTask = new NavigationTask();
 		Robot.timer.schedule(navigationTask, 0, 50);
+		
+		if(useMovingAverage) 
+		{
+			accelXAverage.timerInit();
+			accelYAverage.timerInit();
+		}
 	}
 
 	public void initDefaultCommand() {
@@ -254,7 +294,7 @@ public class Chassis extends Subsystem {
 
 		headingOffset = (headingToSet + currentOffset - currentHeading);
 	}
-	
+
 	/*
 	 * Angular velocity
 	 */
@@ -297,15 +337,12 @@ public class Chassis extends Subsystem {
 		updateEncoderScales();
 		return encoderCenter.getRate() * centerEncoderScale;
 	}
-	
-	
+
 	double accelLowPass = 0;
 	boolean useLowPass = true;
-	
-	private double accelLowPass (double x)
-	{
-		if (Math.abs(x) < accelLowPass)
-		{
+
+	private double accelLowPass(double x) {
+		if (Math.abs(x) < accelLowPass) {
 			return 0;
 		}
 		return x;
@@ -314,47 +351,63 @@ public class Chassis extends Subsystem {
 	/*
 	 * Acceleration
 	 */
-	public double getAccelX() 
-	{
-		if(useLowPass)
-		{
+	public double getAccelX() {
+		if (useLowPass) {
 			return accelLowPass(navx.getWorldLinearAccelX());
-		}
-		else
-		{
-		return navx.getWorldLinearAccelX();
+		} else {
+			return navx.getWorldLinearAccelX();
 		}
 	}
 
-	public double getAccelY() 
-	{
-		if(useLowPass)
-		{
+	public double getAccelY() {
+		if (useLowPass) {
 			return accelLowPass(navx.getWorldLinearAccelY());
-		}
-		else
-		{
-		return navx.getWorldLinearAccelY();
+		} else {
+			return navx.getWorldLinearAccelY();
 		}
 	}
+	
+	public double getAccelXAverage ()
+	{
+		return accelXAverage.get();
+	}
+
+	public double getAccelYAverage ()
+	{
+		return accelYAverage.get();
+	}
+	
+	 public double getVelocityF() {
+		return navigationTask.getVelocityF();
+	}
+	
+	public double getVelocityS() {
+		return navigationTask.getVelocityS();
+	}
+
+
+	
 	
 	/*
 	 * variables for the config
 	 */
-	private void autonomousTestVariables()
-	{
-		try
-		{
-			 navigationTask.changeVelocitySpeed = (boolean) Robot.config.get("chassis_Velocity_ResetVelocity");
-			 accelLowPass = (double) config.get("chassis_Velocity_Lowpass");
-			 useLowPass = (boolean) Robot.config.get("chassis_Velocity_UseLowPass");
-		}
-		catch(ConfigException e)
-		{
+	private void autonomousTestVariables() {
+		try {
+			navigationTask.resetVelocity = (boolean) Robot.config.get("chassis_Velocity_ResetVelocity");
+			accelLowPass = (double) config.get("chassis_Velocity_Lowpass");
+			useLowPass = (boolean) Robot.config.get("chassis_Velocity_UseLowPass");
+			averageUpdateRate = (int) config.get("chassis_Accelaverage_Size");
+			averageSize = (int) config.get("chassis_Accelaverage_UpdateRate");
+			useMovingAverage = (boolean) Robot.config.get("chassis_Accelaverage_useMovingAverage");
 			
+			
+			} 
+		catch (ConfigException e) {
+			logger.severe(e);
 		}
 	}
-
+	
+	
 	/*
 	 * Navigation integrator
 	 */
@@ -399,7 +452,5 @@ public class Chassis extends Subsystem {
 		}
 		return toReturn;
 	}
-	
-	
-}
 
+}
