@@ -15,10 +15,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class AutonomousTest extends CommandGroup {
 
-	double pushTime;
+	double pushTime, xDistance;
     public AutonomousTest() 
     {
-    	addParallel(new RobotOrientedNavigation(0.15, 0, 0, 1));
+    	addSequential(new RobotOrientedNavigation(xDistance, 0, 0, 1));
     	addParallel(new RobotOrientedNavigation(0, 2.11, 0, 3));
     	addSequential(new RollContainer(), pushTime);
     	addSequential(new AutoToteCollect());
@@ -33,6 +33,7 @@ public class AutonomousTest extends CommandGroup {
     	try
 		{
     		pushTime = (double) config.get("rollerGripper_PushContainer_PushTime");
+    		xDistance = (double) config.get("chassis_AutonomousTest_xDistance");
 		}
     	
 		catch (ConfigException e)
