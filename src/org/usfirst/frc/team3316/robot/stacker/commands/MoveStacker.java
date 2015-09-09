@@ -3,11 +3,8 @@ package org.usfirst.frc.team3316.robot.stacker.commands;
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
-import org.usfirst.frc.team3316.robot.subsystems.Anschluss;
-import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.WaitCommand;
 
 /**
  *
@@ -25,7 +22,7 @@ public abstract class MoveStacker extends Command
     protected void initialize()
     {
     	logger.fine(this.getName() + " initialize");
-    	Robot.stacker.openBrake();    	
+    	Robot.stacker.openBrakeAndHolders();
     }
 
     protected abstract void execute();
@@ -35,12 +32,18 @@ public abstract class MoveStacker extends Command
     protected void end() 
     {
     	logger.fine(this.getName() + " end");
-    	Robot.stacker.closeBrake();
+    	_end();
     }
 
     protected void interrupted() 
     {
     	logger.fine(this.getName() + " interrupted");
-    	Robot.stacker.closeBrake();
-    } 
+    	_end();
+    }
+    
+    private void _end()
+    {
+    	Robot.stacker.setMotors(0);
+    	Robot.stacker.closeBrakeAndHolders();
+    }
 }

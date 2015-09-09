@@ -18,7 +18,7 @@ public class CloseBrake extends Command
     protected void initialize()
     {
     	logger.fine(this.getName() + " initialize");
-    	Robot.stacker.closeBrake();
+    	Robot.stacker.closeBrakeAndHolders();
     }
 
     protected void execute() {}

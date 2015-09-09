@@ -37,23 +37,22 @@ public class Stacker extends Subsystem
 												// containers
 	private DoubleSolenoid solenoidGripper; // The solenoid that opens and
 											// closes the roller gripper
+	private DoubleSolenoid solenoidHolder; // The solenoid that opens and
+											// closes the holders
+	
+	//CR: need to initialize this solenoid
+	//CR: add stack balancing solenoid
 	private DoubleSolenoid solenoidBrake; // The solenoid that brakes the
 											// elevator
 
-	private static DigitalInput switchRight, switchLeft, heightSwitch; // the
-																		// switches
-																		// that
-																		// signify
-																		// if
-																		// there's
-																		// a
-																		// tote
-																		// or a
-																		// container
-																		// in
-																		// the
-																		// stacker
+	private static DigitalInput switchRight, switchLeft, heightSwitch; // the switches
+																		// that signify
+																		// if there's
+																		// a tote or a
+																		// container in
+																		// the stacker
 
+	//CR: should check starting position (if it's floor, step or floor) from a config variable
 	private static int heightPosition = 0; // the position of the stacker:
 											// 0 - floor, 1 - step, 2 - tote
 
@@ -63,15 +62,17 @@ public class Stacker extends Subsystem
 
 	private HeightTrigger heightTrigger;
 
-	public StackerPosition lastStackerPosition = StackerPosition.Floor;
-	public double v;
-	
+	//CR: should check starting position (if it's floor, step or floor) from a config variable
+	//Why is this public
+	//Encapsulate this shit
+	public StackerPosition lastStackerSetpoint = StackerPosition.Floor;
 
 	public Stacker()
 	{
 
 		solenoidContainer = Robot.actuators.stackerSolenoidContainer;
 		solenoidGripper = Robot.actuators.stackerSolenoidGripper;
+		solenoidHolder = Robot.actuators.stackerSolenoidHolder;
 
 		switchRight = Robot.sensors.stackerSwitchRatchetRight;
 		switchLeft = Robot.sensors.stackerSwitchRatchetLeft;
@@ -130,7 +131,9 @@ public class Stacker extends Subsystem
 			return false;
 		}
 
+		//TODO: REMOVE THIS
 		SmartDashboard.putNumber("Stacker setMotors value: ", v);
+		
 		this.left1.set(v * scale);
 		this.left2.set(v * scale);
 
@@ -140,21 +143,21 @@ public class Stacker extends Subsystem
 		return true;
 	}
 
+	//CR: add stack balancing starting here
 	public boolean brakeOpen()
 	{
 		solenoidBrake.set(DoubleSolenoid.Value.kForward);
-		{
-			return true;
-		}
+		
+		return true;
 	}
 
 	public boolean brakeClose()
 	{
 		solenoidBrake.set(DoubleSolenoid.Value.kReverse);
-		{
-			return true;
-		}
+		
+		return true;
 	}
+	//						  ending here
 
 	public boolean openSolenoidContainer()
 	{
@@ -196,22 +199,33 @@ public class Stacker extends Subsystem
 		return true;
 	}
 
-	public boolean closeBrake()
-	{
-		logger.fine("Try to close brake solenoid");
-
-		solenoidGripper.set(DoubleSolenoid.Value.kReverse);
-		logger.fine("Solenoid brake closed");
-
-		return true;
-	}
-
-	public boolean openBrake()
+	public boolean openBrakeAndHolders()
 	{
 		logger.fine("Try to close brake solenoid");
 
 		solenoidGripper.set(DoubleSolenoid.Value.kForward);
 		logger.fine("Solenoid brake closed");
+		
+		logger.fine("Try to open holder solenoid");
+
+		solenoidHolder.set(DoubleSolenoid.Value.kForward);
+		logger.fine("Solenoid holders opened");
+
+
+		return true;
+	}
+	
+	public boolean closeBrakeAndHolders()
+	{
+		logger.fine("Try to close brake solenoid");
+
+		solenoidGripper.set(DoubleSolenoid.Value.kReverse);
+		logger.fine("Solenoid brake closed");
+		
+		logger.fine("Try to close holder solenoid");
+
+		solenoidHolder.set(DoubleSolenoid.Value.kReverse);
+		logger.fine("Solenoid holder closed");
 
 		return true;
 	}

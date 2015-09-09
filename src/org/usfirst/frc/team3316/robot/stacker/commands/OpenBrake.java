@@ -18,7 +18,7 @@ public class OpenBrake extends Command
     protected void initialize()
     {
     	logger.fine(this.getName() + " initialize");
-    	Robot.stacker.openBrake();
+    	Robot.stacker.openBrakeAndHolders();
     }
 
     protected void execute() {}

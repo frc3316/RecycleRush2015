@@ -34,6 +34,8 @@ public class Actuators
 
 	public DoubleSolenoid stackerSolenoidGripper;
 	
+	public DoubleSolenoid stackerSolenoidHolder;
+	
 	public SpeedController elevatorMotorControllerLeft1, elevatorMotorControllerLeft2;
 	public SpeedController elevatorMotorControllerRight1, elevatorMotorControllerRight2;
 	
@@ -116,6 +118,11 @@ public class Actuators
 			// Solenoid used to control the pistons holding the container
 			stackerSolenoidContainer = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_CONTAINER_FORWARD"),
 														  (int) config.get("STACKER_SOLENOID_CONTAINER_REVERSE"));
+			
+			//Solenoid used to control the stack holders (Vitas)
+			stackerSolenoidHolder = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_HOLDERS_FORWARD"),
+					  									  (int) config.get("STACKER_SOLENOID_HOLDERS_REVERSE"));
+			
 		}
 		catch (ConfigException e) 
     	{

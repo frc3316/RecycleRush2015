@@ -1,8 +1,7 @@
 package org.usfirst.frc.team3316.robot.stacker.commands;
 
 import org.usfirst.frc.team3316.robot.Robot;
-import org.usfirst.frc.team3316.robot.subsystems.Stacker;
-import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
+import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.utils.StackerPosition;
 
 /**
@@ -11,22 +10,33 @@ import org.usfirst.frc.team3316.robot.utils.StackerPosition;
  */
 public class MoveStackerToFloor extends MoveStacker
 {
+	double v;
 	@Override
 	protected void initialize()
     {
 		super.initialize();
-		Robot.stacker.lastStackerPosition = StackerPosition.Floor;
+
+		Robot.stacker.lastStackerSetpoint = StackerPosition.Floor;
+		try
+		{
+			v = (double) Robot.config.get("stacker_ElevatorSpeed");
+		}
+		catch (ConfigException e)
+		{
+			logger.severe(e);
+		}
     }
 	
-	@Override
-	protected void execute() {}
+	protected void execute() 
+	{
+		Robot.stacker.setMotors(-v);
+	}
 
-	@Override
 	protected boolean isFinished()
 	{
-		if (Robot.stacker.getPosition() == StackerPosition.Floor)
+		if (Robot.stacker.getPosition() == StackerPosition.Floor && Robot.stacker.getHeightSwitch() == true)
 		{
-			Robot.stacker.closeBrake();
+			Robot.stacker.closeBrakeAndHolders();
 			return true;
 		}
 		return false;
