@@ -81,7 +81,10 @@ public class Chassis extends Subsystem {
 			integratorSet = new HashSet<NavigationIntegrator>();
 		}
 
-		public void run() {
+		public void run() 
+		{
+			try
+			{
 			autonomousTestVariables();
 
 			// Makes sure the first time delta will not be since 1970
@@ -123,9 +126,17 @@ public class Chassis extends Subsystem {
 			 * Calculates angular velocity
 			 */
 			angularVelocity = (dTheta) / dT;
-
-			velocityF += getAccelY() * dT;
-			velocityS += getAccelX() * dT;
+			if(useMovingAverage)
+			{
+				velocityF += getAccelYAverage() * dT;
+				velocityS += getAccelXAverage() * dT;
+			}
+			else
+			{
+				velocityF += getAccelY() * dT;
+				velocityS += getAccelX() * dT;
+				
+			}
 			
 			//TODO: Reset velocity is a variable for testing purposes and should not appear in the final version
 			if (resetVelocity) {
@@ -163,7 +174,11 @@ public class Chassis extends Subsystem {
 			 */
 			previousTime = currentTime;
 			previousHeading = currentHeading;
-			
+			}
+			catch (Exception e)
+			{
+				logger.severe(e);
+			}
 			
 		}
 		
@@ -246,11 +261,8 @@ public class Chassis extends Subsystem {
 		navigationTask = new NavigationTask();
 		Robot.timer.schedule(navigationTask, 0, 50);
 		
-		if(useMovingAverage) 
-		{
-			accelXAverage.timerInit();
-			accelYAverage.timerInit();
-		}
+		accelXAverage.timerInit();
+		accelYAverage.timerInit();
 	}
 
 	public void initDefaultCommand() {
@@ -392,16 +404,15 @@ public class Chassis extends Subsystem {
 	 * variables for the config
 	 */
 	private void autonomousTestVariables() {
-		try {
+		try 
+		{
 			navigationTask.resetVelocity = (boolean) Robot.config.get("chassis_Velocity_ResetVelocity");
 			accelLowPass = (double) config.get("chassis_Velocity_Lowpass");
 			useLowPass = (boolean) Robot.config.get("chassis_Velocity_UseLowPass");
 			averageUpdateRate = (int) config.get("chassis_Accelaverage_Size");
 			averageSize = (int) config.get("chassis_Accelaverage_UpdateRate");
-			useMovingAverage = (boolean) Robot.config.get("chassis_Accelaverage_useMovingAverage");
-			
-			
-			} 
+			useMovingAverage = (boolean) Robot.config.get("chassis_Accelaverage_useMovingAverage");	
+		} 
 		catch (ConfigException e) {
 			logger.severe(e);
 		}

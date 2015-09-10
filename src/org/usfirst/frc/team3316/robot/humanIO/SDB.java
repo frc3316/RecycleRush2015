@@ -44,6 +44,7 @@ public class SDB
 
 		public void run()
 		{
+			try {
 			/*
 			 * Camera
 			 */
@@ -79,6 +80,11 @@ public class SDB
 			put("Integrator Y", Robot.chassis.testIntegrator.getY());
 			put("Integrator Heading", Robot.chassis.testIntegrator.getHeading());
 			SmartDashboard.putData(new SetNewIntegrator	());
+			}
+			catch (Exception e)
+			{
+				logger.severe(e);
+			}
 		}
 
 		private void put(String name, double d)
@@ -215,6 +221,7 @@ public class SDB
 		SmartDashboard.putData("Zero Heading", new SetHeadingPreset(0));
 
 		SmartDashboard.putData(new SetHeadingSDB());
+		
 		putConfigVariableInSDB("chassis_HeadingToSet");
 		putConfigVariableInSDB("rollerGripper_RollContainer_LeftSpeed");
 		putConfigVariableInSDB("rollerGripper_RollContainer_RightSpeed");
@@ -223,7 +230,7 @@ public class SDB
 		/*
 		 * Autonomous test
 		 */
-
+/*
 		// set 1
 		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_KP_1");
 		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_KI_1");
@@ -279,11 +286,12 @@ public class SDB
 		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_MaximumOutput_3");
 
 		putConfigVariableInSDB("chassis_RobotOrientedNavigation_MaxFinishCounter_3");
-
+*/
 		putConfigVariableInSDB("chassis_Velocity_ResetVelocity");
 		putConfigVariableInSDB("chassis_Velocity_Lowpass");
 		putConfigVariableInSDB("chassis_Velocity_UseLowPass");
-
+		putConfigVariableInSDB("chassis_Accelaverage_useMovingAverage");
+		
 		logger.info("Finished initSDB()");
 	}
 }

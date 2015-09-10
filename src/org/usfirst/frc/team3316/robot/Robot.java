@@ -100,11 +100,18 @@ public class Robot extends IterativeRobot
     	/*
     	 * Timer
     	 */
-    	timer = new Timer();
-    	chassis.timerInit();
-    	stacker.timerInit();
-    	rollerGripper.timerInit();
-    	sdb.timerInit();
+    	try
+    	{
+    		timer = new Timer();
+    		chassis.timerInit();
+    		stacker.timerInit();
+    		rollerGripper.timerInit();
+    		sdb.timerInit();
+    	}
+    	catch (Exception e)
+    	{
+    		logger.severe(e);
+    	}
     	
     	/*
     	 * Pre-match Init

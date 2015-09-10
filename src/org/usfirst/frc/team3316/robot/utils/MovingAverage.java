@@ -4,9 +4,12 @@ import java.util.TimerTask;
 import java.util.function.DoubleSupplier;
 
 import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 public class MovingAverage
 {
+	DBugLogger logger = Robot.logger;
+	
 	private double [] lastValues;
 	private int index = 0;
 	
@@ -50,7 +53,13 @@ public class MovingAverage
 		{
 			public void run() 
 			{
-				insert(supplier.getAsDouble());				
+				try{
+				insert(supplier.getAsDouble());		
+				}
+				catch (Exception e)
+				{
+					logger.severe(e);
+				}
 			}
 		};
 		
