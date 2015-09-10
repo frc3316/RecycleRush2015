@@ -232,6 +232,8 @@ public class Chassis extends Subsystem {
 	{
 		testIntegrator = new NavigationIntegrator();
 		
+		
+		
 		left1 = Robot.actuators.chassisMotorControllerLeft1;
 		left2 = Robot.actuators.chassisMotorControllerLeft2;
 
@@ -263,6 +265,8 @@ public class Chassis extends Subsystem {
 		
 		accelXAverage.timerInit();
 		accelYAverage.timerInit();
+		
+		addNavigationIntegrator(testIntegrator);
 	}
 
 	public void initDefaultCommand() {

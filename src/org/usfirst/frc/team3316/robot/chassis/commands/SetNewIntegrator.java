@@ -10,16 +10,14 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class SetNewIntegrator extends Command 
 {
-	NavigationIntegrator integrator = Robot.chassis.testIntegrator;
-
 	public SetNewIntegrator() {}
 
-	protected void initialize() {
-		if (!(integrator == null))
-			Robot.chassis.removeNavigationIntegrator(integrator);
-
+	protected void initialize() 
+	{	
+		NavigationIntegrator integrator = Robot.chassis.testIntegrator;
+		
+		Robot.chassis.removeNavigationIntegrator(integrator);
 		integrator = new NavigationIntegrator();
-
 		Robot.chassis.addNavigationIntegrator(integrator);
 	}
 
