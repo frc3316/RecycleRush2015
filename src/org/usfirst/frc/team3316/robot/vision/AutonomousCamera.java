@@ -1,9 +1,7 @@
 package org.usfirst.frc.team3316.robot.vision;
 
-import java.nio.ByteBuffer;
 import java.util.Comparator;
 import java.util.Vector;
-import java.util.logging.Logger;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
@@ -13,11 +11,8 @@ import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
 import com.ni.vision.NIVision.ImageType;
 import com.ni.vision.NIVision.RGBValue;
-import com.ni.vision.NIVision.RawData;
 
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -39,6 +34,7 @@ public class AutonomousCamera extends Command
 		double BoundingRectRight;
 		double BoundingRectBottom;
 		double CenterMassX;
+		double CenterMassY;
 		double ToteAngle;
 		double ToteDistance;
 
@@ -91,17 +87,18 @@ public class AutonomousCamera extends Command
 	double SHORT_RATIO = 1.4; // Tote short side = 16.9 / Tote height = 12.1 =
 								// 1.4
 	double SCORE_MIN = 75.0; // Minimum score to be considered a tote
-	double SCORE_MIN_RECTANGLE;
+	double SCORE_MIN_RECTANGLE; // Minimum score to be considered a tote by ration of rectangle filtering
 	
 	double RATIO_MIN;
 	double RATIO_MAX;
 	
-	double VIEW_ANGLE; 
+	double VIEW_ANGLE; //The view angle of the camera
 	
-	int X_IMAGE_RES;
-	int IMAGE_SIZE;
+	int X_IMAGE_RES; //The width of the frame
+	int Y_IMAGE_RES; //The height of the frame
+	int IMAGE_SIZE; // The size of the frame (width * height)
 	
-	double TARGET_SIZE_SQRT;
+	double TARGET_SIZE_SQRT; //A constant for distance computing method
 	
 	NIVision.ParticleFilterCriteria2 criteria[] = new NIVision.ParticleFilterCriteria2[1];
 	NIVision.ParticleFilterOptions2 filterOptions = new NIVision.ParticleFilterOptions2(
@@ -109,10 +106,7 @@ public class AutonomousCamera extends Command
 	Scores scores = new Scores();
 
 	public AutonomousCamera()
-	{
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
-	}
+	{}
 
 	// Called just before this Command runs the first time
 	protected void initialize()
@@ -122,6 +116,7 @@ public class AutonomousCamera extends Command
 
 		binaryFrame = NIVision.imaqCreateImage(ImageType.IMAGE_U8, 0);
 		X_IMAGE_RES = NIVision.imaqGetImageSize(binaryFrame).width;
+		Y_IMAGE_RES = NIVision.imaqGetImageSize(binaryFrame).height;
 		IMAGE_SIZE = NIVision.imaqGetImageSize(binaryFrame).height * NIVision.imaqGetImageSize(binaryFrame).width;
 		criteria[0] = new NIVision.ParticleFilterCriteria2(
 				NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA, AREA_MINIMUM,
@@ -136,6 +131,7 @@ public class AutonomousCamera extends Command
 		SmartDashboard.putNumber("Tote val max", TOTE_VAL_RANGE.maxValue);
 		SmartDashboard.putNumber("Area min %", AREA_MINIMUM);
 		
+		// Put variables on the SmartDashboard
 		try {
 			SCORE_MIN_RECTANGLE = (double)Robot.config.get("AutonomousCamera_ScoreMinRectangle");
 			RATIO_MIN = (double)Robot.config.get("AutonomousCamera_RatioMin");
@@ -222,6 +218,9 @@ public class AutonomousCamera extends Command
 				par.CenterMassX = NIVision.imaqMeasureParticle(
 						binaryFrame, particleIndex, 0,
 						NIVision.MeasurementType.MT_CENTER_OF_MASS_X);
+				par.CenterMassY = NIVision.imaqMeasureParticle(
+						binaryFrame, particleIndex, 0,
+						NIVision.MeasurementType.MT_CENTER_OF_MASS_Y);
 				particles.add(par);
 			}
 			particles.sort(null);
@@ -275,14 +274,12 @@ public class AutonomousCamera extends Command
 
 	// Called once after isFinished returns true
 	protected void end()
-	{
-	}
+	{}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted()
-	{
-	}
+	{}
 
 	// Comparator function for sorting particles. Returns true if particle 1 is
 	// larger
@@ -312,6 +309,10 @@ public class AutonomousCamera extends Command
 		return ratioToScore((report.Area / report.ConvexHullArea) * 1.18);
 	}
 	
+	/**
+	 * Method to score if the ratio of the particle appears to match the
+	 * blocking rectangle.
+	 */
 	double RectangleScore(ParticleReport report)
 	{
 		return ratioToScore((report.BoundingRectRight - report.BoundingRectLeft) * (report.BoundingRectBottom - report.BoundingRectTop) / report.Area);
@@ -337,17 +338,27 @@ public class AutonomousCamera extends Command
 				/ SHORT_RATIO);
 	}
 	
+	/**
+	 * Method to score if height of the blocking rectangle divided by its height appears to match the
+	 * size ratio of a tote.
+	 */
 	double ParticleSizeRatio (ParticleReport report) {
 		return (report.BoundingRectBottom - report.BoundingRectTop) / (report.BoundingRectRight - report.BoundingRectLeft);
 	}
 	
+	/**
+	 * Method to calculate the angle of the tote in the frame.
+	 */
 	double computeAngleFromTarget (ParticleReport report)
     {
-        double xDiff = (report.CenterMassX - X_IMAGE_RES / 2);
-        double angleToReturn = (xDiff * VIEW_ANGLE) / X_IMAGE_RES;
+        double yDiff = (report.CenterMassY - Y_IMAGE_RES / 2);
+        double angleToReturn = (yDiff * VIEW_ANGLE) / Y_IMAGE_RES;
         return angleToReturn;
     }
 	
+	/**
+	 * Method to calculate the distance of the tote from the robot.
+	 */
 	public double computeDistance (ParticleReport report)
     {
         double ConvexHullAreaRatio;
@@ -355,15 +366,21 @@ public class AutonomousCamera extends Command
         return (Math.sqrt(ConvexHullAreaRatio) * TARGET_SIZE_SQRT);
     }
 
-	int photosSaved = 0;
+	int photosSaved = 0; //Used to give a unique name for every image.
 
+	/**
+	 * Method to save the binary frame.
+	 */
 	public void saveBinaryFrame()
 	{
 		NIVision.imaqWriteVisionFile(binaryFrame, "/home/lvuser/Pics/binary_"
 				+ photosSaved + ".jpeg", new RGBValue(0, 0, 0, 1));
 		photosSaved++;
 	}
-
+	
+	/**
+	 * Method to save the frame.
+	 */
 	public void saveFrame()
 	{
 		NIVision.imaqWriteVisionFile(frame, "/home/lvuser/Pics/frame_"
