@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public abstract class MoveStackerManually extends Command
+public class MoveStackerManually extends Command
 {
 	double v;
 	DBugLogger logger = Robot.logger;

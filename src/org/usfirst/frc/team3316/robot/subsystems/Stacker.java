@@ -4,6 +4,7 @@ import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerManually;
 import org.usfirst.frc.team3316.robot.utils.MovingAverage;
 import org.usfirst.frc.team3316.robot.utils.StackerPosition;
 
@@ -107,6 +108,7 @@ public class Stacker extends Subsystem
 
 	public void initDefaultCommand()
 	{
+		setDefaultCommand(new MoveStackerManually());
 	}
 
 	/*
