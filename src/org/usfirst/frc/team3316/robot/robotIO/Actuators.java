@@ -101,8 +101,8 @@ public class Actuators
 			/*
 			 * Stacker
 			 */
-			stackerSolenoidBrake = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_BRAKE"), 
-														 (int) config.get("STACKER_SOLENOID_BRAKE"));
+			stackerSolenoidBrake = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_BRAKE_FORWARD"), 
+														 (int) config.get("STACKER_SOLENOID_BRAKE_REVERSE"));
 			
 			elevatorMotorControllerLeft1 = new VictorSP ((int) config.get("ELEVATOR_MOTOR_CONTROLLER_LEFT_1"));
 			elevatorMotorControllerLeft2 = new VictorSP ((int) config.get("ELEVATOR_MOTOR_CONTROLLER_LEFT_2"));
@@ -119,7 +119,7 @@ public class Actuators
 			stackerSolenoidContainer = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_CONTAINER_FORWARD"),
 														  (int) config.get("STACKER_SOLENOID_CONTAINER_REVERSE"));
 			
-			//Solenoid used to control the stack holders (Vitas)
+			//Solenoid used to control the stack holders
 			stackerSolenoidHolder = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_HOLDERS_FORWARD"),
 					  									  (int) config.get("STACKER_SOLENOID_HOLDERS_REVERSE"));
 			

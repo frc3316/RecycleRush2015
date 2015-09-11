@@ -16,7 +16,6 @@ public class MoveStackerToFloor extends MoveStacker
     {
 		super.initialize();
 
-		Robot.stacker.lastStackerSetpoint = StackerPosition.Floor;
 		try
 		{
 			v = (double) Robot.config.get("stacker_ElevatorSpeed");

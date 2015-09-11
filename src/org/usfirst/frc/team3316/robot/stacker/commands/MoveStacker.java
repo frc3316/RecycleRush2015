@@ -43,7 +43,6 @@ public abstract class MoveStacker extends Command
     
     private void _end()
     {
-    	Robot.stacker.setMotors(0);
     	Robot.stacker.closeBrakeAndHolders();
     }
 }

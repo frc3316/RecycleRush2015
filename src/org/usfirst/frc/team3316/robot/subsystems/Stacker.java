@@ -29,7 +29,33 @@ public class Stacker extends Subsystem
 			return getHeightSwitch();
 		}
 	}
+	
+	private class HeightTriggerCommand extends Command
+	{
+		protected boolean isFinished()
+		{
+			return true;
+		}
 
+		protected void interrupted() {}
+
+		protected void initialize() {}
+
+		protected void execute()
+		{
+			if (left1.get() > 0)
+			{
+				heightPosition += 0.5; //Adds 0.5 to heightPosition if going up
+			}
+			else if (left1.get() < 0)
+			{
+				heightPosition -= 0.5; //Lowers 0.5 to heightPosition if going down
+			}
+		}
+
+		protected void end() {}
+	}
+			
 	Config config = Robot.config;
 	DBugLogger logger = Robot.logger;
 
@@ -53,7 +79,7 @@ public class Stacker extends Subsystem
 																		// the stacker
 
 	//CR: should check starting position (if it's floor, step or floor) from a config variable
-	private static int heightPosition = 0; // the position of the stacker:
+	private static double heightPosition = 0; // the position of the stacker:
 											// 0 - floor, 1 - step, 2 - tote
 
 	private SpeedController left1, left2;
@@ -61,11 +87,6 @@ public class Stacker extends Subsystem
 	private double scale;
 
 	private HeightTrigger heightTrigger;
-
-	//CR: should check starting position (if it's floor, step or floor) from a config variable
-	//Why is this public
-	//Encapsulate this shit
-	public StackerPosition lastStackerSetpoint = StackerPosition.Floor;
 
 	public Stacker()
 	{
@@ -79,37 +100,8 @@ public class Stacker extends Subsystem
 		heightSwitch = Robot.sensors.stackerSwitchHeight;
 
 		heightTrigger = new HeightTrigger();
-		heightTrigger.whenActive(new Command()
-		{
-			protected boolean isFinished()
-			{
-				return true;
-			}
-
-			protected void interrupted()
-			{
-			}
-
-			protected void initialize()
-			{
-			}
-
-			protected void execute()
-			{
-				if (left1.get() > 0)
-				{
-					heightPosition++;
-				}
-				else if (left1.get() < 0)
-				{
-					heightPosition--;
-				}
-			}
-
-			protected void end()
-			{
-			}
-		});
+		heightTrigger.whenInactive(new HeightTriggerCommand());
+		heightTrigger.whenActive(new HeightTriggerCommand());
 
 	}
 
@@ -126,12 +118,12 @@ public class Stacker extends Subsystem
 	public boolean setMotors(double v)
 	{
 		updateScale();
-		if (solenoidBrake.get() == DoubleSolenoid.Value.kReverse)
+		if (solenoidBrake.get() == DoubleSolenoid.Value.kReverse || solenoidHolder.get() == DoubleSolenoid.Value.kForward)
 		{
 			return false;
 		}
 
-		//TODO: REMOVE THIS
+		//TODO: REMOVE THIS AFTER MANUAL TESTING
 		SmartDashboard.putNumber("Stacker setMotors value: ", v);
 		
 		this.left1.set(v * scale);
@@ -143,26 +135,9 @@ public class Stacker extends Subsystem
 		return true;
 	}
 
-	//CR: add stack balancing starting here
-	public boolean brakeOpen()
-	{
-		solenoidBrake.set(DoubleSolenoid.Value.kForward);
-		
-		return true;
-	}
-
-	public boolean brakeClose()
-	{
-		solenoidBrake.set(DoubleSolenoid.Value.kReverse);
-		
-		return true;
-	}
-	//						  ending here
-
 	public boolean openSolenoidContainer()
 	{
 		logger.fine("Try to open container solenoid");
-
 		solenoidContainer.set(DoubleSolenoid.Value.kForward);
 		logger.fine("Solenoid container opened");
 
@@ -172,7 +147,6 @@ public class Stacker extends Subsystem
 	public boolean closeSolenoidContainer()
 	{
 		logger.fine("Try to close container solenoid");
-
 		solenoidContainer.set(DoubleSolenoid.Value.kReverse);
 		logger.fine("Solenoid container closed");
 
@@ -182,7 +156,6 @@ public class Stacker extends Subsystem
 	public boolean openSolenoidGripper()
 	{
 		logger.fine("Try to open gripper solenoid");
-
 		solenoidGripper.set(DoubleSolenoid.Value.kForward);
 		logger.fine("Solenoid gripper opened");
 
@@ -192,7 +165,6 @@ public class Stacker extends Subsystem
 	public boolean closeSolenoidGripper()
 	{
 		logger.fine("Try to close gripper solenoid");
-
 		solenoidGripper.set(DoubleSolenoid.Value.kReverse);
 		logger.fine("Solenoid gripper closed");
 
@@ -202,13 +174,11 @@ public class Stacker extends Subsystem
 	public boolean openBrakeAndHolders()
 	{
 		logger.fine("Try to close brake solenoid");
-
 		solenoidGripper.set(DoubleSolenoid.Value.kForward);
 		logger.fine("Solenoid brake closed");
 		
 		logger.fine("Try to open holder solenoid");
-
-		solenoidHolder.set(DoubleSolenoid.Value.kForward);
+		solenoidHolder.set(DoubleSolenoid.Value.kReverse);
 		logger.fine("Solenoid holders opened");
 
 
@@ -218,14 +188,14 @@ public class Stacker extends Subsystem
 	public boolean closeBrakeAndHolders()
 	{
 		logger.fine("Try to close brake solenoid");
-
 		solenoidGripper.set(DoubleSolenoid.Value.kReverse);
 		logger.fine("Solenoid brake closed");
 		
 		logger.fine("Try to close holder solenoid");
-
-		solenoidHolder.set(DoubleSolenoid.Value.kReverse);
+		solenoidHolder.set(DoubleSolenoid.Value.kForward);
 		logger.fine("Solenoid holder closed");
+		
+    	Robot.stacker.setMotors(0);
 
 		return true;
 	}
@@ -244,10 +214,12 @@ public class Stacker extends Subsystem
 	{
 		if (heightPosition == 0)
 			return StackerPosition.Floor;
-		if (heightPosition == 1)
+		if (heightPosition == 2)
 			return StackerPosition.Step;
-		else
+		if (heightPosition == 4) 
 			return StackerPosition.Tote;
+		else
+			return StackerPosition.Unknown;
 	}
 
 	public boolean getHeightSwitch()

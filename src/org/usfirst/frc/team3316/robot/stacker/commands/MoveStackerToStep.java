@@ -15,7 +15,7 @@ public class MoveStackerToStep extends MoveStacker
 	protected void initialize()
     {
 		super.initialize();
-		Robot.stacker.lastStackerSetpoint = StackerPosition.Step;
+
 		try
 		{
 			v = (double) Robot.config.get("stacker_ElevatorSpeed");
@@ -29,14 +29,7 @@ public class MoveStackerToStep extends MoveStacker
 	@Override
 	protected void execute()
 	{
-		if (Robot.stacker.lastStackerSetpoint == StackerPosition.Floor)
-		{
-			Robot.stacker.setMotors(v);
-		}
-		else if (Robot.stacker.lastStackerSetpoint == StackerPosition.Tote)
-		{
-			Robot.stacker.setMotors(v);
-		}
+		Robot.stacker.setMotors(v);
 	}
 
 	@Override

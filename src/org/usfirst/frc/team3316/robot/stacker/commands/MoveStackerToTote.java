@@ -17,7 +17,6 @@ public class MoveStackerToTote extends MoveStacker
     {
 		super.initialize();
 
-		Robot.stacker.lastStackerSetpoint = StackerPosition.Tote;
 		try
 		{
 			v = (double) Robot.config.get("stacker_ElevatorSpeed");
