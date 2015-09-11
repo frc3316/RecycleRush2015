@@ -83,8 +83,9 @@ public class Stacker extends Subsystem
 	private static double heightPosition = 0; // the position of the stacker:
 											// 0 - floor, 1 - step, 2 - tote
 
-	private SpeedController left1, left2;
-	private SpeedController right1, right2;
+	//CR: change to a single motor controller
+	private SpeedController left1;//, left2;
+	private SpeedController right1;//, right2;
 	private double scale;
 
 	private HeightTrigger heightTrigger;
@@ -92,6 +93,11 @@ public class Stacker extends Subsystem
 	public Stacker()
 	{
 
+		left1 = Robot.actuators.elevatorMotorControllerLeft1;
+		//left2 = Robot.actuators.elevatorMotorControllerLeft2;
+		right1 = Robot.actuators.elevatorMotorControllerRight1;
+		//right2 = Robot.actuators.elevatorMotorControllerRight2;
+		
 		solenoidContainer = Robot.actuators.stackerSolenoidContainer;
 		solenoidGripper = Robot.actuators.stackerSolenoidGripper;
 		solenoidHolder = Robot.actuators.stackerSolenoidHolder;
@@ -120,19 +126,20 @@ public class Stacker extends Subsystem
 	public boolean setMotors(double v)
 	{
 		updateScale();
+		/*
 		if (solenoidBrake.get() == DoubleSolenoid.Value.kReverse || solenoidHolder.get() == DoubleSolenoid.Value.kForward)
 		{
 			return false;
 		}
-
+		 */
 		//TODO: REMOVE THIS AFTER MANUAL TESTING
 		SmartDashboard.putNumber("Stacker setMotors value: ", v);
 		
 		this.left1.set(v * scale);
-		this.left2.set(v * scale);
+		//this.left2.set(v * scale);
 
 		this.right1.set(v * -scale);
-		this.right2.set(v * -scale);
+		//this.right2.set(v * -scale);
 
 		return true;
 	}

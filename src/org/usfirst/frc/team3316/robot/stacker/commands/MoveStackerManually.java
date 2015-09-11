@@ -15,6 +15,7 @@ public class MoveStackerManually extends Command
 
 	public MoveStackerManually()
 	{
+		requires(Robot.stacker);
 	}
 
 	// Called just before this Command runs the first time
