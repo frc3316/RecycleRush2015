@@ -17,6 +17,8 @@ import org.usfirst.frc.team3316.robot.chassis.commands.TankDrive;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingPreset;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingSDB;
 import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrive;
+import org.usfirst.frc.team3316.robot.commands.StartCompressor;
+import org.usfirst.frc.team3316.robot.commands.StopCompressor;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
@@ -44,7 +46,7 @@ public class SDB
 
 		public void run()
 		{
-			try {
+
 			/*
 			 * Camera
 			 */
@@ -62,29 +64,31 @@ public class SDB
 			put("Right Ratchet", Robot.stacker.getSwitchRatchetRight());
 
 			put("Game Piece Switch", Robot.rollerGripper.getSwitchGamePiece());
-			
+
 			put("Velocity X", Robot.chassis.getVelocityS());
 			put("Velocity Y", Robot.chassis.getVelocityF());
-			
+
 			put("Accel X", Robot.chassis.getAccelX());
 			put("Accel Y", Robot.chassis.getAccelY());
-			
-			put("Encoder center stopped", Robot.sensors.chassisEncoderCenter.getStopped());
-			put("Encoder left stopped", Robot.sensors.chassisEncoderLeft.getStopped());
-			put("Encoder right stopped", Robot.sensors.chassisEncoderRight.getStopped());
-			
-			put("AccelXAverage",Robot.chassis.getAccelXAverage());
-			put("AccelYAverage",Robot.chassis.getAccelYAverage());
-			
+
+			put("Encoder center stopped",
+					Robot.sensors.chassisEncoderCenter.getStopped());
+			put("Encoder left stopped",
+					Robot.sensors.chassisEncoderLeft.getStopped());
+			put("Encoder right stopped",
+					Robot.sensors.chassisEncoderRight.getStopped());
+
+			put("AccelXAverage", Robot.chassis.getAccelXAverage());
+			put("AccelYAverage", Robot.chassis.getAccelYAverage());
+
 			put("Integrator X", Robot.chassis.testIntegrator.getX());
 			put("Integrator Y", Robot.chassis.testIntegrator.getY());
 			put("Integrator Heading", Robot.chassis.testIntegrator.getHeading());
-			SmartDashboard.putData(new SetNewIntegrator	());
-			}
-			catch (Exception e)
-			{
-				logger.severe(e);
-			}
+			SmartDashboard.putData(new SetNewIntegrator());
+
+			SmartDashboard.putData(new StartCompressor());
+			SmartDashboard.putData(new StopCompressor());
+
 		}
 
 		private void put(String name, double d)
@@ -221,7 +225,7 @@ public class SDB
 		SmartDashboard.putData("Zero Heading", new SetHeadingPreset(0));
 
 		SmartDashboard.putData(new SetHeadingSDB());
-		
+
 		putConfigVariableInSDB("chassis_HeadingToSet");
 		putConfigVariableInSDB("rollerGripper_RollContainer_LeftSpeed");
 		putConfigVariableInSDB("rollerGripper_RollContainer_RightSpeed");
@@ -230,68 +234,108 @@ public class SDB
 		/*
 		 * Autonomous test
 		 */
-/*
-		// set 1
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_KP_1");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_KI_1");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_KD_1");
-
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerY_KP_1");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerY_KI_1");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerY_KD_1");
-
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_KP_1");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_KI_1");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_KD_1");
-
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_AbsoluteTolerance_1");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerY_AbsoluteTolerance_1");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_AbsoluteTolerance_1");
-
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_MinimumOutput_1");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_MaximumOutput_1");
-
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerY_MinimumOutput_1");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerY_MaximumOutput_1");
-
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_MinimumOutput_1");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_MaximumOutput_1");
-
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_MaxFinishCounter_1");
-
-		// set 3
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_KP_3");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_KI_3");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_KD_3");
-
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerY_KP_3");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerY_KI_3");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerY_KD_3");
-
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_KP_3");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_KI_3");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_KD_3");
-
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_AbsoluteTolerance_3");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerY_AbsoluteTolerance_3");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_AbsoluteTolerance_3");
-
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_MinimumOutput_3");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerX_MaximumOutput_3");
-
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerY_MinimumOutput_3");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerY_MaximumOutput_3");
-
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_MinimumOutput_3");
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_PIDControllerHeading_MaximumOutput_3");
-
-		putConfigVariableInSDB("chassis_RobotOrientedNavigation_MaxFinishCounter_3");
-*/
+		/*
+		 * // set 1 putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerX_KP_1");
+		 * putConfigVariableInSDB
+		 * ("chassis_RobotOrientedNavigation_PIDControllerX_KI_1");
+		 * putConfigVariableInSDB
+		 * ("chassis_RobotOrientedNavigation_PIDControllerX_KD_1");
+		 * 
+		 * putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerY_KP_1");
+		 * putConfigVariableInSDB
+		 * ("chassis_RobotOrientedNavigation_PIDControllerY_KI_1");
+		 * putConfigVariableInSDB
+		 * ("chassis_RobotOrientedNavigation_PIDControllerY_KD_1");
+		 * 
+		 * putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerHeading_KP_1");
+		 * putConfigVariableInSDB
+		 * ("chassis_RobotOrientedNavigation_PIDControllerHeading_KI_1");
+		 * putConfigVariableInSDB
+		 * ("chassis_RobotOrientedNavigation_PIDControllerHeading_KD_1");
+		 * 
+		 * putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerX_AbsoluteTolerance_1"
+		 * ); putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerY_AbsoluteTolerance_1"
+		 * ); putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerHeading_AbsoluteTolerance_1"
+		 * );
+		 * 
+		 * putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerX_MinimumOutput_1");
+		 * putConfigVariableInSDB
+		 * ("chassis_RobotOrientedNavigation_PIDControllerX_MaximumOutput_1");
+		 * 
+		 * putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerY_MinimumOutput_1");
+		 * putConfigVariableInSDB
+		 * ("chassis_RobotOrientedNavigation_PIDControllerY_MaximumOutput_1");
+		 * 
+		 * putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerHeading_MinimumOutput_1"
+		 * ); putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerHeading_MaximumOutput_1"
+		 * );
+		 * 
+		 * putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_MaxFinishCounter_1");
+		 * 
+		 * // set 3 putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerX_KP_3");
+		 * putConfigVariableInSDB
+		 * ("chassis_RobotOrientedNavigation_PIDControllerX_KI_3");
+		 * putConfigVariableInSDB
+		 * ("chassis_RobotOrientedNavigation_PIDControllerX_KD_3");
+		 * 
+		 * putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerY_KP_3");
+		 * putConfigVariableInSDB
+		 * ("chassis_RobotOrientedNavigation_PIDControllerY_KI_3");
+		 * putConfigVariableInSDB
+		 * ("chassis_RobotOrientedNavigation_PIDControllerY_KD_3");
+		 * 
+		 * putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerHeading_KP_3");
+		 * putConfigVariableInSDB
+		 * ("chassis_RobotOrientedNavigation_PIDControllerHeading_KI_3");
+		 * putConfigVariableInSDB
+		 * ("chassis_RobotOrientedNavigation_PIDControllerHeading_KD_3");
+		 * 
+		 * putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerX_AbsoluteTolerance_3"
+		 * ); putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerY_AbsoluteTolerance_3"
+		 * ); putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerHeading_AbsoluteTolerance_3"
+		 * );
+		 * 
+		 * putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerX_MinimumOutput_3");
+		 * putConfigVariableInSDB
+		 * ("chassis_RobotOrientedNavigation_PIDControllerX_MaximumOutput_3");
+		 * 
+		 * putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerY_MinimumOutput_3");
+		 * putConfigVariableInSDB
+		 * ("chassis_RobotOrientedNavigation_PIDControllerY_MaximumOutput_3");
+		 * 
+		 * putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerHeading_MinimumOutput_3"
+		 * ); putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_PIDControllerHeading_MaximumOutput_3"
+		 * );
+		 * 
+		 * putConfigVariableInSDB(
+		 * "chassis_RobotOrientedNavigation_MaxFinishCounter_3");
+		 */
 		putConfigVariableInSDB("chassis_Velocity_ResetVelocity");
 		putConfigVariableInSDB("chassis_Velocity_Lowpass");
 		putConfigVariableInSDB("chassis_Velocity_UseLowPass");
 		putConfigVariableInSDB("chassis_Accelaverage_useMovingAverage");
-		
+
 		logger.info("Finished initSDB()");
 	}
 }

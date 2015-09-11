@@ -19,6 +19,7 @@ import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.robotIO.Actuators;
 import org.usfirst.frc.team3316.robot.robotIO.Sensors;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -60,6 +61,11 @@ public class Robot extends IterativeRobot
 	public static Stacker stacker;
 	public static RollerGripper rollerGripper;
 	
+	/*
+	 * Compressor
+	 */
+	public static Compressor comp;
+	
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -92,6 +98,11 @@ public class Robot extends IterativeRobot
     	stacker = new Stacker();
     	
     	/*
+    	 * Compressor
+    	 */
+    	comp = new Compressor();
+    	
+    	/*
     	 * Human IO (that requires subsystems)
     	 */
     	joysticks.initButtons();
@@ -100,18 +111,12 @@ public class Robot extends IterativeRobot
     	/*
     	 * Timer
     	 */
-    	try
-    	{
+    	
     		timer = new Timer();
     		chassis.timerInit();
     		stacker.timerInit();
     		rollerGripper.timerInit();
     		sdb.timerInit();
-    	}
-    	catch (Exception e)
-    	{
-    		logger.severe(e);
-    	}
     	
     	/*
     	 * Pre-match Init

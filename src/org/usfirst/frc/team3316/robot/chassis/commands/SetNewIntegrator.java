@@ -14,11 +14,9 @@ public class SetNewIntegrator extends Command
 
 	protected void initialize() 
 	{	
-		NavigationIntegrator integrator = Robot.chassis.testIntegrator;
-		
-		Robot.chassis.removeNavigationIntegrator(integrator);
-		integrator = new NavigationIntegrator();
-		Robot.chassis.addNavigationIntegrator(integrator);
+		Robot.chassis.removeNavigationIntegrator(Robot.chassis.testIntegrator);
+		Robot.chassis.testIntegrator = new NavigationIntegrator();
+		Robot.chassis.addNavigationIntegrator(Robot.chassis.testIntegrator);
 	}
 
 	protected void execute() {

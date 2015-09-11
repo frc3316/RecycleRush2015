@@ -83,8 +83,7 @@ public class Chassis extends Subsystem {
 
 		public void run() 
 		{
-			try
-			{
+			
 			autonomousTestVariables();
 
 			// Makes sure the first time delta will not be since 1970
@@ -174,11 +173,7 @@ public class Chassis extends Subsystem {
 			 */
 			previousTime = currentTime;
 			previousHeading = currentHeading;
-			}
-			catch (Exception e)
-			{
-				logger.severe(e);
-			}
+			
 			
 		}
 		
