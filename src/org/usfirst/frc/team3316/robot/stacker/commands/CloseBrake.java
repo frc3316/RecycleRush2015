@@ -1,7 +1,6 @@
 package org.usfirst.frc.team3316.robot.stacker.commands;
 
 import org.usfirst.frc.team3316.robot.Robot;
-import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -9,40 +8,33 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public abstract class MoveStacker extends Command 
+public class CloseBrake extends Command
 {
+
 	DBugLogger logger = Robot.logger;
-	Config config = Robot.config;
 	
-    public MoveStacker()
-    {
-        requires(Robot.stacker);
-    }
+    public CloseBrake() {}
 
     protected void initialize()
     {
     	logger.fine(this.getName() + " initialize");
-    	Robot.stacker.openBrakeAndHolders();
+    	Robot.stacker.closeBrakeAndHolders();
     }
 
-    protected abstract void execute();
+    protected void execute() {}
 
-    protected abstract boolean isFinished();
-    
-    protected void end() 
+    protected boolean isFinished()
     {
+        return false;
+    }
+
+    protected void end() {
+
     	logger.fine(this.getName() + " end");
-    	_end();
     }
 
     protected void interrupted() 
     {
     	logger.fine(this.getName() + " interrupted");
-    	_end();
-    }
-    
-    private void _end()
-    {
-    	Robot.stacker.closeBrakeAndHolders();
     }
 }

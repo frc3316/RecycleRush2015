@@ -10,6 +10,8 @@ import org.usfirst.frc.team3316.robot.chassis.commands.WiggleWiggle;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+import org.usfirst.frc.team3316.robot.stacker.commands.CloseBrake;
+import org.usfirst.frc.team3316.robot.stacker.commands.OpenBrake;
 import org.usfirst.frc.team3316.robot.stacker.commands.CloseGripper;
 import org.usfirst.frc.team3316.robot.stacker.commands.HoldContainer;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToFloor;
@@ -81,6 +83,9 @@ public class Joysticks
 	
 	public JoystickButton wiggleWiggle;
 	
+	public JoystickButton openBrake,
+						  closeBrake;
+	
 	public Joysticks ()
 	{
 		try 
@@ -141,6 +146,14 @@ public class Joysticks
 			closeGripper = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_CLOSE_GRIPPER"));
 			closeGripper.whenPressed(new CloseGripper());
+			
+			closeBrake = new JoystickButton(joystickOperator,
+					(int) config.get("BUTTON_CLOSE_BRAKE"));
+			closeBrake.whenPressed(new CloseBrake());
+			
+			openBrake = new JoystickButton(joystickOperator,
+					(int) config.get("BUTTON_OPEN_BRAKE"));
+			openBrake.whenPressed(new OpenBrake());
 			
 			/*
 			 * Anschluss
