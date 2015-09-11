@@ -38,7 +38,7 @@ public class AutonomousCamera extends Command
 		double BoundingRectTop;
 		double BoundingRectRight;
 		double BoundingRectBottom;
-		double CenterMassY;
+		double CenterMassX;
 		double ToteAngle;
 		double ToteDistance;
 
@@ -98,7 +98,7 @@ public class AutonomousCamera extends Command
 	
 	double VIEW_ANGLE; 
 	
-	int Y_IMAGE_RES;
+	int X_IMAGE_RES;
 	int IMAGE_SIZE;
 	
 	double TARGET_SIZE_SQRT;
@@ -121,7 +121,7 @@ public class AutonomousCamera extends Command
 		frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
 
 		binaryFrame = NIVision.imaqCreateImage(ImageType.IMAGE_U8, 0);
-		Y_IMAGE_RES = NIVision.imaqGetImageSize(binaryFrame).height;
+		X_IMAGE_RES = NIVision.imaqGetImageSize(binaryFrame).width;
 		IMAGE_SIZE = NIVision.imaqGetImageSize(binaryFrame).height * NIVision.imaqGetImageSize(binaryFrame).width;
 		criteria[0] = new NIVision.ParticleFilterCriteria2(
 				NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA, AREA_MINIMUM,
@@ -219,9 +219,9 @@ public class AutonomousCamera extends Command
 				par.BoundingRectRight = NIVision.imaqMeasureParticle(
 						binaryFrame, particleIndex, 0,
 						NIVision.MeasurementType.MT_BOUNDING_RECT_RIGHT);
-				par.CenterMassY = NIVision.imaqMeasureParticle(
+				par.CenterMassX = NIVision.imaqMeasureParticle(
 						binaryFrame, particleIndex, 0,
-						NIVision.MeasurementType.MT_CENTER_OF_MASS_Y);
+						NIVision.MeasurementType.MT_CENTER_OF_MASS_X);
 				particles.add(par);
 			}
 			particles.sort(null);
@@ -343,8 +343,8 @@ public class AutonomousCamera extends Command
 	
 	double computeAngleFromTarget (ParticleReport report)
     {
-        double yDiff = (report.CenterMassY - Y_IMAGE_RES / 2);
-        double angleToReturn = (yDiff * VIEW_ANGLE) / Y_IMAGE_RES;
+        double xDiff = (report.CenterMassX - X_IMAGE_RES / 2);
+        double angleToReturn = (xDiff * VIEW_ANGLE) / X_IMAGE_RES;
         return angleToReturn;
     }
 	
