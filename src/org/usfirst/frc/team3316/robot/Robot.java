@@ -7,7 +7,6 @@ import java.util.Timer;
 
 import org.usfirst.frc.team3316.robot.sequences.AutonomousDriveForward;
 import org.usfirst.frc.team3316.robot.sequences.AutonomousNone;
-import org.usfirst.frc.team3316.robot.subsystems.Anschluss;
 import org.usfirst.frc.team3316.robot.subsystems.Chassis;
 import org.usfirst.frc.team3316.robot.subsystems.Stacker;
 import org.usfirst.frc.team3316.robot.subsystems.RollerGripper;
@@ -56,7 +55,6 @@ public class Robot extends IterativeRobot
      * Subsystems
      */
 	public static Chassis chassis;
-	public static Anschluss anschluss;
 	public static Stacker stacker;
 	public static RollerGripper rollerGripper;
 	
