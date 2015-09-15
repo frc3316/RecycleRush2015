@@ -67,10 +67,6 @@ public class Actuators
 				chassisMotorControllerRight2 = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT_2"));
 
 				chassisMotorControllerCenter = new VictorSP((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER"));
-				/*
-				 * Anschluss
-				 */
-				//anschlussMotorController = new VictorSP ((int) config.get("ANSCHLUSS_MOTOR_CONTROLLER"));
 				
 				/*
 				 * Roller-Gripper
@@ -87,10 +83,6 @@ public class Actuators
 				chassisMotorControllerRight2 = new Talon ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT_2"));
 				
 				chassisMotorControllerCenter = new Talon((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER"));
-				/*
-				 * Anschluss
-				 */
-				//anschlussMotorController = new Talon ((int) config.get("ANSCHLUSS_MOTOR_CONTROLLER"));
 				
 				/*
 				 * Roller-Gripper
@@ -119,9 +111,7 @@ public class Actuators
 			stackerSolenoidContainer = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_CONTAINER_FORWARD"),
 														  (int) config.get("STACKER_SOLENOID_CONTAINER_REVERSE"));
 			
-			//Solenoid used to control the stack holders
-			//stackerSolenoidHolder = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_HOLDERS_FORWARD"),
-			//		  									  (int) config.get("STACKER_SOLENOID_HOLDERS_REVERSE"));
+
 			
 		}
 		catch (ConfigException e) 
