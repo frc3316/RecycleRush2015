@@ -23,7 +23,7 @@ public class Anschluss extends Subsystem
 	
 	public Anschluss ()	
 	{
-		anschluss = Robot.actuators.anschlussMotorController;
+		//anschluss = Robot.actuators.anschlussMotorController;
 		hallEffectClosed = Robot.sensors.anschlussDigitalInputClosed;
 		hallEffectOpened = Robot.sensors.anschlussDigitalInputOpened;
 	}

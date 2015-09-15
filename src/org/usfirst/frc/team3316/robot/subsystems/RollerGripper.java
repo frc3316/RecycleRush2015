@@ -78,7 +78,6 @@ public class RollerGripper extends Subsystem
     	updateScales();
      	gripperLeft.set(speedLeft*leftScale);
     	gripperRight.set(speedRight*rightScale);
-    	logTheTruth();
     	return true;
     }
     

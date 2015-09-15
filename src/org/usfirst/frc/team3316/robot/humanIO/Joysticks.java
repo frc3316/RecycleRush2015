@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
-public class Joysticks 
+public class Joysticks
 {
 	/*
 	 * Defines a button in a gamepad POV for an array of angles 

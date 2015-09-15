@@ -183,6 +183,8 @@ public class SDB
 		SmartDashboard.putData(new SetHeadingSDB());
 		putConfigVariableInSDB("chassis_HeadingToSet");
 		
+		putConfigVariableInSDB("stacker_Scale");
+		
 		logger.info("Finished initSDB()");
 	}
 }

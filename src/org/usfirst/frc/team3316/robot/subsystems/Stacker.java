@@ -90,9 +90,9 @@ public class Stacker extends Subsystem
 	// config variable
 	private static double heightPosition = 0; // the position of the stacker:
 												// 0 - floor, 2 - step, 4 - tote
-
 	private SpeedController left;
 	private SpeedController right;
+
 	private double scale;
 //	private double downScale = (double) config.get("STACKER_DOWNSCALE");
 
@@ -101,6 +101,9 @@ public class Stacker extends Subsystem
 	public Stacker()
 	{
 
+		left = Robot.actuators.elevatorMotorControllerLeft;
+		right = Robot.actuators.elevatorMotorControllerRight;
+		
 		solenoidContainer = Robot.actuators.stackerSolenoidContainer;
 		solenoidGripper = Robot.actuators.stackerSolenoidGripper;
 		solenoidHolder = Robot.actuators.stackerSolenoidHolder;
@@ -129,6 +132,7 @@ public class Stacker extends Subsystem
 	public boolean setMotors(double v)
 	{
 		updateScale();
+		
 		if (solenoidBrake.get() == DoubleSolenoid.Value.kReverse
 				|| solenoidHolder.get() == DoubleSolenoid.Value.kForward)
 		{
