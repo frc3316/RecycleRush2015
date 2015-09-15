@@ -104,7 +104,7 @@ public class Actuators
 	
 			
 			// Solenoid used to control the pistons connected to the gripper
-			stackerSolenoidGripper = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_GRIPPER_FORWARD"),  
+			stackerSolenoidGripper = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_GRIPPER_FORWARD"),
 														  (int) config.get("STACKER_SOLENOID_GRIPPER_REVERSE"));
 			
 			// Solenoid used to control the pistons holding the container
