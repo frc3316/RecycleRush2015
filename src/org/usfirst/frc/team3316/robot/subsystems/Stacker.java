@@ -30,7 +30,7 @@ public class Stacker extends Subsystem
 			return getHeightSwitch();
 		}
 	}
-	
+
 	private class HeightTriggerCommand extends Command
 	{
 		protected boolean isFinished()
@@ -38,25 +38,32 @@ public class Stacker extends Subsystem
 			return true;
 		}
 
-		protected void interrupted() {}
+		protected void interrupted()
+		{
+		}
 
-		protected void initialize() {}
+		protected void initialize()
+		{
+		}
 
 		protected void execute()
 		{
-			if (left1.get() > 0)
+			if (left.get() > 0)
 			{
-				heightPosition += 0.5; //Adds 0.5 to heightPosition if going up
+				heightPosition += 0.5; // Adds 0.5 to heightPosition if going up
 			}
-			else if (left1.get() < 0)
+			else if (left.get() < 0)
 			{
-				heightPosition -= 0.5; //Lowers 0.5 to heightPosition if going down
+				heightPosition -= 0.5; // Lowers 0.5 to heightPosition if going
+										// down
 			}
 		}
 
-		protected void end() {}
+		protected void end()
+		{
+		}
 	}
-			
+
 	Config config = Robot.config;
 	DBugLogger logger = Robot.logger;
 
@@ -66,9 +73,9 @@ public class Stacker extends Subsystem
 											// closes the roller gripper
 	private DoubleSolenoid solenoidHolder; // The solenoid that opens and
 											// closes the holders
-	
-	//CR: need to initialize this solenoid
-	//CR: add stack balancing solenoid
+
+	// CR: need to initialize this solenoid
+	// CR: add stack balancing solenoid
 	private DoubleSolenoid solenoidBrake; // The solenoid that brakes the
 											// elevator
 
@@ -79,13 +86,15 @@ public class Stacker extends Subsystem
 																		// container in
 																		// the stacker
 
-	//CR: should check starting position (if it's floor, step or floor) from a config variable
+	// CR: should check starting position (if it's floor, step or floor) from a
+	// config variable
 	private static double heightPosition = 0; // the position of the stacker:
-											// 0 - floor, 1 - step, 2 - tote
+												// 0 - floor, 2 - step, 4 - tote
 
-	private SpeedController left1, left2;
-	private SpeedController right1, right2;
+	private SpeedController left;
+	private SpeedController right;
 	private double scale;
+//	private double downScale = (double) config.get("STACKER_DOWNSCALE");
 
 	private HeightTrigger heightTrigger;
 
@@ -120,22 +129,23 @@ public class Stacker extends Subsystem
 	public boolean setMotors(double v)
 	{
 		updateScale();
-		if (solenoidBrake.get() == DoubleSolenoid.Value.kReverse || solenoidHolder.get() == DoubleSolenoid.Value.kForward)
+		if (solenoidBrake.get() == DoubleSolenoid.Value.kReverse
+				|| solenoidHolder.get() == DoubleSolenoid.Value.kForward)
 		{
 			return false;
 		}
 
-		//TODO: REMOVE THIS AFTER MANUAL TESTING
+		// TODO: REMOVE THIS AFTER MANUAL TESTING
 		SmartDashboard.putNumber("Stacker setMotors value: ", v);
-		
-		this.left1.set(v * scale);
-		this.left2.set(v * scale);
 
-		this.right1.set(v * -scale);
-		this.right2.set(v * -scale);
+		this.left.set(v * scale);
+
+		this.right.set(v * -scale);
 
 		return true;
 	}
+	
+	
 
 	public boolean openSolenoidContainer()
 	{
@@ -178,26 +188,25 @@ public class Stacker extends Subsystem
 		logger.fine("Try to close brake solenoid");
 		solenoidGripper.set(DoubleSolenoid.Value.kForward);
 		logger.fine("Solenoid brake closed");
-		
+
 		logger.fine("Try to open holder solenoid");
 		solenoidHolder.set(DoubleSolenoid.Value.kReverse);
 		logger.fine("Solenoid holders opened");
 
-
 		return true;
 	}
-	
+
 	public boolean closeBrakeAndHolders()
 	{
 		logger.fine("Try to close brake solenoid");
 		solenoidGripper.set(DoubleSolenoid.Value.kReverse);
 		logger.fine("Solenoid brake closed");
-		
+
 		logger.fine("Try to close holder solenoid");
 		solenoidHolder.set(DoubleSolenoid.Value.kForward);
 		logger.fine("Solenoid holder closed");
-		
-    	Robot.stacker.setMotors(0);
+
+		Robot.stacker.setMotors(0);
 
 		return true;
 	}
@@ -218,7 +227,7 @@ public class Stacker extends Subsystem
 			return StackerPosition.Floor;
 		if (heightPosition == 2)
 			return StackerPosition.Step;
-		if (heightPosition == 4) 
+		if (heightPosition == 4)
 			return StackerPosition.Tote;
 		else
 			return StackerPosition.Unknown;

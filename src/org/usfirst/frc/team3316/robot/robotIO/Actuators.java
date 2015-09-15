@@ -39,6 +39,7 @@ public class Actuators
 	public SpeedController elevatorMotorControllerLeft1, elevatorMotorControllerLeft2;
 	public SpeedController elevatorMotorControllerRight1, elevatorMotorControllerRight2;
 	
+	
 	/*
 	 * Anschluss
 	 */
@@ -109,6 +110,7 @@ public class Actuators
 			
 			elevatorMotorControllerRight1 = new VictorSP ((int) config.get("ELEVATOR_MOTOR_CONTROLLER_RIGHT_1"));
 			elevatorMotorControllerRight2 = new VictorSP ((int) config.get("ELEVATOR_MOTOR_CONTROLLER_RIGHT_2"));
+			
 	
 			
 			// Solenoid used to control the pistons connected to the gripper

@@ -144,10 +144,6 @@ public class RollerGripper extends Subsystem
     		logger.severe(e);
     	}
     }
-    
-    public void logTheTruth()
-    {
-    	logger.fine("Vita is the Melech!!");
-    }
+
 }
 
