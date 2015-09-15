@@ -94,8 +94,8 @@ public class Actuators
 			/*
 			 * Stacker
 			 */
-			//stackerSolenoidBrake = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_BRAKE_FORWARD"), 
-			//											 (int) config.get("STACKER_SOLENOID_BRAKE_REVERSE"));
+			stackerSolenoidBrake = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_BRAKE_FORWARD"), 
+														 (int) config.get("STACKER_SOLENOID_BRAKE_REVERSE"));
 			
 			elevatorMotorControllerLeft = new VictorSP ((int) config.get("ELEVATOR_MOTOR_CONTROLLER_LEFT_1"));
 			
@@ -111,7 +111,8 @@ public class Actuators
 			stackerSolenoidContainer = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_CONTAINER_FORWARD"),
 														  (int) config.get("STACKER_SOLENOID_CONTAINER_REVERSE"));
 			
-
+			stackerSolenoidHolder = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_HOLDER_FORWARD"),
+					  									  (int) config.get("STACKER_SOLENOID_HOLDER_REVERSE"));
 			
 		}
 		catch (ConfigException e) 
