@@ -9,8 +9,6 @@ import java.util.Set;
 import java.util.TimerTask;
 
 import org.usfirst.frc.team3316.robot.Robot;
-import org.usfirst.frc.team3316.robot.chassis.commands.DisablePIDRotation;
-import org.usfirst.frc.team3316.robot.chassis.commands.EnablePIDRotation;
 import org.usfirst.frc.team3316.robot.chassis.commands.FieldOrientedDrive;
 import org.usfirst.frc.team3316.robot.chassis.commands.FieldOrientedDrivePIDRotation;
 import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrivePIDRotation;
@@ -176,8 +174,6 @@ public class SDB
 		 * TO REMOVE
 		 */
 		SmartDashboard.putData(new RobotOrientedDrive());
-		SmartDashboard.putData(new DisablePIDRotation());
-		SmartDashboard.putData(new EnablePIDRotation());
 		SmartDashboard.putData(new FieldOrientedDrive());
 		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_UsePIDRotation");
 		
