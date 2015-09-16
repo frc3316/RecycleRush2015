@@ -120,7 +120,7 @@ public class SDB
 			Object value = config.get(key);
 			Class <?> type = value.getClass();
 			
-			boolean constant = Character.isUpperCase(key.codePointAt(0));
+			boolean constant = Character.isUpperCase(key.codePointAt(key.length() - 1));
 			
 			if (type == Double.class)
 			{
@@ -187,7 +187,16 @@ public class SDB
 		
 		SmartDashboard.putData(new SetHeadingSDB());
 		putConfigVariableInSDB("chassis_HeadingToSet");
+		
+		/*
+		 * Put the config vision test variables in the SDB
+		 */
 		putConfigVariableInSDB("AutonomousCamera_ScoreMinRectangle");
+		putConfigVariableInSDB("AutonomousCamera_RatioMin");
+		putConfigVariableInSDB("AutonomousCamera_RatioMax");
+		putConfigVariableInSDB("AutonomousCamera_TargetSize");
+		putConfigVariableInSDB("AutonomousCamera_ViewAngle");
+		putConfigVariableInSDB("AutonomousCamera_AreaMinimum");
 		
 		logger.info("Finished initSDB()");
 	}

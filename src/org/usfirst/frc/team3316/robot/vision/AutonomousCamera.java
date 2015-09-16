@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class AutonomousCamera extends Command
 {
 	DBugLogger logger = Robot.logger;
-
+	boolean finishExecute = false;
 	// A structure to hold measurements of a particle
 	public class ParticleReport implements Comparator<ParticleReport>,
 			Comparable<ParticleReport>
@@ -80,7 +80,7 @@ public class AutonomousCamera extends Command
 																	// range for
 																	// yellow
 																	// tote
-	double AREA_MINIMUM = 0.5; // Default Area minimum for particle as a
+	double AREA_MINIMUM; // Default Area minimum for particle as a
 								// percentage of total image area
 	double LONG_RATIO = 2.22; // Tote long side = 26.9 / Tote height = 12.1 =
 								// 2.22
@@ -111,13 +111,9 @@ public class AutonomousCamera extends Command
 	// Called just before this Command runs the first time
 	protected void initialize()
 	{
-		// create images
+		// Create images
 		frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
-
 		binaryFrame = NIVision.imaqCreateImage(ImageType.IMAGE_U8, 0);
-		X_IMAGE_RES = NIVision.imaqGetImageSize(binaryFrame).width;
-		Y_IMAGE_RES = NIVision.imaqGetImageSize(binaryFrame).height;
-		IMAGE_SIZE = NIVision.imaqGetImageSize(binaryFrame).height * NIVision.imaqGetImageSize(binaryFrame).width;
 		criteria[0] = new NIVision.ParticleFilterCriteria2(
 				NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA, AREA_MINIMUM,
 				100.0, 0, 0);
@@ -129,26 +125,42 @@ public class AutonomousCamera extends Command
 		SmartDashboard.putNumber("Tote sat max", TOTE_SAT_RANGE.maxValue);
 		SmartDashboard.putNumber("Tote val min", TOTE_VAL_RANGE.minValue);
 		SmartDashboard.putNumber("Tote val max", TOTE_VAL_RANGE.maxValue);
-		SmartDashboard.putNumber("Area min %", AREA_MINIMUM);
 		
-		// Put variables on the SmartDashboard
-		try {
-			SCORE_MIN_RECTANGLE = (double)Robot.config.get("AutonomousCamera_ScoreMinRectangle");
-			RATIO_MIN = (double)Robot.config.get("AutonomousCamera_RatioMin");
-			RATIO_MAX = (double)Robot.config.get("AutonomousCamera_RatioMax");
-			TARGET_SIZE_SQRT = (double)Robot.config.get("AutonomousCamera_TargetSize");
-			VIEW_ANGLE = (double)Robot.config.get("AutonomousCamera_ViewAngle");
+		// Get constants from the config
+		try 
+		{
+			X_IMAGE_RES = (int) Robot.config.get("AUTONOMOUS_CAMERA_X_IMAGE_RES");
+			Y_IMAGE_RES = (int) Robot.config.get("AUTONOMOUS_CAMERA_Y_IMAGE_RES");
+			IMAGE_SIZE = X_IMAGE_RES * Y_IMAGE_RES;
 		}
-		catch (ConfigException e) {
+		catch (ConfigException e) 
+		{
 			logger.severe(e);
+			finishExecute = true;
 		}
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute()
 	{
+		// Take a frame from the camera
 		NIVision.IMAQdxGrab(Robot.sensors.getCameraSession(), frame, 1);
-
+		
+		// Get variables from the config
+		try 
+		{
+			SCORE_MIN_RECTANGLE = (double) Robot.config.get("AutonomousCamera_ScoreMinRectangle");
+			RATIO_MIN = (double) Robot.config.get("AutonomousCamera_RatioMin");
+			RATIO_MAX = (double) Robot.config.get("AutonomousCamera_RatioMax");
+			TARGET_SIZE_SQRT = (double) Robot.config.get("AutonomousCamera_TargetSize");
+			VIEW_ANGLE = (double) Robot.config.get("AutonomousCamera_ViewAngle");
+			AREA_MINIMUM = (double)Robot.config.get("AutonomousCamera_AreaMinimum");
+		}
+		catch (ConfigException e) {
+			logger.severe(e);
+			finishExecute = true;
+		}
+		
 		// Update threshold values from SmartDashboard. For performance reasons
 		// it is recommended to remove this after calibration is finished.
 		TOTE_HUE_RANGE.minValue = (int) SmartDashboard.getNumber(
@@ -269,6 +281,10 @@ public class AutonomousCamera extends Command
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished()
 	{
+		if (finishExecute) 
+		{
+			return true;
+		}
 		return false;
 	}
 
