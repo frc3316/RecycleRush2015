@@ -106,6 +106,8 @@ public class Stacker extends Subsystem
 		
 		solenoidContainer = Robot.actuators.stackerSolenoidContainer;
 		solenoidGripper = Robot.actuators.stackerSolenoidGripper;
+
+		solenoidBrake = Robot.actuators.stackerSolenoidBrake;
 		solenoidHolder = Robot.actuators.stackerSolenoidHolder;
 
 		switchRight = Robot.sensors.stackerSwitchRatchetRight;
@@ -115,7 +117,6 @@ public class Stacker extends Subsystem
 		heightTrigger = new HeightTrigger();
 		heightTrigger.whenInactive(new HeightTriggerCommand());
 		heightTrigger.whenActive(new HeightTriggerCommand());
-
 	}
 
 	public void initDefaultCommand()
@@ -133,8 +134,8 @@ public class Stacker extends Subsystem
 	{
 		updateScale();
 		
-		if (solenoidBrake.get() == DoubleSolenoid.Value.kReverse
-				|| solenoidHolder.get() == DoubleSolenoid.Value.kForward)
+		if (solenoidBrake.get() == DoubleSolenoid.Value.kForward
+				|| solenoidHolder.get() == DoubleSolenoid.Value.kReverse)
 		{
 			return false;
 		}
@@ -190,7 +191,7 @@ public class Stacker extends Subsystem
 	public boolean openBrakeAndHolders()
 	{
 		logger.fine("Try to close brake solenoid");
-		solenoidGripper.set(DoubleSolenoid.Value.kForward);
+		solenoidBrake.set(DoubleSolenoid.Value.kForward);
 		logger.fine("Solenoid brake closed");
 
 		logger.fine("Try to open holder solenoid");
@@ -203,14 +204,12 @@ public class Stacker extends Subsystem
 	public boolean closeBrakeAndHolders()
 	{
 		logger.fine("Try to close brake solenoid");
-		solenoidGripper.set(DoubleSolenoid.Value.kReverse);
+		solenoidBrake.set(DoubleSolenoid.Value.kReverse);
 		logger.fine("Solenoid brake closed");
 
 		logger.fine("Try to close holder solenoid");
 		solenoidHolder.set(DoubleSolenoid.Value.kForward);
 		logger.fine("Solenoid holder closed");
-
-		Robot.stacker.setMotors(0);
 
 		return true;
 	}

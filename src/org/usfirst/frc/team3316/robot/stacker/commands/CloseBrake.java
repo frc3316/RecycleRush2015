@@ -13,7 +13,10 @@ public class CloseBrake extends Command
 
 	DBugLogger logger = Robot.logger;
 	
-    public CloseBrake() {}
+    public CloseBrake() 
+    {
+    	//This command is asynchronous and therefore does not require stacker subsystem
+    }
 
     protected void initialize()
     {
@@ -25,7 +28,7 @@ public class CloseBrake extends Command
 
     protected boolean isFinished()
     {
-        return false;
+        return true;
     }
 
     protected void end() {

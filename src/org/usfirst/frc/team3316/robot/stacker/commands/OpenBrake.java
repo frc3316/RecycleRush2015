@@ -13,7 +13,10 @@ public class OpenBrake extends Command
 
 	DBugLogger logger = Robot.logger;
 	
-    public OpenBrake() {}
+    public OpenBrake() 
+    {
+    	//This command is asynchronous and therefore does not require stacker subsystem
+    }
 
     protected void initialize()
     {
@@ -25,7 +28,7 @@ public class OpenBrake extends Command
 
     protected boolean isFinished()
     {
-        return false;
+        return true;
     }
 
     protected void end() {
