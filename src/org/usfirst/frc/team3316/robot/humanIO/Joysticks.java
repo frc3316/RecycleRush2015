@@ -4,8 +4,6 @@
 package org.usfirst.frc.team3316.robot.humanIO;
 
 import org.usfirst.frc.team3316.robot.Robot;
-import org.usfirst.frc.team3316.robot.anschluss.commands.CloseAnschluss;
-import org.usfirst.frc.team3316.robot.anschluss.commands.OpenAnschluss;
 import org.usfirst.frc.team3316.robot.chassis.commands.WiggleWiggle;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
@@ -154,18 +152,6 @@ public class Joysticks
 			openBrake = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_OPEN_BRAKE"));
 			openBrake.whenPressed(new OpenBrake());
-			
-			/*
-			 * Anschluss
-			 */
-			
-			openAnschluss = new JoystickButton(joystickOperator,
-					(int) config.get("BUTTON_OPEN_ANSCHLUSS"));
-			openAnschluss.whileHeld(new OpenAnschluss());
-			
-			closeAnschluss = new JoystickButton(joystickOperator,
-					(int) config.get("BUTTON_CLOSE_ANSCHLUSS"));
-			closeAnschluss.whileHeld(new CloseAnschluss());
 			
 		}
 		catch (ConfigException e)
