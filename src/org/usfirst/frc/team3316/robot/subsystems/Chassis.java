@@ -151,8 +151,8 @@ public class Chassis extends Subsystem
 			double getYaw = navx.getYaw();
 			
 			
-			aS = (aX * Math.cos(getYaw) - Math.sin(getYaw) * aY) * G; 
-			aF = (aX * Math.sin(getYaw) + Math.cos(getYaw) * aY) * G; 
+			aS = (aX * Math.cos(Math.toRadians(getYaw)) - Math.sin(Math.toRadians(getYaw)) * aY) * G; 
+			aF = (aX * Math.sin(Math.toRadians(getYaw)) + Math.cos(Math.toRadians(getYaw)) * aY) * G; 
 		
 			velocityF += aF * dT;
 			velocityS += aS * dT;
