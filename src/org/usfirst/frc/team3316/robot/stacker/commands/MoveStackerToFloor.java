@@ -35,7 +35,7 @@ public class MoveStackerToFloor extends MoveStacker
 	{
 		if (Robot.stacker.getPosition() == StackerPosition.Floor && Robot.stacker.getHeightSwitch() == true)
 		{
-			Robot.stacker.closeBrakeAndHolders();
+			Robot.stacker.disallowStackMovement();
 			return true;
 		}
 		return false;

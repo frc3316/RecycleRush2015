@@ -22,7 +22,7 @@ public abstract class MoveStacker extends Command
     protected void initialize()
     {
     	logger.fine(this.getName() + " initialize");
-    	Robot.stacker.openBrakeAndHolders();
+    	Robot.stacker.allowStackMovement();
     }
 
     protected abstract void execute();
@@ -43,6 +43,6 @@ public abstract class MoveStacker extends Command
     
     private void _end()
     {
-    	Robot.stacker.closeBrakeAndHolders();
+    	Robot.stacker.disallowStackMovement();
     }
 }

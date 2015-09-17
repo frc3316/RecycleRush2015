@@ -37,7 +37,7 @@ public class MoveStackerToStep extends MoveStacker
 	{
 		if (Robot.stacker.getPosition() == StackerPosition.Step && Robot.stacker.getHeightSwitch() == true)
 		{
-			Robot.stacker.closeBrakeAndHolders();
+			Robot.stacker.disallowStackMovement();
 			return true;
 		}
 		return false;

@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class CloseBrake extends Command
+public class Brake extends Command
 {
 
 	DBugLogger logger = Robot.logger;
 	
-    public CloseBrake() 
+    public Brake() 
     {
     	//This command is asynchronous and therefore does not require stacker subsystem
     }
@@ -21,7 +21,7 @@ public class CloseBrake extends Command
     protected void initialize()
     {
     	logger.fine(this.getName() + " initialize");
-    	Robot.stacker.closeBrakeAndHolders();
+    	Robot.stacker.disallowStackMovement();
     }
 
     protected void execute() {}

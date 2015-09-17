@@ -38,7 +38,7 @@ public class MoveStackerToTote extends MoveStacker
 	{
 		if (Robot.stacker.getPosition() == StackerPosition.Tote && Robot.stacker.getHeightSwitch() == true)
 		{
-			Robot.stacker.closeBrakeAndHolders();
+			Robot.stacker.disallowStackMovement();
 			return true;
 		}
 		return false;

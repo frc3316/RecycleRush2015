@@ -93,8 +93,8 @@ public class Stacker extends Subsystem
 	private SpeedController left;
 	private SpeedController right;
 
-	private double scale;
-//	private double downScale = (double) config.get("STACKER_DOWNSCALE");
+	private double downScale = 0; //Initial assignment, later updated from config
+	private double upScale = 0; //Initial assignment, later updated from config
 
 	private HeightTrigger heightTrigger;
 
@@ -134,8 +134,8 @@ public class Stacker extends Subsystem
 	{
 		updateScale();
 		
-		if (solenoidBrake.get() == DoubleSolenoid.Value.kForward
-				|| solenoidHolder.get() == DoubleSolenoid.Value.kReverse)
+		if (solenoidBrake.get() == DoubleSolenoid.Value.kReverse
+				|| solenoidHolder.get() == DoubleSolenoid.Value.kForward)
 		{
 			return false;
 		}
@@ -143,11 +143,21 @@ public class Stacker extends Subsystem
 		// TODO: REMOVE THIS AFTER MANUAL TESTING
 		SmartDashboard.putNumber("Stacker setMotors value: ", v);
 
-		this.left.set(v * scale);
+		this.left.set(v);
 
-		this.right.set(v * -scale);
+		this.right.set(-v);
 
 		return true;
+	}
+	
+	public boolean moveDown()
+	{
+		return setMotors(downScale);
+	}
+	
+	public boolean moveUp()
+	{
+		return setMotors(upScale);
 	}
 	
 	
@@ -188,7 +198,7 @@ public class Stacker extends Subsystem
 		return true;
 	}
 
-	public boolean openBrakeAndHolders()
+	public boolean allowStackMovement()
 	{
 		logger.fine("Try to close brake solenoid");
 		solenoidBrake.set(DoubleSolenoid.Value.kForward);
@@ -201,7 +211,7 @@ public class Stacker extends Subsystem
 		return true;
 	}
 
-	public boolean closeBrakeAndHolders()
+	public boolean disallowStackMovement()
 	{
 		logger.fine("Try to close brake solenoid");
 		solenoidBrake.set(DoubleSolenoid.Value.kReverse);
@@ -245,7 +255,8 @@ public class Stacker extends Subsystem
 	{
 		try
 		{
-			scale = (double) config.get("stacker_Scale");
+			downScale = (double) config.get("stacker_MoveDown_Scale");
+			upScale = (double) config.get("stacker_MoveUp_Scale");
 		}
 		catch (ConfigException e)
 		{
