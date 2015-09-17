@@ -21,14 +21,17 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class Chassis extends Subsystem {
+public class Chassis extends Subsystem
+{
 	/*
 	 * An object that is passed to NavigationThread for integration
 	 */
-	public static class NavigationIntegrator {
+	public static class NavigationIntegrator
+	{
 		private double x = 0, y = 0, heading = 0;
 
-		public void add(double dX, double dY, double dTheta) {
+		public void add(double dX, double dY, double dTheta)
+		{
 			this.x += dX;
 			this.y += dY;
 			this.heading += dTheta;
@@ -41,14 +44,16 @@ public class Chassis extends Subsystem {
 		/**
 		 * Return change in X that has been integrated
 		 */
-		public double getX() {
+		public double getX()
+		{
 			return x;
 		}
 
 		/**
 		 * Return change in Y that has been integrated
 		 */
-		public double getY() {
+		public double getY()
+		{
 			return y;
 		}
 
@@ -56,7 +61,8 @@ public class Chassis extends Subsystem {
 		 * Return change in heading that has been integrated. Heading returned
 		 * is in the range (-180) to (180)
 		 */
-		public double getHeading() {
+		public double getHeading()
+		{
 			return heading;
 		}
 	}
@@ -66,8 +72,10 @@ public class Chassis extends Subsystem {
 	 * y, and theta delta and adds it to each integrator in the set Also
 	 * calculates turning rate in chassis
 	 */
-	private class NavigationTask extends TimerTask 
+	private class NavigationTask extends TimerTask
 	{
+		private static final double G = 9.8067;
+		
 		private HashSet<NavigationIntegrator> integratorSet;
 
 		public boolean resetVelocity;
@@ -77,21 +85,23 @@ public class Chassis extends Subsystem {
 
 		private double velocityS = 0, velocityF = 0;
 
-		public NavigationTask() {
+		public NavigationTask()
+		{
 			integratorSet = new HashSet<NavigationIntegrator>();
 		}
 
-		public void run() 
+		public void run()
 		{
-			
+
 			autonomousTestVariables();
 
 			// Makes sure the first time delta will not be since 1970
-			if (previousTime == 0) {
+			if (previousTime == 0)
+			{
 				previousTime = System.currentTimeMillis();
 			}
-			
-			//Makes sure the first rotation delta will not be stupidly big
+
+			// Makes sure the first rotation delta will not be stupidly big
 			if (previousHeading == 0)
 			{
 				previousHeading = getHeading();
@@ -125,25 +135,39 @@ public class Chassis extends Subsystem {
 			 * Calculates angular velocity
 			 */
 			angularVelocity = (dTheta) / dT;
-			if(useMovingAverage)
+			double aF, aS, aX, aY;
+			
+			if (useMovingAverage)
 			{
-				velocityF += getAccelYAverage() * dT;
-				velocityS += getAccelXAverage() * dT;
+				aX = getAccelXAverage();
+				aY = getAccelYAverage();
 			}
 			else
 			{
-				velocityF += getAccelY() * dT;
-				velocityS += getAccelX() * dT;
-				
+				aX = getAccelX();
+				aY = getAccelY();
 			}
 			
-			//TODO: Reset velocity is a variable for testing purposes and should not appear in the final version
-			if (resetVelocity) {
-				if (encoderCenter.getStopped()) {
+			double getYaw = navx.getYaw();
+			
+			
+			aS = (aX * Math.cos(getYaw) - Math.sin(getYaw) * aY) * G; 
+			aF = (aX * Math.sin(getYaw) + Math.cos(getYaw) * aY) * G; 
+		
+			velocityF += aF * dT;
+			velocityS += aS * dT;
+				
+			// TODO: Reset velocity is a variable for testing purposes and
+			// should not appear in the final version
+			if (resetVelocity)
+			{
+				if (encoderCenter.getStopped())
+				{
 					velocityS = 0;
 				}
 
-				if (encoderLeft.getStopped() && encoderRight.getStopped()) {
+				if (encoderLeft.getStopped() && encoderRight.getStopped())
+				{
 					velocityF = 0;
 				}
 			}
@@ -153,7 +177,8 @@ public class Chassis extends Subsystem {
 			 * Adds all of the deltas to each integrator, relatively to its
 			 * starting position
 			 */
-			for (NavigationIntegrator integrator : integratorSet) {
+			for (NavigationIntegrator integrator : integratorSet)
+			{
 				double dX, dY; // speeds relative to the orientation that the
 								// integrator started at
 				// headingRad is the average of the previous integrator angle
@@ -173,22 +198,26 @@ public class Chassis extends Subsystem {
 			 */
 			previousTime = currentTime;
 			previousHeading = currentHeading;
-			
-			
+
 		}
-		
-		public boolean addIntegrator(NavigationIntegrator integrator) {
+
+		public boolean addIntegrator(NavigationIntegrator integrator)
+		{
 			return integratorSet.add(integrator);
 		}
 
-		public boolean removeIntegrator(NavigationIntegrator integrator) {
+		public boolean removeIntegrator(NavigationIntegrator integrator)
+		{
 			return integratorSet.remove(integrator);
 		}
-		
-		public double getVelocityS() {
+
+		public double getVelocityS()
+		{
 			return velocityS;
 		}
-		public double getVelocityF() {
+
+		public double getVelocityF()
+		{
 			return velocityF;
 		}
 	}
@@ -223,12 +252,10 @@ public class Chassis extends Subsystem {
 
 	double leftEncoderScale = 1, rightEncoderScale = 1, centerEncoderScale = 1;
 
-	public Chassis() 
+	public Chassis()
 	{
 		testIntegrator = new NavigationIntegrator();
-		
-		
-		
+
 		left1 = Robot.actuators.chassisMotorControllerLeft1;
 		left2 = Robot.actuators.chassisMotorControllerLeft2;
 
@@ -243,33 +270,36 @@ public class Chassis extends Subsystem {
 		encoderRight = Robot.sensors.chassisEncoderRight;
 		encoderCenter = Robot.sensors.chassisEncoderCenter;
 
-		accelXAverage = new MovingAverage(averageSize, averageUpdateRate,
-				() -> {
-					return getAccelX();
-				});
+		accelXAverage = new MovingAverage(averageSize, averageUpdateRate, () ->
+		{
+			return getAccelX();
+		});
 
-		accelYAverage = new MovingAverage(averageSize, averageUpdateRate,
-				() -> {
-					return getAccelY();
-				});
+		accelYAverage = new MovingAverage(averageSize, averageUpdateRate, () ->
+		{
+			return getAccelY();
+		});
 	}
 
-	public void timerInit() {
+	public void timerInit()
+	{
 		navigationTask = new NavigationTask();
 		Robot.timer.schedule(navigationTask, 0, 50);
-		
+
 		accelXAverage.timerInit();
 		accelYAverage.timerInit();
-		
+
 		addNavigationIntegrator(testIntegrator);
 	}
 
-	public void initDefaultCommand() {
+	public void initDefaultCommand()
+	{
 		defaultDrive = new FieldOrientedDrive();
 		setDefaultCommand(defaultDrive);
 	}
 
-	public boolean set(double left, double right, double center) {
+	public boolean set(double left, double right, double center)
+	{
 		updateScales();
 
 		this.left1.set(left * leftScale);
@@ -286,7 +316,8 @@ public class Chassis extends Subsystem {
 	/*
 	 * Heading
 	 */
-	public double getHeading() {
+	public double getHeading()
+	{
 		double headingToReturn = navx.getYaw() + headingOffset;
 		headingToReturn = fixHeading(headingToReturn);
 
@@ -299,7 +330,8 @@ public class Chassis extends Subsystem {
 	 * @param headingToSet
 	 *            the angle specified
 	 */
-	public void setHeading(double headingToSet) {
+	public void setHeading(double headingToSet)
+	{
 		double currentHeading = getHeading();
 		double currentOffset = headingOffset;
 
@@ -309,24 +341,28 @@ public class Chassis extends Subsystem {
 	/*
 	 * Angular velocity
 	 */
-	public double getAngularVelocity() {
+	public double getAngularVelocity()
+	{
 		return angularVelocity;
 	}
 
 	/*
 	 * Distance
 	 */
-	public double getDistanceLeft() {
+	public double getDistanceLeft()
+	{
 		updateEncoderScales();
 		return encoderLeft.getDistance() * leftEncoderScale;
 	}
 
-	public double getDistanceRight() {
+	public double getDistanceRight()
+	{
 		updateEncoderScales();
 		return encoderRight.getDistance() * rightEncoderScale;
 	}
 
-	public double getDistanceCenter() {
+	public double getDistanceCenter()
+	{
 		updateEncoderScales();
 		return encoderCenter.getDistance() * centerEncoderScale;
 	}
@@ -334,17 +370,20 @@ public class Chassis extends Subsystem {
 	/*
 	 * Speed
 	 */
-	public double getSpeedLeft() {
+	public double getSpeedLeft()
+	{
 		updateEncoderScales();
 		return encoderLeft.getRate() * leftEncoderScale;
 	}
 
-	public double getSpeedRight() {
+	public double getSpeedRight()
+	{
 		updateEncoderScales();
 		return encoderRight.getRate() * rightEncoderScale;
 	}
 
-	public double getSpeedCenter() {
+	public double getSpeedCenter()
+	{
 		updateEncoderScales();
 		return encoderCenter.getRate() * centerEncoderScale;
 	}
@@ -352,8 +391,10 @@ public class Chassis extends Subsystem {
 	double accelLowPass = 0;
 	boolean useLowPass = true;
 
-	private double accelLowPass(double x) {
-		if (Math.abs(x) < accelLowPass) {
+	private double accelLowPass(double x)
+	{
+		if (Math.abs(x) < accelLowPass)
+		{
 			return 0;
 		}
 		return x;
@@ -362,102 +403,127 @@ public class Chassis extends Subsystem {
 	/*
 	 * Acceleration
 	 */
-	public double getAccelX() {
-		if (useLowPass) {
+	public double getAccelX()
+	{
+		if (useLowPass)
+		{
 			return accelLowPass(navx.getWorldLinearAccelX());
-		} else {
+		}
+		else
+		{
 			return navx.getWorldLinearAccelX();
 		}
 	}
 
-	public double getAccelY() {
-		if (useLowPass) {
+	public double getAccelY()
+	{
+		if (useLowPass)
+		{
 			return accelLowPass(navx.getWorldLinearAccelY());
-		} else {
+		}
+		else
+		{
 			return navx.getWorldLinearAccelY();
 		}
 	}
-	
-	public double getAccelXAverage ()
+
+	public double getAccelXAverage()
 	{
 		return accelXAverage.get();
 	}
 
-	public double getAccelYAverage ()
+	public double getAccelYAverage()
 	{
 		return accelYAverage.get();
 	}
-	
-	 public double getVelocityF() {
+
+	public double getVelocityF()
+	{
 		return navigationTask.getVelocityF();
 	}
-	
-	public double getVelocityS() {
+
+	public double getVelocityS()
+	{
 		return navigationTask.getVelocityS();
 	}
 
-
-	
-	
 	/*
 	 * variables for the config
 	 */
-	private void autonomousTestVariables() {
-		try 
+	private void autonomousTestVariables()
+	{
+		try
 		{
-			navigationTask.resetVelocity = (boolean) Robot.config.get("chassis_Velocity_ResetVelocity");
+			navigationTask.resetVelocity = (boolean) Robot.config
+					.get("chassis_Velocity_ResetVelocity");
 			accelLowPass = (double) config.get("chassis_Velocity_Lowpass");
-			useLowPass = (boolean) Robot.config.get("chassis_Velocity_UseLowPass");
+			useLowPass = (boolean) Robot.config
+					.get("chassis_Velocity_UseLowPass");
 			averageUpdateRate = (int) config.get("chassis_Accelaverage_Size");
 			averageSize = (int) config.get("chassis_Accelaverage_UpdateRate");
-			useMovingAverage = (boolean) Robot.config.get("chassis_Accelaverage_useMovingAverage");	
-		} 
-		catch (ConfigException e) {
+			useMovingAverage = (boolean) Robot.config
+					.get("chassis_Accelaverage_useMovingAverage");
+		}
+		catch (ConfigException e)
+		{
 			logger.severe(e);
 		}
 	}
-	
-	
+
 	/*
 	 * Navigation integrator
 	 */
-	public boolean addNavigationIntegrator(NavigationIntegrator integrator) {
+	public boolean addNavigationIntegrator(NavigationIntegrator integrator)
+	{
 		return navigationTask.addIntegrator(integrator);
 	}
 
-	public boolean removeNavigationIntegrator(NavigationIntegrator integrator) {
+	public boolean removeNavigationIntegrator(NavigationIntegrator integrator)
+	{
 		return navigationTask.removeIntegrator(integrator);
 	}
 
-	private void updateScales() {
-		try {
+	private void updateScales()
+	{
+		try
+		{
 			leftScale = (double) config.get("chassis_LeftScale");
 			rightScale = (double) config.get("chassis_RightScale");
 			centerScale = (double) config.get("chassis_CenterScale");
-		} catch (ConfigException e) {
+		}
+		catch (ConfigException e)
+		{
 			logger.severe(e);
 		}
 	}
 
-	private void updateEncoderScales() {
-		try {
+	private void updateEncoderScales()
+	{
+		try
+		{
 			leftEncoderScale = (double) config.get("chassis_LeftEncoderScale");
 			rightEncoderScale = (double) config
 					.get("chassis_RightEncoderScale");
 			centerEncoderScale = (double) config
 					.get("chassis_CenterEncoderScale");
-		} catch (ConfigException e) {
+		}
+		catch (ConfigException e)
+		{
 			logger.severe(e);
 		}
 	}
 
 	// Returns the same heading in the range (-180) to (180)
-	private static double fixHeading(double heading) {
+	private static double fixHeading(double heading)
+	{
 		double toReturn = heading % 360;
 
-		if (toReturn < -180) {
+		if (toReturn < -180)
+		{
 			toReturn += 360;
-		} else if (toReturn > 180) {
+		}
+		else if (toReturn > 180)
+		{
 			toReturn -= 360;
 		}
 		return toReturn;
