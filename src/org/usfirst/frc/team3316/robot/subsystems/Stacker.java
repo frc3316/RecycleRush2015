@@ -135,14 +135,14 @@ public class Stacker extends Subsystem
 		updateScale();
 		
 		if (solenoidBrake.get() == DoubleSolenoid.Value.kReverse
-				|| solenoidHolder.get() == DoubleSolenoid.Value.kForward)
+				|| solenoidHolder.get() == DoubleSolenoid.Value.kForward) //stack movement not possible
 		{
 			return false;
 		}
 
 		// TODO: REMOVE THIS AFTER MANUAL TESTING
 		SmartDashboard.putNumber("Stacker setMotors value: ", v);
-		if (v > 0.1)
+		if (Math.abs(v) > 0.1)
 		{
 			this.left.set(v);
 
@@ -199,9 +199,10 @@ public class Stacker extends Subsystem
 		return true;
 	}
 
+	
 	public boolean allowStackMovement()
 	{
-		logger.fine("Try to close brake solenoid");
+		logger.fine("Try to close brake solenoid (unbrake)");
 		solenoidBrake.set(DoubleSolenoid.Value.kForward);
 		logger.fine("Solenoid brake closed");
 
@@ -214,7 +215,7 @@ public class Stacker extends Subsystem
 
 	public boolean disallowStackMovement()
 	{
-		logger.fine("Try to close brake solenoid");
+		logger.fine("Try to close brake solenoid (brake)");
 		solenoidBrake.set(DoubleSolenoid.Value.kReverse);
 		logger.fine("Solenoid brake closed");
 

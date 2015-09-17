@@ -38,12 +38,7 @@ public class Actuators
 	
 	public SpeedController elevatorMotorControllerLeft;
 	public SpeedController elevatorMotorControllerRight;
-	
-	
-	/*
-	 * Anschluss
-	 */
-	//public SpeedController anschlussMotorController;
+
 	
 	/*
 	 * Roller-Gripper
