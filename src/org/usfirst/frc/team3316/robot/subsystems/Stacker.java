@@ -142,11 +142,12 @@ public class Stacker extends Subsystem
 
 		// TODO: REMOVE THIS AFTER MANUAL TESTING
 		SmartDashboard.putNumber("Stacker setMotors value: ", v);
+		if (v > 0.1)
+		{
+			this.left.set(v);
 
-		this.left.set(v);
-
-		this.right.set(-v);
-
+			this.right.set(-v);
+		}
 		return true;
 	}
 	

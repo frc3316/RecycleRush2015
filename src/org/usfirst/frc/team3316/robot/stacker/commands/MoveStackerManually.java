@@ -29,7 +29,6 @@ public class MoveStackerManually extends Command
 	protected void execute()
 	{
 		v = Robot.joysticks.joystickOperator.getRawAxis(5);
-		Robot.stacker.setMotors(v);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
