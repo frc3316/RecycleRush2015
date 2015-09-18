@@ -22,7 +22,7 @@ public class MoveStackerManually extends Command
 	protected void initialize()
 	{
 		logger.fine(this.getName() + " initialize");
-		// Robot.stacker.closeBrake();
+		Robot.stacker.allowStackMovement();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -42,6 +42,7 @@ public class MoveStackerManually extends Command
 	protected void end()
 	{
 		Robot.stacker.setMotors(0);
+	 	Robot.stacker.disallowStackMovement();
 	}
 
 	// Called when another command which requires one or more of the same
