@@ -127,10 +127,10 @@ public class Joysticks {
 					(int) config.get("BUTTON_CLOSE_GRIPPER"));
 			closeGripper.whenPressed(new CloseGripper());
 
-			closeBrake = new POVButton(joystickOperator, 0);
+			closeBrake = new POVButton(joystickOperator, 180);
 			closeBrake.whenPressed(new Brake());
 
-			openBrake = new POVButton(joystickOperator, 180);
+			openBrake = new POVButton(joystickOperator, 0);
 			openBrake.whenPressed(new UnBrake());
 
 		} catch (ConfigException e) {
