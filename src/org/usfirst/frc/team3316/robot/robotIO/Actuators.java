@@ -94,7 +94,7 @@ public class Actuators
 			
 			elevatorMotorControllerLeft = new VictorSP ((int) config.get("ELEVATOR_MOTOR_CONTROLLER_LEFT"));
 			
-			elevatorMotorControllerRight = new Talon ((int) config.get("ELEVATOR_MOTOR_CONTROLLER_RIGHT"));
+			elevatorMotorControllerRight = new VictorSP ((int) config.get("ELEVATOR_MOTOR_CONTROLLER_RIGHT"));
 
 	
 			
