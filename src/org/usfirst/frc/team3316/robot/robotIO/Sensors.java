@@ -11,6 +11,7 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
+import edu.wpi.first.wpilibj.AnalogAccelerometer;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -34,6 +35,7 @@ public class Sensors
 	public Encoder chassisEncoderLeft, chassisEncoderRight, chassisEncoderCenter;
 	public IMUAdvanced navx;
 	SerialPort serial_port;
+	public static final byte navxUPDATERATEHZ = 50;
 	
 	/*
 	 * Stacker
@@ -103,8 +105,7 @@ public class Sensors
 					(double) config.get("CHASSIS_ENCODER_CENTER_DISTANCE_PER_PULSE"));
 
 			serial_port = new SerialPort(57600, SerialPort.Port.kMXP);
-			navx = new IMUAdvanced(serial_port);
-			
+			navx = new IMUAdvanced(serial_port, navxUPDATERATEHZ);	
 			/*
 			 * Stacker
 			 */

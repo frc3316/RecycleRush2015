@@ -246,8 +246,8 @@ public class Chassis extends Subsystem
 
 	Drive defaultDrive;
 
-	int averageSize = 20;
-	int averageUpdateRate = 10;
+	int averageSize = 10;
+	int averageUpdateRate = 20;
 	boolean useMovingAverage = true;
 
 	double leftEncoderScale = 1, rightEncoderScale = 1, centerEncoderScale = 1;
@@ -284,7 +284,7 @@ public class Chassis extends Subsystem
 	public void timerInit()
 	{
 		navigationTask = new NavigationTask();
-		Robot.timer.schedule(navigationTask, 0, 50);
+		Robot.timer.schedule(navigationTask, 0, 20);
 
 		accelXAverage.timerInit();
 		accelYAverage.timerInit();
