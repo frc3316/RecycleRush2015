@@ -22,13 +22,24 @@ public class Brake extends Command
     {
     	logger.fine(this.getName() + " initialize");
     	Robot.stacker.disallowStackMovement();
+    	
+    	setTimeout(0.2);
     }
 
     protected void execute() {}
 
     protected boolean isFinished()
     {
-        return true;
+        if (isTimedOut())
+        {
+        	Robot.stacker.setMotors(0);
+        	return true;
+        }
+        else
+        {
+        	return false;
+        }
+        
     }
 
     protected void end() {

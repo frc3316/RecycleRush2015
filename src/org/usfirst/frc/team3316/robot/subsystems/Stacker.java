@@ -95,6 +95,8 @@ public class Stacker extends Subsystem
 
 	private double downScale = 0; //Initial assignment, later updated from config
 	private double upScale = 0; //Initial assignment, later updated from config
+	
+	private boolean isMovementAllowed = true;
 
 	private HeightTrigger heightTrigger;
 
@@ -134,21 +136,30 @@ public class Stacker extends Subsystem
 	{
 		updateScale();
 		
+		/*
 		if (solenoidBrake.get() == DoubleSolenoid.Value.kReverse
 				|| solenoidHolder.get() == DoubleSolenoid.Value.kForward) //stack movement not possible
 		{
 			return false;
 		}
+		*/
 
 		// TODO: REMOVE THIS AFTER MANUAL TESTING
 		SmartDashboard.putNumber("Stacker setMotors value: ", v);
-		if (Math.abs(v) > 0.1)
+		logger.fine("Stacker setMotors value: " + v);
+		logger.fine("Stacker speed controller get: " + left.get());
+		
+		if (Math.abs(v) > 0.1 && v != 0)
 		{
 			this.left.set(v);
-
 			this.right.set(-v);
+			
+			return true;
 		}
-		return true;
+		else
+		{
+			return false;
+		}
 	}
 	
 	public boolean moveDown()
@@ -210,6 +221,8 @@ public class Stacker extends Subsystem
 		solenoidHolder.set(DoubleSolenoid.Value.kReverse);
 		logger.fine("Solenoid holders opened");
 
+		isMovementAllowed = true;
+		
 		return true;
 	}
 
@@ -222,8 +235,15 @@ public class Stacker extends Subsystem
 		logger.fine("Try to close holder solenoid");
 		solenoidHolder.set(DoubleSolenoid.Value.kForward);
 		logger.fine("Solenoid holder closed");
-
+		
+		isMovementAllowed = false;
+		
 		return true;
+	}
+	
+	public boolean isMovementAllowed ()
+	{
+		return isMovementAllowed;
 	}
 
 	public boolean getSwitchRatchetRight()
