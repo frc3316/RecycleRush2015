@@ -92,9 +92,9 @@ public class Actuators
 			stackerSolenoidBrake = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_BRAKE_FORWARD"), 
 														 (int) config.get("STACKER_SOLENOID_BRAKE_REVERSE"));
 			
-			elevatorMotorControllerLeft = new VictorSP ((int) config.get("ELEVATOR_MOTOR_CONTROLLER_LEFT_1"));
+			elevatorMotorControllerLeft = new VictorSP ((int) config.get("ELEVATOR_MOTOR_CONTROLLER_LEFT"));
 			
-			elevatorMotorControllerRight = new VictorSP ((int) config.get("ELEVATOR_MOTOR_CONTROLLER_RIGHT_1"));
+			elevatorMotorControllerRight = new VictorSP ((int) config.get("ELEVATOR_MOTOR_CONTROLLER_RIGHT"));
 
 	
 			
