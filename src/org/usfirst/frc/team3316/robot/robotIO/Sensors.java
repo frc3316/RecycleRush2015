@@ -41,13 +41,7 @@ public class Sensors
 	public DigitalInput stackerSwitchHeight;
 	public DigitalInput stackerSwitchRatchetRight,
 						stackerSwitchRatchetLeft;
-	
-	/*
-	 * Anschluss
-	 */
-	public DigitalInput anschlussDigitalInputClosed;
-	public DigitalInput anschlussDigitalInputOpened;
-	
+		
 	/*
 	 * RollerGripper
 	 */
@@ -111,13 +105,7 @@ public class Sensors
 			stackerSwitchHeight =  new DigitalInput((int) config.get("STACKER_SWITCH_HEIGHT"));
 			stackerSwitchRatchetRight = new DigitalInput((int) config.get("STACKER_SWITCH_RATCHET_RIGHT"));
 			stackerSwitchRatchetLeft = new DigitalInput((int) config.get("STACKER_SWITCH_RATCHET_LEFT"));
-			
-			/*
-			 * Anschluss
-			 */
-			anschlussDigitalInputClosed = new DigitalInput((int) config.get("ANSCHLUSS_DIGITAL_INPUT_CLOSED"));
-			anschlussDigitalInputOpened = new DigitalInput((int) config.get("ANSCHLUSS_DIGITAL_INPUT_OPENED"));
-			
+		
 			/*
 			 * RollerGripper
 			 */
