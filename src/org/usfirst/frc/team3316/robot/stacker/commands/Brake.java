@@ -23,7 +23,7 @@ public class Brake extends Command
     	logger.fine(this.getName() + " initialize");
     	Robot.stacker.disallowStackMovement();
     	
-    	setTimeout(0.2);
+    	setTimeout(0.3);
     }
 
     protected void execute() {}
@@ -42,13 +42,15 @@ public class Brake extends Command
         
     }
 
-    protected void end() {
-
+    protected void end() 
+    {
+    	Robot.stacker.setMovementAllowed(false);
     	logger.fine(this.getName() + " end");
     }
 
     protected void interrupted() 
     {
+    	Robot.stacker.setMovementAllowed(false);
     	logger.fine(this.getName() + " interrupted");
     }
 }

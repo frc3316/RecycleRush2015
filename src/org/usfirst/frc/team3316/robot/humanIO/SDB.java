@@ -18,6 +18,7 @@ import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrive;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+import org.usfirst.frc.team3316.robot.stacker.commands.SetStacker;
 
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
@@ -56,6 +57,10 @@ public class SDB
 			put ("Right Ratchet", Robot.stacker.getSwitchRatchetRight());
 			
 			put ("Game Piece Switch", Robot.rollerGripper.getSwitchGamePiece());
+			
+			put ("Stacker Hall Effect", Robot.stacker.getHeightSwitch());
+			
+			put ("Height Position", Robot.stacker.getHeightPosition());
 		}
 		
 		private void put (String name, double d)
@@ -183,6 +188,16 @@ public class SDB
 		SmartDashboard.putData(new SetHeadingSDB());
 		putConfigVariableInSDB("chassis_HeadingToSet");
 		
+		/*
+		 * Stacker testing
+		 */
+		SmartDashboard.putData("Set Stacker 0", new SetStacker(0));
+		
+		SmartDashboard.putData("Set Stacker 0.2", new SetStacker(0.2));
+		SmartDashboard.putData("Set Stacker 0.4", new SetStacker(0.4));
+		
+		SmartDashboard.putData("Set Stacker -0.2", new SetStacker(-0.2));
+		SmartDashboard.putData("Set Stacker -0.4", new SetStacker(-0.4));
 		
 		logger.info("Finished initSDB()");
 	}

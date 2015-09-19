@@ -1,20 +1,17 @@
 package org.usfirst.frc.team3316.robot.subsystems;
 
+import java.util.TimerTask;
+
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerManually;
-import org.usfirst.frc.team3316.robot.utils.MovingAverage;
 import org.usfirst.frc.team3316.robot.utils.StackerPosition;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.buttons.Trigger;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -23,44 +20,45 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Stacker extends Subsystem
 {
-	public class HeightTrigger extends Trigger
+	public class HeightTask extends TimerTask
 	{
-		public boolean get()
+		boolean previousGet = false;
+		
+		public void run() 
 		{
-			return getHeightSwitch();
-		}
-	}
+			boolean get = getHeightSwitch();
 
-	private class HeightTriggerCommand extends Command
-	{
-		protected boolean isFinished()
-		{
-			return true;
-		}
-
-		protected void interrupted()
-		{
-		}
-
-		protected void initialize()
-		{
-		}
-
-		protected void execute()
-		{
-			if (left.get() > 0)
+			//logger.finest("Height switch get: " + get);
+			
+			if (get != previousGet)
 			{
-				heightPosition += 0.5; // Adds 0.5 to heightPosition if going up
+				logger.fine("Found stacker hall effect");
+				
+				if (get && !previousGet)
+				{
+					logger.fine("Hall effect activated");
+				}
+				else
+				{
+					logger.fine("Hall effect deactivated");
+				}
+				
+				
+				if (right.get() > lowPass)
+				{
+					heightPosition += 0.5; // Adds 0.5 to heightPosition if going up
+					logger.fine("stacker going up");
+				}
+				else // if (right.get() < lowPass)
+				{
+					heightPosition -= 0.5; // Lowers 0.5 to heightPosition if going down
+					logger.fine("stacker going down");
+				}
+				
+				logger.fine("height position is: " + heightPosition);
 			}
-			else if (left.get() < 0)
-			{
-				heightPosition -= 0.5; // Lowers 0.5 to heightPosition if going
-										// down
-			}
-		}
-
-		protected void end()
-		{
+			
+			previousGet = get;
 		}
 	}
 
@@ -95,10 +93,10 @@ public class Stacker extends Subsystem
 
 	private double downScale = 0; //Initial assignment, later updated from config
 	private double upScale = 0; //Initial assignment, later updated from config
-	
+	private double lowPass = 0;
 	private boolean isMovementAllowed = true;
 
-	private HeightTrigger heightTrigger;
+	private HeightTask heightTask;
 
 	public Stacker()
 	{
@@ -116,9 +114,13 @@ public class Stacker extends Subsystem
 		switchLeft = Robot.sensors.stackerSwitchRatchetLeft;
 		heightSwitch = Robot.sensors.stackerSwitchHeight;
 
-		heightTrigger = new HeightTrigger();
-		heightTrigger.whenInactive(new HeightTriggerCommand());
-		heightTrigger.whenActive(new HeightTriggerCommand());
+	}
+	
+	public void timerInit()
+	{
+	
+		heightTask = new HeightTask();
+		Robot.timer.schedule(heightTask, 0, 4);
 	}
 
 	public void initDefaultCommand()
@@ -134,32 +136,30 @@ public class Stacker extends Subsystem
 
 	public boolean setMotors(double v)
 	{
-		updateScale();
+		updateSetMotors();
 		
-		/*
-		if (solenoidBrake.get() == DoubleSolenoid.Value.kReverse
-				|| solenoidHolder.get() == DoubleSolenoid.Value.kForward) //stack movement not possible
+		
+		if (isMovementAllowed == false)
 		{
 			return false;
 		}
-		*/
 
 		// TODO: REMOVE THIS AFTER MANUAL TESTING
 		SmartDashboard.putNumber("Stacker setMotors value: ", v);
-		logger.fine("Stacker setMotors value: " + v);
-		logger.fine("Stacker speed controller get: " + left.get());
+		//logger.fine("Stacker setMotors value: " + v);
+		//logger.fine("Stacker speed controller get: " + right.get());
 		
-		if (Math.abs(v) > 0.1 && v != 0)
+		if (v < lowPass && v > 0)
 		{
-			this.left.set(v);
-			this.right.set(-v);
-			
-			return true;
-		}
-		else
-		{
+			this.left.set(0);
+			this.right.set(0);
 			return false;
-		}
+		}	
+		
+		this.left.set(-v);
+		this.right.set(v);
+		
+		return true;
 	}
 	
 	public boolean moveDown()
@@ -221,8 +221,6 @@ public class Stacker extends Subsystem
 		solenoidHolder.set(DoubleSolenoid.Value.kReverse);
 		logger.fine("Solenoid holders opened");
 
-		isMovementAllowed = true;
-		
 		return true;
 	}
 
@@ -236,14 +234,17 @@ public class Stacker extends Subsystem
 		solenoidHolder.set(DoubleSolenoid.Value.kForward);
 		logger.fine("Solenoid holder closed");
 		
-		isMovementAllowed = false;
-		
 		return true;
 	}
 	
 	public boolean isMovementAllowed ()
 	{
 		return isMovementAllowed;
+	}
+	
+	public void setMovementAllowed(boolean bool)
+	{
+		isMovementAllowed = bool;
 	}
 
 	public boolean getSwitchRatchetRight()
@@ -254,6 +255,11 @@ public class Stacker extends Subsystem
 	public boolean getSwitchRatchetLeft()
 	{
 		return switchLeft.get();
+	}
+	
+	public double getHeightPosition ()
+	{
+		return heightPosition;
 	}
 
 	public StackerPosition getPosition()
@@ -273,12 +279,13 @@ public class Stacker extends Subsystem
 		return !(heightSwitch.get());
 	}
 
-	private void updateScale()
+	private void updateSetMotors()
 	{
 		try
 		{
 			downScale = (double) config.get("stacker_MoveDown_Scale");
 			upScale = (double) config.get("stacker_MoveUp_Scale");
+			lowPass = (double) config.get("stacker_SetMotors_LowPass");
 		}
 		catch (ConfigException e)
 		{

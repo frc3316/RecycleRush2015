@@ -31,13 +31,15 @@ public class UnBrake extends Command
         return true;
     }
 
-    protected void end() {
-
+    protected void end()
+    {
+    	Robot.stacker.setMovementAllowed(true);
     	logger.fine(this.getName() + " end");
     }
 
     protected void interrupted() 
     {
+    	Robot.stacker.setMovementAllowed(true);
     	logger.fine(this.getName() + " interrupted");
     }
 }

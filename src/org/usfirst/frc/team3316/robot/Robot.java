@@ -85,7 +85,6 @@ public class Robot extends IterativeRobot
     	 * Subsystems
     	 */
     	chassis = new Chassis();
-		//anschluss = new Anschluss();
     	rollerGripper = new RollerGripper();
     	stacker = new Stacker();
     	
@@ -101,6 +100,7 @@ public class Robot extends IterativeRobot
     	timer = new Timer();
     	chassis.timerInit();
     	rollerGripper.timerInit();
+    	stacker.timerInit();
     	sdb.timerInit();
     	
     	/*
