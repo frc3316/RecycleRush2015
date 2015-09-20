@@ -101,15 +101,15 @@ public class Joysticks {
 			 */
 			moveStackerToFloor = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_MOVE_STACKER_TO_FLOOR"));
-			moveStackerToFloor.whenPressed(new MoveStackerToFloor());
+			//moveStackerToFloor.whenPressed(new MoveStackerToFloor());
 
 			moveStackerToStep = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_MOVE_STACKER_TO_STEP"));
-			moveStackerToStep.whenPressed(new MoveStackerToStep());
+			//moveStackerToStep.whenPressed(new MoveStackerToStep());
 
 			moveStackerToTote = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_MOVE_STACKER_TO_TOTE"));
-			moveStackerToTote.whenPressed(new MoveStackerToTote());
+			//moveStackerToTote.whenPressed(new MoveStackerToTote());
 
 			holdContainer = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_HOLD_CONTAINER"));
