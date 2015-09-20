@@ -7,7 +7,6 @@ import java.util.Timer;
 
 import org.usfirst.frc.team3316.robot.sequences.AutonomousDriveForward;
 import org.usfirst.frc.team3316.robot.sequences.AutonomousNone;
-import org.usfirst.frc.team3316.robot.subsystems.Anschluss;
 import org.usfirst.frc.team3316.robot.subsystems.Chassis;
 import org.usfirst.frc.team3316.robot.subsystems.Stacker;
 import org.usfirst.frc.team3316.robot.subsystems.RollerGripper;
@@ -56,7 +55,6 @@ public class Robot extends IterativeRobot
      * Subsystems
      */
 	public static Chassis chassis;
-	public static Anschluss anschluss;
 	public static Stacker stacker;
 	public static RollerGripper rollerGripper;
 	
@@ -87,7 +85,6 @@ public class Robot extends IterativeRobot
     	 * Subsystems
     	 */
     	chassis = new Chassis();
-		anschluss = new Anschluss();
     	rollerGripper = new RollerGripper();
     	stacker = new Stacker();
     	
@@ -102,8 +99,8 @@ public class Robot extends IterativeRobot
     	 */
     	timer = new Timer();
     	chassis.timerInit();
-    	stacker.timerInit();
     	rollerGripper.timerInit();
+    	stacker.timerInit();
     	sdb.timerInit();
     	
     	/*

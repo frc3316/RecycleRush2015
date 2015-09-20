@@ -28,17 +28,17 @@ public class Actuators
 	/*
 	 * Stacker
 	 */
-	public DoubleSolenoid stackerSolenoidUpper;
-	public DoubleSolenoid stackerSolenoidBottom;
+	public DoubleSolenoid stackerSolenoidBrake;
 	
 	public DoubleSolenoid stackerSolenoidContainer;
-	
+
 	public DoubleSolenoid stackerSolenoidGripper;
 	
-	/*
-	 * Anschluss
-	 */
-	public SpeedController anschlussMotorController;
+	public DoubleSolenoid stackerSolenoidHolder;
+	
+	public SpeedController elevatorMotorControllerLeft;
+	public SpeedController elevatorMotorControllerRight;
+
 	
 	/*
 	 * Roller-Gripper
@@ -60,12 +60,8 @@ public class Actuators
 				
 				chassisMotorControllerRight1 = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT_1"));
 				chassisMotorControllerRight2 = new VictorSP ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT_2"));
-				
+
 				chassisMotorControllerCenter = new VictorSP((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER"));
-				/*
-				 * Anschluss
-				 */
-				anschlussMotorController = new VictorSP ((int) config.get("ANSCHLUSS_MOTOR_CONTROLLER"));
 				
 				/*
 				 * Roller-Gripper
@@ -82,10 +78,6 @@ public class Actuators
 				chassisMotorControllerRight2 = new Talon ((int) config.get("CHASSIS_MOTOR_CONTROLLER_RIGHT_2"));
 				
 				chassisMotorControllerCenter = new Talon((int) config.get("CHASSIS_MOTOR_CONTROLLER_CENTER"));
-				/*
-				 * Anschluss
-				 */
-				anschlussMotorController = new Talon ((int) config.get("ANSCHLUSS_MOTOR_CONTROLLER"));
 				
 				/*
 				 * Roller-Gripper
@@ -97,11 +89,14 @@ public class Actuators
 			/*
 			 * Stacker
 			 */
-			stackerSolenoidUpper = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_UPPER_FORWARD"), 
-														 (int) config.get("STACKER_SOLENOID_UPPER_REVERSE"));
+			stackerSolenoidBrake = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_BRAKE_FORWARD"), 
+														 (int) config.get("STACKER_SOLENOID_BRAKE_REVERSE"));
 			
-			stackerSolenoidBottom = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_BOTTOM_FORWARD"), 
-														 (int) config.get("STACKER_SOLENOID_BOTTOM_REVERSE"));
+			elevatorMotorControllerLeft = new VictorSP ((int) config.get("ELEVATOR_MOTOR_CONTROLLER_LEFT"));
+			
+			elevatorMotorControllerRight = new VictorSP ((int) config.get("ELEVATOR_MOTOR_CONTROLLER_RIGHT"));
+
+	
 			
 			// Solenoid used to control the pistons connected to the gripper
 			stackerSolenoidGripper = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_GRIPPER_FORWARD"),
@@ -110,6 +105,10 @@ public class Actuators
 			// Solenoid used to control the pistons holding the container
 			stackerSolenoidContainer = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_CONTAINER_FORWARD"),
 														  (int) config.get("STACKER_SOLENOID_CONTAINER_REVERSE"));
+			
+			stackerSolenoidHolder = new DoubleSolenoid((int) config.get("STACKER_SOLENOID_HOLDER_FORWARD"),
+					  									  (int) config.get("STACKER_SOLENOID_HOLDER_REVERSE"));
+			
 		}
 		catch (ConfigException e) 
     	{

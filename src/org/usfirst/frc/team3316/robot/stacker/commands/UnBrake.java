@@ -1,7 +1,6 @@
 package org.usfirst.frc.team3316.robot.stacker.commands;
 
 import org.usfirst.frc.team3316.robot.Robot;
-import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -9,14 +8,14 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public abstract class MoveStacker extends Command 
+public class UnBrake extends Command
 {
+
 	DBugLogger logger = Robot.logger;
-	Config config = Robot.config;
 	
-    public MoveStacker()
+    public UnBrake() 
     {
-        requires(Robot.stacker);
+    	//This command is asynchronous and therefore does not require stacker subsystem
     }
 
     protected void initialize()
@@ -25,24 +24,22 @@ public abstract class MoveStacker extends Command
     	Robot.stacker.allowStackMovement();
     }
 
-    protected abstract void execute();
+    protected void execute() {}
 
-    protected abstract boolean isFinished();
-    
-    protected void end() 
+    protected boolean isFinished()
     {
+        return true;
+    }
+
+    protected void end()
+    {
+    	Robot.stacker.setMovementAllowed(true);
     	logger.fine(this.getName() + " end");
-    	_end();
     }
 
     protected void interrupted() 
     {
+    	Robot.stacker.setMovementAllowed(true);
     	logger.fine(this.getName() + " interrupted");
-    	_end();
-    }
-    
-    private void _end()
-    {
-    	Robot.stacker.disallowStackMovement();
     }
 }

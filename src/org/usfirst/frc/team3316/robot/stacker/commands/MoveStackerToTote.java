@@ -1,33 +1,46 @@
 package org.usfirst.frc.team3316.robot.stacker.commands;
 
 import org.usfirst.frc.team3316.robot.Robot;
-import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
+import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
+import org.usfirst.frc.team3316.robot.utils.StackerPosition;
 
 /**
  * Moves stacker to tote position while checking
  * for mechanical safety constraints. 
  */
+
 public class MoveStackerToTote extends MoveStacker
 {
-	protected void prepareSolenoids()
+	double v;
+	@Override
+	protected void initialize()
+    {
+		super.initialize();
+
+		try
+		{
+			v = (double) Robot.config.get("stacker_ElevatorSpeed");
+		}
+		catch (ConfigException e)
+		{
+			logger.severe(e);
+		}
+    }
+
+	@Override
+	protected void execute()
 	{
-		if (gp == GamePieceCollected.Container)
-		{
-			//If there is a container at floor position, it might colide with the roller gripper
-			logger.fine("YES container in roller gripper");
-			Robot.stacker.openSolenoidContainer();
-		}
-		else
-		{
-			logger.fine("NO container in the roller gripper");
-		}
-		
-		// The stacker will colide with the roller gripper.
-		Robot.stacker.openSolenoidGripper();
+		Robot.stacker.setMotors(v);
 	}
-	
-	protected boolean setSolenoids() 
+
+	@Override
+	protected boolean isFinished()
 	{
-		return (Robot.stacker.closeSolenoidUpper() && Robot.stacker.closeSolenoidBottom());
+		if (Robot.stacker.getPosition() == StackerPosition.Tote && Robot.stacker.getHeightSwitch() == true)
+		{
+			Robot.stacker.disallowStackMovement();
+			return true;
+		}
+		return false;
 	}
 }

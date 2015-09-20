@@ -23,7 +23,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	{
 		public double pidGet() 
 		{
-			logger.finest("" + integrator.getX());
+			//logger.finest("" + integrator.getX());
 			return integrator.getX();
 		}
 	}
@@ -31,7 +31,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	{
 		public double pidGet() 
 		{
-			logger.finest("" + integrator.getY());
+			//logger.finest("" + integrator.getY());
 			return integrator.getY();
 		}
 	}
@@ -39,7 +39,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	{
 		public double pidGet() 
 		{
-			logger.finest("" + integrator.getHeading());
+			//logger.finest("" + integrator.getHeading());
 			return integrator.getHeading();
 		}
 	}
@@ -51,7 +51,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	{
 		public void pidWrite (double output) 
 		{
-			logger.finest("" + output);
+			//logger.finest("" + output);
 			outputX = output;
 		}
 	}
@@ -59,7 +59,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	{
 		public void pidWrite (double output) 
 		{
-			logger.finest("" + output);
+			//logger.finest("" + output);
 			outputY = output;
 		}
 	}
@@ -67,7 +67,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	{
 		public void pidWrite (double output) 
 		{
-			logger.finest("" + output);
+			//logger.finest("" + output);
 			outputHeading = output;
 		}
 	}
@@ -154,7 +154,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	protected void set ()
 	{
 		updatePIDVariables();
-		logger.finest("output(" + outputX + ", " + outputY + ", " + outputHeading + ")");
+		//logger.finest("output(" + outputX + ", " + outputY + ", " + outputHeading + ")");
 		setFieldVector(outputX, outputY, integrator.getHeading());
 		setRotation(outputHeading);
 	}

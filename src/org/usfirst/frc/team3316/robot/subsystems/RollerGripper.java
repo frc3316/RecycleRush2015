@@ -46,8 +46,8 @@ public class RollerGripper extends Subsystem
     	gripperGPIR = Robot.sensors.rollerGripperGPIR;
     	gripperSwitchGP = Robot.sensors.rollerGripperSwitchGP;
     	
-    	switchRight = Robot.sensors.switchRatchetRight;
-    	switchLeft = Robot.sensors.switchRatchetLeft;
+    	switchRight = Robot.sensors.stackerSwitchRatchetRight;
+    	switchLeft = Robot.sensors.stackerSwitchRatchetLeft;
 
     	try
     	{
@@ -143,10 +143,6 @@ public class RollerGripper extends Subsystem
     		logger.severe(e);
     	}
     }
-    
-    private void printTheTruth()
-    {
-    	System.out.println("Vita is the Melech!!");
-    }
+
 }
 
