@@ -178,6 +178,8 @@ public class Chassis extends Subsystem
 		   rightEncoderScale = 1, 
 		   centerEncoderScale = 1;
 	
+	public boolean navxEnabled = true;
+	
 	public Chassis ()
 	{
 		left1 = Robot.actuators.chassisMotorControllerLeft1;

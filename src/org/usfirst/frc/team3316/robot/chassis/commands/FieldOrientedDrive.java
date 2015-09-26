@@ -6,7 +6,15 @@ public class FieldOrientedDrive extends RobotOrientedDrive
 {	
 	protected void set ()
 	{
-		setFieldVector(getRightX(), getRightY(), Robot.chassis.getHeading());
+		if (Robot.chassis.navxEnabled)
+		{
+			setFieldVector(getRightX(), getRightY(), Robot.chassis.getHeading());
+		}
+		else
+		{
+			setFieldVector(getRightX(), getRightY(), 0);
+		}
+		
 		setRotation(getLeftX());
 	}
 	

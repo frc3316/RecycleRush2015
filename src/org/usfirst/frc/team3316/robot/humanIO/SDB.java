@@ -56,9 +56,9 @@ public class SDB
 			
 			put ("Game Piece Switch", Robot.rollerGripper.getSwitchGamePiece());
 			
-			put ("Stacker Hall Effect", Robot.stacker.getHeightSwitch());
-			
 			put ("Height Counter", Robot.stacker.getHeight());
+			
+			put ("Navx Enabled", Robot.chassis.navxEnabled);
 		}
 		
 		private void put (String name, double d)

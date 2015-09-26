@@ -4,6 +4,7 @@
 package org.usfirst.frc.team3316.robot.humanIO;
 
 import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.chassis.commands.UseNavx;
 import org.usfirst.frc.team3316.robot.chassis.commands.WiggleWiggle;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
@@ -68,6 +69,8 @@ public class Joysticks {
 	public JoystickButton openAnschluss, closeAnschluss;
 
 	public JoystickButton wiggleWiggle;
+	
+	public JoystickButton enableNavx, disableNavx;
 
 	public POVButton openBrake, closeBrake;
 
@@ -93,7 +96,7 @@ public class Joysticks {
 			/*
 			 * Chassis
 			 */
-			wiggleWiggle = new JoystickButton(joystickRight, 2);
+			wiggleWiggle = new JoystickButton(joystickRight, (int) config.get("BUTTON_WIGGLE_WIGGLE"));
 			wiggleWiggle.whenPressed(new WiggleWiggle());
 
 			/*
@@ -127,11 +130,17 @@ public class Joysticks {
 					(int) config.get("BUTTON_CLOSE_GRIPPER"));
 			closeGripper.whenPressed(new CloseGripper());
 
-			closeBrake = new POVButton(joystickOperator, 180);
+			closeBrake = new POVButton(joystickOperator, (int) config.get("BUTTON_CLOSE_BRAKE"));
 			closeBrake.whenPressed(new Brake());
 
-			openBrake = new POVButton(joystickOperator, 0);
+			openBrake = new POVButton(joystickOperator, (int) config.get("BUTTON_OPEN_BRAKE"));
 			openBrake.whenPressed(new UnBrake());
+			
+			enableNavx = new JoystickButton(joystickRight, (int) config.get("BUTTON_ENABLE_NAVX"));
+			enableNavx.whenPressed(new UseNavx(true));
+			
+			disableNavx = new JoystickButton(joystickRight, (int) config.get("BUTTON_DISABLE_NAVX"));
+			disableNavx.whenPressed(new UseNavx(false));
 
 		} catch (ConfigException e) {
 			logger.severe(e);
