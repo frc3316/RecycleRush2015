@@ -216,11 +216,11 @@ public class SDB
 		SmartDashboard.putData(new AutonomousTest());
 
 		SmartDashboard.putData("1 meter forward", new RobotOrientedNavigation(
-				0, 1, 0, 3, false));
+				0, 1, 0, 3));
 		SmartDashboard.putData("1 meter right", new RobotOrientedNavigation(1,
-				0, 0, 3, false));
+				0, 0, 3));
 		SmartDashboard.putData("turn right", new RobotOrientedNavigation(0, 0,
-				90, 1, false));
+				90, 1));
 		
 		SmartDashboard.putData(new SaveFrame());
 		SmartDashboard.putData(new SaveBinaryFrame());

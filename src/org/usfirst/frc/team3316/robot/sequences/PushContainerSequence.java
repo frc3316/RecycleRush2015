@@ -11,7 +11,7 @@ public class PushContainerSequence extends RobotOrientedNavigation
 {   
     public PushContainerSequence() 
     {
-        super(0, 0, -45, 1, true);
+        super(0, 0, -45, 1);
         requires(Robot.rollerGripper);
     }
     

@@ -11,11 +11,8 @@ public class RollContainer extends Roll
 	{
 		try
 		{
-			while ((boolean) config.get("rollerGripper_PushContainer_name")) //The variable doesn't exist
-			{
-				left = (double) config.get("rollerGripper_RollContainer_LeftSpeed");
-				right = (double) config.get("rollerGripper_RollContainer_RightSpeed");
-			}
+			left = (double) config.get("rollerGripper_RollContainer_LeftSpeed");
+			right = (double) config.get("rollerGripper_RollContainer_RightSpeed");
 		}
 		catch (ConfigException e)
 		{

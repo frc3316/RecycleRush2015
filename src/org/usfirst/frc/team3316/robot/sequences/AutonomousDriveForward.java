@@ -13,7 +13,7 @@ public class AutonomousDriveForward extends CommandGroup
 {    
     public AutonomousDriveForward() 
     {
-    	addSequential(new RobotOrientedNavigation(0, 1.5, 0, 3, true));
+    	addSequential(new RobotOrientedNavigation(0, 1.5, 0, 3));
     }
     
     DBugLogger logger = Robot.logger;

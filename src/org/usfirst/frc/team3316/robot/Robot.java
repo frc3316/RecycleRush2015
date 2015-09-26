@@ -37,7 +37,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot
 {
-    public static Command autonDriveForward, autonNone, autonCamera;
+    public static Command autonDriveForward, autonNone;
+    public static AutonomousCamera autonCamera;
     SendableChooser autonChooser;
     
     public static Config config;
@@ -131,7 +132,6 @@ public class Robot extends IterativeRobot
     	autonChooser = new SendableChooser();
     	autonChooser.addDefault("None", autonNone);
     	autonChooser.addObject("Drive Forward", autonDriveForward);
-    	autonChooser.addObject("Camera", autonCamera);
     	
     	SmartDashboard.putData("Auton Chooser", autonChooser);
     }
@@ -146,6 +146,7 @@ public class Robot extends IterativeRobot
     	{
         	((Command) autonChooser.getSelected()).start();
     	}
+    	autonCamera.start();
     }
 
     /**

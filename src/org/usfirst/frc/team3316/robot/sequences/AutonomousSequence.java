@@ -1,6 +1,7 @@
  package org.usfirst.frc.team3316.robot.sequences;
 
 import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.chassis.commands.DriveToYellowTote;
 import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedNavigation;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
@@ -26,17 +27,16 @@ public class AutonomousSequence extends CommandGroup
     	addSequential(new AutoTotePickup());
         
     	//addSequential(new SweepContainerSequence());
-    	addParallel(new RobotOrientedNavigation(0, 2.11, 0, 3, true));
+    	addParallel(new DriveToYellowTote());
     	addSequential(new RollContainer(), pushTime);
     	addSequential(new AutoToteCollect());
     	
     	//addSequential(new SweepContainerSequence());
-    	addParallel(new RollContainer());
-    	addSequential(new RobotOrientedNavigation(0, 2.11, 0, 3, true));
-    	addSequential(new AutonomousCamera(), 2);
+    	addParallel(new DriveToYellowTote());
+    	addSequential(new RollContainer(), pushTime);
     	addSequential(new AutoToteCollect());
     	
-        addSequential(new RobotOrientedNavigation(3.3, 0, -179, 4, true));
+        addSequential(new RobotOrientedNavigation(3.3, 0, -179, 4));
         
         addSequential(new DropoffSequence());
     }

@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.Vector;
 
 import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.chassis.commands.DriveToYellowTote;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
@@ -35,9 +36,10 @@ public class AutonomousCamera extends Command
 		double BoundingRectBottom;
 		double CenterMassX;
 		double CenterMassY;
-		double ToteAngle;
-		double ToteDistance;
-
+		public double ToteAngle;
+		public double ToteDistance;
+		public boolean isTote;
+		
 		public int compareTo(ParticleReport r)
 		{
 			return (int) (r.Area - this.Area);
@@ -104,7 +106,8 @@ public class AutonomousCamera extends Command
 	NIVision.ParticleFilterOptions2 filterOptions = new NIVision.ParticleFilterOptions2(
 			0, 0, 1, 1);
 	Scores scores = new Scores();
-
+	
+	public ParticleReport lastReport;
 	public AutonomousCamera()
 	{}
 
@@ -234,6 +237,7 @@ public class AutonomousCamera extends Command
 						binaryFrame, particleIndex, 0,
 						NIVision.MeasurementType.MT_CENTER_OF_MASS_Y);
 				particles.add(par);
+				
 			}
 			particles.sort(null);
 
@@ -264,13 +268,14 @@ public class AutonomousCamera extends Command
 					scores.AreaToConvexHullArea);
 			SmartDashboard.putNumber("Particle Size Ratio", sizeRatio);
 			
+			lastReport = particles.elementAt(0);
 			
-			boolean isTote = scores.Rectangle > SCORE_MIN_RECTANGLE && sizeRatio >= RATIO_MIN && sizeRatio <= RATIO_MAX;
+			lastReport.isTote = scores.Rectangle > SCORE_MIN_RECTANGLE && sizeRatio >= RATIO_MIN && sizeRatio <= RATIO_MAX;
 
 			// Send distance and tote status to dashboard. The bounding rect,
 			// particularly the horizontal center (left - right) may be useful
 			// for rotating/driving towards a tote
-			SmartDashboard.putBoolean("IsTote", isTote);
+			SmartDashboard.putBoolean("IsTote", lastReport.isTote);
 		}
 		else
 		{
