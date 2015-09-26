@@ -111,7 +111,7 @@ public class RollerGripper extends Subsystem
     	boolean gpSwitch = getSwitchGamePiece();
     	boolean gpSwitchRight = getSwitchRight();
     	boolean gpSwitchLeft = getSwitchLeft();
-    	
+    	/*
     	if (!gpSwitch) {
     		return GamePieceCollected.None;
     	}
@@ -129,6 +129,8 @@ public class RollerGripper extends Subsystem
     	else {
     		return GamePieceCollected.Something;
     	}
+    	*/
+    	return null;
     }
     
     private void updateScales ()
