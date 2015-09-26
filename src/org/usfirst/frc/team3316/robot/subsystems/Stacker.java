@@ -7,11 +7,9 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerManually;
-import org.usfirst.frc.team3316.robot.utils.StackerPosition;
 
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DigitalSource;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -30,50 +28,6 @@ public class Stacker extends Subsystem
 		
 		public void run() 
 		{
-			boolean get = getHeightSwitch();
-
-			//logger.finest("Height switch get: " + get);
-			
-			if (get != previousGet)
-			{
-				//logger.fine("Found stacker hall effect");
-				
-				if (get && !previousGet)
-				{
-					//logger.fine("Hall effect activated");
-				}
-				else
-				{
-					//logger.fine("Hall effect deactivated");
-				}
-				
-				
-				if (right.get() > lowPass)
-				{
-					heightPosition += 0.5; // Adds 0.5 to heightPosition if going up
-					//logger.fine("stacker going up");
-				}
-				else // if (right.get() < lowPass)
-				{
-					heightPosition -= 0.5; // Lowers 0.5 to heightPosition if going down
-					//logger.fine("stacker going down");
-				}
-				
-				//logger.fine("height position is: " + heightPosition);
-			}
-			
-			previousGet = get;
-			/*
-			if (right.get() > lowPass)
-			{
-				heightCounter.setReverseDirection(false);
-			}
-			else 
-			{
-				heightCounter.setReverseDirection(true);
-			}
-			*/
-			
 			currentHeight = heightCounter.get();
 			int heightDifference = currentHeight - previousHeight;
 			
@@ -88,25 +42,6 @@ public class Stacker extends Subsystem
 			previousHeight = currentHeight;
 		}
 	}
-	
-	public class HeightCounterDirectionSource extends DigitalInput
-	{
-		public HeightCounterDirectionSource ()
-		{
-			this(20);
-		}
-
-		public HeightCounterDirectionSource(int channel) 
-		{
-			super(channel);
-		}
-		
-		public boolean get ()
-		{
-			logger.finer("Someone tried to get me");
-			return right.get() > lowPass;
-		}
-	}
 
 	Config config = Robot.config;
 	DBugLogger logger = Robot.logger;
@@ -118,23 +53,17 @@ public class Stacker extends Subsystem
 	private DoubleSolenoid solenoidHolder; // The solenoid that opens and
 											// closes the holders
 
-	// CR: need to initialize this solenoid
-	// CR: add stack balancing solenoid
 	private DoubleSolenoid solenoidBrake; // The solenoid that brakes the
 											// elevator
 
 	private DigitalInput switchRight, switchLeft, heightSwitch; // the switches
-																		// that signify
-																		// if there's
-																		// a tote or a
-																		// container in
-																		// the stacker
+																// that signify
+																// if there's
+																// a tote or a
+																// container in
+																// the stacker
 	private Counter heightCounter;
 
-	// CR: should check starting position (if it's floor, step or floor) from a
-	// config variable
-	private double heightPosition = 0; // the position of the stacker:
-												// 0 - floor, 2 - step, 4 - tote
 	private int height = 0;
 	private SpeedController left;
 	private SpeedController right;
@@ -214,18 +143,6 @@ public class Stacker extends Subsystem
 		return true;
 	}
 	
-	public boolean moveDown()
-	{
-		return setMotors(downScale);
-	}
-	
-	public boolean moveUp()
-	{
-		return setMotors(upScale);
-	}
-	
-	
-
 	public boolean openSolenoidContainer()
 	{
 		logger.fine("Try to open container solenoid");
@@ -309,23 +226,6 @@ public class Stacker extends Subsystem
 		return switchLeft.get();
 	}
 	
-	public double getHeightPosition ()
-	{
-		return heightPosition;
-	}
-
-	public StackerPosition getPosition()
-	{
-		if (heightPosition == 0)
-			return StackerPosition.Floor;
-		if (heightPosition == 2)
-			return StackerPosition.Step;
-		if (heightPosition == 4)
-			return StackerPosition.Tote;
-		else
-			return StackerPosition.Unknown;
-	}
-
 	public boolean getHeightSwitch()
 	{
 		return !(heightSwitch.get());
