@@ -71,6 +71,7 @@ public class Stacker extends Subsystem
 	private double downScale = 0; //Initial assignment, later updated from config
 	private double upScale = 0; //Initial assignment, later updated from config
 	private double lowPass = 0;
+	private int numberOfScrews = 0;
 	private boolean isMovementAllowed = true;
 
 	private HeightTask heightTask;

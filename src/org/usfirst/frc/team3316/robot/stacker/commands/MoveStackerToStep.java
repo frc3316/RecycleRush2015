@@ -1,8 +1,6 @@
 package org.usfirst.frc.team3316.robot.stacker.commands;
 
-import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
-import org.usfirst.frc.team3316.robot.utils.StackerPosition;
 
 /**
  * Moves stacker to step position while checking
@@ -10,36 +8,15 @@ import org.usfirst.frc.team3316.robot.utils.StackerPosition;
  */
 public class MoveStackerToStep extends MoveStacker
 {
-	double v;
-	@Override
-	protected void initialize()
-    {
-		super.initialize();
-
+	protected void setSetpoint()
+	{
 		try
 		{
-			v = (double) Robot.config.get("stacker_ElevatorSpeed");
+			pidHeight.setSetpoint((double) config.get("stacker_MoveStackerToStep_SetPoint"));
 		}
 		catch (ConfigException e)
 		{
 			logger.severe(e);
 		}
-    }
-
-	@Override
-	protected void execute()
-	{
-		Robot.stacker.setMotors(v);
-	}
-
-	@Override
-	protected boolean isFinished()
-	{
-		if (Robot.stacker.getPosition() == StackerPosition.Step && Robot.stacker.getHeightSwitch() == true)
-		{
-			Robot.stacker.disallowStackMovement();
-			return true;
-		}
-		return false;
 	}
 }
