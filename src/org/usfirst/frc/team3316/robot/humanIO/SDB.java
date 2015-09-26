@@ -10,12 +10,6 @@ import java.util.TimerTask;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.chassis.commands.FieldOrientedDrive;
-import org.usfirst.frc.team3316.robot.chassis.commands.FieldOrientedDrivePIDRotation;
-import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrivePIDRotation;
-import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedNavigation;
-import org.usfirst.frc.team3316.robot.chassis.commands.RotationPID;
-import org.usfirst.frc.team3316.robot.chassis.commands.StrafeDrive;
-import org.usfirst.frc.team3316.robot.chassis.commands.TankDrive;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingPreset;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingSDB;
 import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrive;
@@ -63,8 +57,6 @@ public class SDB
 			put ("Game Piece Switch", Robot.rollerGripper.getSwitchGamePiece());
 			
 			put ("Stacker Hall Effect", Robot.stacker.getHeightSwitch());
-			
-			put ("Height Position", Robot.stacker.getHeightPosition());
 			
 			put ("Height Counter", Robot.stacker.getHeight());
 		}
