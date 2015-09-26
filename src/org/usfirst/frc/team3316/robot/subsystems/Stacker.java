@@ -9,7 +9,9 @@ import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerManually;
 import org.usfirst.frc.team3316.robot.utils.StackerPosition;
 
+import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalSource;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -24,6 +26,8 @@ public class Stacker extends Subsystem
 	{
 		boolean previousGet = false;
 		
+		int currentHeight, previousHeight = 0;
+		
 		public void run() 
 		{
 			boolean get = getHeightSwitch();
@@ -32,33 +36,75 @@ public class Stacker extends Subsystem
 			
 			if (get != previousGet)
 			{
-				logger.fine("Found stacker hall effect");
+				//logger.fine("Found stacker hall effect");
 				
 				if (get && !previousGet)
 				{
-					logger.fine("Hall effect activated");
+					//logger.fine("Hall effect activated");
 				}
 				else
 				{
-					logger.fine("Hall effect deactivated");
+					//logger.fine("Hall effect deactivated");
 				}
 				
 				
 				if (right.get() > lowPass)
 				{
 					heightPosition += 0.5; // Adds 0.5 to heightPosition if going up
-					logger.fine("stacker going up");
+					//logger.fine("stacker going up");
 				}
 				else // if (right.get() < lowPass)
 				{
 					heightPosition -= 0.5; // Lowers 0.5 to heightPosition if going down
-					logger.fine("stacker going down");
+					//logger.fine("stacker going down");
 				}
 				
-				logger.fine("height position is: " + heightPosition);
+				//logger.fine("height position is: " + heightPosition);
 			}
 			
 			previousGet = get;
+			/*
+			if (right.get() > lowPass)
+			{
+				heightCounter.setReverseDirection(false);
+			}
+			else 
+			{
+				heightCounter.setReverseDirection(true);
+			}
+			*/
+			
+			currentHeight = heightCounter.get();
+			int heightDifference = currentHeight - previousHeight;
+			
+			if (right.get() > lowPass)
+			{
+				height += heightDifference;
+			}
+			else 
+			{
+				height -= heightDifference;
+			}
+			previousHeight = currentHeight;
+		}
+	}
+	
+	public class HeightCounterDirectionSource extends DigitalInput
+	{
+		public HeightCounterDirectionSource ()
+		{
+			this(20);
+		}
+
+		public HeightCounterDirectionSource(int channel) 
+		{
+			super(channel);
+		}
+		
+		public boolean get ()
+		{
+			logger.finer("Someone tried to get me");
+			return right.get() > lowPass;
 		}
 	}
 
@@ -77,17 +123,19 @@ public class Stacker extends Subsystem
 	private DoubleSolenoid solenoidBrake; // The solenoid that brakes the
 											// elevator
 
-	private static DigitalInput switchRight, switchLeft, heightSwitch; // the switches
+	private DigitalInput switchRight, switchLeft, heightSwitch; // the switches
 																		// that signify
 																		// if there's
 																		// a tote or a
 																		// container in
 																		// the stacker
+	private Counter heightCounter;
 
 	// CR: should check starting position (if it's floor, step or floor) from a
 	// config variable
-	private static double heightPosition = 0; // the position of the stacker:
+	private double heightPosition = 0; // the position of the stacker:
 												// 0 - floor, 2 - step, 4 - tote
+	private int height = 0;
 	private SpeedController left;
 	private SpeedController right;
 
@@ -114,13 +162,17 @@ public class Stacker extends Subsystem
 		switchLeft = Robot.sensors.stackerSwitchRatchetLeft;
 		heightSwitch = Robot.sensors.stackerSwitchHeight;
 
+		heightCounter = Robot.sensors.stackerHeightCounter;
+		//heightCounter.setUpSourceEdge(true, true);
+		//heightCounter.setDownSource(new HeightCounterDirectionSource());
+		//heightCounter.setExternalDirectionMode();
 	}
 	
 	public void timerInit()
 	{
 	
 		heightTask = new HeightTask();
-		Robot.timer.schedule(heightTask, 0, 4);
+		Robot.timer.schedule(heightTask, 0, 1);
 	}
 
 	public void initDefaultCommand()
@@ -279,6 +331,11 @@ public class Stacker extends Subsystem
 		return !(heightSwitch.get());
 	}
 
+	public int getHeight ()
+	{
+		return height;
+	}
+	
 	private void updateSetMotors()
 	{
 		try
