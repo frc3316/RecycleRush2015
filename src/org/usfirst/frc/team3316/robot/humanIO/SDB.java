@@ -195,6 +195,12 @@ public class SDB
 		SmartDashboard.putData("Set Stacker -0.2", new SetStacker(-0.2));
 		SmartDashboard.putData("Set Stacker -0.4", new SetStacker(-0.4));
 		
+		
+		putConfigVariableInSDB("stacker_MoveStackerToFloor_SetPoint");
+		putConfigVariableInSDB("stacker_MoveStackerToStep_SetPoint");
+		putConfigVariableInSDB("stacker_MoveStackerToTote_SetPoint");
+		putConfigVariableInSDB("stacker_MoveStacker_PIDHeight_AbsoluteTolerance");
+		
 		logger.info("Finished initSDB()");
 	}
 }
