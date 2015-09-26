@@ -11,6 +11,7 @@ import org.usfirst.frc.team3316.robot.subsystems.Anschluss;
 import org.usfirst.frc.team3316.robot.subsystems.Chassis;
 import org.usfirst.frc.team3316.robot.subsystems.Stacker;
 import org.usfirst.frc.team3316.robot.subsystems.RollerGripper;
+import org.usfirst.frc.team3316.robot.vision.AutonomousCamera;
 import org.usfirst.frc.team3316.robot.chassis.heading.SetHeadingSDB;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.humanIO.Joysticks;
@@ -36,7 +37,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot
 {
-    Command autonDriveForward, autonNone;
+    public static Command autonDriveForward, autonNone, autonCamera;
     SendableChooser autonChooser;
     
     public static Config config;
@@ -125,10 +126,12 @@ public class Robot extends IterativeRobot
     	
     	autonDriveForward = new AutonomousDriveForward();
     	autonNone = new AutonomousNone();
+    	autonCamera = new AutonomousCamera();
     	
     	autonChooser = new SendableChooser();
     	autonChooser.addDefault("None", autonNone);
     	autonChooser.addObject("Drive Forward", autonDriveForward);
+    	autonChooser.addObject("Camera", autonCamera);
     	
     	SmartDashboard.putData("Auton Chooser", autonChooser);
     }

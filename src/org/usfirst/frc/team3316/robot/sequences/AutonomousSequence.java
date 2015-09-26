@@ -6,6 +6,7 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.rollerGripper.commands.RollContainer;
+import org.usfirst.frc.team3316.robot.vision.AutonomousCamera;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -25,15 +26,17 @@ public class AutonomousSequence extends CommandGroup
     	addSequential(new AutoTotePickup());
         
     	//addSequential(new SweepContainerSequence());
-    	addParallel(new RobotOrientedNavigation(0, 2.11, 0, 3));
+    	addParallel(new RobotOrientedNavigation(0, 2.11, 0, 3, true));
     	addSequential(new RollContainer(), pushTime);
     	addSequential(new AutoToteCollect());
     	
     	//addSequential(new SweepContainerSequence());
-    	addParallel(new RobotOrientedNavigation(0, 2.11, 0, 3));
+    	addParallel(new RollContainer());
+    	addSequential(new RobotOrientedNavigation(0, 2.11, 0, 3, true));
+    	addSequential(new AutonomousCamera(), 2);
     	addSequential(new AutoToteCollect());
     	
-        addSequential(new RobotOrientedNavigation(3.3, 0, -179, 4));
+        addSequential(new RobotOrientedNavigation(3.3, 0, -179, 4, true));
         
         addSequential(new DropoffSequence());
     }

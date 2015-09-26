@@ -17,7 +17,7 @@ public class DropoffSequence extends CommandGroup
     {
     	addSequential(new MoveStackerToFloor());
     	addSequential(new CloseGripper());
-    	addSequential(new RobotOrientedNavigation(0, -1, 0, 1));
+    	addSequential(new RobotOrientedNavigation(0, -1, 0, 1, true));
     }
     
     DBugLogger logger = Robot.logger;

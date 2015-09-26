@@ -82,7 +82,9 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	
 	private int finishCounter = 0, maxFinishCounter;
 	
-	public RobotOrientedNavigation (double setpointX , double setpointY, double setpointHeading, int set)
+	private boolean isAutonomous;
+	
+	public RobotOrientedNavigation (double setpointX , double setpointY, double setpointHeading, int set, boolean isAutonomous)
 	{
 		/*
 		 * variable init
@@ -91,6 +93,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 		this.setpointY = setpointY;
 		this.setpointHeading = setpointHeading;
 		this.set = set;
+		this.isAutonomous = isAutonomous;
 		
 		/*
 		 * Init of pid controllers
@@ -169,6 +172,8 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 		{
 			finishCounter = 0;
 		}
+		
+		//while (isAutonomous && )
 		
 		return finishCounter >= maxFinishCounter;
 	}

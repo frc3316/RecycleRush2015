@@ -18,8 +18,8 @@ public class AutonomousTest extends CommandGroup {
 	double pushTime;
     public AutonomousTest() 
     {
-    	addParallel(new RobotOrientedNavigation(0.15, 0, 0, 1));
-    	addParallel(new RobotOrientedNavigation(0, 2.11, 0, 3));
+    	addParallel(new RobotOrientedNavigation(0.15, 0, 0, 1, true));
+    	addParallel(new RobotOrientedNavigation(0, 2.11, 0, 3, true));
     	addSequential(new RollContainer(), pushTime);
     	addSequential(new AutoToteCollect());
     }

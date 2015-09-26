@@ -23,6 +23,8 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.sequences.AutonomousTest;
+import org.usfirst.frc.team3316.robot.vision.SaveBinaryFrame;
+import org.usfirst.frc.team3316.robot.vision.SaveFrame;
 
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
@@ -151,9 +153,9 @@ public class SDB
 		try
 		{
 			Object value = config.get(key);
-			Class<?> type = value.getClass();
-
-			boolean constant = Character.isUpperCase(key.codePointAt(0));
+			Class <?> type = value.getClass();
+			
+			boolean constant = Character.isUpperCase(key.codePointAt(key.length() - 1));
 
 			if (type == Double.class)
 			{
@@ -214,11 +216,15 @@ public class SDB
 		SmartDashboard.putData(new AutonomousTest());
 
 		SmartDashboard.putData("1 meter forward", new RobotOrientedNavigation(
-				0, 1, 0, 3));
+				0, 1, 0, 3, false));
 		SmartDashboard.putData("1 meter right", new RobotOrientedNavigation(1,
-				0, 0, 3));
+				0, 0, 3, false));
 		SmartDashboard.putData("turn right", new RobotOrientedNavigation(0, 0,
-				90, 1));
+				90, 1, false));
+		
+		SmartDashboard.putData(new SaveFrame());
+		SmartDashboard.putData(new SaveBinaryFrame());
+
 		/*
 		 * Set Heading SDB
 		 */
@@ -336,6 +342,17 @@ public class SDB
 		putConfigVariableInSDB("chassis_Velocity_UseLowPass");
 		putConfigVariableInSDB("chassis_Accelaverage_useMovingAverage");
 
+		
+		/*
+		 * Put the config vision test variables in the SDB
+		 */
+		putConfigVariableInSDB("AutonomousCamera_ScoreMinRectangle");
+		putConfigVariableInSDB("AutonomousCamera_RatioMin");
+		putConfigVariableInSDB("AutonomousCamera_RatioMax");
+		putConfigVariableInSDB("AutonomousCamera_TargetSize");
+		putConfigVariableInSDB("AutonomousCamera_ViewAngle");
+		putConfigVariableInSDB("AutonomousCamera_AreaMinimum");
+		
 		logger.info("Finished initSDB()");
 	}
 }
