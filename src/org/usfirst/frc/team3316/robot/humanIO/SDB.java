@@ -65,6 +65,8 @@ public class SDB
 			put ("Stacker Hall Effect", Robot.stacker.getHeightSwitch());
 			
 			put ("Height Position", Robot.stacker.getHeightPosition());
+			
+			put ("Height Counter", Robot.stacker.getHeight());
 		}
 		
 		private void put (String name, double d)
