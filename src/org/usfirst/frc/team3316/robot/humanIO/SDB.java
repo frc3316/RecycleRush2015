@@ -19,7 +19,6 @@ import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToFloor;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToStep;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToTote;
-import org.usfirst.frc.team3316.robot.stacker.commands.SetStacker;
 
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;

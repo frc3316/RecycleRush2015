@@ -50,8 +50,8 @@ public abstract class MoveStacker extends Command
 
 		pidHeight = new PIDController(0, 0, 0, new PIDSourceHeight(),
 				new PIDOutputHeight(), 0.05);
-		pidHeight.setOutputRange(-1, 1);
 
+		setSetpoint();
 	}
 
 	protected abstract void setSetpoint();
@@ -62,8 +62,6 @@ public abstract class MoveStacker extends Command
 
 		unbrake.start();
 		brakeStarted = false;
-
-		setSetpoint();
 
 		pidHeight.enable();
 	}

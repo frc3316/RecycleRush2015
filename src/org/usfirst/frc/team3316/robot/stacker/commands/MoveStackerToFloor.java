@@ -24,6 +24,7 @@ public class MoveStackerToFloor extends MoveStacker
 
 	protected void initialize()
 	{
+		super.initialize();
 		Robot.stacker.closeSolenoidContainer();
 	}
 }
