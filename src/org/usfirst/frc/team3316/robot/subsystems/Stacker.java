@@ -57,7 +57,7 @@ public class Stacker extends Subsystem
 	{
 		protected void initialize()
 		{
-			height = 0;
+			height = 2;
 		}
 
 		protected void execute() {}
@@ -138,6 +138,7 @@ public class Stacker extends Subsystem
 		
 		heightResetTrigger = new HeightResetTrigger();
 		heightResetTrigger.whenActive(new HeightReset());
+		heightResetTrigger.whenInactive(new HeightReset());
 	}
 
 	public void timerInit()
