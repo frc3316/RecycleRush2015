@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.buttons.Trigger;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -43,6 +45,33 @@ public class Stacker extends Subsystem
 		}
 	}
 
+	public class HeightResetTrigger extends Trigger
+	{
+		public boolean get()
+		{
+			return getHeightSecure();
+		}
+	}
+
+	public class HeightReset extends Command
+	{
+		protected void initialize()
+		{
+			height = 0;
+		}
+
+		protected void execute() {}
+
+		protected boolean isFinished()
+		{
+			return true;
+		}
+
+		protected void end() {}
+
+		protected void interrupted() {}
+	}
+
 	Config config = Robot.config;
 	DBugLogger logger = Robot.logger;
 
@@ -56,27 +85,38 @@ public class Stacker extends Subsystem
 	private DoubleSolenoid solenoidBrake; // The solenoid that brakes the
 											// elevator
 
-	private DigitalInput switchRight, switchLeft, heightSwitch; // the switches
-																// that signify
-																// if there's
-																// a tote or a
-																// container in
-																// the stacker
+	private DigitalInput switchRight, switchLeft, heightSwitch, heightSecure; // the
+																				// switches
+																				// that
+																				// signify
+																				// if
+																				// there's
+																				// a
+																				// tote
+																				// or
+																				// a
+																				// container
+																				// in
+																				// the
+																				// stacker
+	private HeightResetTrigger heightResetTrigger;
 	private Counter heightCounter;
-
+	
 	private int height = 0;
 	private SpeedController left;
 	private SpeedController right;
-	
+
 	private double lowPass = 0;
-		
+
 	private boolean isMovementAllowed = true;
 
 	private HeightTask heightTask;
-	
+
 	private double floorHeight, stepHeight, toteHeight;
 	private double heightTolerance;
 
+	public int totesCollected = 0;
+	
 	public Stacker()
 	{
 
@@ -91,9 +131,13 @@ public class Stacker extends Subsystem
 
 		switchRight = Robot.sensors.stackerSwitchRatchetRight;
 		switchLeft = Robot.sensors.stackerSwitchRatchetLeft;
-		heightSwitch = Robot.sensors.stackerSwitchHeight;
 
+		heightSwitch = Robot.sensors.stackerSwitchHeight;
 		heightCounter = Robot.sensors.stackerHeightCounter;
+		heightSecure = Robot.sensors.stackerSwitchSecure;
+		
+		heightResetTrigger = new HeightResetTrigger();
+		heightResetTrigger.whenActive(new HeightReset());
 	}
 
 	public void timerInit()
@@ -109,8 +153,10 @@ public class Stacker extends Subsystem
 
 	/**
 	 * Sets a certain % voltage to the stacker speed controllers
-	 * @param v The % voltage
-	 * @return true if succeeded in setting, false otherwise 
+	 * 
+	 * @param v
+	 *            The % voltage
+	 * @return true if succeeded in setting, false otherwise
 	 */
 	public boolean setMotors(double v)
 	{
@@ -130,7 +176,6 @@ public class Stacker extends Subsystem
 
 		this.left.set(-v);
 		this.right.set(v);
-
 		return true;
 	}
 
@@ -172,6 +217,7 @@ public class Stacker extends Subsystem
 
 	/**
 	 * Unbrakes the stacker and opens stack holders
+	 * 
 	 * @return true if succeeded, false otherwise
 	 */
 	public boolean allowStackMovement()
@@ -186,9 +232,10 @@ public class Stacker extends Subsystem
 
 		return true;
 	}
-	
+
 	/**
 	 * Brakes the stacker and closes stack holders
+	 * 
 	 * @return true if succeeded, false otherwise
 	 */
 	public boolean disallowStackMovement()
@@ -203,10 +250,12 @@ public class Stacker extends Subsystem
 
 		return true;
 	}
-	
+
 	/**
 	 * Returns whether the stacker can be moved
-	 * @param bool true if stacker can move, false if cannot
+	 * 
+	 * @param bool
+	 *            true if stacker can move, false if cannot
 	 */
 	public boolean isMovementAllowed()
 	{
@@ -215,7 +264,9 @@ public class Stacker extends Subsystem
 
 	/**
 	 * Sets whether the stacker can be moved
-	 * @param bool true if stacker can move, false if cannot
+	 * 
+	 * @param bool
+	 *            true if stacker can move, false if cannot
 	 */
 	public void setMovementAllowed(boolean bool)
 	{
@@ -224,6 +275,7 @@ public class Stacker extends Subsystem
 
 	/**
 	 * Returns whether the right ratchet is closed
+	 * 
 	 * @return true or false
 	 */
 	public boolean getSwitchRatchetRight()
@@ -233,6 +285,7 @@ public class Stacker extends Subsystem
 
 	/**
 	 * Returns whether the left ratchet is closed
+	 * 
 	 * @return true or false
 	 */
 	public boolean getSwitchRatchetLeft()
@@ -241,7 +294,9 @@ public class Stacker extends Subsystem
 	}
 
 	/**
-	 * Returns whether the height switch (or counter) is currently facing a screw
+	 * Returns whether the height switch (or counter) is currently facing a
+	 * screw
+	 * 
 	 * @return true or false
 	 */
 	public boolean getHeightSwitch()
@@ -250,7 +305,18 @@ public class Stacker extends Subsystem
 	}
 
 	/**
+	 * Returns whether the elevator is at its lowest position (floor level)
+	 * 
+	 * @return true or false
+	 */
+	public boolean getHeightSecure()
+	{
+		return !(heightSecure.get());
+	}
+
+	/**
 	 * Returns the height summed from the height counter
+	 * 
 	 * @return The current stacker height (in screws counted)
 	 */
 	public int getHeight()
@@ -260,12 +326,14 @@ public class Stacker extends Subsystem
 
 	/**
 	 * Returns a stacker position based on which setpoint the stacker is at
-	 * @return Floor, Step or Tote if in one of the PID setpoint (at the tolerance variable), otherwise Unknown
+	 * 
+	 * @return Floor, Step or Tote if in one of the PID setpoint (at the
+	 *         tolerance variable), otherwise Unknown
 	 */
-	public StackerPosition getPosition ()
+	public StackerPosition getPosition()
 	{
 		updateStackerHeights();
-		
+
 		if (Math.abs(height - floorHeight) <= heightTolerance)
 		{
 			return StackerPosition.Floor;
@@ -278,8 +346,9 @@ public class Stacker extends Subsystem
 		{
 			return StackerPosition.Tote;
 		}
-		
-		else return StackerPosition.Unknown;
+
+		else
+			return StackerPosition.Unknown;
 	}
 
 	private void updateSetMotors()
@@ -293,16 +362,20 @@ public class Stacker extends Subsystem
 			logger.severe(e);
 		}
 	}
-	
-	private void updateStackerHeights ()
+
+	private void updateStackerHeights()
 	{
 		try
 		{
-			floorHeight = (double) config.get("stacker_MoveStackerToFloor_SetPoint");
-			stepHeight = (double) config.get("stacker_MoveStackerToStep_SetPoint");
-			toteHeight = (double) config.get("stacker_MoveStackerToTote_SetPoint");
-			
-			heightTolerance = (double) config.get("stacker_MoveStacker_PIDHeight_AbsoluteTolerance");
+			floorHeight = (double) config
+					.get("stacker_MoveStackerToFloor_SetPoint");
+			stepHeight = (double) config
+					.get("stacker_MoveStackerToStep_SetPoint");
+			toteHeight = (double) config
+					.get("stacker_MoveStackerToTote_SetPoint");
+
+			heightTolerance = (double) config
+					.get("stacker_MoveStacker_PIDHeight_AbsoluteTolerance");
 		}
 		catch (ConfigException e)
 		{
