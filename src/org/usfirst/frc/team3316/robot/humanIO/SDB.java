@@ -24,6 +24,7 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.sequences.AutonomousTest;
+import org.usfirst.frc.team3316.robot.vision.AutonomousCamera;
 import org.usfirst.frc.team3316.robot.vision.SaveBinaryFrame;
 import org.usfirst.frc.team3316.robot.vision.SaveFrame;
 
@@ -226,8 +227,8 @@ public class SDB
 		SmartDashboard.putData(new SaveFrame());
 		SmartDashboard.putData(new SaveBinaryFrame());
 		SmartDashboard.putData(new DriveToYellowTote());
-		SmartDashboard.putBoolean("lastReport_isTote", Robot.autonCamera.lastReport.isTote);
-		SmartDashboard.putNumber("lastReport_toteDistance", Robot.autonCamera.lastReport.ToteDistance);
+		SmartDashboard.putData(new AutonomousCamera());
+		
 		/*
 		 * Set Heading SDB
 		 */

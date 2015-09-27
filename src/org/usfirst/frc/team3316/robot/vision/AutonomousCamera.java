@@ -109,7 +109,9 @@ public class AutonomousCamera extends Command
 	
 	public ParticleReport lastReport;
 	public AutonomousCamera()
-	{}
+	{
+		setRunWhenDisabled(true);
+	}
 
 	// Called just before this Command runs the first time
 	protected void initialize()
@@ -253,9 +255,6 @@ public class AutonomousCamera extends Command
 			particles.elementAt(0).ToteAngle = computeAngleFromTarget(particles.elementAt(0));
 			particles.elementAt(0).ToteDistance = computeDistance(particles.elementAt(0));
 			
-			SmartDashboard.putNumber("Tote Angle", particles.elementAt(0).ToteAngle);
-			SmartDashboard.putNumber("Tote Distance", particles.elementAt(0).ToteDistance);
-			
 			scores.Rectangle = RectangleScore(particles.elementAt(0));
 			SmartDashboard.putNumber("Rectangle", scores.Rectangle);
 			scores.LongAspect = LongSideScore(particles.elementAt(0));
@@ -276,6 +275,7 @@ public class AutonomousCamera extends Command
 			// particularly the horizontal center (left - right) may be useful
 			// for rotating/driving towards a tote
 			SmartDashboard.putBoolean("IsTote", lastReport.isTote);
+			SmartDashboard.putNumber("Tote Distance", lastReport.ToteDistance);
 		}
 		else
 		{
