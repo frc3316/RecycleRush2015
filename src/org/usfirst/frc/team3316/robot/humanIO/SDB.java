@@ -62,6 +62,7 @@ public class SDB
 			put("Game Piece Switch", Robot.rollerGripper.getSwitchGamePiece());
 
 			put("Height Counter", Robot.stacker.getHeight());
+			put("Height secure", Robot.stacker.getHeightSecure());
 
 			put("Stacker Position", Robot.stacker.getPosition().toString());
 		}
@@ -202,6 +203,11 @@ public class SDB
 		putConfigVariableInSDB("stacker_MoveStackerToFloor_SetPoint");
 		putConfigVariableInSDB("stacker_MoveStackerToStep_SetPoint");
 		putConfigVariableInSDB("stacker_MoveStackerToTote_SetPoint");
+		
+		putConfigVariableInSDB("stacker_MoveStacker_PIDHeight_KP");
+		putConfigVariableInSDB("stacker_MoveStacker_PIDHeight_KI");
+		putConfigVariableInSDB("stacker_MoveStacker_PIDHeight_KD");
+		
 		putConfigVariableInSDB("stacker_MoveStacker_PIDHeight_AbsoluteTolerance");
 
 		logger.info("Finished initSDB()");
