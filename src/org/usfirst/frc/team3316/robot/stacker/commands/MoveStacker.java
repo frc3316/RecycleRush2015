@@ -35,11 +35,19 @@ public abstract class MoveStacker extends Command
 	Config config = Robot.config;
 
 	PIDController pidHeight;
+	
+	Brake brake;
+	UnBrake unbrake;
+	
+	boolean brakeStarted;
 
 	public MoveStacker()
 	{
 		requires(Robot.stacker);
 
+		brake = new Brake();
+		unbrake = new UnBrake();
+		
 		pidHeight = new PIDController(0, 0, 0, new PIDSourceHeight(),
 				new PIDOutputHeight(), 0.05);
 		pidHeight.setOutputRange(-1, 1);
@@ -51,7 +59,9 @@ public abstract class MoveStacker extends Command
 	protected void initialize()
 	{
 		logger.fine(this.getName() + " initialize");
-		Robot.stacker.allowStackMovement();
+		
+		unbrake.start();
+		brakeStarted = false;
 		
 		setSetpoint();
 		
@@ -65,7 +75,13 @@ public abstract class MoveStacker extends Command
 
 	protected boolean isFinished()
 	{
-		return pidHeight.onTarget();
+		if (pidHeight.onTarget())
+		{
+			brake.start();
+			brakeStarted = true;
+		}
+		
+		return brakeStarted && !brake.isRunning();
 	}
 
 	protected void end()
@@ -83,7 +99,7 @@ public abstract class MoveStacker extends Command
 	private void _end()
 	{
 		pidHeight.reset();
-		Robot.stacker.disallowStackMovement();
+		Robot.stacker.setMotors(0);
 	}
 
 	private void updatePIDValues()

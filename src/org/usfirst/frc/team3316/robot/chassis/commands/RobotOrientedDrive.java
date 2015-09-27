@@ -2,7 +2,6 @@ package org.usfirst.frc.team3316.robot.chassis.commands;
 
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 
-import com.kauailabs.navx_mxp.AHRSProtocol.BoardID;
 
 public class RobotOrientedDrive extends StrafeDrive
 {

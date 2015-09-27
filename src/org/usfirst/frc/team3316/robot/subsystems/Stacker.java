@@ -69,9 +69,7 @@ public class Stacker extends Subsystem
 	private SpeedController right;
 	
 	private double lowPass = 0;
-	
-	private int numberOfScrews = 0;
-	
+		
 	private boolean isMovementAllowed = true;
 
 	private HeightTask heightTask;
@@ -96,15 +94,6 @@ public class Stacker extends Subsystem
 		heightSwitch = Robot.sensors.stackerSwitchHeight;
 
 		heightCounter = Robot.sensors.stackerHeightCounter;
-		
-		try
-		{
-			numberOfScrews = (int) config.get("stacker_NumberOfScrews");
-		}
-		catch (ConfigException e)
-		{
-			logger.severe(e);
-		}
 	}
 
 	public void timerInit()
