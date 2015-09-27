@@ -27,6 +27,7 @@ public class MoveStackerToTote extends MoveStacker
 	protected void initialize()
 	{
 		super.initialize();
+		
 		if (Robot.rollerGripper.getGamePieceCollected() == GamePieceCollected.Container)
 		{
 			Robot.stacker.openSolenoidContainer();

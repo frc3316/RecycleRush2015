@@ -57,7 +57,7 @@ public class Stacker extends Subsystem
 	{
 		protected void initialize()
 		{
-			height = 2;
+			height = 0;
 		}
 
 		protected void execute() {}
@@ -343,7 +343,7 @@ public class Stacker extends Subsystem
 		{
 			return StackerPosition.Step;
 		}
-		else if (Math.abs(height - toteHeight) <= heightTolerance)
+		else if (Math.abs(height - toteHeight) <= heightTolerance || height < 0)
 		{
 			return StackerPosition.Tote;
 		}

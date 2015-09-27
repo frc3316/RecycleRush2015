@@ -63,6 +63,8 @@ public abstract class MoveStacker extends Command
 		unbrake.start();
 		brakeStarted = false;
 
+		setTimeout(2);
+		
 		pidHeight.enable();
 	}
 
@@ -73,13 +75,27 @@ public abstract class MoveStacker extends Command
 
 	protected boolean isFinished()
 	{
-		if (pidHeight.onTarget())
+		if ((brakeStarted && !brake.isRunning()) || isTimedOut())
+		{
+			if (isTimedOut())
+			{
+				logger.info(this.getName() + " finished because timed out");
+			}
+			else
+			{
+				logger.info(this.getName() + " finished because reached target");
+			}
+			
+			return true;
+		}
+		
+		if (pidHeight.onTarget() && !brakeStarted)
 		{
 			brake.start();
 			brakeStarted = true;
 		}
-
-		return brakeStarted && !brake.isRunning();
+		
+		return false;
 	}
 
 	protected void end()

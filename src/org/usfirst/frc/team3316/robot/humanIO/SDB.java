@@ -64,6 +64,7 @@ public class SDB
 			put("Height secure", Robot.stacker.getHeightSecure());
 
 			put("Stacker Position", Robot.stacker.getPosition().toString());
+			put("Game Piece Collected", Robot.rollerGripper.getGamePieceCollected().toString());
 		}
 
 		private void put(String name, double d)
