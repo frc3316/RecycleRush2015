@@ -56,9 +56,9 @@ public class SDB
 			
 			put ("Game Piece Switch", Robot.rollerGripper.getSwitchGamePiece());
 			
-			put ("Stacker Hall Effect", Robot.stacker.getHeightSwitch());
-			
 			put ("Height Counter", Robot.stacker.getHeight());
+			
+			put ("Stacker Position", Robot.stacker.getPosition().toString());
 		}
 		
 		private void put (String name, double d)
@@ -187,14 +187,6 @@ public class SDB
 		/*
 		 * Stacker testing
 		 */
-		SmartDashboard.putData("Set Stacker 0", new SetStacker(0));
-		
-		SmartDashboard.putData("Set Stacker 0.2", new SetStacker(0.2));
-		SmartDashboard.putData("Set Stacker 0.4", new SetStacker(0.4));
-		
-		SmartDashboard.putData("Set Stacker -0.2", new SetStacker(-0.2));
-		SmartDashboard.putData("Set Stacker -0.4", new SetStacker(-0.4));
-		
 		
 		putConfigVariableInSDB("stacker_MoveStackerToFloor_SetPoint");
 		putConfigVariableInSDB("stacker_MoveStackerToStep_SetPoint");
