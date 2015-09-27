@@ -16,7 +16,7 @@ public class MoveStackerToTote extends MoveStacker
 		try
 		{
 			pidHeight.setSetpoint((double) config
-					.get("stacker_MoveStackerToFloor_SetPoint"));
+					.get("stacker_MoveStackerToTote_SetPoint"));
 		}
 		catch (ConfigException e)
 		{
