@@ -143,10 +143,5 @@ public class RollerGripper extends Subsystem
     		logger.severe(e);
     	}
     }
-    
-    private void printTheTruth()
-    {
-    	System.out.println("Vita is the Melech!!");
-    }
 }
 

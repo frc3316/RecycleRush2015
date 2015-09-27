@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.TimerTask;
 
 import org.usfirst.frc.team3316.robot.Robot;
+import org.usfirst.frc.team3316.robot.chassis.commands.DriveToYellowTote;
 import org.usfirst.frc.team3316.robot.chassis.commands.FieldOrientedDrive;
 import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedNavigation;
 import org.usfirst.frc.team3316.robot.chassis.commands.SetNewIntegrator;
@@ -224,7 +225,9 @@ public class SDB
 		
 		SmartDashboard.putData(new SaveFrame());
 		SmartDashboard.putData(new SaveBinaryFrame());
-
+		SmartDashboard.putData(new DriveToYellowTote());
+		SmartDashboard.putBoolean("lastReport_isTote", Robot.autonCamera.lastReport.isTote);
+		SmartDashboard.putNumber("lastReport_toteDistance", Robot.autonCamera.lastReport.ToteDistance);
 		/*
 		 * Set Heading SDB
 		 */
