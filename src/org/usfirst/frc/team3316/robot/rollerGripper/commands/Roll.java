@@ -5,6 +5,7 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -30,6 +31,7 @@ public abstract class Roll extends Command
     {
     	setSpeeds();
     	Robot.rollerGripper.set(left, right);
+    	
     }
 
     protected boolean isFinished() 

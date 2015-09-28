@@ -4,7 +4,6 @@ import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
-import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -45,8 +44,6 @@ public class WaitForGamePiece extends Command
 
 	protected boolean isFinished()
 	{
-		GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
-
 		if (Robot.rollerGripper.getSwitchGamePiece())
 		{
 			finishCounter++;
@@ -62,11 +59,6 @@ public class WaitForGamePiece extends Command
 	protected void end()
 	{
 		logger.fine(this.getName() + " end");
-		
-		if (Robot.rollerGripper.getGamePieceCollected() != GamePieceCollected.Container)
-		{
-			Robot.stacker.totesCollected++;
-		}
 	}
 
 	protected void interrupted()

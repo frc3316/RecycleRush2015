@@ -3,7 +3,6 @@ package org.usfirst.frc.team3316.robot.sequences;
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.rollerGripper.commands.WaitForGamePiece;
-
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -29,11 +28,7 @@ public class AutoTotePickup extends CommandGroup
 	protected void end()
 	{
 		logger.info(this.getName() + " end");
-		
-		if (Robot.stacker.totesCollected < 6)
-		{
-			endMovement.start();
-		}
+		endMovement.start();
 	}
 
 	protected void interrupted()

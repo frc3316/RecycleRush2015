@@ -32,7 +32,6 @@ public class DropoffSequence extends CommandGroup
     protected void end ()
     {
     	logger.info(this.getName() + " end");
-    	Robot.stacker.totesCollected = 0;
     }
     
     protected void interrupted ()

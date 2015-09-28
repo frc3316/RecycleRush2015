@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3316.robot.chassis.commands;
 
+import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 
 
@@ -26,7 +27,7 @@ public class RobotOrientedDrive extends StrafeDrive
 	protected void setRotation(double requiredTurn)
 	{
 		updateIsPIDOn();
-		if (isPIDOn)
+		if (isPIDOn && Robot.chassis.navxEnabled)
 		{
 			set_rotation(rotationPID.get());
 		}

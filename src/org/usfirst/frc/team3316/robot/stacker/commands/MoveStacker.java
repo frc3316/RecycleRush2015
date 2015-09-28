@@ -64,7 +64,7 @@ public abstract class MoveStacker extends Command
 		brakeStarted = false;
 
 		setTimeout(2);
-		
+
 		pidHeight.enable();
 	}
 
@@ -85,32 +85,32 @@ public abstract class MoveStacker extends Command
 			{
 				logger.info(this.getName() + " finished because reached target");
 			}
-			
+
 			return true;
 		}
-		
+
 		if (pidHeight.onTarget() && !brakeStarted)
 		{
 			brake.start();
 			brakeStarted = true;
 		}
-		
+
 		return false;
 	}
 
 	protected void end()
 	{
 		logger.fine(this.getName() + " end");
-		_end();
+		__end();
 	}
 
 	protected void interrupted()
 	{
 		logger.fine(this.getName() + " interrupted");
-		_end();
+		__end();
 	}
 
-	private void _end()
+	private void __end()
 	{
 		pidHeight.reset();
 		Robot.stacker.setMotors(0);

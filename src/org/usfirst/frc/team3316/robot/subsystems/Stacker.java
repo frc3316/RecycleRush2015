@@ -25,7 +25,7 @@ public class Stacker extends Subsystem
 	public class HeightTask extends TimerTask
 	{
 		boolean previousGet = false;
-
+		
 		int currentHeight, previousHeight = 0;
 
 		public void run()
@@ -101,7 +101,7 @@ public class Stacker extends Subsystem
 																				// stacker
 	private HeightResetTrigger heightResetTrigger;
 	private Counter heightCounter;
-	
+
 	private int height = 0;
 	private SpeedController left;
 	private SpeedController right;
@@ -114,8 +114,6 @@ public class Stacker extends Subsystem
 
 	private double floorHeight, stepHeight, toteHeight;
 	private double heightTolerance;
-
-	public int totesCollected = 0;
 	
 	public Stacker()
 	{
@@ -179,7 +177,7 @@ public class Stacker extends Subsystem
 		this.right.set(v);
 		return true;
 	}
-
+	
 	public boolean openSolenoidContainer()
 	{
 		logger.fine("Try to open container solenoid");
@@ -335,7 +333,7 @@ public class Stacker extends Subsystem
 	{
 		updateStackerHeights();
 
-		if (Math.abs(height - floorHeight) <= heightTolerance)
+		if (Math.abs(height - floorHeight) <= heightTolerance || height < 0)
 		{
 			return StackerPosition.Floor;
 		}
@@ -343,7 +341,7 @@ public class Stacker extends Subsystem
 		{
 			return StackerPosition.Step;
 		}
-		else if (Math.abs(height - toteHeight) <= heightTolerance || height < 0)
+		else if (Math.abs(height - toteHeight) <= heightTolerance)
 		{
 			return StackerPosition.Tote;
 		}
@@ -353,6 +351,7 @@ public class Stacker extends Subsystem
 	}
 
 	private void updateSetMotors()
+
 	{
 		try
 		{
@@ -362,7 +361,7 @@ public class Stacker extends Subsystem
 		{
 			logger.severe(e);
 		}
-	}
+	}	
 
 	private void updateStackerHeights()
 	{
@@ -382,5 +381,5 @@ public class Stacker extends Subsystem
 		{
 			logger.severe(e);
 		}
-	}
+	}	
 }

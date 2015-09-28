@@ -100,7 +100,7 @@ public class Sensors
 			chassisEncoderCenter.setDistancePerPulse(
 					(double) config.get("CHASSIS_ENCODER_CENTER_DISTANCE_PER_PULSE"));
 
-			serial_port = new SerialPort(57600,SerialPort.Port.kMXP);
+			serial_port = new SerialPort(57600, SerialPort.Port.kMXP);
 			navx = new IMUAdvanced(serial_port);
 			
 			/*
@@ -108,6 +108,7 @@ public class Sensors
 			 */
 			stackerSwitchHeight =  new DigitalInput((int) config.get("STACKER_SWITCH_HEIGHT"));
 			stackerHeightCounter = new Counter(stackerSwitchHeight);
+			
 			stackerSwitchSecure = new DigitalInput ((int) config.get("STACKER_SWITCH_SECURE"));
 			
 			stackerSwitchRatchetRight = new DigitalInput((int) config.get("STACKER_SWITCH_RATCHET_RIGHT"));
