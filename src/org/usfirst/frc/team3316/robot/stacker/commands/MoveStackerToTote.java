@@ -2,7 +2,7 @@ package org.usfirst.frc.team3316.robot.stacker.commands;
 
 import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
-import org.usfirst.frc.team3316.robot.utils.GamePieceCollected;
+import org.usfirst.frc.team3316.robot.utils.StackerPosition;
 
 /**
  * Moves stacker to tote position while checking for mechanical safety
@@ -27,8 +27,10 @@ public class MoveStackerToTote extends MoveStacker
 	protected void initialize()
 	{
 		super.initialize();
-		
-		if (Robot.rollerGripper.getGamePieceCollected() == GamePieceCollected.Container)
+
+		if ((Robot.stacker.getSwitchRatchetLeft() == false)
+				&& (Robot.stacker.getSwitchRatchetRight() == false)
+				&& (Robot.stacker.getPosition() == StackerPosition.Floor))
 		{
 			Robot.stacker.openSolenoidContainer();
 			Robot.stacker.openSolenoidGripper();

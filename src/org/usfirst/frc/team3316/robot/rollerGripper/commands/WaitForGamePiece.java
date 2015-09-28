@@ -61,11 +61,11 @@ public class WaitForGamePiece extends Command
 	{
 		logger.fine(this.getName() + " end");
 
-		GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
+		/*GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
 		if (gp == GamePieceCollected.Tote)
 		{
 			Robot.stacker.totesCollected++;
-		}
+		}*/
 	}
 
 	protected void interrupted()

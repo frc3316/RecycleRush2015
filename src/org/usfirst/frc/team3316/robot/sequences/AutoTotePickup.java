@@ -32,11 +32,7 @@ public class AutoTotePickup extends CommandGroup
 	protected void end()
 	{
 		logger.info(this.getName() + " end");
-		
-		if (Robot.stacker.totesCollected < 6)
-		{
-			endMovement.start();
-		}
+		endMovement.start();
 	}
 
 	protected void interrupted()
