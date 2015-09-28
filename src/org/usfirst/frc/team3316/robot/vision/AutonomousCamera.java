@@ -386,9 +386,7 @@ public class AutonomousCamera extends Command
     {
         double ConvexHullAreaRatio;
         
-        double offset = 1.7890935355724088118454315637414;
-        
-        ConvexHullAreaRatio = IMAGE_SIZE / report.ConvexHullArea; 
+        ConvexHullAreaRatio = IMAGE_SIZE / report.ConvexHullArea;
         return (Math.sqrt(ConvexHullAreaRatio) * TARGET_SIZE_SQRT) - OFFSET;
     }
 
