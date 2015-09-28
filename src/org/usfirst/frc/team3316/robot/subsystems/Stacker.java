@@ -114,8 +114,6 @@ public class Stacker extends Subsystem
 
 	private double floorHeight, stepHeight, toteHeight;
 	private double heightTolerance;
-
-	public int totesCollected = 0;
 	
 	public Stacker()
 	{
@@ -335,7 +333,7 @@ public class Stacker extends Subsystem
 	{
 		updateStackerHeights();
 
-		if (Math.abs(height - floorHeight) <= heightTolerance)
+		if (Math.abs(height - floorHeight) <= heightTolerance || height < 0)
 		{
 			return StackerPosition.Floor;
 		}
@@ -343,7 +341,7 @@ public class Stacker extends Subsystem
 		{
 			return StackerPosition.Step;
 		}
-		else if (Math.abs(height - toteHeight) <= heightTolerance || height < 0)
+		else if (Math.abs(height - toteHeight) <= heightTolerance)
 		{
 			return StackerPosition.Tote;
 		}

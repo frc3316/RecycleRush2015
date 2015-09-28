@@ -21,6 +21,9 @@ import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.sequences.AutonomousSequence;
 import org.usfirst.frc.team3316.robot.sequences.SweepContainerSequence;
+import org.usfirst.frc.team3316.robot.sequences.AutoToteCollect;
+import org.usfirst.frc.team3316.robot.sequences.AutoTotePickup;
+import org.usfirst.frc.team3316.robot.sequences.DropoffSequence;
 import org.usfirst.frc.team3316.robot.vision.AutonomousCamera;
 import org.usfirst.frc.team3316.robot.vision.SaveBinaryFrame;
 import org.usfirst.frc.team3316.robot.vision.SaveFrame;
@@ -70,7 +73,6 @@ public class SDB
 
 			put("Height Counter", Robot.stacker.getHeight());
 			put("Height secure", Robot.stacker.getHeightSecure());
-			put("Totes collected", Robot.stacker.totesCollected);
 			
 			put("Stacker Position", Robot.stacker.getPosition().toString());
 			put("Game Piece Collected", Robot.rollerGripper.getGamePieceCollected().toString());
@@ -198,6 +200,8 @@ public class SDB
 		SmartDashboard.putData(new RobotOrientedDrive());
 		SmartDashboard.putData(new FieldOrientedDrive());
 
+		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_UsePIDRotation");
+
 		SmartDashboard.putData("1 meter forward", new RobotOrientedNavigation(
 				0, 1, 0, 3));
 		SmartDashboard.putData("1 meter right", new RobotOrientedNavigation(1,
@@ -214,6 +218,9 @@ public class SDB
 		
 		SmartDashboard.putData(new SweepContainerSequence());
 		
+		SmartDashboard.putData(new AutoToteCollect());
+		SmartDashboard.putData(new AutoTotePickup());
+		SmartDashboard.putData(new DropoffSequence());
 		/*
 		 * Set Heading SDB
 		 */
