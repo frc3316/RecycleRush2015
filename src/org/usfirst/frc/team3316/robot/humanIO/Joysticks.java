@@ -9,6 +9,9 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.stacker.commands.Brake;
+import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToFloor;
+import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToStep;
+import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToTote;
 import org.usfirst.frc.team3316.robot.stacker.commands.UnBrake;
 import org.usfirst.frc.team3316.robot.stacker.commands.CloseGripper;
 import org.usfirst.frc.team3316.robot.stacker.commands.HoldContainer;
@@ -109,15 +112,15 @@ public class Joysticks
 			 */
 			moveStackerToFloor = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_MOVE_STACKER_TO_FLOOR"));
-			// moveStackerToFloor.whenPressed(new MoveStackerToFloor());
+			moveStackerToFloor.whenPressed(new MoveStackerToFloor());
 
 			moveStackerToStep = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_MOVE_STACKER_TO_STEP"));
-			// moveStackerToStep.whenPressed(new MoveStackerToStep());
+			moveStackerToStep.whenPressed(new MoveStackerToStep());
 
 			moveStackerToTote = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_MOVE_STACKER_TO_TOTE"));
-			// moveStackerToTote.whenPressed(new MoveStackerToTote());
+			moveStackerToTote.whenPressed(new MoveStackerToTote());
 
 			holdContainer = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_HOLD_CONTAINER"));

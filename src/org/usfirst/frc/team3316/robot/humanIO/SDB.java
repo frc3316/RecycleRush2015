@@ -192,24 +192,7 @@ public class SDB
 
 		SmartDashboard.putData(new SetHeadingSDB());
 		putConfigVariableInSDB("chassis_HeadingToSet");
-
-		/*
-		 * Stacker testing
-		 */
-		SmartDashboard.putData(new MoveStackerToTote());
-		SmartDashboard.putData(new MoveStackerToStep());
-		SmartDashboard.putData(new MoveStackerToFloor());
-
-		putConfigVariableInSDB("stacker_MoveStackerToFloor_SetPoint");
-		putConfigVariableInSDB("stacker_MoveStackerToStep_SetPoint");
-		putConfigVariableInSDB("stacker_MoveStackerToTote_SetPoint");
 		
-		putConfigVariableInSDB("stacker_MoveStacker_PIDHeight_KP");
-		putConfigVariableInSDB("stacker_MoveStacker_PIDHeight_KI");
-		putConfigVariableInSDB("stacker_MoveStacker_PIDHeight_KD");
-		
-		putConfigVariableInSDB("stacker_MoveStacker_PIDHeight_AbsoluteTolerance");
-
 		logger.info("Finished initSDB()");
 	}
 }
