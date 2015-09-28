@@ -17,7 +17,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	/*
 	 * PIDSource classes in order to use wpilib's PIDController
 	 */
-	private class PIDSourceX implements PIDSource
+	protected class PIDSourceX implements PIDSource
 	{
 		public double pidGet()
 		{
@@ -26,7 +26,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 		}
 	}
 
-	private class PIDSourceY implements PIDSource
+	protected class PIDSourceY implements PIDSource
 	{
 		public double pidGet()
 		{
@@ -35,7 +35,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 		}
 	}
 
-	private class PIDSourceHeading implements PIDSource
+	protected class PIDSourceHeading implements PIDSource
 	{
 		public double pidGet()
 		{
@@ -47,7 +47,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 	/*
 	 * PIDOutput classes in order to use wpilib's PIDController
 	 */
-	private class PIDOutputX implements PIDOutput
+	protected class PIDOutputX implements PIDOutput
 	{
 		public void pidWrite(double output)
 		{
@@ -56,7 +56,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 		}
 	}
 
-	private class PIDOutputY implements PIDOutput
+	protected class PIDOutputY implements PIDOutput
 	{
 		public void pidWrite(double output)
 		{
@@ -65,7 +65,7 @@ public class RobotOrientedNavigation extends FieldOrientedDrive
 		}
 	}
 
-	private class PIDOutputHeading implements PIDOutput
+	protected class PIDOutputHeading implements PIDOutput
 	{
 		public void pidWrite(double output)
 		{
