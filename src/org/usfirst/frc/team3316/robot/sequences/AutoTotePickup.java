@@ -4,9 +4,7 @@ import org.usfirst.frc.team3316.robot.Robot;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.rollerGripper.commands.WaitForGamePiece;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToFloor;
-import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToStep;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToTote;
-import org.usfirst.frc.team3316.robot.stacker.commands.OpenGripper;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;

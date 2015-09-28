@@ -383,5 +383,5 @@ public class Stacker extends Subsystem
 		{
 			logger.severe(e);
 		}
-	}
+	}	
 }

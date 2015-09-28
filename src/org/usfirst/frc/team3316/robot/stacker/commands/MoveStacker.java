@@ -101,16 +101,16 @@ public abstract class MoveStacker extends Command
 	protected void end()
 	{
 		logger.fine(this.getName() + " end");
-		_end();
+		__end();
 	}
 
 	protected void interrupted()
 	{
 		logger.fine(this.getName() + " interrupted");
-		_end();
+		__end();
 	}
 
-	private void _end()
+	private void __end()
 	{
 		pidHeight.reset();
 		Robot.stacker.setMotors(0);

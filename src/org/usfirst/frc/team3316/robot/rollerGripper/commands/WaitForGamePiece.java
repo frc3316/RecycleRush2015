@@ -45,8 +45,6 @@ public class WaitForGamePiece extends Command
 
 	protected boolean isFinished()
 	{
-		GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
-
 		if (Robot.rollerGripper.getSwitchGamePiece())
 		{
 			finishCounter++;
