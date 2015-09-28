@@ -28,10 +28,15 @@ public class MoveStackerToTote extends MoveStacker
 	{
 		super.initialize();
 
-		if ((Robot.stacker.getSwitchRatchetLeft() == false)
-				&& (Robot.stacker.getSwitchRatchetRight() == false)
+		logger.fine("Ratchet right: " + Robot.stacker.getSwitchRatchetRight());
+		logger.fine("Ratchet left: " + Robot.stacker.getSwitchRatchetLeft());
+		logger.fine("Stacker Position: " + Robot.stacker.getPosition().toString());
+		
+		if (!(Robot.stacker.getSwitchRatchetLeft())
+				&& (!Robot.stacker.getSwitchRatchetRight())
 				&& (Robot.stacker.getPosition() == StackerPosition.Floor))
 		{
+			logger.fine("It's a container!");
 			Robot.stacker.openSolenoidContainer();
 			Robot.stacker.openSolenoidGripper();
 		}

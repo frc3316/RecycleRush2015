@@ -198,6 +198,8 @@ public class SDB
 		SmartDashboard.putData(new RobotOrientedDrive());
 		SmartDashboard.putData(new FieldOrientedDrive());
 
+		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_UsePIDRotation");
+
 		SmartDashboard.putData("1 meter forward", new RobotOrientedNavigation(
 				0, 1, 0, 3));
 		SmartDashboard.putData("1 meter right", new RobotOrientedNavigation(1,
@@ -213,7 +215,6 @@ public class SDB
 		SmartDashboard.putData(new AutoToteCollect());
 		SmartDashboard.putData(new AutoTotePickup());
 		SmartDashboard.putData(new DropoffSequence());
-		
 		/*
 		 * Set Heading SDB
 		 */
