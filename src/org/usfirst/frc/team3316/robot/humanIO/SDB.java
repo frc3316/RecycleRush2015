@@ -19,6 +19,9 @@ import org.usfirst.frc.team3316.robot.chassis.commands.RobotOrientedDrive;
 import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
+import org.usfirst.frc.team3316.robot.sequences.AutoToteCollect;
+import org.usfirst.frc.team3316.robot.sequences.AutoTotePickup;
+import org.usfirst.frc.team3316.robot.sequences.DropoffSequence;
 import org.usfirst.frc.team3316.robot.vision.AutonomousCamera;
 import org.usfirst.frc.team3316.robot.vision.SaveBinaryFrame;
 import org.usfirst.frc.team3316.robot.vision.SaveFrame;
@@ -68,7 +71,6 @@ public class SDB
 
 			put("Height Counter", Robot.stacker.getHeight());
 			put("Height secure", Robot.stacker.getHeightSecure());
-			//put("Totes collected", Robot.stacker.totesCollected);
 			
 			put("Stacker Position", Robot.stacker.getPosition().toString());
 			put("Game Piece Collected", Robot.rollerGripper.getGamePieceCollected().toString());
@@ -207,6 +209,10 @@ public class SDB
 		SmartDashboard.putData(new SaveBinaryFrame());
 		SmartDashboard.putData(new DriveToYellowTote());
 		SmartDashboard.putData(new AutonomousCamera());
+		
+		SmartDashboard.putData(new AutoToteCollect());
+		SmartDashboard.putData(new AutoTotePickup());
+		SmartDashboard.putData(new DropoffSequence());
 		
 		/*
 		 * Set Heading SDB
