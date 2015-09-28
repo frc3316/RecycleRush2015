@@ -65,7 +65,6 @@ public class SDB
 
 			put("Height Counter", Robot.stacker.getHeight());
 			put("Height secure", Robot.stacker.getHeightSecure());
-			put("Totes collected", Robot.stacker.totesCollected);
 
 			
 

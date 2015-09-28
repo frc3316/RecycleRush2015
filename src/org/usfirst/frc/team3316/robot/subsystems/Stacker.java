@@ -114,8 +114,6 @@ public class Stacker extends Subsystem
 
 	private double floorHeight, stepHeight, toteHeight;
 	private double heightTolerance;
-
-	public int totesCollected = 0;
 	
 	public Stacker()
 	{
