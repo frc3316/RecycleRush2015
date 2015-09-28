@@ -18,6 +18,8 @@ import org.usfirst.frc.team3316.robot.stacker.commands.CloseGripper;
 import org.usfirst.frc.team3316.robot.stacker.commands.HoldContainer;
 import org.usfirst.frc.team3316.robot.stacker.commands.OpenGripper;
 import org.usfirst.frc.team3316.robot.stacker.commands.ReleaseContainer;
+import org.usfirst.frc.team3316.robot.vision.SaveBinaryFrame;
+import org.usfirst.frc.team3316.robot.vision.SaveFrame;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -78,8 +80,8 @@ public class Joysticks
 	public JoystickButton enableNavx, disableNavx;
 
 	public POVButton openBrake, closeBrake;
-
-	public Joysticks()
+	
+	public Joysticks ()
 	{
 		try
 		{
@@ -152,7 +154,6 @@ public class Joysticks
 			
 			disableNavx = new JoystickButton(joystickRight, (int) config.get("BUTTON_DISABLE_NAVX"));
 			disableNavx.whenPressed(new UseNavx(false));
-
 		}
 		catch (ConfigException e)
 		{

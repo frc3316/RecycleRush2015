@@ -111,26 +111,27 @@ public class RollerGripper extends Subsystem
     	boolean gpSwitch = getSwitchGamePiece();
     	boolean gpSwitchRight = getSwitchRight();
     	boolean gpSwitchLeft = getSwitchLeft();
-    	/*
-    	if (!gpSwitch) {
+    	
+    	if (!gpSwitch) 
+    	{
     		return GamePieceCollected.None;
     	}
     	
-    	else if(Robot.stacker.getPosition() == StackerPosition.Floor) {
-	    	if (!gpSwitchRight && !gpSwitchLeft) {
+    	else if(Robot.stacker.getPosition() == StackerPosition.Floor) 
+    	{
+	    	if (!gpSwitchRight && !gpSwitchLeft) 
+	    	{
 	    		return GamePieceCollected.Container;
 	    	}
-	    	
-	    	else {
+	    	else 
+	    	{
 	    		return GamePieceCollected.Tote;
 	    	}
     	}
-    	
-    	else {
+    	else 
+    	{
     		return GamePieceCollected.Something;
     	}
-    	*/
-    	return null;
     }
     
     private void updateScales ()
@@ -145,6 +146,5 @@ public class RollerGripper extends Subsystem
     		logger.severe(e);
     	}
     }
-
 }
 

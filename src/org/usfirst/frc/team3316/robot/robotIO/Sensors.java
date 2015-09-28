@@ -100,7 +100,7 @@ public class Sensors
 			chassisEncoderCenter.setDistancePerPulse(
 					(double) config.get("CHASSIS_ENCODER_CENTER_DISTANCE_PER_PULSE"));
 
-			serial_port = new SerialPort(57600,SerialPort.Port.kMXP);
+			serial_port = new SerialPort(57600, SerialPort.Port.kMXP);
 			navx = new IMUAdvanced(serial_port);
 			
 			/*
