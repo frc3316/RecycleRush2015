@@ -62,9 +62,8 @@ public class WaitForGamePiece extends Command
 	protected void end()
 	{
 		logger.fine(this.getName() + " end");
-
-		GamePieceCollected gp = Robot.rollerGripper.getGamePieceCollected();
-		if (gp == GamePieceCollected.Tote)
+		
+		if (Robot.rollerGripper.getGamePieceCollected() != GamePieceCollected.Container)
 		{
 			Robot.stacker.totesCollected++;
 		}

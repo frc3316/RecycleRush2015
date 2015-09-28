@@ -19,6 +19,9 @@ import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToFloor;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToStep;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToTote;
+import org.usfirst.frc.team3316.robot.sequences.AutoToteCollect;
+import org.usfirst.frc.team3316.robot.sequences.AutoTotePickup;
+import org.usfirst.frc.team3316.robot.sequences.DropoffSequence;
 
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
@@ -62,6 +65,9 @@ public class SDB
 
 			put("Height Counter", Robot.stacker.getHeight());
 			put("Height secure", Robot.stacker.getHeightSecure());
+			put("Totes collected", Robot.stacker.totesCollected);
+
+			
 
 			put("Stacker Position", Robot.stacker.getPosition().toString());
 			put("Game Piece Collected", Robot.rollerGripper.getGamePieceCollected().toString());
@@ -183,7 +189,12 @@ public class SDB
 		 */
 		SmartDashboard.putData(new RobotOrientedDrive());
 		SmartDashboard.putData(new FieldOrientedDrive());
+
 		putConfigVariableInSDB("chassis_RobotOrientedDrivePIDRotation_UsePIDRotation");
+
+		SmartDashboard.putData(new AutoToteCollect());
+		SmartDashboard.putData(new AutoTotePickup());
+		SmartDashboard.putData(new DropoffSequence());
 
 		/*
 		 * Set Heading SDB
