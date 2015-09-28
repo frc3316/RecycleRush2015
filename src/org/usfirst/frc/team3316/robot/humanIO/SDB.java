@@ -354,6 +354,7 @@ public class SDB
 		putConfigVariableInSDB("AutonomousCamera_RatioMin");
 		putConfigVariableInSDB("AutonomousCamera_RatioMax");
 		putConfigVariableInSDB("AutonomousCamera_TargetSize");
+		putConfigVariableInSDB("AutonomousCamera_Offset");
 		putConfigVariableInSDB("AutonomousCamera_ViewAngle");
 		putConfigVariableInSDB("AutonomousCamera_AreaMinimum");
 		

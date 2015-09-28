@@ -151,7 +151,7 @@ public class AutonomousCamera extends Command
 		// Take a frame from the camera
 		NIVision.IMAQdxGrab(Robot.sensors.getCameraSession(), frame, 1);
 		
-		// Get variables from the config
+		// Get variables/constants from the config
 		try 
 		{
 			SCORE_MIN_RECTANGLE = (double) Robot.config.get("AutonomousCamera_ScoreMinRectangle");
@@ -383,8 +383,11 @@ public class AutonomousCamera extends Command
 	public double computeDistance (ParticleReport report)
     {
         double ConvexHullAreaRatio;
-        ConvexHullAreaRatio = report.ConvexHullArea / IMAGE_SIZE; 
-        return (Math.sqrt(ConvexHullAreaRatio) * TARGET_SIZE_SQRT);
+        
+        double offset = 1.7890935355724088118454315637414;
+        
+        ConvexHullAreaRatio = IMAGE_SIZE / report.ConvexHullArea; 
+        return (Math.sqrt(ConvexHullAreaRatio) * TARGET_SIZE_SQRT) - offset;
     }
 
 	int photosSaved = 0; //Used to give a unique name for every image.
