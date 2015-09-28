@@ -36,14 +36,22 @@ public abstract class MoveStacker extends Command
 
 	PIDController pidHeight;
 
+	Brake brake;
+	UnBrake unbrake;
+
+	boolean brakeStarted;
+
 	public MoveStacker()
 	{
 		requires(Robot.stacker);
 
+		brake = new Brake();
+		unbrake = new UnBrake();
+
 		pidHeight = new PIDController(0, 0, 0, new PIDSourceHeight(),
 				new PIDOutputHeight(), 0.05);
-		pidHeight.setOutputRange(-1, 1);
 
+		setSetpoint();
 	}
 
 	protected abstract void setSetpoint();
@@ -51,10 +59,12 @@ public abstract class MoveStacker extends Command
 	protected void initialize()
 	{
 		logger.fine(this.getName() + " initialize");
-		Robot.stacker.allowStackMovement();
-		
-		setSetpoint();
-		
+
+		unbrake.start();
+		brakeStarted = false;
+
+		setTimeout(2);
+
 		pidHeight.enable();
 	}
 
@@ -65,7 +75,27 @@ public abstract class MoveStacker extends Command
 
 	protected boolean isFinished()
 	{
-		return pidHeight.onTarget();
+		if ((brakeStarted && !brake.isRunning()) || isTimedOut())
+		{
+			if (isTimedOut())
+			{
+				logger.info(this.getName() + " finished because timed out");
+			}
+			else
+			{
+				logger.info(this.getName() + " finished because reached target");
+			}
+
+			return true;
+		}
+
+		if (pidHeight.onTarget() && !brakeStarted)
+		{
+			brake.start();
+			brakeStarted = true;
+		}
+
+		return false;
 	}
 
 	protected void end()
@@ -83,17 +113,20 @@ public abstract class MoveStacker extends Command
 	private void _end()
 	{
 		pidHeight.reset();
-		Robot.stacker.disallowStackMovement();
+		Robot.stacker.setMotors(0);
 	}
 
 	private void updatePIDValues()
 	{
 		try
 		{
-			pidHeight.setPID(
-					(double) config.get("stacker_MoveStacker_PIDHeight_KP"),
-					(double) config.get("stacker_MoveStacker_PIDHeight_KI"),
-					(double) config.get("stacker_MoveStacker_PIDHeight_KD"));
+			pidHeight
+					.setPID((double) config
+							.get("stacker_MoveStacker_PIDHeight_KP") / 1000,
+							(double) config
+									.get("stacker_MoveStacker_PIDHeight_KI") / 1000,
+							(double) config
+									.get("stacker_MoveStacker_PIDHeight_KD") / 1000);
 
 			pidHeight.setAbsoluteTolerance((double) config
 					.get("stacker_MoveStacker_PIDHeight_AbsoluteTolerance"));

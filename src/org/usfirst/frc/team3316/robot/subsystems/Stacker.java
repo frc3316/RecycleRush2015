@@ -7,13 +7,15 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerManually;
+import org.usfirst.frc.team3316.robot.utils.StackerPosition;
 
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.buttons.Trigger;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -25,22 +27,49 @@ public class Stacker extends Subsystem
 		boolean previousGet = false;
 		
 		int currentHeight, previousHeight = 0;
-		
-		public void run() 
+
+		public void run()
 		{
 			currentHeight = heightCounter.get();
 			int heightDifference = currentHeight - previousHeight;
-			
+
 			if (right.get() > lowPass)
 			{
 				height += heightDifference;
 			}
-			else 
+			else
 			{
 				height -= heightDifference;
 			}
 			previousHeight = currentHeight;
 		}
+	}
+
+	public class HeightResetTrigger extends Trigger
+	{
+		public boolean get()
+		{
+			return getHeightSecure();
+		}
+	}
+
+	public class HeightReset extends Command
+	{
+		protected void initialize()
+		{
+			height = 0;
+		}
+
+		protected void execute() {}
+
+		protected boolean isFinished()
+		{
+			return true;
+		}
+
+		protected void end() {}
+
+		protected void interrupted() {}
 	}
 
 	Config config = Robot.config;
@@ -56,32 +85,44 @@ public class Stacker extends Subsystem
 	private DoubleSolenoid solenoidBrake; // The solenoid that brakes the
 											// elevator
 
-	private DigitalInput switchRight, switchLeft, heightSwitch; // the switches
-																// that signify
-																// if there's
-																// a tote or a
-																// container in
-																// the stacker
+	private DigitalInput switchRight, switchLeft, heightSwitch, heightSecure; // the
+																				// switches
+																				// that
+																				// signify
+																				// if
+																				// there's
+																				// a
+																				// tote
+																				// or
+																				// a
+																				// container
+																				// in
+																				// the
+																				// stacker
+	private HeightResetTrigger heightResetTrigger;
 	private Counter heightCounter;
 
 	private int height = 0;
 	private SpeedController left;
 	private SpeedController right;
 
-	private double downScale = 0; //Initial assignment, later updated from config
-	private double upScale = 0; //Initial assignment, later updated from config
 	private double lowPass = 0;
-	private int numberOfScrews = 0;
+
 	private boolean isMovementAllowed = true;
 
 	private HeightTask heightTask;
 
+	private double floorHeight, stepHeight, toteHeight;
+	private double heightTolerance;
+
+	public int totesCollected = 0;
+	
 	public Stacker()
 	{
 
 		left = Robot.actuators.elevatorMotorControllerLeft;
 		right = Robot.actuators.elevatorMotorControllerRight;
-		
+
 		solenoidContainer = Robot.actuators.stackerSolenoidContainer;
 		solenoidGripper = Robot.actuators.stackerSolenoidGripper;
 
@@ -90,17 +131,18 @@ public class Stacker extends Subsystem
 
 		switchRight = Robot.sensors.stackerSwitchRatchetRight;
 		switchLeft = Robot.sensors.stackerSwitchRatchetLeft;
-		heightSwitch = Robot.sensors.stackerSwitchHeight;
 
+		heightSwitch = Robot.sensors.stackerSwitchHeight;
 		heightCounter = Robot.sensors.stackerHeightCounter;
-		//heightCounter.setUpSourceEdge(true, true);
-		//heightCounter.setDownSource(new HeightCounterDirectionSource());
-		//heightCounter.setExternalDirectionMode();
+		heightSecure = Robot.sensors.stackerSwitchSecure;
+		
+		heightResetTrigger = new HeightResetTrigger();
+		heightResetTrigger.whenActive(new HeightReset());
+		heightResetTrigger.whenInactive(new HeightReset());
 	}
-	
+
 	public void timerInit()
 	{
-	
 		heightTask = new HeightTask();
 		Robot.timer.schedule(heightTask, 0, 1);
 	}
@@ -110,37 +152,31 @@ public class Stacker extends Subsystem
 		setDefaultCommand(new MoveStackerManually());
 	}
 
-	/*
-	 * In order to get to each height we use: - Floor Height: both solenoids
-	 * extended - Step Height: bottom solenoid is retracted and upper extended -
-	 * Tote Height: both solenoids retracted
+	/**
+	 * Sets a certain % voltage to the stacker speed controllers
+	 * 
+	 * @param v
+	 *            The % voltage
+	 * @return true if succeeded in setting, false otherwise
 	 */
-
 	public boolean setMotors(double v)
 	{
 		updateSetMotors();
-		
-		
+
 		if (isMovementAllowed == false)
 		{
 			return false;
 		}
 
-		// TODO: REMOVE THIS AFTER MANUAL TESTING
-		SmartDashboard.putNumber("Stacker setMotors value: ", v);
-		//logger.fine("Stacker setMotors value: " + v);
-		//logger.fine("Stacker speed controller get: " + right.get());
-		
 		if (v < lowPass && v > 0)
 		{
 			this.left.set(0);
 			this.right.set(0);
 			return false;
-		}	
-		
+		}
+
 		this.left.set(-v);
 		this.right.set(v);
-		
 		return true;
 	}
 	
@@ -180,7 +216,11 @@ public class Stacker extends Subsystem
 		return true;
 	}
 
-	
+	/**
+	 * Unbrakes the stacker and opens stack holders
+	 * 
+	 * @return true if succeeded, false otherwise
+	 */
 	public boolean allowStackMovement()
 	{
 		logger.fine("Try to close brake solenoid (unbrake)");
@@ -194,56 +234,150 @@ public class Stacker extends Subsystem
 		return true;
 	}
 
+	/**
+	 * Brakes the stacker and closes stack holders
+	 * 
+	 * @return true if succeeded, false otherwise
+	 */
 	public boolean disallowStackMovement()
 	{
-		logger.fine("Try to close brake solenoid (brake)");
+		logger.fine("Try to open brake solenoid (brake)");
 		solenoidBrake.set(DoubleSolenoid.Value.kReverse);
 		logger.fine("Solenoid brake closed");
 
 		logger.fine("Try to close holder solenoid");
 		solenoidHolder.set(DoubleSolenoid.Value.kForward);
 		logger.fine("Solenoid holder closed");
-		
+
 		return true;
 	}
-	
-	public boolean isMovementAllowed ()
+
+	/**
+	 * Returns whether the stacker can be moved
+	 * 
+	 * @param bool
+	 *            true if stacker can move, false if cannot
+	 */
+	public boolean isMovementAllowed()
 	{
 		return isMovementAllowed;
 	}
-	
+
+	/**
+	 * Sets whether the stacker can be moved
+	 * 
+	 * @param bool
+	 *            true if stacker can move, false if cannot
+	 */
 	public void setMovementAllowed(boolean bool)
 	{
 		isMovementAllowed = bool;
 	}
 
+	/**
+	 * Returns whether the right ratchet is closed
+	 * 
+	 * @return true or false
+	 */
 	public boolean getSwitchRatchetRight()
 	{
 		return switchRight.get();
 	}
 
+	/**
+	 * Returns whether the left ratchet is closed
+	 * 
+	 * @return true or false
+	 */
 	public boolean getSwitchRatchetLeft()
 	{
 		return switchLeft.get();
 	}
-	
+
+	/**
+	 * Returns whether the height switch (or counter) is currently facing a
+	 * screw
+	 * 
+	 * @return true or false
+	 */
 	public boolean getHeightSwitch()
 	{
 		return !(heightSwitch.get());
 	}
 
-	public int getHeight ()
+	/**
+	 * Returns whether the elevator is at its lowest position (floor level)
+	 * 
+	 * @return true or false
+	 */
+	public boolean getHeightSecure()
+	{
+		return !(heightSecure.get());
+	}
+
+	/**
+	 * Returns the height summed from the height counter
+	 * 
+	 * @return The current stacker height (in screws counted)
+	 */
+	public int getHeight()
 	{
 		return height;
 	}
-	
+
+	/**
+	 * Returns a stacker position based on which setpoint the stacker is at
+	 * 
+	 * @return Floor, Step or Tote if in one of the PID setpoint (at the
+	 *         tolerance variable), otherwise Unknown
+	 */
+	public StackerPosition getPosition()
+	{
+		updateStackerHeights();
+
+		if (Math.abs(height - floorHeight) <= heightTolerance)
+		{
+			return StackerPosition.Floor;
+		}
+		else if (Math.abs(height - stepHeight) <= heightTolerance)
+		{
+			return StackerPosition.Step;
+		}
+		else if (Math.abs(height - toteHeight) <= heightTolerance || height < 0)
+		{
+			return StackerPosition.Tote;
+		}
+
+		else
+			return StackerPosition.Unknown;
+	}
+
 	private void updateSetMotors()
+
 	{
 		try
 		{
-			downScale = (double) config.get("stacker_MoveDown_Scale");
-			upScale = (double) config.get("stacker_MoveUp_Scale");
 			lowPass = (double) config.get("stacker_SetMotors_LowPass");
+		}
+		catch (ConfigException e)
+		{
+			logger.severe(e);
+		}
+	}	
+
+	private void updateStackerHeights()
+	{
+		try
+		{
+			floorHeight = (double) config
+					.get("stacker_MoveStackerToFloor_SetPoint");
+			stepHeight = (double) config
+					.get("stacker_MoveStackerToStep_SetPoint");
+			toteHeight = (double) config
+					.get("stacker_MoveStackerToTote_SetPoint");
+
+			heightTolerance = (double) config
+					.get("stacker_MoveStacker_PIDHeight_AbsoluteTolerance");
 		}
 		catch (ConfigException e)
 		{

@@ -10,12 +10,12 @@ import org.usfirst.frc.team3316.robot.config.Config;
 import org.usfirst.frc.team3316.robot.config.Config.ConfigException;
 import org.usfirst.frc.team3316.robot.logger.DBugLogger;
 import org.usfirst.frc.team3316.robot.stacker.commands.Brake;
-import org.usfirst.frc.team3316.robot.stacker.commands.UnBrake;
-import org.usfirst.frc.team3316.robot.stacker.commands.CloseGripper;
-import org.usfirst.frc.team3316.robot.stacker.commands.HoldContainer;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToFloor;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToStep;
 import org.usfirst.frc.team3316.robot.stacker.commands.MoveStackerToTote;
+import org.usfirst.frc.team3316.robot.stacker.commands.UnBrake;
+import org.usfirst.frc.team3316.robot.stacker.commands.CloseGripper;
+import org.usfirst.frc.team3316.robot.stacker.commands.HoldContainer;
 import org.usfirst.frc.team3316.robot.stacker.commands.OpenGripper;
 import org.usfirst.frc.team3316.robot.stacker.commands.ReleaseContainer;
 
@@ -23,21 +23,26 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
-public class Joysticks {
+public class Joysticks
+{
 	/*
 	 * Defines a button in a gamepad POV for an array of angles
 	 */
-	private class POVButton extends Button {
+	private class POVButton extends Button
+	{
 		Joystick m_joystick;
 		int m_deg;
 
-		public POVButton(Joystick joystick, int deg) {
+		public POVButton(Joystick joystick, int deg)
+		{
 			m_joystick = joystick;
 			m_deg = deg;
 		}
 
-		public boolean get() {
-			if (m_joystick.getPOV() == m_deg) {
+		public boolean get()
+		{
+			if (m_joystick.getPOV() == m_deg)
+			{
 				return true;
 			}
 			return false;
@@ -74,8 +79,10 @@ public class Joysticks {
 
 	public POVButton openBrake, closeBrake;
 
-	public Joysticks() {
-		try {
+	public Joysticks()
+	{
+		try
+		{
 			/*
 			 * Joysticks
 			 */
@@ -83,16 +90,20 @@ public class Joysticks {
 			joystickRight = new Joystick((int) config.get("JOYSTICK_RIGHT"));
 			joystickOperator = new Joystick(
 					(int) config.get("JOYSTICK_OPERATOR"));
-		} catch (ConfigException e) {
+		}
+		catch (ConfigException e)
+		{
 			logger.severe(e);
 		}
 	}
 
-	public void initButtons() {
+	public void initButtons()
+	{
 		/*
 		 * Joystick Buttons
 		 */
-		try {
+		try
+		{
 			/*
 			 * Chassis
 			 */
@@ -104,15 +115,15 @@ public class Joysticks {
 			 */
 			moveStackerToFloor = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_MOVE_STACKER_TO_FLOOR"));
-			//moveStackerToFloor.whenPressed(new MoveStackerToFloor());
+			moveStackerToFloor.whenPressed(new MoveStackerToFloor());
 
 			moveStackerToStep = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_MOVE_STACKER_TO_STEP"));
-			//moveStackerToStep.whenPressed(new MoveStackerToStep());
+			moveStackerToStep.whenPressed(new MoveStackerToStep());
 
 			moveStackerToTote = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_MOVE_STACKER_TO_TOTE"));
-			//moveStackerToTote.whenPressed(new MoveStackerToTote());
+			moveStackerToTote.whenPressed(new MoveStackerToTote());
 
 			holdContainer = new JoystickButton(joystickOperator,
 					(int) config.get("BUTTON_HOLD_CONTAINER"));
@@ -142,7 +153,9 @@ public class Joysticks {
 			disableNavx = new JoystickButton(joystickRight, (int) config.get("BUTTON_DISABLE_NAVX"));
 			disableNavx.whenPressed(new UseNavx(false));
 
-		} catch (ConfigException e) {
+		}
+		catch (ConfigException e)
+		{
 			logger.severe(e);
 		}
 	}

@@ -40,7 +40,7 @@ public class Sensors
 	 * Stacker
 	 */	
 	
-	public DigitalInput stackerSwitchHeight;
+	public DigitalInput stackerSwitchHeight, stackerSwitchSecure;
 	public Counter stackerHeightCounter;
 	
 	public DigitalInput stackerSwitchRatchetRight,
@@ -108,6 +108,8 @@ public class Sensors
 			 */
 			stackerSwitchHeight =  new DigitalInput((int) config.get("STACKER_SWITCH_HEIGHT"));
 			stackerHeightCounter = new Counter(stackerSwitchHeight);
+			
+			stackerSwitchSecure = new DigitalInput ((int) config.get("STACKER_SWITCH_SECURE"));
 			
 			stackerSwitchRatchetRight = new DigitalInput((int) config.get("STACKER_SWITCH_RATCHET_RIGHT"));
 			stackerSwitchRatchetLeft = new DigitalInput((int) config.get("STACKER_SWITCH_RATCHET_LEFT"));
